@@ -132,6 +132,6 @@ URLS = {# CHAPTER 0-6:
 
 }
 
-
+print('RewriteEngine on')
 for k, v in URLS.items():
     print(TEMPLATE % (k, v))
