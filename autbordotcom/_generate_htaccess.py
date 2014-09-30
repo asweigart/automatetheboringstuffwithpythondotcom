@@ -16,14 +16,11 @@ URLS = {# CHAPTER 0-6:
         'pragmaticunicode':     'http://nedbatchelder.com/text/unipain.html',
         'joelunicode':          'http://www.joelonsoftware.com/articles/Unicode.html',
         # CHAPTER 12 - Excel
-        'readCensusExcel.py':   '',
-        'readExcelCensus.py':   '',
         # CHAPTER 13 - PDF/Word
         'pdfmetadata':          'http://www.verypdf.com/pdfinfoeditor/pdf-information-manager.html',
         # CHAPTER 14 - CSV/JSON
-        'removeCsvHeader.zip':  '',
-        'JSONAPIs':             '',
-        'excelSpreadsheets.zip':'',
+        'JSONAPIs':             'http://www.programmableweb.com/category/all/apis?data_format=21173',
+        'excelSpreadsheets.zip':'', # I DON'T HAVE THIS FILE.
         # CHAPTER 15 - Time/Threads
         'threadworms':          'http://inventwithpython.com/blog/2013/04/22/multithreaded-python-tutorial-with-threadworms/',
         'schedulers':           '',
