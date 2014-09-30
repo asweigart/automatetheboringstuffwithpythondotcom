@@ -36,7 +36,7 @@ URLS = {# CHAPTER 0-6:
         # CHAPTER 17 - Images
         'colors':               '',
         # CHAPTER 18 - GUI Automation
-        'sushi':                '',
+        'sushi':                'http://code.tutsplus.com/tutorials/how-to-build-a-python-bot-that-can-play-web-games--active-11117',
         'form':                 'https://docs.google.com/forms/d/1A39NpQYMN8OOG-_lqDLFQb2h1SiHhCxPh0udtDEy2rU/viewform?usp=send_form',
 
         # FILES
