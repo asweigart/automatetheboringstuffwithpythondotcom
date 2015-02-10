@@ -15,7 +15,9 @@ URLS = {# CHAPTER 0-6:
         # CHAPTER 11 - Web Scraping:
         'pragmaticunicode':     'http://nedbatchelder.com/text/unipain.html',
         'joelunicode':          'http://www.joelonsoftware.com/articles/Unicode.html',
+        'example.html':         'http://automatetheboringstuff.com/src/example.html',
         # CHAPTER 12 - Excel
+        'example.xlsx':         'http://automatetheboringstuff.com/src/example.xlsx',
         # CHAPTER 13 - PDF/Word
         'pdfmetadata':          'http://www.verypdf.com/pdfinfoeditor/pdf-information-manager.html',
         # CHAPTER 14 - CSV/JSON
