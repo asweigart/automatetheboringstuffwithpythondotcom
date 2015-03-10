@@ -25,8 +25,9 @@ URLS = {# CHAPTER 0-6:
         'excelSpreadsheets.zip':'', # I DON'T HAVE THIS FILE.
         # CHAPTER 15 - Time/Threads
         'threadworms':          'http://inventwithpython.com/blog/2013/04/22/multithreaded-python-tutorial-with-threadworms/',
-        'schedulers':           '',
+        'schedulers':           'http://automatetheboringstuff.com/schedulers/',
         'strftime':             'http://strftime.net/',
+        'comics':               'http://automatetheboringstuff.com/list-of-web-comics/',
         # CHAPTER 16 - Email/Text
         'gmail':                'https://support.google.com/accounts/answer/185833', # app-specific passwords
         'gmail_search':         '',
