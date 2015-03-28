@@ -36,7 +36,7 @@ URLS = {# CHAPTER 0-6:
         # CHAPTER 17 - Images
         'colors':               '',
         # CHAPTER 18 - GUI Automation
-        'sushi':                'http://code.tutsplus.com/tutorials/how-to-build-a-python-bot-that-can-play-web-games--active-11117',
+        'sushi':                'http://inventwithpython.com/blog/2014/12/17/programming-a-bot-to-play-the-sushi-go-round-flash-game/',
         'form':                 'https://docs.google.com/forms/d/1A39NpQYMN8OOG-_lqDLFQb2h1SiHhCxPh0udtDEy2rU/viewform?usp=send_form',
 
         # FILES
@@ -91,7 +91,7 @@ URLS = {# CHAPTER 0-6:
         'morning-glory.jpg':    'http://automatetheboringstuff.com/src/morning-glory.jpg',
         'mouseNow.py':          'http://automatetheboringstuff.com/src/mouseNow.py',
         'mouseNow2.py':         'http://automatetheboringstuff.com/src/mouseNow2.py',
-        'multidownloadxkcd.py': 'http://automatetheboringstuff.com/src/multidownloadxkcd.py',
+        'multidownloadxkcd.py': 'http://automatetheboringstuff.com/src/multidownloadXkcd.py',
         'multipleParagraphs.docx': 'http://automatetheboringstuff.com/src/multipleParagraphs.docx',
         'myPets.py':            'http://automatetheboringstuff.com/src/myPets.py',
         'passingReference.py':  'http://automatetheboringstuff.com/src/passingReference.py',
@@ -118,7 +118,7 @@ URLS = {# CHAPTER 0-6:
         'stopwatch.py':         'http://automatetheboringstuff.com/src/stopwatch.py',
         'styled.xlsx':          'http://automatetheboringstuff.com/src/styled.xlsx',
         'styles.xlsx':          'http://automatetheboringstuff.com/src/styles.xlsx',
-        'textmyself.py':        'http://automatetheboringstuff.com/src/textmyself.py',
+        'textMyself.py':        'http://automatetheboringstuff.com/src/textMyself.py',
         'threadDemo.py':        'http://automatetheboringstuff.com/src/threadDemo.py',
         'tictactoe-example1.py': 'http://automatetheboringstuff.com/src/tictactoe-example1.py',
         'torrentStarter.py':    'http://automatetheboringstuff.com/src/torrentStarter.py',
