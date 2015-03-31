@@ -1,28 +1,19 @@
 #! python3
 # Automatically fills in the form at autbor.com/form
 import pyautogui, time
-
 # Set these to the correct coordinates for your particular computer
-nameFieldX = 678
-nameFieldY = 215
-submitAnotherX = 800
-submitAnotherY = 240
-
-formPageX = 100
-formPageY = 100
-formPageColor = (232, 238, 247)
-submittedPageX = 100
-submittedPageY = 100
-submittedPageColor = (235, 235, 235)
+nameField = (648, 319)
+submitButton = (651, 817)
+submitButtonColor = (75, 141, 249)
+submitAnotherLink = (760, 224)
 
 formData = [{'name': 'Alice', 'fear': 'eavesdroppers', 'source': 'wand', 'robocop': 4, 'comments': 'Tell Bob I said hi.'},
             {'name': 'Bob', 'fear': 'bees', 'source': 'amulet', 'robocop': 4, 'comments': 'n/a'},
-            {'name': 'Carol', 'fear': 'puppets', 'source': 'crystal ball', 'robocop': 1, 'comments': 'Please take out the puppets out of the break room.'},
+            {'name': 'Carol', 'fear': 'puppets', 'source': 'crystal ball', 'robocop': 1, 'comments': 'Please take the puppets out of the break room.'},
             {'name': 'Alex Murphy', 'fear': 'ED-209', 'source': 'money', 'robocop': 5, 'comments': 'Protect the innocent. Serve the public trust. Uphold the law.'},
-           ]
+            ]
 
 pyautogui.PAUSE = 0.5
-pyautogui.FAILSAFE = True
 
 for person in formData:
     # Give the user a chance to kill the script
@@ -30,11 +21,11 @@ for person in formData:
     time.sleep(5)
 
     # Wait until form page has loaded.
-    while not pyautogui.pixelMatchesColor(formPageX, formPageY, formPageColor):
+    while not pyautogui.pixelMatchesColor(submitButton[0], submitButton[1], submitButtonColor):
         time.sleep(0.5)
 
     print('Entering %s info...' % (person['name']))
-    pyautogui.click(nameFieldX, nameFieldY)
+    pyautogui.click(nameField[0], nameField[1])
 
     # Fill out Name field
     pyautogui.typewrite(person['name'] + '\t')
@@ -44,13 +35,13 @@ for person in formData:
 
     # Fill out Source of Wizard Powers field
     if person['source'] == 'wand':
-        pyautogui.typewrite('\t')
-    elif person['source'] == 'amulet':
         pyautogui.typewrite(['down', '\t'])
-    elif person['source'] == 'crystal ball':
+    elif person['source'] == 'amulet':
         pyautogui.typewrite(['down', 'down', '\t'])
-    elif person['source'] == 'money':
+    elif person['source'] == 'crystal ball':
         pyautogui.typewrite(['down', 'down', 'down', '\t'])
+    elif person['source'] == 'money':
+        pyautogui.typewrite(['down', 'down', 'down', 'down', '\t'])
 
     # Fill out Robocop field
     if person['robocop'] == 1:
@@ -68,13 +59,11 @@ for person in formData:
     pyautogui.typewrite(person['comments'] + '\t')
 
     # Click Submit
-    pyautogui.typewrite(['enter'])
+    pyautogui.press('enter')
 
     # Wait until form page has loaded.
     print('Clicked Submit.')
-    time.sleep(1)
-    while not pyautogui.pixelMatchesColor(submittedPageX, submittedPageY, submittedPageColor):
-        time.sleep(0.5)
+    time.sleep(5)
 
     # Click the "Submit another response" link
-    pyautogui.click(submitAnotherX, submitAnotherY)
+    pyautogui.click(submitAnotherLink[0], submitAnotherLink[1])

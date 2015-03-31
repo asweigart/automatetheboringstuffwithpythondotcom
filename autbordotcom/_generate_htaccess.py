@@ -6,8 +6,8 @@ TEMPLATE = 'RewriteRule ^%s$ %s [L]'
 URLS = {# CHAPTER 0-6:
         # CHAPTER 7 - Regex:
         'teachregex':           'http://www.theguardian.com/technology/2012/dec/04/ict-teach-kids-regular-expressions',
-        'regex':                '',
-        'bitwise':              '',
+        'regex':                'https://docs.python.org/3/library/re.html#module-contents',
+        'bitwise':              'https://wiki.python.org/moin/BitwiseOperators',
         'htmlregex':            'http://stackoverflow.com/a/1732454/1893164',
         # CHAPTER 8 - File I/O:
         # CHAPTER 9 - File Handling:
@@ -34,7 +34,7 @@ URLS = {# CHAPTER 0-6:
         'sms':                  'https://www.twilio.com/blog/2014/05/send-and-receive-sms-messages-via-email-with-twilio-and-sendgrid.html',
         'twiliostatus':         'https://www.twilio.com/docs/api/rest/message#error-values',
         # CHAPTER 17 - Images
-        'colors':               '',
+        'colors':               'https://en.wikipedia.org/wiki/Web_colors#HTML_color_names',
         # CHAPTER 18 - GUI Automation
         'sushi':                'http://inventwithpython.com/blog/2014/12/17/programming-a-bot-to-play-the-sushi-go-round-flash-game/',
         'form':                 'https://docs.google.com/forms/d/1A39NpQYMN8OOG-_lqDLFQb2h1SiHhCxPh0udtDEy2rU/viewform?usp=send_form',
@@ -46,7 +46,7 @@ URLS = {# CHAPTER 0-6:
         'backupToZip.py':       'http://automatetheboringstuff.com/src/backupToZip.py',
         'birthdays.py':         'http://automatetheboringstuff.com/src/birthdays.py',
         'boxprint.py':          'http://automatetheboringstuff.com/src/boxprint.py',
-        'bulletpointadder.py':  'http://automatetheboringstuff.com/src/bulletpointadder.py',
+        'bulletPointAdder.py':  'http://automatetheboringstuff.com/src/bulletPointAdder.py',
         'calcprod.py':          'http://automatetheboringstuff.com/src/calcprod.py',
         'catnapping.py':        'http://automatetheboringstuff.com/src/catnapping.py',
         'census2010.py':        'http://automatetheboringstuff.com/src/census2010.py',
