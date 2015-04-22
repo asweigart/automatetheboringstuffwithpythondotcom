@@ -1,11 +1,11 @@
-So you know the basics of individual instructions and that a program is just a series of instructions. But the real strength of programming isn’t just running (or executing) one instruction after another like a weekend errand list. Based on how the expressions evaluate, the pro- gram can decide to skip instructions, repeat them, or choose one of several instructions to run. In fact, you almost never want your programs to start from the first line of code and simply execute every line, straight to the end. Flow control statements can decide which Python instructions to execute under which conditions.
+So you know the basics of individual instructions and that a program is just a series of instructions. But the real strength of programming isn’t just running (or executing) one instruction after another like a weekend errand list. Based on how the expressions evaluate, the program can decide to skip instructions, repeat them, or choose one of several instructions to run. In fact, you almost never want your programs to start from the first line of code and simply execute every line, straight to the end. Flow control statements can decide which Python instructions to execute under which conditions.
 These flow control statements directly correspond to the symbols in a flowchart, so I’ll provide flowchart versions of the code discussed in this chapter. Figure 2-1 shows a flowchart for what to do if it’s raining. Follow the path made by the arrows from Start to End.
 
 Figure 2-1: A flowchart to tell you what to do if it is raining
 
-In a flowchart, there is usually more than one way to go from the start to the end. The same is true for lines of code in a computer program. Flow- charts represent these branching points with diamonds, while the other steps are represented with rectangles. The starting and ending steps are represented with rounded rectangles.
+In a flowchart, there is usually more than one way to go from the start to the end. The same is true for lines of code in a computer program. Flowcharts represent these branching points with diamonds, while the other steps are represented with rectangles. The starting and ending steps are represented with rounded rectangles.
 
-But before you learn about flow control statements, you first need to learn how to represent those yes and no options, and you need to under- stand how to write those branching points as Python code. To that end, let’s explore Boolean values, comparison operators, and Boolean operators.
+But before you learn about flow control statements, you first need to learn how to represent those yes and no options, and you need to understand how to write those branching points as Python code. To that end, let’s explore Boolean values, comparison operators, and Boolean operators.
 
 Boolean Values
 
@@ -47,7 +47,7 @@ True
 >>> 2 != 2
 False
 
-As you might expect,  == (equal to) evaluates to  True when the values on both sides are the same, and  != (not equal to) evaluates to  True when the two values are different. The  == and  != operators can actually work with val- ues of any data type.
+As you might expect,  == (equal to) evaluates to  True when the values on both sides are the same, and  != (not equal to) evaluates to  True when the two values are different. The  == and  != operators can actually work with values of any data type.
 
 >>> 'hello' == 'hello'
 True
@@ -98,7 +98,7 @@ The three Boolean operators ( and ,  or , and  not ) are used to compare Boolean
 
 Binary Boolean Operators
 
-The  and and  or operators always take two Boolean values (or expressions), so they’re considered binary operators. The  and operator evaluates an expres- sion to  True if both Boolean values are  True ; otherwise, it evaluates to  False .
+The  and and  or operators always take two Boolean values (or expressions), so they’re considered binary operators. The  and operator evaluates an expression to  True if both Boolean values are  True ; otherwise, it evaluates to  False .
 
 Enter some expressions using  and into the interactive shell to see it in action.
 
@@ -141,7 +141,7 @@ False
 u >>> not not not not True
 True
 
-Much like using double negatives in speech and writing, you can nest not operators u, though there’s never not no reason to do this in real pro- grams. Table 2-4 shows the truth table for  not .
+Much like using double negatives in speech and writing, you can nest not operators u, though there’s never not no reason to do this in real programs. Table 2-4 shows the truth table for  not .
 
 Table 2-4:  The  not Operator’s Truth Table
 
@@ -153,7 +153,7 @@ Mixing Boolean and Comparison Operators
 
 Since the comparison operators evaluate to Boolean values, you can use them in expressions with the Boolean operators.
 
-Recall that the  and ,  or , and  not operators are called Boolean operators because they always operate on the Boolean values  True and  False . While expressions like  4 < 5 aren’t Boolean values, they are expressions that evalu- ate down to Boolean values. Try entering some Boolean expressions that use comparison operators into the interactive shell.
+Recall that the  and ,  or , and  not operators are called Boolean operators because they always operate on the Boolean values  True and  False . While expressions like  4 < 5 aren’t Boolean values, they are expressions that evaluate down to Boolean values. Try entering some Boolean expressions that use comparison operators into the interactive shell.
 
 >>> (4 < 5) and (5 < 6)
 True
@@ -177,7 +177,7 @@ Flow control statements often start with a part called the condition, and all ar
 
 Conditions
 
-The Boolean expressions you’ve seen so far could all be considered con- ditions, which are the same thing as expressions; condition is just a more specific name in the context of flow control statements. Conditions always evaluate down to a Boolean value,  True or  False . A flow control statement decides what to do based on whether its condition is  True or  False , and almost every flow control statement uses a condition.
+The Boolean expressions you’ve seen so far could all be considered conditions, which are the same thing as expressions; condition is just a more specific name in the context of flow control statements. Conditions always evaluate down to a Boolean value,  True or  False . A flow control statement decides what to do based on whether its condition is  True or  False , and almost every flow control statement uses a condition.
 
 Blocks of Code
 
@@ -192,7 +192,7 @@ True and (5 < 6)
 True and True
 True
 
-Figure 2-2: The process of evalu- ating  (4 < 5) and (5 < 6) to  True .
+Figure 2-2: The process of evaluating  (4 < 5) and (5 < 6) to  True .
 
 Blocks are easier to understand by looking at some indented code, so let’s find the blocks in part of a small game program, shown here:
 
@@ -203,13 +203,13 @@ v print('Access granted.')
 else:
 w print('Wrong password.')
 
-The first block of code u starts at the line print('Hello Mary') and con- tains all the lines after it. Inside this block is another block v, which has only a single line in it:  print('Access Granted.') . The third block w is also one line long:  print('Wrong password.') .
+The first block of code u starts at the line print('Hello Mary') and contains all the lines after it. Inside this block is another block v, which has only a single line in it:  print('Access Granted.') . The third block w is also one line long:  print('Wrong password.') .
 
 Program Execution
 
 In the previous chapter’s hello.py program, Python started executing instruc tions at the top of the program going down, one after another. The program execution (or simply, execution) is a term for the current instruction being executed. If you print the source code on paper and put your finger on each line as it is executed, you can think of your finger as the program execution.
 
-Not all programs execute by simply going straight down, however. If you use your finger to trace through a program with flow control statements, you’ll likely find yourself jumping around the source code based on condi- tions, and you’ll probably skip entire clauses.
+Not all programs execute by simply going straight down, however. If you use your finger to trace through a program with flow control statements, you’ll likely find yourself jumping around the source code based on conditions, and you’ll probably skip entire clauses.
 
 Flow Control Statements
 
@@ -237,7 +237,7 @@ Figure 2-3: The flowchart for an  if statement
 
 else Statements
 
-An  if clause can optionally be followed by an  else statement. The  else clause is executed only when the  if statement’s condition is  False . In plain English, an  else statement could be read as, “If this condition is true, execute this code. Or else, execute that code.” An  else statement doesn’t have a condi- tion, and in code, an  else statement always consists of the following:
+An  if clause can optionally be followed by an  else statement. The  else clause is executed only when the  if statement’s condition is  False . In plain English, an  else statement could be read as, “If this condition is true, execute this code. Or else, execute that code.” An  else statement doesn’t have a condition, and in code, an  else statement always consists of the following:
 
 •  The  else keyword
 •  A colon
@@ -264,7 +264,7 @@ Figure 2-4: The flowchart for an  else statement
 
 elif Statements
 
-While only one of the  if or  else clauses will execute, you may have a case where you want one of many possible clauses to execute. The  elif statement is an “else if” statement that always follows an  if or another  elif statement. It provides another condition that is checked only if any of the previous con- ditions were  False . In code, an  elif statement always consists of the following:
+While only one of the  if or  else clauses will execute, you may have a case where you want one of many possible clauses to execute. The  elif statement is an “else if” statement that always follows an  if or another  elif statement. It provides another condition that is checked only if any of the previous conditions were  False . In code, an  elif statement always consists of the following:
 
 •  The  elif keyword
 •  A condition (that is, an expression that evaluates to  True or  False )
@@ -282,7 +282,7 @@ This time, you check the person’s age, and the program will tell them somethin
 
 Figure 2-5: The flowchart for an  elif statement
 
-The  elif clause executes if  age < 12 is  True and  name == 'Alice' is  False . However, if both of the conditions are  False , then both of the clauses are skipped. It is not guaranteed that at least one of the clauses will be exe- cuted. When there is a chain of  elif statements, only one or none of the clauses will be executed. Once one of the statements’ conditions is found to be  True , the rest of the  elif clauses are automatically skipped. For example, open a new file editor window and enter the following code, saving it as vampire.py:
+The  elif clause executes if  age < 12 is  True and  name == 'Alice' is  False . However, if both of the conditions are  False , then both of the clauses are skipped. It is not guaranteed that at least one of the clauses will be executed. When there is a chain of  elif statements, only one or none of the clauses will be executed. Once one of the statements’ conditions is found to be  True , the rest of the  elif clauses are automatically skipped. For example, open a new file editor window and enter the following code, saving it as vampire.py:
 
 
 Figure 2-6: The flowchart for multiple  elif statements in the vampire.py program
@@ -302,7 +302,7 @@ Say the  age variable contains the value  3000 before this code is executed. You
 
 Figure 2-7 shows the flowchart for the previous code. Notice how the diamonds for  age > 100 and  age > 2000 are swapped.
 
-Optionally, you can have an  else statement after the last  elif statement. In that case, it is guaranteed that at least one (and only one) of the clauses will be executed. If the conditions in every  if and  elif statement are  False , then the  else clause is executed. For example, let’s re-create the Alice pro- gram to use  if ,  elif , and  else clauses.
+Optionally, you can have an  else statement after the last  elif statement. In that case, it is guaranteed that at least one (and only one) of the clauses will be executed. If the conditions in every  if and  elif statement are  False , then the  else clause is executed. For example, let’s re-create the Alice program to use  if ,  elif , and  else clauses.
 
 if name == 'Alice':
 print('Hi, Alice.')
@@ -321,7 +321,7 @@ Figure 2-8: Flowchart for the previous “little kid” program
 
 while Loop Statements
 
-You can make a block of code execute over and over again with a  while state- ment. The code in a  while clause will be executed as long as the  while state- ment’s condition is  True . In code, a  while statement always consists of the following:
+You can make a block of code execute over and over again with a  while statement. The code in a  while clause will be executed as long as the  while statement’s condition is  True . In code, a  while statement always consists of the following:
 
 •  The  while keyword
 •  A condition (that is, an expression that evaluates to  True or  False )
@@ -330,7 +330,7 @@ You can make a block of code execute over and over again with a  while state- me
 
 You can see that a  while statement looks similar to an  if statement. The difference is in how they behave. At the end of an  if clause, the program execution continues after the  if statement. But at the end of a  while clause, the program execution jumps back to the start of the  while statement. The while clause is often called the while loop or just the loop.
 
-Let’s look at an  if statement and a  while loop that use the same condi- tion and take the same actions based on that condition. Here is the code with an  if statement:
+Let’s look at an  if statement and a  while loop that use the same condition and take the same actions based on that condition. Here is the code with an  if statement:
 
 spam = 0
 if spam < 5:
@@ -384,7 +384,7 @@ If you never enter  your name , then the  while loop’s condition will never be
 
 break Statements
 
-There is a shortcut to getting the program execution to break out of a  while loop’s clause early. If the execution reaches a  break statement, it immedi- ately exits the  while loop’s clause. In code, a  break statement simply contains the  break keyword.
+There is a shortcut to getting the program execution to break out of a  while loop’s clause early. If the execution reaches a  break statement, it immediately exits the  while loop’s clause. In code, a  break statement simply contains the  break keyword.
 
 Pretty simple, right? Here’s a program that does the same thing as the previous program, but it uses a  break statement to escape the loop. Enter the following code, and save the file as yourName2.py:
 
@@ -397,7 +397,7 @@ y print('Thank you!')
 
 The first line u creates an infinite loop; it is a  while loop whose condition is always  True . (The expression  True , after all, always evaluates down to the value  True .) The program execution will always enter the loop and will exit it only when a  break statement is executed. (An infinite loop that never exits is a common programming bug.)
 
-Just like before, this program asks the user to type  your name v. Now, however, while the execution is still inside the  while loop, an  if statement gets executed w to check whether  name is equal to  your name . If this condi- tion is  True , the  break statement is run x, and the execution moves out of the loop to  print('Thank you!') y. Otherwise, the  if statement’s clause with the break statement is skipped, which puts the execution at the end of the  while loop. At this point, the program execution jumps back to the start of the while statement u to recheck the condition. Since this condition is merely the  True Boolean value, the execution enters the loop to ask the user to type your name again. See Figure 2-12 for the flowchart of this program.
+Just like before, this program asks the user to type  your name v. Now, however, while the execution is still inside the  while loop, an  if statement gets executed w to check whether  name is equal to  your name . If this condition is  True , the  break statement is run x, and the execution moves out of the loop to  print('Thank you!') y. Otherwise, the  if statement’s clause with the break statement is skipped, which puts the execution at the end of the  while loop. At this point, the program execution jumps back to the start of the while statement u to recheck the condition. Since this condition is merely the  True Boolean value, the execution enters the loop to ask the user to type your name again. See Figure 2-12 for the flowchart of this program.
 
 Run yourName2.py, and enter the same text you entered for yourName.py. The rewritten program should respond in the same way as the original.
 
@@ -407,7 +407,7 @@ continue Statements
 
 Like  break statements,  continue statements are used inside loops. When the program execution reaches a  continue statement, the program execution immediately jumps back to the start of the loop and reevaluates the loop’s condition. (This is also what happens when the execution reaches the end of the loop.)
 
-Let’s use  continue to write a program that asks for a name and password. Enter the following code into a new file editor window and save the pro- gram as swordfish.py.
+Let’s use  continue to write a program that asks for a name and password. Enter the following code into a new file editor window and save the program as swordfish.py.
 
 while True:
 print('Who are you?')
@@ -420,7 +420,7 @@ if password == 'swordfish':
 x break
 y print('Access granted.')
 
-If the user enters any name besides  Joe u, the  continue statement v causes the program execution to jump back to the start of the loop. When it reevaluates the condition, the execution will always enter the loop, since the condition is simply the value  True . Once they make it past that  if state- ment, the user is asked for a password w. If the password entered is swordfish , then the  break statement x is run, and the execution jumps out of the  while loop to print  Access granted y. Otherwise, the execution continues to the end of the  while loop, where it then jumps back to the start of the loop. See Figure 2-13 for this program’s flowchart.
+If the user enters any name besides  Joe u, the  continue statement v causes the program execution to jump back to the start of the loop. When it reevaluates the condition, the execution will always enter the loop, since the condition is simply the value  True . Once they make it past that  if statement, the user is asked for a password w. If the password entered is swordfish , then the  break statement x is run, and the execution jumps out of the  while loop to print  Access granted y. Otherwise, the execution continues to the end of the  while loop, where it then jumps back to the start of the loop. See Figure 2-13 for this program’s flowchart.
 
 trApped In An InfInIte loop?
 
@@ -429,7 +429,7 @@ If you ever run a program that has a bug causing it to get stuck in an infinite 
 while True:
 print('Hello world!')
 
-When you run this program, it will print  Hello world! to the screen forever, because the  while statement’s condition is always  True . In IDLE’s interactive shell window, there are only two ways to stop this program: press  ctrl -C or select Shell > Restart Shell from the menu.  ctrl -C is handy if you ever want to termi- nate your program immediately, even if it’s not stuck in an infinite loop.
+When you run this program, it will print  Hello world! to the screen forever, because the  while statement’s condition is always  True . In IDLE’s interactive shell window, there are only two ways to stop this program: press  ctrl -C or select Shell > Restart Shell from the menu.  ctrl -C is handy if you ever want to terminate your program immediately, even if it’s not stuck in an infinite loop.
 
 Figure 2-13: A flowchart for swordfish.py. The X path will logically never happen because the loop condition is always  True .
 
@@ -441,7 +441,7 @@ The  while loop keeps looping while its condition is  True (which is the reason 
 
 “truthy” And “fAlsey” vAlues
 
-There are some values in other data types that conditions will consider equiva- lent to  True and  False . When used in conditions,  0 ,  0.0 , and  '' (the empty string) are considered  False , while all other values are considered  True . For example, look at the following program:
+There are some values in other data types that conditions will consider equivalent to  True and  False . When used in conditions,  0 ,  0.0 , and  '' (the empty string) are considered  False , while all other values are considered  True . For example, look at the following program:
 
 name = ''
 while not name: u
@@ -495,7 +495,7 @@ Jimmy Five Times (4)
 
 NOTE: You can use  break and  continue statements inside  for loops as well. The  continue statement will continue to the next value of the  for loop’s counter, as if the program execution had reached the end of the loop and returned to the start. In fact, you can use  continue and  break statements only inside  while and  for loops. If you try to use these statements elsewhere, Python will give you an error.
 
-As another  for loop example, consider this story about the mathemati- cian Karl Friedrich Gauss. When Gauss was a boy, a teacher wanted to give the class some busywork. The teacher told them to add up all the numbers from 0 to 100. Young Gauss came up with a clever trick to figure out the answer in a few seconds, but you can write a Python program with a  for loop to do this calculation for you.
+As another  for loop example, consider this story about the mathematician Karl Friedrich Gauss. When Gauss was a boy, a teacher wanted to give the class some busywork. The teacher told them to add up all the numbers from 0 to 100. Young Gauss came up with a clever trick to figure out the answer in a few seconds, but you can write a Python program with a  for loop to do this calculation for you.
 
 u total = 0
 v for num in range(101):
@@ -561,7 +561,7 @@ Running a  for loop to print  i with  range(5, -1, -1) should print from five do
 
 Importing Modules
 
-All Python programs can call a basic set of functions called built-in functions, including the  print() ,  input() , and  len() functions you’ve seen before. Python also comes with a set of modules called the standard library. Each module is a Python program that contains a related group of functions that can be embedded in your programs. For example, the  math module has mathematics- related functions, the  random module has random number–related functions, and so on.
+All Python programs can call a basic set of functions called built-in functions, including the  print() ,  input() , and  len() functions you’ve seen before. Python also comes with a set of modules called the standard library. Each module is a Python program that contains a related group of functions that can be embedded in your programs. For example, the  math module has mathematics-related functions, the  random module has random number–related functions, and so on.
 
 Before you can use the functions in a module, you must import the module with an  import statement. In code, an  import statement consists of the following:
 
@@ -594,9 +594,9 @@ import random, sys, os, math
 Now we can use any of the functions in these four modules. We’ll learn more about them later in the book.
 
 from import Statements
-An alternative form of the  import statement is composed of the  from key- word, followed by the module name, the  import keyword, and star; for example,  from random import *.
+An alternative form of the  import statement is composed of the  from keyword, followed by the module name, the  import keyword, and star; for example,  from random import *.
 
-With this form of  import statement, calls to functions in  random will not need the  random. prefix. However, using the full name makes for more read- able code, so it is better to use the normal form of the  import statement.
+With this form of  import statement, calls to functions in  random will not need the  random. prefix. However, using the full name makes for more readable code, so it is better to use the normal form of the  import statement.
 
 Ending a Program Early with sys.exit()
 
@@ -612,13 +612,13 @@ if response == 'exit':
 sys.exit()
 print('You typed ' + response + '.')
 
-Run this program in IDLE. This program has an infinite loop with no break statement inside. The only way this program will end is if the user enters exit , causing  sys.exit() to be called. When  response is equal to  exit , the pro- gram ends. Since the  response variable is set by the  input() function, the user must enter  exit in order to stop the program.
+Run this program in IDLE. This program has an infinite loop with no break statement inside. The only way this program will end is if the user enters exit , causing  sys.exit() to be called. When  response is equal to  exit , the program ends. Since the  response variable is set by the  input() function, the user must enter  exit in order to stop the program.
 
 Summary
 
 By using expressions that evaluate to  True or  False (also called conditions), you can write programs that make decisions on what code to execute and what code to skip. You can also execute code over and over again in a loop while a certain condition evaluates to  True . The  break and  continue statements are useful if you need to exit a loop or jump back to the start.
 
-These flow control statements will let you write much more intelligent programs. There’s another type of flow control that you can achieve by writ- ing your own functions, which is the topic of the next chapter.
+These flow control statements will let you write much more intelligent programs. There’s another type of flow control that you can achieve by writing your own functions, which is the topic of the next chapter.
 
 Practice Questions
 

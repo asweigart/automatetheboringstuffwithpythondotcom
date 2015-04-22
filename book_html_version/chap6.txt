@@ -1,6 +1,6 @@
-Text is one of the most common forms of data your programs will handle. You already know how to concatenate two string values together with the  + operator, but you can do much more than that. You can extract partial strings from string values, add or remove spacing, convert letters to lower- case or uppercase, and check that strings are formatted correctly. You can even write Python code to access the clipboard for copying and pasting text.
+Text is one of the most common forms of data your programs will handle. You already know how to concatenate two string values together with the  + operator, but you can do much more than that. You can extract partial strings from string values, add or remove spacing, convert letters to lowercase or uppercase, and check that strings are formatted correctly. You can even write Python code to access the clipboard for copying and pasting text.
 
-In this chapter, you’ll learn all this and more. Then you’ll work through two different programming projects: a simple password manager and a pro- gram to automate the boring chore of formatting pieces of text.
+In this chapter, you’ll learn all this and more. Then you’ll work through two different programming projects: a simple password manager and a program to automate the boring chore of formatting pieces of text.
 
 Working with Strings
 
@@ -12,7 +12,7 @@ Typing string values in Python code is fairly straightforward: They begin and en
 
 Double Quotes
 
-Strings can begin and end with double quotes, just as they do with single quotes. One benefit of using double quotes is that the string can have a single quote character in it. Try entering the following into the inter- active shell:
+Strings can begin and end with double quotes, just as they do with single quotes. One benefit of using double quotes is that the string can have a single quote character in it. Try entering the following into the interactive shell:
 
 >>> spam = "That is Alice's cat."
 
@@ -45,12 +45,12 @@ I'm doing fine.
 
 raw Strings
 
-You can place an  r before the beginning quotation mark of a string to make it a raw string. A raw string completely ignores all escape characters and prints any backslash that appears in the string. For example, type the fol- lowing into the interactive shell:
+You can place an  r before the beginning quotation mark of a string to make it a raw string. A raw string completely ignores all escape characters and prints any backslash that appears in the string. For example, type the following into the interactive shell:
 
 >>> print(r'That is Carol\'s cat.')
 That is Carol\'s cat.
 
-Because this is a raw string, Python considers the backslash as part of the string and not as the start of an escape character. Raw strings are help- ful if you are typing string values that contain many backslashes, such as the strings used for regular expressions described in the next chapter.
+Because this is a raw string, Python considers the backslash as part of the string and not as the start of an escape character. Raw strings are helpful if you are typing string values that contain many backslashes, such as the strings used for regular expressions described in the next chapter.
 
 Multiline Strings with triple Quotes
 
@@ -76,7 +76,7 @@ print('Dear Alice,\n\nEve\'s cat has been arrested for catnapping, cat burglary,
 
 Multiline Comments
 
-While the hash character ( # ) marks the beginning of a comment for the rest of the line, a multiline string is often used for comments that span mul- tiple lines. The following is perfectly valid Python code:
+While the hash character ( # ) marks the beginning of a comment for the rest of the line, a multiline string is often used for comments that span multiple lines. The following is perfectly valid Python code:
 
 """This is a test Python program.
 Written by Al Sweigart al@inventwithpython.com
@@ -112,7 +112,7 @@ Try entering the following into the interactive shell:
 >>> spam[6:]
 'world!'
 
-If you specify an index, you’ll get the character at that position in the string. If you specify a range from one index to another, the starting index is included and the ending index is not. That’s why, if spam is  'Hello world!' , spam[0:5] is  'Hello' . The substring you get from  spam[0:5] will include every- thing from  spam[0] to  spam[4] , leaving out the space at index 5. Note that slicing a string does not modify the original string. You can capture a slice from one variable in a separate variable. Try typing the fol- lowing into the interactive shell:
+If you specify an index, you’ll get the character at that position in the string. If you specify a range from one index to another, the starting index is included and the ending index is not. That’s why, if spam is  'Hello world!' , spam[0:5] is  'Hello' . The substring you get from  spam[0:5] will include everything from  spam[0] to  spam[4] , leaving out the space at index 5. Note that slicing a string does not modify the original string. You can capture a slice from one variable in a separate variable. Try typing the following into the interactive shell:
 
 >>> spam = 'Hello world!'
 >>> fizz = spam[0:5]
@@ -123,7 +123,7 @@ By slicing and storing the resulting substring in another variable, you can have
 
 The in and not in Operators with Strings
 
-The  in and  not in operators can be used with strings just like with list val- ues. An expression with two strings joined using  in or  not in will evaluate to a Boolean  True or  False . Try entering the following into the interactive shell:
+The  in and  not in operators can be used with strings just like with list values. An expression with two strings joined using  in or  not in will evaluate to a Boolean  True or  False . Try entering the following into the interactive shell:
 
 >>> 'Hello' in 'Hello World'
 True
@@ -145,7 +145,7 @@ This section describes the methods you’ll be using most often.
 
 The upper(), lower(), isupper(), and islower() String Methods
 
-The  upper() and  lower() string methods return a new string where all the letters in the original string have been converted to uppercase or lower- case, respectively. Nonletter characters in the string remain unchanged. Try entering the following into the interactive shell:
+The  upper() and  lower() string methods return a new string where all the letters in the original string have been converted to uppercase or lowercase, respectively. Nonletter characters in the string remain unchanged. Try entering the following into the interactive shell:
 
 >>> spam = 'Hello world!'
 >>> spam = spam.upper()
@@ -157,7 +157,7 @@ The  upper() and  lower() string methods return a new string where all the lette
 
 Note that these methods do not change the string itself but return new string values. If you want to change the original string, you have to call  upper() or  lower() on the string and then assign the new string to the variable where the original was stored. This is why you must use  spam = spam.upper() to change the string in  spam instead of simply  spam.upper() . (This is just like if a variable eggs contains the value  10 . Writing  eggs + 3 does not change the value of  eggs , but  eggs = eggs + 3 does.)
 
-The  upper() and  lower() methods are helpful if you need to make a case- insensitive comparison. The strings  'great' and  'GREat' are not equal to each other. But in the following small program, it does not matter whether the user types  Great ,  GREAT , or  grEAT , because the string is first converted to lowercase.
+The  upper() and  lower() methods are helpful if you need to make a case-insensitive comparison. The strings  'great' and  'GREat' are not equal to each other. But in the following small program, it does not matter whether the user types  Great ,  GREAT , or  grEAT , because the string is first converted to lowercase.
 
 print('How are you?')
 feeling = input()
@@ -208,7 +208,7 @@ Along with  islower() and  isupper() , there are several string methods that hav
 •  isalpha() returns  True if the string consists only of letters and is not blank.
 •  isalnum() returns  True if the string consists only of letters and numbers and is not blank.
 •  isdecimal() returns  True if the string consists only of numeric characters and is not blank.
-•  isspace() returns  True if the string consists only of spaces, tabs, and new- lines and is not blank.
+•  isspace() returns  True if the string consists only of spaces, tabs, and newlines and is not blank.
 •  istitle() returns  True if the string consists only of words that begin with an uppercase letter followed by only lowercase letters.
 
 Enter the following into the interactive shell:
@@ -249,7 +249,7 @@ if password.isalnum():
 break
 print('Passwords can only have letters and numbers.')
 
-In the first  while loop, we ask the user for their age and store their input in  age . If  age is a valid (decimal) value, we break out of this first  while loop and move on to the second, which asks for a password. Otherwise, we inform the user that they need to enter a number and again ask them to enter their age. In the second  while loop, we ask for a password, store the user’s input in  password , and break out of the loop if the input was alphanu- meric. If it wasn’t, we’re not satisfied so we tell the user the password needs to be alphanumeric and again ask them to enter a password.
+In the first  while loop, we ask the user for their age and store their input in  age . If  age is a valid (decimal) value, we break out of this first  while loop and move on to the second, which asks for a password. Otherwise, we inform the user that they need to enter a number and again ask them to enter their age. In the second  while loop, we ask for a password, store the user’s input in  password , and break out of the loop if the input was alphanumeric. If it wasn’t, we’re not satisfied so we tell the user the password needs to be alphanumeric and again ask them to enter a password.
 
 When run, the program’s output looks like this:
 
@@ -303,7 +303,7 @@ Remember that  join() is called on a string value and is passed a list value. (I
 >>> 'My name is Simon'.split()
 ['My', 'name', 'is', 'Simon']
 
-By default, the string  'My name is Simon' is split wherever whitespace char- acters such as the space, tab, or newline characters are found. These white- space characters are not included in the strings in the returned list. You can pass a delimiter string to the  split() method to specify a different string to split upon. For example, enter the following into the interactive shell:
+By default, the string  'My name is Simon' is split wherever whitespace characters such as the space, tab, or newline characters are found. These whitespace characters are not included in the strings in the returned list. You can pass a delimiter string to the  split() method to specify a different string to split upon. For example, enter the following into the interactive shell:
 
 >>> 'MyABCnameABCisABCSimon'.split('ABC')
 ['My', 'name', 'is', 'Simon']
@@ -341,7 +341,7 @@ The  rjust() and  ljust() string methods return a padded version of the string t
 
 'Hello'.rjust(10) says that we want to right-justify  'Hello' in a string of total length  10 .  'Hello' is five characters, so five spaces will be added to its left, giving us a string of 10 characters with  'Hello' justified right.
 
-An optional second argument to  rjust() and  ljust() will specify a fill character other than a space character. Enter the following into the inter- active shell:
+An optional second argument to  rjust() and  ljust() will specify a fill character other than a space character. Enter the following into the interactive shell:
 
 >>> 'Hello'.rjust(20, '*')
 '***************Hello'
@@ -365,11 +365,11 @@ picnicItems = {'sandwiches': 4, 'apples': 12, 'cups': 4, 'cookies': 8000}
 printPicnic(picnicItems, 12, 5)
 printPicnic(picnicItems, 20, 6)
 
-In this program, we define a  printPicnic() method that will take in a dictionary of information and use  center() ,  ljust() , and  rjust() to dis- play that information in a neatly aligned table-like format.
+In this program, we define a  printPicnic() method that will take in a dictionary of information and use  center() ,  ljust() , and  rjust() to display that information in a neatly aligned table-like format.
 
 The dictionary that we’ll pass to  printPicnic() is  picnicItems . In picnicItems , we have 4 sandwiches, 12 apples, 4 cups, and 8000 cookies. We want to organize this information into two columns, with the name of the item on the left and the quantity on the right.
 
-To do this, we decide how wide we want the left and right columns to be. Along with our dictionary, we’ll pass these values to  printPicnic() . printPicnic() takes in a dictionary, a  leftWidth for the left column of a table, and a  rightWidth for the right column. It prints a title,  PICNIC ITEMS , centered above the table. Then, it loops through the dictionary, print- ing each key-value pair on a line with the key justified left and padded by periods, and the value justified right and padded by spaces.
+To do this, we decide how wide we want the left and right columns to be. Along with our dictionary, we’ll pass these values to  printPicnic() . printPicnic() takes in a dictionary, a  leftWidth for the left column of a table, and a  rightWidth for the right column. It prints a title,  PICNIC ITEMS , centered above the table. Then, it loops through the dictionary, printing each key-value pair on a line with the key justified left and padded by periods, and the value justified right and padded by spaces.
 
 After defining  printPicnic() , we define the dictionary  picnicItems and call  printPicnic() twice, passing it different widths for the left and right table columns.
 
@@ -436,13 +436,13 @@ The password manager program you’ll create in this example isn’t secure, but
 
 The Chapter Projects
 
-This is the first “chapter project” of the book. From here on, each chapter will have projects that demonstrate the concepts covered in the chapter. The proj- ects are written in a style that takes you from a blank file editor window to a full, working program. Just like with the interactive shell examples, don’t only read the project sections—follow along on your computer!
+This is the first “chapter project” of the book. From here on, each chapter will have projects that demonstrate the concepts covered in the chapter. The projects are written in a style that takes you from a blank file editor window to a full, working program. Just like with the interactive shell examples, don’t only read the project sections—follow along on your computer!
 
 Step 1: Program Design and Data Structures
 
 You want to be able to run this program with a command-line argument that is the account’s name—for instance, email or blog. That account’s password will be copied to the clipboard so that the user can paste it into a Password field. This way, the user can have long, complicated passwords without having to memorize them.
 
-Open a new file editor window and save the program as pw.py. You need to start the program with a  #! (shebang) line (see Appendix B) and should also write a comment that briefly describes the program. Since you want to associate each account’s name with its password, you can store these as strings in a dictionary. The dictionary will be the data structure that orga- nizes your account and password data. Make your program look like the following:
+Open a new file editor window and save the program as pw.py. You need to start the program with a  #! (shebang) line (see Appendix B) and should also write a comment that briefly describes the program. Since you want to associate each account’s name with its password, you can store these as strings in a dictionary. The dictionary will be the data structure that organizes your account and password data. Make your program look like the following:
 
 #! python3
 # An insecure password locker program.
@@ -467,7 +467,7 @@ account = sys.argv[1] # first command line arg is the account name
 
 Step 3: Copy the Right Password
 
-Now that the account name is stored as a string in the variable  account , you need to see whether it exists in the  PASSWORDS dictionary as a key. If so, you want to copy the key’s value to the clipboard using  pyperclip.copy() . (Since you’re using the  pyperclip module, you need to import it.) Note that you don’t actually need the  account variable; you could just use  sys.argv[1] every- where  account is used in this program. But a variable named  account is much more readable than something cryptic like  sys.argv[1] .
+Now that the account name is stored as a string in the variable  account , you need to see whether it exists in the  PASSWORDS dictionary as a key. If so, you want to copy the key’s value to the clipboard using  pyperclip.copy() . (Since you’re using the  pyperclip module, you need to import it.) Note that you don’t actually need the  account variable; you could just use  sys.argv[1] everywhere  account is used in this program. But a variable named  account is much more readable than something cryptic like  sys.argv[1] .
 
 Make your program look like the following:
 
@@ -487,11 +487,11 @@ print('Password for ' + account + ' copied to clipboard.')
 else:
 print('There is no account named ' + account)
 
-This new code looks in the  PASSWORDS dictionary for the account name. If the account name is a key in the dictionary, we get the value correspond- ing to that key, copy it to the clipboard, and print a message saying that we copied the value. Otherwise, we print a message saying there’s no account with that name.
+This new code looks in the  PASSWORDS dictionary for the account name. If the account name is a key in the dictionary, we get the value corresponding to that key, copy it to the clipboard, and print a message saying that we copied the value. Otherwise, we print a message saying there’s no account with that name.
 
 That’s the complete script. Using the instructions in Appendix B for launching command-line programs easily, you now have a fast way to copy your account passwords to the clipboard. You will have to modify the PASSWORDS dictionary value in the source whenever you want to update the program with a new password.
 
-Of course, you probably don’t want to keep all your passwords in one place where anyone could easily copy them. But you can modify this pro- gram and use it to quickly copy regular text to the clipboard. Say you are sending out several emails that have many of the same stock paragraphs in common. You could put each paragraph as a value in the  PASSWORDS dic- tionary (you’d probably want to rename the dictionary at this point), and then you would have a way to quickly select and copy one of many standard pieces of text to the clipboard.
+Of course, you probably don’t want to keep all your passwords in one place where anyone could easily copy them. But you can modify this program and use it to quickly copy regular text to the clipboard. Say you are sending out several emails that have many of the same stock paragraphs in common. You could put each paragraph as a value in the  PASSWORDS dictionary (you’d probably want to rename the dictionary at this point), and then you would have a way to quickly select and copy one of many standard pieces of text to the clipboard.
 
 On Windows, you can create a batch file to run this program with the win -r Run window. (For more about batch files, see Appendix B.) Type the following into the file editor and save the file as pw.bat in the C:\Windows folder:
 
@@ -502,7 +502,7 @@ With this batch file created, running the password-safe program on Windows is ju
 
 Project: Adding Bullets to Wiki Markup
 
-When editing a Wikipedia article, you can create a bulleted list by putting each list item on its own line and placing a star in front. But say you have a really large list that you want to add bullet points to. You could just type those stars at the beginning of each line, one by one. Or you could auto- mate this task with a short Python script.
+When editing a Wikipedia article, you can create a bulleted list by putting each list item on its own line and placing a star in front. But say you have a really large list that you want to add bullet points to. You could just type those stars at the beginning of each line, one by one. Or you could automate this task with a short Python script.
 
 The bulletPointAdder.py script will get the text from the clipboard, add a star and space to the beginning of each line, and then paste this new text to the clipboard. For example, if I copied the following text (for the Wikipedia article “List of Lists of Lists”) to the clipboard:
 
@@ -511,7 +511,7 @@ Lists of aquarium life
 Lists of biologists by author abbreviation
 Lists of cultivars
 
-and then ran the bulletPointAdder.py program, the clipboard would then con- tain the following:
+and then ran the bulletPointAdder.py program, the clipboard would then contain the following:
 
 * Lists of animals
 * Lists of aquarium life
@@ -528,7 +528,7 @@ You want the bulletPointAdder.py program to do the following:
 2. Do something to it
 3. Copy the new text to the clipboard
 
-That second step is a little tricky, but steps 1 and 3 are pretty straight- forward: They just involve the  pyperclip.copy() and  pyperclip.paste() func- tions. For now, let’s just write the part of the program that covers steps 1 and 3. Enter the following, saving the program as bulletPointAdder.py:
+That second step is a little tricky, but steps 1 and 3 are pretty straightforward: They just involve the  pyperclip.copy() and  pyperclip.paste() functions. For now, let’s just write the part of the program that covers steps 1 and 3. Enter the following, saving the program as bulletPointAdder.py:
 
 #! python3
 # Adds Wikipedia bullet points to the start
@@ -586,7 +586,7 @@ Summary
 
 Text is a common form of data, and Python comes with many helpful string methods to process the text stored in string values. You will make use of indexing, slicing, and string methods in almost every Python program you write.
 
-The programs you are writing now don’t seem too sophisticated—they don’t have graphical user interfaces with images and colorful text. So far, you’re displaying text with  print() and letting the user enter text with  input() . However, the user can quickly enter large amounts of text through the clip- board. This ability provides a useful avenue for writing programs that manip- ulate massive amounts of text. These text-based programs might not have flashy windows or graphics, but they can get a lot of useful work done quickly.
+The programs you are writing now don’t seem too sophisticated—they don’t have graphical user interfaces with images and colorful text. So far, you’re displaying text with  print() and letting the user enter text with  input() . However, the user can quickly enter large amounts of text through the clipboard. This ability provides a useful avenue for writing programs that manipulate massive amounts of text. These text-based programs might not have flashy windows or graphics, but they can get a lot of useful work done quickly.
 
 Another way to manipulate large amounts of text is reading and writing files directly off the hard drive. You’ll learn how to do this with Python in the next chapter.
 
@@ -631,4 +631,4 @@ oranges Bob cats
 cherries Carol moose
 banana David goose
 
-Hint: Your code will first have to find the longest string in each of the inner lists so that the whole column can be wide enough to fit all the strings. You can store the maximum width of each column as a list of integers. The printTable() function can begin with  colWidths = [0] * len(tableData) , which will create a list containing the same number of  0 values as the number of inner lists in  tableData . That way,  colWidths[0] can store the width of the longest string in  tableData[0] ,  colWidths[1] can store the width of the lon- gest string in  tableData[1] , and so on. You can then find the largest value in the  colWidths list to find out what integer width to pass to the  rjust() string method.
+Hint: Your code will first have to find the longest string in each of the inner lists so that the whole column can be wide enough to fit all the strings. You can store the maximum width of each column as a list of integers. The printTable() function can begin with  colWidths = [0] * len(tableData) , which will create a list containing the same number of  0 values as the number of inner lists in  tableData . That way,  colWidths[0] can store the width of the longest string in  tableData[0] ,  colWidths[1] can store the width of the longest string in  tableData[1] , and so on. You can then find the largest value in the  colWidths list to find out what integer width to pass to the  rjust() string method.

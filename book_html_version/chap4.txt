@@ -1,4 +1,4 @@
-One more topic you’ll need to understand before you can begin writing programs in earnest is the list data type and its cousin, the tuple. Lists and tuples can contain multiple values, which makes it easier to write programs that handle large amounts of data. And since lists them- selves can contain other lists, you can use them to arrange data into hierarchical structures.
+One more topic you’ll need to understand before you can begin writing programs in earnest is the list data type and its cousin, the tuple. Lists and tuples can contain multiple values, which makes it easier to write programs that handle large amounts of data. And since lists themselves can contain other lists, you can use them to arrange data into hierarchical structures.
 
 In this chapter, I’ll discuss the basics of lists. I’ll also teach you about methods, which are functions that are tied to values of a certain data type. Then I’ll briefly cover the “list-like” tuples and strings data types and how they compare to list values. In the next chapter, I’ll introduce you to the dictionary data type.
 
@@ -20,12 +20,12 @@ The  spam variable u is still assigned only one value: the list value. But the l
 
 Getting Individual Values in a List with Indexes
 
-Say you have the list  ['cat', 'bat', 'rat', 'elephant'] stored in a variable named  spam . The Python code  spam[0] would evaluate to  'cat' , and  spam[1] would evaluate to  'bat' , and so on. The integer inside the square brack- ets that follows the list is called an index. The first value in the list is at index  0 , the second value is at index 1 , the third value is at index  2 , and so on. Figure 4-1 shows a list value assigned to  spam , along with what the index expressions would evaluate to.
+Say you have the list  ['cat', 'bat', 'rat', 'elephant'] stored in a variable named  spam . The Python code  spam[0] would evaluate to  'cat' , and  spam[1] would evaluate to  'bat' , and so on. The integer inside the square brackets that follows the list is called an index. The first value in the list is at index  0 , the second value is at index 1 , the third value is at index  2 , and so on. Figure 4-1 shows a list value assigned to  spam , along with what the index expressions would evaluate to.
 
 For example, type the following expressions into the interactive shell. Start by assigning a list to the variable  spam .
 
 
-Figure 4-1: A list value stored in the vari- able  spam , showing which value each index refers to
+Figure 4-1: A list value stored in the variable  spam , showing which value each index refers to
 
 >>> spam = ['cat', 'bat', 'rat', 'elephant']
 >>> spam[0]
@@ -76,7 +76,7 @@ Lists can also contain other list values. The values in these lists of lists can
 >>> spam[1][4]
 50
 
-The first index dictates which list value to use, and the second indicates the value within the list value. For example,  spam[0][1] prints  'bat' , the sec- ond value in the first list. If you only use one index, the program will print the full list value at that index.
+The first index dictates which list value to use, and the second indicates the value within the list value. For example,  spam[0][1] prints  'bat' , the second value in the first list. If you only use one index, the program will print the full list value at that index.
 
 Negative Indexes
 
@@ -92,7 +92,7 @@ While indexes start at  0 and go up, you can also use negative integers for the 
 
 Getting Sublists with Slices
 
-Just as an index can get a single value from a list, a slice can get several val- ues from a list, in the form of a new list. A slice is typed between square brackets, like an index, but it has two integers separated by a colon. Notice the difference between indexes and slices.
+Just as an index can get a single value from a list, a slice can get several values from a list, in the form of a new list. A slice is typed between square brackets, like an index, but it has two integers separated by a colon. Notice the difference between indexes and slices.
 
 •  spam[2] is a list with an index (one integer).
 •  spam[1:4] is a list with a slice (two integers).
@@ -107,7 +107,7 @@ In a slice, the first integer is the index where the slice starts. The second in
 >>> spam[0:-1]
 ['cat', 'bat', 'rat']
 
-As a shortcut, you can leave out one or both of the indexes on either side of the colon in the slice. Leaving out the first index is the same as using  0 , or the beginning of the list. Leaving out the second index is the same as using the length of the list, which will slice to the end of the list. Try enter- ing the following into the interactive shell:
+As a shortcut, you can leave out one or both of the indexes on either side of the colon in the slice. Leaving out the first index is the same as using  0 , or the beginning of the list. Leaving out the second index is the same as using the length of the list, which will slice to the end of the list. Try entering the following into the interactive shell:
 
 >>> spam = ['cat', 'bat', 'rat', 'elephant']
 >>> spam[:2]
@@ -127,7 +127,7 @@ The  len() function will return the number of values that are in a list value pa
 
 Changing Values in a List with Indexes
 
-Normally a variable name goes on the left side of an assignment state- ment, like  spam = 42 . However, you can also use an index of a list to change the value at that index. For example,  spam[1] = 'aardvark' means “Assign the value at index  1 in the list  spam to the string  'aardvark' .” Enter the following into the interactive shell:
+Normally a variable name goes on the left side of an assignment statement, like  spam = 42 . However, you can also use an index of a list to change the value at that index. For example,  spam[1] = 'aardvark' means “Assign the value at index  1 in the list  spam to the string  'aardvark' .” Enter the following into the interactive shell:
 
 >>> spam = ['cat', 'bat', 'rat', 'elephant']
 >>> spam[1] = 'aardvark'
@@ -142,7 +142,7 @@ Normally a variable name goes on the left side of an assignment state- ment, lik
 
 List Concatenation and List Replication
 
-The  + operator can combine two lists to create a new list value in the same way it combines two strings into a new string value. The  * operator can also be used with a list and an integer value to replicate the list. Enter the fol- lowing into the interactive shell:
+The  + operator can combine two lists to create a new list value in the same way it combines two strings into a new string value. The  * operator can also be used with a list and an integer value to replicate the list. Enter the following into the interactive shell:
 
 >>> [1, 2, 3] + ['A', 'B', 'C']
 [1, 2, 3, 'A', 'B', 'C']
@@ -169,7 +169,7 @@ The  del statement can also be used on a simple variable to delete it, as if it 
 
 Working with Lists
 
-When you first begin writing programs, it’s tempting to create many indi- vidual variables to store a group of similar values. For example, if I wanted to store the names of my cats, I might be tempted to write code like this:
+When you first begin writing programs, it’s tempting to create many individual variables to store a group of similar values. For example, if I wanted to store the names of my cats, I might be tempted to write code like this:
 
 catName1 = 'Zophie'
 catName2 = 'Pooka'
@@ -196,7 +196,7 @@ print('The cat names are:')
 print(catName1 + ' ' + catName2 + ' ' + catName3 + ' ' + catName4 + ' ' +
 catName5 + ' ' + catName6)
 
-Instead of using multiple, repetitive variables, you can use a single variable that contains a list value. For example, here’s a new and improved version of the allMyCats1.py program. This new version uses a single list and can store any number of cats that the user types in. In a new file editor win- dow, type the following source code and save it as allMyCats2.py:
+Instead of using multiple, repetitive variables, you can use a single variable that contains a list value. For example, here’s a new and improved version of the allMyCats1.py program. This new version uses a single list and can store any number of cats that the user types in. In a new file editor window, type the following source code and save it as allMyCats2.py:
 
 catNames = []
 while True:
@@ -272,7 +272,7 @@ Using  range(len(supplies)) in the previously shown  for loop is handy because t
 
 The in and not in Operators
 
-You can determine whether a value is or isn’t in a list with the  in and  not in operators. Like other operators,  in and  not in are used in expressions and connect two values: a value to look for in a list and the list where it may be found. These expressions will evaluate to a Boolean value. Enter the follow- ing into the interactive shell:
+You can determine whether a value is or isn’t in a list with the  in and  not in operators. Like other operators,  in and  not in are used in expressions and connect two values: a value to look for in a list and the list where it may be found. These expressions will evaluate to a Boolean value. Enter the following into the interactive shell:
 
 >>> 'howdy' in ['hello', 'hi', 'howdy', 'heyas']
 True
@@ -300,7 +300,7 @@ I do not have a pet named Footfoot
 
 The Multiple Assignment Trick
 
-The multiple assignment trick is a shortcut that lets you assign multiple vari- ables with the values in a list in one line of code. So instead of doing this:
+The multiple assignment trick is a shortcut that lets you assign multiple variables with the values in a list in one line of code. So instead of doing this:
 
 >>> cat = ['fat', 'black', 'loud']
 >>> size = cat[0]
@@ -337,7 +337,7 @@ As a shortcut, you can use the augmented assignment operator  += to do the same 
 >>> spam
 43
 
-There are augmented assignment operators for the  + ,  - ,  * ,  / , and  % oper- ators, described in Table 4-1.
+There are augmented assignment operators for the  + ,  - ,  * ,  / , and  % operators, described in Table 4-1.
 
 Table 4-1:  The Augmented Assignment Operators Augmented assignment statement Equivalent assignment statement
 spam = spam + 1 spam += 1
@@ -393,7 +393,7 @@ To add new values to a list, use the  append() and  insert() methods. Enter the 
 >>> spam
 ['cat', 'dog', 'bat', 'moose']
 
-The previous  append() method call adds the argument to the end of the list. The  insert() method can insert a value at any index in the list. The first argument to  insert() is the index for the new value, and the sec- ond argument is the new value to be inserted. Enter the following into the interactive shell:
+The previous  append() method call adds the argument to the end of the list. The  insert() method can insert a value at any index in the list. The first argument to  insert() is the index for the new value, and the second argument is the new value to be inserted. Enter the following into the interactive shell:
 
 >>> spam = ['cat', 'dog', 'bat']
 >>> spam.insert(1, 'chicken')
@@ -474,7 +474,7 @@ File "<pyshell#70>", line 1, in <module>
 spam.sort()
 TypeError: unorderable types: str() < int()
 
-Third,  sort() uses “ASCIIbetical order” rather than actual alphabetical order for sorting strings. This means uppercase letters come before lower- case letters. Therefore, the lowercase a is sorted so that it comes after the uppercase Z. For an example, enter the following into the interactive shell:
+Third,  sort() uses “ASCIIbetical order” rather than actual alphabetical order for sorting strings. This means uppercase letters come before lowercase letters. Therefore, the lowercase a is sorted so that it comes after the uppercase Z. For an example, enter the following into the interactive shell:
 
 >>> spam = ['Alice', 'ants', 'Bob', 'badgers', 'Carol', 'cats']
 >>> spam.sort()
@@ -492,7 +492,7 @@ This causes the  sort() function to treat all the items in the list as if they w
 
 Example Program: Magic 8 Ball with a List
 
-Using lists, you can write a much more elegant version of the previous chap- ter’s Magic 8 Ball program. Instead of several lines of nearly identical  elif statements, you can create a single list that the code works with. Open a new file editor window and enter the following code. Save it as magic8Ball2.py.
+Using lists, you can write a much more elegant version of the previous chapter’s Magic 8 Ball program. Instead of several lines of nearly identical  elif statements, you can create a single list that the code works with. Open a new file editor window and enter the following code. Save it as magic8Ball2.py.
 
 import random
 messages = ['It is certain',
@@ -518,7 +518,7 @@ print(spam)
 
 Of course, practically speaking, most people use Python’s behavior to make their lists look pretty and readable, like the messages list in the Magic 8 Ball program.
 
-You can also split up a single instruction across multiple lines using the  \ line continuation character at the end. Think of  \ as saying, “This instruction continues on the next line.” The indentation on the line after a  \ line continua- tion is not significant. For example, the following is valid Python code:
+You can also split up a single instruction across multiple lines using the  \ line continuation character at the end. Think of  \ as saying, “This instruction continues on the next line.” The indentation on the line after a  \ line continuation is not significant. For example, the following is valid Python code:
 
 print('Four score and seven ' + \
 'years ago...')
@@ -527,7 +527,7 @@ These tricks are useful when you want to rearrange long lines of Python code to 
 
 When you run this program, you’ll see that it works the same as the previous magic8Ball.py program.
 
-Notice the expression you use as the index into  messages :  random .randint(0, len(messages) - 1) . This produces a random number to use for the index, regardless of the size of  messages . That is, you’ll get a ran- dom number between  0 and the value of  len(messages) - 1 . The benefit of this approach is that you can easily add and remove strings to the  messages list without changing other lines of code. If you later update your code, there will be fewer lines you have to change and fewer chances for you to introduce bugs.
+Notice the expression you use as the index into  messages :  random .randint(0, len(messages) - 1) . This produces a random number to use for the index, regardless of the size of  messages . That is, you’ll get a random number between  0 and the value of  len(messages) - 1 . The benefit of this approach is that you can easily add and remove strings to the  messages list without changing other lines of code. If you later update your code, there will be fewer lines you have to change and fewer chances for you to introduce bugs.
 
 List-like Types: Strings and Tuples
 
@@ -604,7 +604,7 @@ In the first example, the list value that  eggs ends up with is the same list va
 
 Figure 4-3: The  del statement and the  append()  method modify the same list value in place.
 
-Changing a value of a mutable data type (like what the  del statement and  append() method do in the previous example) changes the value in place, since the variable’s value is not replaced with a new list value. Mutable versus immutable types may seem like a meaningless dis- tinction, but “Passing References” on page 100 will explain the different behavior when calling functions with mutable arguments versus immutable arguments. But first, let’s find out about the tuple data type, which is an immutable form of the list data type.
+Changing a value of a mutable data type (like what the  del statement and  append() method do in the previous example) changes the value in place, since the variable’s value is not replaced with a new list value. Mutable versus immutable types may seem like a meaningless distinction, but “Passing References” on page 100 will explain the different behavior when calling functions with mutable arguments versus immutable arguments. But first, let’s find out about the tuple data type, which is an immutable form of the list data type.
 
 The Tuple Data Type
 
@@ -627,7 +627,7 @@ File "<pyshell#5>", line 1, in <module>
 eggs[1] = 99
 TypeError: 'tuple' object does not support item assignment
 
-If you have only one value in your tuple, you can indicate this by placing a trailing comma after the value inside the parentheses. Otherwise, Python will think you’ve just typed a value inside regular parentheses. The comma is what lets Python know this is a tuple value. (Unlike some other program- ming languages, in Python it’s fine to have a trailing comma after the last item in a list or tuple.) Enter the following  type() function calls into the interactive shell to see the distinction:
+If you have only one value in your tuple, you can indicate this by placing a trailing comma after the value inside the parentheses. Otherwise, Python will think you’ve just typed a value inside regular parentheses. The comma is what lets Python know this is a tuple value. (Unlike some other programming languages, in Python it’s fine to have a trailing comma after the last item in a list or tuple.) Enter the following  type() function calls into the interactive shell to see the distinction:
 
 >>> type(('hello',))
 <class 'tuple'>
@@ -638,7 +638,7 @@ You can use tuples to convey to anyone reading your code that you don’t intend
 
 Converting Types with the list() and tuple() Functions
 
-Just like how  str(42) will return  '42' , the string representation of the inte- ger  42 , the functions  list() and  tuple() will return list and tuple versions of the values passed to them. Enter the following into the interactive shell, and notice that the return value is of a different data type than the value passed:
+Just like how  str(42) will return  '42' , the string representation of the integer  42 , the functions  list() and  tuple() will return list and tuple versions of the values passed to them. Enter the following into the interactive shell, and notice that the return value is of a different data type than the value passed:
 
 >>> tuple(['cat', 'dog', 5])
 ('cat', 'dog', 5)
@@ -675,9 +675,9 @@ w >>> cheese[1] = 'Hello!'
 
 This might look odd to you. The code changed only the  cheese list, but it seems that both the  cheese and  spam lists have changed.
 
-When you create the list u, you assign a reference to it in the  spam vari- able. But the next line v copies only the list reference in  spam to  cheese , not the list value itself. This means the values stored in  spam and  cheese now both refer to the same list. There is only one underlying list because the list itself was never actually copied. So when you modify the first element of  cheese w, you are modifying the same list that  spam refers to.
+When you create the list u, you assign a reference to it in the  spam variable. But the next line v copies only the list reference in  spam to  cheese , not the list value itself. This means the values stored in  spam and  cheese now both refer to the same list. There is only one underlying list because the list itself was never actually copied. So when you modify the first element of  cheese w, you are modifying the same list that  spam refers to.
 
-Remember that variables are like boxes that contain values. The previ- ous figures in this chapter show that lists in boxes aren’t exactly accurate because list variables don’t actually contain lists—they contain references to lists. (These references will have ID numbers that Python uses inter- nally, but you can ignore them.) Using boxes as a metaphor for variables, Figure 4-4 shows what happens when a list is assigned to the  spam variable.
+Remember that variables are like boxes that contain values. The previous figures in this chapter show that lists in boxes aren’t exactly accurate because list variables don’t actually contain lists—they contain references to lists. (These references will have ID numbers that Python uses internally, but you can ignore them.) Using boxes as a metaphor for variables, Figure 4-4 shows what happens when a list is assigned to the  spam variable.
 
 Figure 4-4:  spam = [0, 1, 2, 3, 4, 5]  stores a reference to a list, not the actual list.
 
@@ -687,13 +687,13 @@ Figure 4-5:  spam = cheese copies the reference, not the list. When you alter th
 
 Figure 4-6:  cheese[1] = 'Hello!' modifies the list that both variables refer to.
 
-Variables will contain references to list values rather than list values themselves. But for strings and integer values, variables simply contain the string or integer value. Python uses references whenever variables must store values of mutable data types, such as lists or dictionaries. For values of immutable data types such as strings, integers, or tuples, Python vari- ables will store the value itself.
+Variables will contain references to list values rather than list values themselves. But for strings and integer values, variables simply contain the string or integer value. Python uses references whenever variables must store values of mutable data types, such as lists or dictionaries. For values of immutable data types such as strings, integers, or tuples, Python variables will store the value itself.
 
-Although Python variables technically contain references to list or dic- tionary values, people often casually say that the variable contains the list or dictionary.
+Although Python variables technically contain references to list or dictionary values, people often casually say that the variable contains the list or dictionary.
 
 Passing References
 
-References are particularly important for understanding how arguments get passed to functions. When a function is called, the values of the argu- ments are copied to the parameter variables. For lists (and dictionaries, which I’ll describe in the next chapter), this means a copy of the reference is used for the parameter. To see the consequences of this, open a new file editor window, enter the following code, and save it as passingReference.py:
+References are particularly important for understanding how arguments get passed to functions. When a function is called, the values of the arguments are copied to the parameter variables. For lists (and dictionaries, which I’ll describe in the next chapter), this means a copy of the reference is used for the parameter. To see the consequences of this, open a new file editor window, enter the following code, and save it as passingReference.py:
 
 def eggs(someParameter):
 someParameter.append('Hello')
@@ -720,9 +720,9 @@ Although passing around references is often the handiest way to deal with lists 
 >>> cheese
 ['A', 42, 'C', 'D']
 
-Now the  spam and  cheese variables refer to separate lists, which is why only the list in  cheese is modified when you assign  42 at index  7 . As you can see in Figure 4-7, the reference ID numbers are no longer the same for both vari- ables because the variables refer to independent lists.
+Now the  spam and  cheese variables refer to separate lists, which is why only the list in  cheese is modified when you assign  42 at index  7 . As you can see in Figure 4-7, the reference ID numbers are no longer the same for both variables because the variables refer to independent lists.
 
-Figure 4-7:  cheese = copy.copy(spam) creates a second list that can be modified indepen- dently of the first.
+Figure 4-7:  cheese = copy.copy(spam) creates a second list that can be modified independently of the first.
 
 If the list you need to copy contains lists, then use the  copy.deepcopy() function instead of  copy.copy() . The  deepcopy() function will copy these inner lists as well.
 
@@ -732,7 +732,7 @@ Lists are useful data types since they allow you to write code that works on a m
 
 Lists are mutable, meaning that their contents can change. Tuples and strings, although list-like in some respects, are immutable and cannot be changed. A variable that contains a tuple or string value can be overwritten with a new tuple or string value, but this is not the same thing as modifying the existing value in place—like, say, the  append() or  remove() methods do on lists.
 
-Variables do not store list values directly; they store references to lists. This is an important distinction when copying variables or passing lists as arguments in function calls. Because the value that is being copied is the list reference, be aware that any changes you make to the list might impact another variable in your program. You can use  copy() or  deepcopy() if you want to make changes to a list in one variable without modifying the origi- nal list.
+Variables do not store list values directly; they store references to lists. This is an important distinction when copying variables or passing lists as arguments in function calls. Because the value that is being copied is the list reference, be aware that any changes you make to the list might impact another variable in your program. You can use  copy() or  deepcopy() if you want to make changes to a list in one variable without modifying the original list.
 
 Practice Questions
 
@@ -771,7 +771,7 @@ Say you have a list value like this:
 
 spam = ['apples', 'bananas', 'tofu', 'cats']
 
-Write a function that takes a list value as an argument and returns a string with all the items separated by a comma and a space, with and inserted before the last item. For example, passing the previous  spam list to the function would return  'apples, bananas, tofu, and cats' . But your func- tion should be able to work with any list value passed to it.
+Write a function that takes a list value as an argument and returns a string with all the items separated by a comma and a space, with and inserted before the last item. For example, passing the previous  spam list to the function would return  'apples, bananas, tofu, and cats' . But your function should be able to work with any list value passed to it.
 
 Character Picture Grid
 
@@ -787,7 +787,7 @@ grid = [['.', '.', '.', '.', '.', '.'],
 ['.', 'O', 'O', '.', '.', '.'],
 ['.', '.', '.', '.', '.', '.']]
 
-You can think of  grid[x][y] as being the character at the x- and y- coordinates of a “picture” drawn with text characters. The  (0, 0) origin will be in the upper-left corner, the x-coordinates increase going right, and w the y-coordinates increase going down.
+You can think of  grid[x][y] as being the character at the x- and y-coordinates of a “picture” drawn with text characters. The  (0, 0) origin will be in the upper-left corner, the x-coordinates increase going right, and w the y-coordinates increase going down.
 
 Copy the previous grid value, and write code that uses it to print the image.
 
@@ -798,7 +798,7 @@ Copy the previous grid value, and write code that uses it to print the image.
 ...OOO...
 ....O....
 
-Hint: You will need to use a loop in a loop in order to print  grid[0][0] , then  grid[1][0] , then  grid[2][0] , and so on, up to  grid[8][0] . This will fin- ish the first row, so then print a newline. Then your program should print grid[0][1] , then  grid[1][1] , then  grid[2][1] , and so on. The last thing your program will print is  grid[8][5] .
+Hint: You will need to use a loop in a loop in order to print  grid[0][0] , then  grid[1][0] , then  grid[2][0] , and so on, up to  grid[8][0] . This will finish the first row, so then print a newline. Then your program should print grid[0][1] , then  grid[1][1] , then  grid[2][1] , and so on. The last thing your program will print is  grid[8][5] .
 
 Also, remember to pass the  end keyword argument to  print() if you don’t want a newline printed automatically after each  print() call.
 

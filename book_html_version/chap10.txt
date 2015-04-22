@@ -1,4 +1,4 @@
-Now that you know enough to write more complicated programs, you may start find- ing not-so-simple bugs in them. This chapter covers some tools and techniques for finding the root cause of bugs in your program to help you fix bugs faster and with less effort.
+Now that you know enough to write more complicated programs, you may start finding not-so-simple bugs in them. This chapter covers some tools and techniques for finding the root cause of bugs in your program to help you fix bugs faster and with less effort.
 
 To paraphrase an old joke among programmers, “Writing code accounts for 90 percent of programming. Debugging code accounts for the other 90 percent.”
 
@@ -10,7 +10,7 @@ Second, you will look at how to use the debugger. The debugger is a feature of I
 
 Raising Exceptions
 
-Python raises an exception whenever it tries to execute invalid code. In Chapter 3, you read about how to handle Python’s exceptions with  try and except statements so that your program can recover from exceptions that you anticipated. But you can also raise your own exceptions in your code. Raising an exception is a way of saying, “Stop running the code in this func- tion and move the program execution to the  except statement.”
+Python raises an exception whenever it tries to execute invalid code. In Chapter 3, you read about how to handle Python’s exceptions with  try and except statements so that your program can recover from exceptions that you anticipated. But you can also raise your own exceptions in your code. Raising an exception is a way of saying, “Stop running the code in this function and move the program execution to the  except statement.”
 
 Exceptions are raised with a  raise statement. In code, a  raise statement consists of the following:
 
@@ -28,7 +28,7 @@ Exception: This is the error message.
 
 If there are no  try and  except statements covering the  raise statement that raised the exception, the program simply crashes and displays the exception’s error message.
 
-Often it’s the code that calls the function, not the fuction itself, that knows how to handle an expection. So you will commonly see a  raise state- ment inside a function and the  try and  except statements in the code calling the function. For example, open a new file editor window, enter the follow- ing code, and save the program as boxPrint.py:
+Often it’s the code that calls the function, not the fuction itself, that knows how to handle an expection. So you will commonly see a  raise statement inside a function and the  try and  except statements in the code calling the function. For example, open a new file editor window, enter the following code, and save the program as boxPrint.py:
 
 def boxPrint(symbol, width, height):
 if len(symbol) != 1:
@@ -49,9 +49,9 @@ y print('An exception happened: ' + str(err))
 
 Here we’ve defined a  boxPrint() function that takes a character, a width, and a height, and uses the character to make a little picture of a box with that width and height. This box shape is printed to the console.
 
-Say we want the character to be a single character, and the width and height to be greater than 2. We add  if statements to raise exceptions if these requirements aren’t satisfied. Later, when we call  boxPrint() with vari- ous arguments, our  try / except will handle invalid arguments.
+Say we want the character to be a single character, and the width and height to be greater than 2. We add  if statements to raise exceptions if these requirements aren’t satisfied. Later, when we call  boxPrint() with various arguments, our  try / except will handle invalid arguments.
 
-This program uses the  except Exception as err form of the  except state- ment x. If an exception object is returned from  boxPrint() uvw, this except statement will store it in a variable named  err . The exception object can then be converted to a string by passing it to  str() to produce a user- friendly error message y. When you run this boxPrint.py, the output will look like this:
+This program uses the  except Exception as err form of the  except statement x. If an exception object is returned from  boxPrint() uvw, this except statement will store it in a variable named  err . The exception object can then be converted to a string by passing it to  str() to produce a user-friendly error message y. When you run this boxPrint.py, the output will look like this:
 
 ****
 * *
@@ -65,7 +65,7 @@ OOOOOOOOOOOOOOOOOOOO
 An exception happened: Width must be greater than 2.
 An exception happened: Symbol must be a single character string.
 
-Using the  try and  except statements, you can handle errors more grace- fully instead of letting the entire program crash.
+Using the  try and  except statements, you can handle errors more gracefully instead of letting the entire program crash.
 
 Getting the Traceback as a String
 
@@ -88,11 +88,11 @@ File "errorExample.py", line 5, in bacon
 raise Exception('This is the error message.')
 Exception: This is the error message.
 
-From the traceback, you can see that the error happened on line 5, in the  bacon() function. This particular call to  bacon() came from line 2, in the spam() function, which in turn was called on line 7. In programs where func- tions can be called from multiple places, the call stack can help you deter- mine which call led to the error.
+From the traceback, you can see that the error happened on line 5, in the  bacon() function. This particular call to  bacon() came from line 2, in the spam() function, which in turn was called on line 7. In programs where functions can be called from multiple places, the call stack can help you determine which call led to the error.
 
-The traceback is displayed by Python whenever a raised excep- tion goes unhandled. But you can also obtain it as a string by calling traceback.format_exc() . This function is useful if you want the information from an exception’s traceback but also want an  except statement to grace- fully handle the exception. You will need to import Python’s  traceback module before calling this function.
+The traceback is displayed by Python whenever a raised exception goes unhandled. But you can also obtain it as a string by calling traceback.format_exc() . This function is useful if you want the information from an exception’s traceback but also want an  except statement to gracefully handle the exception. You will need to import Python’s  traceback module before calling this function.
 
-For example, instead of crashing your program right when an excep- tion occurs, you can write the traceback information to a log file and keep your program running. You can look at the log file later, when you’re ready to debug your program. Enter the following into the interactive shell:
+For example, instead of crashing your program right when an exception occurs, you can write the traceback information to a log file and keep your program running. You can look at the log file later, when you’re ready to debug your program. Enter the following into the interactive shell:
 
 >>> import traceback
 >>> try:
@@ -105,7 +105,7 @@ print('The traceback info was written to errorInfo.txt.')
 116
 The traceback info was written to errorInfo.txt.
 
-The  116 is the return value from the  write() method, since 116 charac- ters were written to the file. The traceback text was written to errorInfo.txt.
+The  116 is the return value from the  write() method, since 116 characters were written to the file. The traceback text was written to errorInfo.txt.
 
 Traceback (most recent call last):
 File "<pyshell#28>", line 2, in <module>
@@ -137,7 +137,7 @@ Later, say we make the obvious mistake of assigning  podBayDoorStatus another va
 
 In plain English, an  assert statement says, “I assert that this condition holds true, and if not, there is a bug somewhere in the program.” Unlike exceptions, your code should not handle  assert statements with  try and except ; if an  assert fails, your program should crash. By failing fast like this, you shorten the time between the original cause of the bug and when you first notice the bug. This will reduce the amount of code you will have to check before finding the code that’s causing the bug.
 
-Assertions are for programmer errors, not user errors. For errors that can be recovered from (such as a file not being found or the user enter- ing invalid data), raise an exception instead of detecting it with an  assert statement.
+Assertions are for programmer errors, not user errors. For errors that can be recovered from (such as a file not being found or the user entering invalid data), raise an exception instead of detecting it with an  assert statement.
 
 Using an Assertion in a Traffic Light Simulation
 
@@ -146,7 +146,7 @@ Say you’re building a traffic light simulation program. The data structure rep
 market_2nd = {'ns': 'green', 'ew': 'red'}
 mission_16th = {'ns': 'red', 'ew': 'green'}
 
-These two variables will be for the intersections of Market Street and 2nd Street, and Mission Street and 16th Street. To start the project, you want to write a  switchLights() function, which will take an intersection dic- tionary as an argument and switch the lights.
+These two variables will be for the intersections of Market Street and 2nd Street, and Mission Street and 16th Street. To start the project, you want to write a  switchLights() function, which will take an intersection dictionary as an argument and switch the lights.
 
 At first, you might think that  switchLights() should simply switch each light to the next color in the sequence: Any  'green' values should change to 'yellow' ,  'yellow' values should change to  'red' , and  'red' values should change to  'green' . The code to implement this idea might look like this:
 
@@ -164,7 +164,7 @@ You may already see the problem with this code, but let’s pretend you wrote th
 
 Since you’ve already written the rest of the program, you have no idea where the bug could be. Maybe it’s in the code simulating the cars or in the code simulating the virtual drivers. It could take hours to trace the bug back to the  switchLights() function.
 
-But if while writing  switchLights() you had added an assertion to check that at least one of the lights is always red, you might have included the follow- ing at the bottom of the function:
+But if while writing  switchLights() you had added an assertion to check that at least one of the lights is always red, you might have included the following at the bottom of the function:
 
 assert 'red' in stoplight.values(), 'Neither light is red! ' + str(stoplight)
 
@@ -181,11 +181,11 @@ The important line here is the  AssertionError u. While your program crashing is
 
 Disabling Assertions
 
-Assertions can be disabled by passing the  -O option when running Python. This is good for when you have finished writing and testing your program and don’t want it to be slowed down by performing sanity checks (although most of the time  assert statements do not cause a noticeable speed differ- ence). Assertions are for development, not the final product. By the time you hand off your program to someone else to run, it should be free of bugs and not require the sanity checks. See Appendix B for details about how to launch your probably-not-insane programs with the  -O option.
+Assertions can be disabled by passing the  -O option when running Python. This is good for when you have finished writing and testing your program and don’t want it to be slowed down by performing sanity checks (although most of the time  assert statements do not cause a noticeable speed difference). Assertions are for development, not the final product. By the time you hand off your program to someone else to run, it should be free of bugs and not require the sanity checks. See Appendix B for details about how to launch your probably-not-insane programs with the  -O option.
 
 Logging
 
-If you’ve ever put a  print() statement in your code to output some variable’s value while your program is running, you’ve used a form of logging to debug your code. Logging is a great way to understand what’s happening in your program and in what order its happening. Python’s  logging module makes it easy to create a record of custom messages that you write. These log mes- sages will describe when the program execution has reached the logging function call and list any variables you have specified at that point in time. On the other hand, a missing log message indicates a part of the code was skipped and never executed.
+If you’ve ever put a  print() statement in your code to output some variable’s value while your program is running, you’ve used a form of logging to debug your code. Logging is a great way to understand what’s happening in your program and in what order its happening. Python’s  logging module makes it easy to create a record of custom messages that you write. These log messages will describe when the program execution has reached the logging function call and list any variables you have specified at that point in time. On the other hand, a missing log message indicates a part of the code was skipped and never executed.
 
 Using the logging Module
 
@@ -195,9 +195,9 @@ import logging
 logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s - %(levelname)s
 - %(message)s')
 
-You don’t need to worry too much about how this works, but basically, when Python logs an event, it creates a  LogRecord object that holds informa- tion about that event. The  logging module’s  basicConfig() function lets you specify what details about the  LogRecord object you want to see and how you want those details displayed.
+You don’t need to worry too much about how this works, but basically, when Python logs an event, it creates a  LogRecord object that holds information about that event. The  logging module’s  basicConfig() function lets you specify what details about the  LogRecord object you want to see and how you want those details displayed.
 
-Say you wrote a function to calculate the factorial of a number. In math- ematics, factorial 4 is 1 × 2 × 3 × 4, or 24. Factorial 7 is 1 × 2 × 3 × 4 × 5 × 6 × 7, or 5,040. Open a new file editor window and enter the following code. It has a bug in it, but you will also enter several log messages to help yourself fig- ure out what is going wrong. Save the program as factorialLog.py.
+Say you wrote a function to calculate the factorial of a number. In mathematics, factorial 4 is 1 × 2 × 3 × 4, or 24. Factorial 7 is 1 × 2 × 3 × 4 × 5 × 6 × 7, or 5,040. Open a new file editor window and enter the following code. It has a bug in it, but you will also enter several log messages to help yourself figure out what is going wrong. Save the program as factorialLog.py.
 
 import logging
 logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s - %(levelname)s
@@ -214,7 +214,7 @@ return total
 print(factorial(5))
 logging.debug('End of program')
 
-Here, we use the  logging.debug() function when we want to print log information. This  debug() function will call  basicConfig() , and a line of infor- mation will be printed. This information will be in the format we specified in  basicConfig() and will include the messages we passed to  debug() . The print(factorial(5)) call is part of the original program, so the result is dis- played even if logging messages are disabled.
+Here, we use the  logging.debug() function when we want to print log information. This  debug() function will call  basicConfig() , and a line of information will be printed. This information will be in the format we specified in  basicConfig() and will include the messages we passed to  debug() . The print(factorial(5)) call is part of the original program, so the result is displayed even if logging messages are disabled.
 
 The output of this program looks like this:
 
@@ -250,9 +250,9 @@ The  factorial(5) call correctly returns  120 . The log messages showed what was
 
 Don’t Debug with print()
 
-Typing  import logging and  logging.basicConfig(level=logging.DEBUG, format= '%(asctime)s - %(levelname)s - %(message)s') is somewhat unwieldy. You may want to use  print() calls instead, but don’t give in to this temptation! Once you’re done debugging, you’ll end up spending a lot of time removing print() calls from your code for each log message. You might even acciden- tally remove some  print() calls that were being used for nonlog messages. The nice thing about log messages is that you’re free to fill your program with as many as you like, and you can always disable them later by adding a single  logging.disable(logging.CRITICAL) call. Unlike  print() , the  logging module makes it easy to switch between showing and hiding log messages.
+Typing  import logging and  logging.basicConfig(level=logging.DEBUG, format= '%(asctime)s - %(levelname)s - %(message)s') is somewhat unwieldy. You may want to use  print() calls instead, but don’t give in to this temptation! Once you’re done debugging, you’ll end up spending a lot of time removing print() calls from your code for each log message. You might even accidentally remove some  print() calls that were being used for nonlog messages. The nice thing about log messages is that you’re free to fill your program with as many as you like, and you can always disable them later by adding a single  logging.disable(logging.CRITICAL) call. Unlike  print() , the  logging module makes it easy to switch between showing and hiding log messages.
 
-Log messages are intended for the programmer, not the user. The user won’t care about the contents of some dictionary value you need to see to help with debugging; use a log message for something like that. For mes- sages that the user will want to see, like File not found or Invalid input, please enter a number, you should use a  print() call. You don’t want to deprive the user of useful information after you’ve disabled log messages.
+Log messages are intended for the programmer, not the user. The user won’t care about the contents of some dictionary value you need to see to help with debugging; use a log message for something like that. For messages that the user will want to see, like File not found or Invalid input, please enter a number, you should use a  print() call. You don’t want to deprive the user of useful information after you’ve disabled log messages.
 
 Logging Levels
 
@@ -280,7 +280,7 @@ CRITICAL logging.critical() The highest level. Used to indicate a fatal
 error that has caused or is about to cause
 the program to stop running entirely.
 
-Your logging message is passed as a string to these functions. The log- ging levels are suggestions. Ultimately, it is up to you to decide which category your log message falls into. Enter the following into the interactive shell:
+Your logging message is passed as a string to these functions. The logging levels are suggestions. Ultimately, it is up to you to decide which category your log message falls into. Enter the following into the interactive shell:
 
 >>> import logging
 >>> logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s -
@@ -300,7 +300,7 @@ The benefit of logging levels is that you can change what priority of logging me
 
 Disabling Logging
 
-After you’ve debugged your program, you probably don’t want all these log messages cluttering the screen. The  logging.disable() function disables these so that you don’t have to go into your program and remove all the log- ging calls by hand. You simply pass  logging.disable() a logging level, and it will suppress all log messages at that level or lower. So if you want to disable logging entirely, just add  logging.disable(logging.CRITICAL) to your program.
+After you’ve debugged your program, you probably don’t want all these log messages cluttering the screen. The  logging.disable() function disables these so that you don’t have to go into your program and remove all the logging calls by hand. You simply pass  logging.disable() a logging level, and it will suppress all log messages at that level or lower. So if you want to disable logging entirely, just add  logging.disable(logging.CRITICAL) to your program.
 
 For example, enter the following into the interactive shell:
 
@@ -313,11 +313,11 @@ For example, enter the following into the interactive shell:
 >>> logging.critical('Critical error! Critical error!')
 >>> logging.error('Error! Error!')
 
-Since  logging.disable() will disable all messages after it, you will proba- bly want to add it near the  import logging line of code in your program. This way, you can easily find it to comment out or uncomment that call to enable or disable logging messages as needed.
+Since  logging.disable() will disable all messages after it, you will probably want to add it near the  import logging line of code in your program. This way, you can easily find it to comment out or uncomment that call to enable or disable logging messages as needed.
 
 Logging to a File
 
-Instead of displaying the log messages to the screen, you can write them to a text file. The  logging.basicConfig() function takes a  filename keyword argu- ment, like so:
+Instead of displaying the log messages to the screen, you can write them to a text file. The  logging.basicConfig() function takes a  filename keyword argument, like so:
 
 import logging
 logging.basicConfig(filename='myProgramLog.txt', level=logging.DEBUG, format='
@@ -327,7 +327,7 @@ The log messages will be saved to myProgramLog.txt. While logging messages are h
 
 IDLE’s Debugger
 
-The debugger is a feature of IDLE that allows you to execute your program one line at a time. The debugger will run a single line of code and then wait for you to tell it to continue. By running your program “under the debug- ger” like this, you can take as much time as you want to examine the values in the variables at any given point during the program’s lifetime. This is a valuable tool for tracking down bugs.
+The debugger is a feature of IDLE that allows you to execute your program one line at a time. The debugger will run a single line of code and then wait for you to tell it to continue. By running your program “under the debugger” like this, you can take as much time as you want to examine the values in the variables at any given point during the program’s lifetime. This is a valuable tool for tracking down bugs.
 
 To enable IDLE’s debugger, click Debug > Debugger in the interactive shell window. This will bring up the Debug Control window, which looks like Figure 10-1.
 
@@ -339,13 +339,13 @@ When the Debug Control window appears, select all four of the Stack, Locals, Sou
 
 Figure 10-1: The Debug Control window
 
-You’ll notice that in the list of global variables there are several vari- ables you haven’t defined, such as  __builtins__ ,  __doc__ ,  __file__ , and so on. These are variables that Python automatically sets whenever it runs a pro- gram. The meaning of these variables is beyond the scope of this book, and you can comfortably ignore them.
+You’ll notice that in the list of global variables there are several variables you haven’t defined, such as  __builtins__ ,  __doc__ ,  __file__ , and so on. These are variables that Python automatically sets whenever it runs a program. The meaning of these variables is beyond the scope of this book, and you can comfortably ignore them.
 
 The program will stay paused until you press one of the five buttons in the Debug Control window: Go, Step, Over, Out, or Quit.
 
 Go
 
-Clicking the Go button will cause the program to execute normally until it terminates or reaches a breakpoint. (Breakpoints are described later in this chapter.) If you are done debugging and want the program to continue nor- mally, click the Go button.
+Clicking the Go button will cause the program to execute normally until it terminates or reaches a breakpoint. (Breakpoints are described later in this chapter.) If you are done debugging and want the program to continue normally, click the Go button.
 
 Step
 
@@ -353,15 +353,15 @@ Clicking the Step button will cause the debugger to execute the next line of cod
 
 Over
 
-Clicking the Over button will execute the next line of code, similar to the Step button. However, if the next line of code is a function call, the Over button will “step over” the code in the function. The function’s code will be executed at full speed, and the debugger will pause as soon as the function call returns. For example, if the next line of code is a  print() call, you don’t really care about code inside the built-in  print() function; you just want the string you pass it printed to the screen. For this reason, using the Over but- ton is more common than the Step button.
+Clicking the Over button will execute the next line of code, similar to the Step button. However, if the next line of code is a function call, the Over button will “step over” the code in the function. The function’s code will be executed at full speed, and the debugger will pause as soon as the function call returns. For example, if the next line of code is a  print() call, you don’t really care about code inside the built-in  print() function; you just want the string you pass it printed to the screen. For this reason, using the Over button is more common than the Step button.
 
 Out
 
-Clicking the Out button will cause the debugger to execute lines of code at full speed until it returns from the current function. If you have stepped into a function call with the Step button and now simply want to keep exe- cuting instructions until you get back out, click the Out button to “step out” of the current function call.
+Clicking the Out button will cause the debugger to execute lines of code at full speed until it returns from the current function. If you have stepped into a function call with the Step button and now simply want to keep executing instructions until you get back out, click the Out button to “step out” of the current function call.
 
 Quit
 
-If you want to stop debugging entirely and not bother to continue executing the rest of the program, click the Quit button. The Quit button will imme- diately terminate the program. If you want to run your program normally again, select Debug > Debugger again to disable the debugger.
+If you want to stop debugging entirely and not bother to continue executing the rest of the program, click the Quit button. The Quit button will immediately terminate the program. If you want to run your program normally again, select Debug > Debugger again to disable the debugger.
 
 Debugging a Number Adding Program
 
@@ -395,13 +395,13 @@ Click the Over button once to execute the first  print() call. You should use Ov
 
 Figure 10-3: The Debug Control window after clicking Over
 
-Click Over again to execute the  input() function call, and the buttons in the Debug Control window will disable themselves while IDLE waits for you to type something for the  input() call into the interactive shell win- dow. Enter  5 and press Return. The Debug Control window buttons will be reenabled.
+Click Over again to execute the  input() function call, and the buttons in the Debug Control window will disable themselves while IDLE waits for you to type something for the  input() call into the interactive shell window. Enter  5 and press Return. The Debug Control window buttons will be reenabled.
 
-Keep clicking Over, entering  3 and  42 as the next two numbers, until the debugger is on line 7, the final  print() call in the program. The Debug Control window should look like Figure 10-4. You can see in the Globals section that the first, second, and third variables are set to string values  '5' , '3' , and  '42' instead of integer values  5 ,  3 , and  42 . When the last line is executed, these strings are concatenated instead of added together, caus- ing the bug.
+Keep clicking Over, entering  3 and  42 as the next two numbers, until the debugger is on line 7, the final  print() call in the program. The Debug Control window should look like Figure 10-4. You can see in the Globals section that the first, second, and third variables are set to string values  '5' , '3' , and  '42' instead of integer values  5 ,  3 , and  42 . When the last line is executed, these strings are concatenated instead of added together, causing the bug.
 
 Figure 10-4: The Debug Control window on the last line.
 
-The variables are set to strings, causing the bug. Stepping through the program with the debugger is helpful but can also be slow. Often you’ll want the program to run normally until it reaches a cer- tain line of code. You can configure the debugger to do this with breakpoints.
+The variables are set to strings, causing the bug. Stepping through the program with the debugger is helpful but can also be slow. Often you’ll want the program to run normally until it reaches a certain line of code. You can configure the debugger to do this with breakpoints.
 
 Breakpoints
 
@@ -416,7 +416,7 @@ if i == 500:
 v print('Halfway done!')
 print('Heads came up ' + str(heads) + ' times.')
 
-The  random.randint(0, 1) call u will return  0 half of the time and  1 the other half of the time. This can be used to simulate a 50/50 coin flip where  1 represents heads. When you run this program without the debug- ger, it quickly outputs something like the following:
+The  random.randint(0, 1) call u will return  0 half of the time and  1 the other half of the time. This can be used to simulate a 50/50 coin flip where  1 represents heads. When you run this program without the debugger, it quickly outputs something like the following:
 
 Halfway done!
 Heads came up 490 times.
@@ -434,7 +434,7 @@ If you want to remove a breakpoint, right-click the line in the file editor and 
 Summary
 Assertions, exceptions, logging, and the debugger are all valuable tools to find and prevent bugs in your program. Assertions with the Python  assert statement are a good way to implement “sanity checks” that give you an early warning when a necessary condition doesn’t hold true. Assertions are only for errors that the program shouldn’t try to recover from and should fail fast. Otherwise, you should raise an exception.
 
-An exception can be caught and handled by the  try and  except state- ments. The  logging module is a good way to look into your code while it’s running and is much more convenient to use than the  print() function because of its different logging levels and ability to log to a text file.
+An exception can be caught and handled by the  try and  except statements. The  logging module is a good way to look into your code while it’s running and is much more convenient to use than the  print() function because of its different logging levels and ability to log to a text file.
 
 The debugger lets you step through your program one line at a time. Alternatively, you can run your program at normal speed and have the debugger pause execution whenever it reaches a line with a breakpoint set. Using the debugger, you can see the state of any variable’s value at any point during the program’s lifetime.
 
@@ -451,7 +451,7 @@ Practice Questions
 7.  What line of code can you add to disable all logging messages in your program?
 8. Why is using logging messages better than using  print() to display the same message?
 9. What are the differences between the Step, Over, and Out buttons in the Debug Control window?
-10. After you click Go in the Debug Control window, when will the debug- ger stop?
+10. After you click Go in the Debug Control window, when will the debugger stop?
 11. What is a breakpoint?
 12. How do you set a breakpoint on a line of code in IDLE?
 
@@ -461,7 +461,7 @@ For practice, write programs that do the following.
 
 Debugging Coin Toss
 
-The following program is meant to be a simple coin toss guessing game. The player gets two guesses (it’s an easy game). However, the program has sev- eral bugs in it. Run through the program a few times to find the bugs that keep the program from working correctly.
+The following program is meant to be a simple coin toss guessing game. The player gets two guesses (it’s an easy game). However, the program has several bugs in it. Run through the program a few times to find the bugs that keep the program from working correctly.
 
 import random
 guess = ''

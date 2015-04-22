@@ -1,10 +1,10 @@
-Excel is a popular and powerful spread- sheet application for Windows. The  openpyxl module allows your Python programs to read and modify Excel spreadsheet files. For example, you might have the boring task of copying certain data from one spreadsheet and pasting it into another one. Or you might have to go through thousands of rows and pick out just a handful of them to make small edits based on some criteria. Or you might have to look through hundreds of spreadsheets of department budgets, searching for any that are in the red. These are exactly the sort of boring, mindless spreadsheet tasks that Python can do for you.
+Excel is a popular and powerful spreadsheet application for Windows. The  openpyxl module allows your Python programs to read and modify Excel spreadsheet files. For example, you might have the boring task of copying certain data from one spreadsheet and pasting it into another one. Or you might have to go through thousands of rows and pick out just a handful of them to make small edits based on some criteria. Or you might have to look through hundreds of spreadsheets of department budgets, searching for any that are in the red. These are exactly the sort of boring, mindless spreadsheet tasks that Python can do for you.
 
-Although Excel is proprietary software from Microsoft, there are free alternatives that run on Windows, OS X, and Linux. Both LibreOffice Calc and OpenOffice Calc work with Excel’s .xlsx file format for spreadsheets, which means the  openpyxl module can work on spreadsheets from these appli- cations as well. You can download the software from https://www. libreoffice .org/ and http://www.openoffice.org/, respectively. Even if you already have Excel installed on your computer, you may find these programs easier to use. The screenshots in this chapter, however, are all from Excel 2010 on Windows 7.
+Although Excel is proprietary software from Microsoft, there are free alternatives that run on Windows, OS X, and Linux. Both LibreOffice Calc and OpenOffice Calc work with Excel’s .xlsx file format for spreadsheets, which means the  openpyxl module can work on spreadsheets from these applications as well. You can download the software from https://www. libreoffice .org/ and http://www.openoffice.org/, respectively. Even if you already have Excel installed on your computer, you may find these programs easier to use. The screenshots in this chapter, however, are all from Excel 2010 on Windows 7.
 
 Excel Documents
 
-First, let’s go over some basic definitions: An Excel spreadsheet document is called a workbook. A single workbook is saved in a file with the .xlsx exten- sion. Each workbook can contain multiple sheets (also called worksheets). The sheet the user is currently viewing (or last viewed before closing Excel) is called the active sheet.
+First, let’s go over some basic definitions: An Excel spreadsheet document is called a workbook. A single workbook is saved in a file with the .xlsx extension. Each workbook can contain multiple sheets (also called worksheets). The sheet the user is currently viewing (or last viewed before closing Excel) is called the active sheet.
 
 Each sheet has columns (addressed by letters starting at A) and rows (addressed by numbers starting at 1). A box at a particular column and row is called a cell. Each cell can contain a number or text value. The grid of cells with data makes up a sheet.
 
@@ -14,9 +14,9 @@ Python does not come with OpenPyXL, so you’ll have to install it. Follow the i
 
 >>> import openpyxl
 
-If the module was correctly installed, this should produce no error mes- sages. Remember to import the  openpyxl module before running the interac- tive shell examples in this chapter, or you’ll get a  NameError: name 'openpyxl' is not defined error.
+If the module was correctly installed, this should produce no error messages. Remember to import the  openpyxl module before running the interactive shell examples in this chapter, or you’ll get a  NameError: name 'openpyxl' is not defined error.
 
-This book covers version 2.1.4 of OpenPyXL, but new versions are regu- larly released by the OpenPyXL team. Don’t worry, though: New versions should stay backward compatible with the instructions in this book for quite some time. If you have a newer version and want to see what additional fea- tures may be available to you, you can check out the full documentation for OpenPyXL at http://openpyxl.readthedocs.org/.
+This book covers version 2.1.4 of OpenPyXL, but new versions are regularly released by the OpenPyXL team. Don’t worry, though: New versions should stay backward compatible with the instructions in this book for quite some time. If you have a newer version and want to see what additional features may be available to you, you can check out the full documentation for OpenPyXL at http://openpyxl.readthedocs.org/.
 
 Reading Excel Documents
 
@@ -36,7 +36,7 @@ A B C
 6 4/10/2014 6:10:37 PM Bananas 23
 7 4/10/2014 2:40:46 AM Strawberries 98
 
-Now that we have our example spreadsheet, let’s see how we can manip- ulate it with the  openpyxl module.
+Now that we have our example spreadsheet, let’s see how we can manipulate it with the  openpyxl module.
 
 Opening Excel Documents with OpenPyXL
 
@@ -49,7 +49,7 @@ Once you’ve imported the  openpyxl module, you’ll be able to use the  openpy
 
 The  openpyxl.load_workbook() function takes in the filename and returns a value of the workbook data type. This workbook object represents the Excel file, a bit like how a file object represents an opened text file.
 
-Remember that example.xlsx needs to be in the current working direc- tory in order for you to work with it. You can find out what the current working directory is by importing  os and using  os.getcwd() , and you can change the current working directory using  os.chdir() .
+Remember that example.xlsx needs to be in the current working directory in order for you to work with it. You can find out what the current working directory is by importing  os and using  os.getcwd() , and you can change the current working directory using  os.chdir() .
 
 Getting Sheets from the Workbook
 
@@ -93,11 +93,11 @@ datetime.datetime(2014, 4, 5, 13, 34, 2)
 >>> sheet['C1'].value
 73
 
-The cell object has a  value attribute that contains, unsurprisingly, the value stored in that cell. Cell objects also have  row ,  column , and  coordinate attri- butes that provide location information for the cell.
+The cell object has a  value attribute that contains, unsurprisingly, the value stored in that cell. Cell objects also have  row ,  column , and  coordinate attributes that provide location information for the cell.
 
 Here, accessing the  value attribute of our cell object for cell B1 gives us the string  'Apples' . The  row attribute gives us the integer  1 , the  column attribute gives us  'B' , and the  coordinate attribute gives us  'B1' . OpenPyXL will automatically interpret the dates in column A and return them as  datetime values rather than strings. The  datetime data type is explained further in Chapter 16.
 
-Specifying a column by letter can be tricky to program, especially because after column Z, the columns start by using two letters: AA, AB, AC, and so on. As an alternative, you can also get a cell using the sheet’s cell() method and passing integers for its  row and  column keyword argu- ments. The first row or column integer is  1 , not  0 . Continue the interactive shell example by entering the following:
+Specifying a column by letter can be tricky to program, especially because after column Z, the columns start by using two letters: AA, AB, AC, and so on. As an alternative, you can also get a cell using the sheet’s cell() method and passing integers for its  row and  column keyword arguments. The first row or column integer is  1 , not  0 . Continue the interactive shell example by entering the following:
 
 >>> sheet.cell(row=1, column=2)
 <Cell Sheet1.B1>
@@ -112,9 +112,9 @@ print(i, sheet.cell(row=i, column=2).value)
 
 As you can see, using the sheet’s  cell() method and passing it  row=1 and  column=2 gets you a cell object for cell  B1 , just like specifying  sheet['B1'] did. Then, using the  cell() method and its keyword arguments, you can write a  for loop to print the values of a series of cells.
 
-Say you want to go down column B and print the value in every cell with an odd row number. By passing  2 for the  range() function’s “step” parameter, you can get cells from every second row (in this case, all the odd-numbered rows). The  for loop’s  i variable is passed for the  row key- word argument to the  cell() method, while  2 is always passed for the  column keyword argument. Note that the integer  2 , not the string  'B' , is passed.
+Say you want to go down column B and print the value in every cell with an odd row number. By passing  2 for the  range() function’s “step” parameter, you can get cells from every second row (in this case, all the odd-numbered rows). The  for loop’s  i variable is passed for the  row keyword argument to the  cell() method, while  2 is always passed for the  column keyword argument. Note that the integer  2 , not the string  'B' , is passed.
 
-You can determine the size of the sheet with the sheet object’s  get_highest _row() and  get_highest_column() methods. Enter the following into the inter- active shell:
+You can determine the size of the sheet with the sheet object’s  get_highest _row() and  get_highest_column() methods. Enter the following into the interactive shell:
 
 >>> import openpyxl
 >>> wb = openpyxl.load_workbook('example.xlsx')
@@ -181,7 +181,7 @@ C3 14
 
 Here, we specify that we want the cell objects in the rectangular area from A1 to C3, and we get a generator object containing the cell objects in that area. To help us visualize this generator object, we can use  tuple() on it to display its cell objects in a tuple.
 
-This tuple contains three tuples: one for each row, from the top of the desired area to the bottom. Each of these three inner tuples contains the cell objects in one row of our desired area, from the leftmost cell to the right. So overall, our slice of the sheet contains all the cell objects in the area from A1 to C3, starting from the top-left cell and ending with the bottom- right cell.
+This tuple contains three tuples: one for each row, from the top of the desired area to the bottom. Each of these three inner tuples contains the cell objects in one row of our desired area, from the leftmost cell to the right. So overall, our slice of the sheet contains all the cell objects in the area from A1 to C3, starting from the top-left cell and ending with the bottom-right cell.
 
 To print the values of each cell in the area, we use two  for loops. The outer  for loop goes over each row in the slice u. Then, for each row, the nested  for loop goes through each cell in that row v.
 
@@ -222,13 +222,13 @@ As a quick review, here’s a rundown of all the functions, methods, and data ty
 
 Project: Reading Data from a Spreadsheet
 
-Say you have a spreadsheet of data from the 2010 US Census and you have the boring task of going through its thousands of rows to count both the total population and the number of census tracts for each county. (A census tract is simply a geographic area defined for the purposes of the census.) Each row represents a single census tract. We’ll name the spread- sheet file censuspopdata.xlsx, and you can download it from http://autbor.com/ censuspopdata.xlsx. Its contents look like Figure 12-2.
+Say you have a spreadsheet of data from the 2010 US Census and you have the boring task of going through its thousands of rows to count both the total population and the number of census tracts for each county. (A census tract is simply a geographic area defined for the purposes of the census.) Each row represents a single census tract. We’ll name the spreadsheet file censuspopdata.xlsx, and you can download it from http://autbor.com/ censuspopdata.xlsx. Its contents look like Figure 12-2.
 
 Figure 12-2: The censuspopdata.xlsx spreadsheet
 
 Even though Excel can calculate the sum of multiple selected cells, you’d still have to select the cells for each of the 3,000-plus counties. Even if it takes just a few seconds to calculate a county’s population by hand, this would take hours to do for the whole spreadsheet.
 
-In this project, you’ll write a script that can read from the census spread- sheet file and calculate statistics for each county in a matter of seconds.
+In this project, you’ll write a script that can read from the census spreadsheet file and calculate statistics for each county in a matter of seconds.
 
 This is what your program does:
 
@@ -245,7 +245,7 @@ This means your code will need to do the following:
 
 Step 1: Read the Spreadsheet Data
 
-There is just one sheet in the censuspopdata.xlsx spreadsheet, named 'Population by Census Tract' , and each row holds the data for a single cen- sus tract. The columns are the tract number (A), the state abbreviation (B), the county name (C), and the population of the tract (D).
+There is just one sheet in the censuspopdata.xlsx spreadsheet, named 'Population by Census Tract' , and each row holds the data for a single census tract. The columns are the tract number (A), the state abbreviation (B), the county name (C), and the population of the tract (D).
 
 Open a new file editor window and enter the following code. Save the file as readCensusExcel.py.
 
@@ -277,7 +277,7 @@ Note that you’ve also created a variable named  countyData , which will contai
 
 Step 2: Populate the Data Structure
 
-The data structure stored in  countyData will be a dictionary with state abbre- viations as its keys. Each state abbreviation will map to another dictionary, whose keys are strings of the county names in that state. Each county name will in turn map to a dictionary with just two keys,  'tracts' and  'pop' . These keys map to the number of census tracts and population for the county. For example, the dictionary will look similar to this:
+The data structure stored in  countyData will be a dictionary with state abbreviations as its keys. Each state abbreviation will map to another dictionary, whose keys are strings of the county names in that state. Each county name will in turn map to a dictionary with just two keys,  'tracts' and  'pop' . These keys map to the number of census tracts and population for the county. For example, the dictionary will look similar to this:
 
 {'AK': {'Aleutians East': {'pop': 3141, 'tracts': 1},
 'Aleutians West': {'pop': 5561, 'tracts': 2},
@@ -298,7 +298,7 @@ More generally, the  countyData dictionary’s keys will look like this:
 countyData[<state abbrev>][<county>]['tracts']
 countyData[<state abbrev>][<county>]['pop']
 
-Now that you know how  countyData will be structured, you can write the code that will fill it with the county data. Add the following code to the bot- tom of your program:
+Now that you know how  countyData will be structured, you can write the code that will fill it with the county data. Add the following code to the bottom of your program:
 
 #! python 3
 # A throwaway script to tabulate population and number
@@ -318,11 +318,11 @@ w countyData[state][county]['tracts'] += 1
 # Increase the county pop by the pop in this census tract.
 x countyData[state][county]['pop'] += int(pop)
 
-The last two lines of code perform the actual calculation work, incre- menting the value for  tracts w and increasing the value for  pop x for the current county on each iteration of the  for loop.
+The last two lines of code perform the actual calculation work, incrementing the value for  tracts w and increasing the value for  pop x for the current county on each iteration of the  for loop.
 
 The other code is there because you cannot add a county dictionary as the value for a state abbreviation key until the key itself exists in  countyData . (That is,  countyData['AK']['Anchorage']['tracts'] += 1 will cause an error if the ' AK' key doesn’t exist yet.) To make sure the state abbreviation key exists in your data structure, you need to call the  setdefault() method to set a value if one does not already exist for  state u.
 
-Just as the  countyData dictionary needs a dictionary as the value for each state abbreviation key, each of those dictionaries will need its own dictionary as the value for each county key v. And each of those dictionaries in turn will need keys  'tracts' and  'pop' that start with the integer value  0 . (If you ever lose track of the dictionary structure, look back at the example dic- tionary at the start of this section.)
+Just as the  countyData dictionary needs a dictionary as the value for each state abbreviation key, each of those dictionaries will need its own dictionary as the value for each county key v. And each of those dictionaries in turn will need keys  'tracts' and  'pop' that start with the integer value  0 . (If you ever lose track of the dictionary structure, look back at the example dictionary at the start of this section.)
 
 Since  setdefault() will do nothing if the key already exists, you can call it on every iteration of the  for loop without a problem.
 
@@ -343,7 +343,7 @@ resultFile.write('allData = ' + pprint.pformat(countyData))
 resultFile.close()
 print('Done.')
 
-The  pprint.pformat() function produces a string that itself is format- ted as valid Python code. By outputting it to a text file named census2010.py, you’ve generated a Python program from your Python program! This may seem complicated, but the advantage is that you can now import census2010.py just like any other Python module. In the interactive shell, change the cur- rent working directory to the folder with your newly created census2010.py file (on my laptop, this is C:\Python34), and then import it:
+The  pprint.pformat() function produces a string that itself is formatted as valid Python code. By outputting it to a text file named census2010.py, you’ve generated a Python program from your Python program! This may seem complicated, but the advantage is that you can now import census2010.py just like any other Python module. In the interactive shell, change the current working directory to the folder with your newly created census2010.py file (on my laptop, this is C:\Python34), and then import it:
 
 >>> import os
 >>> os.chdir('C:\\Python34')
@@ -354,7 +354,7 @@ The  pprint.pformat() function produces a string that itself is format- ted as v
 >>> print('The 2010 population of Anchorage was ' + str(anchoragePop))
 The 2010 population of Anchorage was 291826
 
-The readCensusExcel.py program was throwaway code: Once you have its results saved to census2010.py, you won’t need to run the program again. Whenever you need the county data, you can just run  import census2010 . Calculating this data by hand would have taken hours; this program did it in a few seconds. Using OpenPyXL, you will have no trouble extract- ing information that is saved to an Excel spreadsheet and performing calcu- lations on it.
+The readCensusExcel.py program was throwaway code: Once you have its results saved to census2010.py, you won’t need to run the program again. Whenever you need the county data, you can just run  import census2010 . Calculating this data by hand would have taken hours; this program did it in a few seconds. Using OpenPyXL, you will have no trouble extracting information that is saved to an Excel spreadsheet and performing calculations on it.
 
 You can download the complete program from http://autbor.com/readCensusExcel.py.
 
@@ -390,7 +390,7 @@ Enter the following into the interactive shell:
 
 The workbook will start off with a single sheet named Sheet. You can change the name of the sheet by storing a new string in its  title attribute.
 
-Any time you modify the workbook object or its sheets and cells, the spreadsheet file will not be saved until you call the  save() workbook method. Enter the following into the interactive shell (with example.xlsx in the cur- rent working directory):
+Any time you modify the workbook object or its sheets and cells, the spreadsheet file will not be saved until you call the  save() workbook method. Enter the following into the interactive shell (with example.xlsx in the current working directory):
 
 >>> import openpyxl
 >>> wb = openpyxl.load_workbook('example.xlsx')
@@ -447,17 +447,17 @@ Enter this in the interactive shell:
 >>> sheet['A1'].value
 'Hello world!'
 
-Writing values to cells is much like writing values to keys in a dictionary. If you have the cell’s coordinate as a string, you can use it just like a diction- ary key on the sheet object to specify which cell to write to.
+Writing values to cells is much like writing values to keys in a dictionary. If you have the cell’s coordinate as a string, you can use it just like a dictionary key on the sheet object to specify which cell to write to.
 
 Project: Updating a Spreadsheet
 
-In this project, you’ll write a program to update cells in a spreadsheet of produce sales. Your program will look through the spreadsheet, find spe- cific kinds of produce, and update their prices. Download this spreadsheet from http://autbor.com/produceSales.xlsx. Figure 12-3 shows what the spread- sheet looks like.
+In this project, you’ll write a program to update cells in a spreadsheet of produce sales. Your program will look through the spreadsheet, find specific kinds of produce, and update their prices. Download this spreadsheet from http://autbor.com/produceSales.xlsx. Figure 12-3 shows what the spreadsheet looks like.
 
 Figure 12-3: A spreadsheet of produce sales
 
-Each row represents an individual sale. The columns are the type of produce sold (A), the cost per pound of that produce (B), the number of pounds sold (C), and the total revenue from the sale (D). The TOTAL col- umn is set to the Excel formula =ROUND(B3*C3, 2), which multiplies the cost per pound by the number of pounds sold and rounds the result to the nearest cent. With this formula, the cells in the TOTAL column will auto- matically update themselves if there is a change in column B or C.
+Each row represents an individual sale. The columns are the type of produce sold (A), the cost per pound of that produce (B), the number of pounds sold (C), and the total revenue from the sale (D). The TOTAL column is set to the Excel formula =ROUND(B3*C3, 2), which multiplies the cost per pound by the number of pounds sold and rounds the result to the nearest cent. With this formula, the cells in the TOTAL column will automatically update themselves if there is a change in column B or C.
 
-Now imagine that the prices of garlic, celery, and lemons were entered incorrectly, leaving you with the boring task of going through thousands of rows in this spreadsheet to update the cost per pound for any garlic, cel- ery, and lemon rows. You can’t do a simple find-and-replace for the price because there might be other items with the same price that you don’t want to mistakenly “correct.” For thousands of rows, this would take hours to do by hand. But you can write a program that can accomplish this in seconds.
+Now imagine that the prices of garlic, celery, and lemons were entered incorrectly, leaving you with the boring task of going through thousands of rows in this spreadsheet to update the cost per pound for any garlic, celery, and lemon rows. You can’t do a simple find-and-replace for the price because there might be other items with the same price that you don’t want to mistakenly “correct.” For thousands of rows, this would take hours to do by hand. But you can write a program that can accomplish this in seconds.
 
 Your program does the following:
 
@@ -469,7 +469,7 @@ This means your code will need to do the following:
 •  Open the spreadsheet file.
 •  For each row, check whether the value in column A is  Celery ,  Garlic , or  Lemon .
 •  If it is, update the price in column B.
-•  Save the spreadsheet to a new file (so that you don’t lose the old spread- sheet, just in case).
+•  Save the spreadsheet to a new file (so that you don’t lose the old spreadsheet, just in case).
 
 Step 1: Set Up a Data Structure with the Update Information
 
@@ -490,7 +490,7 @@ cellObj = 1.27
 
 Having the produce and updated price data hardcoded like this is a bit inelegant. If you needed to update the spreadsheet again with different prices or different produce, you would have to change a lot of the code. Every time you change code, you risk introducing bugs.
 
-A more flexible solution is to store the corrected price information in a dictionary and write your code to use this data structure. In a new file edi- tor window, enter the following code:
+A more flexible solution is to store the corrected price information in a dictionary and write your code to use this data structure. In a new file editor window, enter the following code:
 
 #! python3
 # Program correct costs in produce sales spreadsheet
@@ -506,7 +506,7 @@ Save this as updateProduce.py. If you need to update the spreadsheet again, you�
 
 Step 2: Check All Rows and Update Incorrect Prices
 
-The next part of the program will loop through all the rows in the spread- sheet. Add the following code to the bottom of updateProduce.py:
+The next part of the program will loop through all the rows in the spreadsheet. Add the following code to the bottom of updateProduce.py:
 
 #! python3
 # Program correct costs in produce sales spreadsheet
@@ -519,11 +519,11 @@ w if produceName in PRICE_UPDATES:
 sheet.cell(row=rowNum, column=2).value = PRICE_UPDATES[produceName]
 x wb.save('updatedProduceSales.xlsx')
 
-We loop through the rows starting at row 2, since row 1 is just the header u. The cell in column 1 (that is, column A) will be stored in the variable  produceName v. If  produceName exists as a key in the  PRICE_UPDATES dic- tionary w, then you know this is a row that must have its price corrected. The correct price will be in  PRICE_UPDATES[produceName] .
+We loop through the rows starting at row 2, since row 1 is just the header u. The cell in column 1 (that is, column A) will be stored in the variable  produceName v. If  produceName exists as a key in the  PRICE_UPDATES dictionary w, then you know this is a row that must have its price corrected. The correct price will be in  PRICE_UPDATES[produceName] .
 
-Notice how clean using  PRICE_UPDATES makes the code. Only one  if state- ment, rather than code like  if produceName == 'Garlic': , is necessary for every type of produce to update. And since the code uses the  PRICE_UPDATES dictionary instead of hardcoding the produce names and updated costs into the  for loop, you modify only the  PRICE_UPDATES dictionary and not the code if the produce sales spreadsheet needs additional changes.
+Notice how clean using  PRICE_UPDATES makes the code. Only one  if statement, rather than code like  if produceName == 'Garlic': , is necessary for every type of produce to update. And since the code uses the  PRICE_UPDATES dictionary instead of hardcoding the produce names and updated costs into the  for loop, you modify only the  PRICE_UPDATES dictionary and not the code if the produce sales spreadsheet needs additional changes.
 
-After going through the entire spreadsheet and making changes, the code saves the workbook object to updatedProduceSales.xlsx x. It doesn’t over- write the old spreadsheet just in case there’s a bug in your program and the updated spreadsheet is wrong. After checking that the updated spread- sheet looks right, you can delete the old spreadsheet.
+After going through the entire spreadsheet and making changes, the code saves the workbook object to updatedProduceSales.xlsx x. It doesn’t overwrite the old spreadsheet just in case there’s a bug in your program and the updated spreadsheet is wrong. After checking that the updated spreadsheet looks right, you can delete the old spreadsheet.
 
 You can download the complete source code for this program from http://autbor.com/updateProduce.py.
 
@@ -537,7 +537,7 @@ Since many office workers use Excel spreadsheets all the time, a program that ca
 
 Setting the Font Style of Cells
 
-Styling certain cells, rows, or columns can help you emphasize impor- tant areas in your spreadsheet. In the produce spreadsheet, for example, your program could apply bold text to the potato, garlic, and parsnip rows. Or perhaps you want to italicize every row with a cost per pound greater than $5. Styling parts of a large spreadsheet by hand would be tedious, but your programs can do it instantly.
+Styling certain cells, rows, or columns can help you emphasize important areas in your spreadsheet. In the produce spreadsheet, for example, your program could apply bold text to the potato, garlic, and parsnip rows. Or perhaps you want to italicize every row with a cost per pound greater than $5. Styling parts of a large spreadsheet by hand would be tedious, but your programs can do it instantly.
 
 To customize font styles in cells, important, import the  Font() and Style() functions from the  openpyxl.styles module.
 
@@ -559,7 +559,7 @@ OpenPyXL represents the collection of style settings for a cell with a style obj
 
 Font Objects
 
-The style attributes in font objects affect how the text in cells is dis- played. To set font style attributes, you pass keyword arguments to  Font() . Table 12-2 shows the possible keyword arguments for the  Font() function.
+The style attributes in font objects affect how the text in cells is displayed. To set font style attributes, you pass keyword arguments to  Font() . Table 12-2 shows the possible keyword arguments for the  Font() function.
 
 Table 12-2:  Keyword Arguments for Font Style Attributes
 Keyword argument Data type Description
@@ -605,7 +605,7 @@ Formulas, which begin with an equal sign, can configure cells to contain values 
 This will store =SUM(B1:B8) as the value in cell B9. This sets the B9 cell to a formula that calculates the sum of values in cells B1 to B8. You can see this in action in Figure 12-5.
 
 Figure 12-5: Cell B9 contains the formula =SUM(B1:B8), which adds the cells B1 to B8.
-A formula is set just like any other text value in a cell. Enter the follow- ing into the interactive shell:
+A formula is set just like any other text value in a cell. Enter the following into the interactive shell:
 
 >>> import openpyxl
 >>> wb = openpyxl.Workbook()
@@ -641,7 +641,7 @@ Rows and columns can also be hidden entirely from view. Or they can be “frozen
 
 Setting Row Height and Column Width
 
-Sheet objects have  row_dimensions and  column_dimensions attributes that con- trol row heights and column widths. Enter this in the interactive shell:
+Sheet objects have  row_dimensions and  column_dimensions attributes that control row heights and column widths. Enter this in the interactive shell:
 
 >>> import openpyxl
 >>> wb = openpyxl.Workbook()
@@ -658,7 +658,7 @@ The dimensions.xlsx spreadsheet looks like Figure 12-6.
 
 Figure 12-6: Row 1 and column B set to larger heights and widths
 
-Once you have the  RowDimension object, you can set its height. Once you have the  ColumnDimension object, you can set its width. The row height can be set to an integer or float value between  0 and  409 . This value represents the height measured in points, where one point equals 1/72 of an inch. The default row height is 12.75. The column width can be set to an integer or float value between  0 and  255 . This value represents the number of charac- ters at the default font size (11 point) that can be displayed in the cell. The default column width is 8.43 characters. Columns with widths of  0 or rows with heights of  0 are hidden from the user.
+Once you have the  RowDimension object, you can set its height. Once you have the  ColumnDimension object, you can set its width. The row height can be set to an integer or float value between  0 and  409 . This value represents the height measured in points, where one point equals 1/72 of an inch. The default row height is 12.75. The column width can be set to an integer or float value between  0 and  255 . This value represents the number of characters at the default font size (11 point) that can be displayed in the cell. The default column width is 8.43 characters. Columns with widths of  0 or rows with heights of  0 are hidden from the user.
 
 Merging and Unmerging Cells
 
@@ -718,7 +718,7 @@ Make sure you have the produce sales spreadsheet from http://autbor.com/produceS
 >>> sheet.freeze_panes = 'A2'
 >>> wb.save('freezeExample.xlsx')
 
-If you set the  freeze_panes attribute to  'A2' , row 1 will always be view- able, no matter where the user scrolls in the spreadsheet. You can see this in Figure 12-8.
+If you set the  freeze_panes attribute to  'A2' , row 1 will always be viewable, no matter where the user scrolls in the spreadsheet. You can see this in Figure 12-8.
 
 Figure 12-8: With  freeze_panes set to  'A2' , row 1 is always visible even as the user scrolls down.
 
@@ -737,7 +737,7 @@ The reference object requires some explaining. Reference objects are created by 
 
 1. The sheet object containing your chart data.
 2. A tuple of two integers, representing the top-left cell of the rectangular selection of cells containing your chart data: The first integer in the tuple is the row, and the second is the column. Note that  1 is the first row, not  0 .
-3. A tuple of two integers, representing the bottom-right cell of the rectan- gular selection of cells containing your chart data: The first integer in the tuple is the row, and the second is the column.
+3. A tuple of two integers, representing the bottom-right cell of the rectangular selection of cells containing your chart data: The first integer in the tuple is the row, and the second is the column.
 
 Figure 12-9 shows some sample coordinate arguments.
 
@@ -778,9 +778,9 @@ Summary
 
 Often the hard part of processing information isn’t the processing itself but simply getting the data in the right format for your program. But once you have your spreadsheet loaded into Python, you can extract and manipulate its data much faster than you could by hand.
 
-You can also generate spreadsheets as output from your programs. So if colleagues need your text file or PDF of thousands of sales contacts trans- ferred to a spreadsheet file, you won’t have to tediously copy and paste it all into Excel.
+You can also generate spreadsheets as output from your programs. So if colleagues need your text file or PDF of thousands of sales contacts transferred to a spreadsheet file, you won’t have to tediously copy and paste it all into Excel.
 
-Equipped with the  openpyxl module and some programming knowl- edge, you’ll find processing even the biggest spreadsheets a piece of cake.
+Equipped with the  openpyxl module and some programming knowledge, you’ll find processing even the biggest spreadsheets a piece of cake.
 
 Practice Questions
 
@@ -802,7 +802,7 @@ For the following questions, imagine you have a workbook object in the variable 
 14. If you want to retrieve the result of a cell’s formula instead of the cell’s formula itself, what must you do first?
 15. How would you set the height of row 5 to 100?
 16. How would you hide column C?
-17. Name a few features that OpenPyXL 2.1.4 does not load from a spread- sheet file.
+17. Name a few features that OpenPyXL 2.1.4 does not load from a spreadsheet file.
 18. What is a freeze pane?
 19. What five functions and methods do you have to call to create a bar chart?
 
@@ -812,7 +812,7 @@ For practice, write programs that perform the following tasks.
 
 Multiplication Table Maker
 
-Create a program multiplicationTable.py that takes a number N from the com- mand line and creates an N×N multiplication table in an Excel spreadsheet.
+Create a program multiplicationTable.py that takes a number N from the command line and creates an N×N multiplication table in an Excel spreadsheet.
 
 For example, when the program is run like this:
 
@@ -826,7 +826,7 @@ Row 1 and column A should be used for labels and should be in bold.
 
 Blank Row Inserter
 
-Create a program blankRowInserter.py that takes two integers and a filename string as command-line arguments. Let’s call the first integer N and the sec- ond integer M. Starting at row N, the program should insert M blank rows into the spreadsheet. For example, when the program is run like this:
+Create a program blankRowInserter.py that takes two integers and a filename string as command-line arguments. Let’s call the first integer N and the second integer M. Starting at row N, the program should insert M blank rows into the spreadsheet. For example, when the program is run like this:
 
 python blankRowInserter.py 3 2 myProduce.xlsx
 
@@ -834,11 +834,11 @@ the “before” and “after” spreadsheets should look like Figure 12-12.
 
 Figure 12-12: Before (left) and after (right) the two blank rows are inserted at row 3
 
-You can write this program by reading in the contents of the spread- sheet. Then, when writing out the new spreadsheet, use a  for loop to copy the first N lines. For the remaining lines, add M to the row number in the output spreadsheet.
+You can write this program by reading in the contents of the spreadsheet. Then, when writing out the new spreadsheet, use a  for loop to copy the first N lines. For the remaining lines, add M to the row number in the output spreadsheet.
 
 Spreadsheet Cell Inverter
 
-Write a program to invert the row and column of the cells in the spread- sheet. For example, the value at row 5, column 3 will be at row 3, column 5 (and vice versa). This should be done for all cells in the spreadsheet. For example, the “before” and “after” spreadsheets would look something like Figure 12-13.
+Write a program to invert the row and column of the cells in the spreadsheet. For example, the value at row 5, column 3 will be at row 3, column 5 (and vice versa). This should be done for all cells in the spreadsheet. For example, the “before” and “after” spreadsheets would look something like Figure 12-13.
 
 Figure 12-13: The spreadsheet before (top) and after (bottom) inversion
 
@@ -852,4 +852,4 @@ Use the  readlines() file object method to return a list of strings, one string 
 
 Spreadsheet to Text Files
 
-Write a program that performs the tasks of the previous program in reverse order: The program should open a spreadsheet and write the cells of col- umn A into one text file, the cells of column B into another text file, and so on.
+Write a program that performs the tasks of the previous program in reverse order: The program should open a spreadsheet and write the cells of column A into one text file, the cells of column B into another text file, and so on.

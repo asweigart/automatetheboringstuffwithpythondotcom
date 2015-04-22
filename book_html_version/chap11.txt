@@ -11,7 +11,7 @@ Since so much work on a computer involves going on the Internet, it’d be great
 
 Project: mapIt.py with the webbrowser Module
 
-The  webbrowser module’s  open() function can launch a new browser to a spec- ified URL. Enter the following into the interactive shell:
+The  webbrowser module’s  open() function can launch a new browser to a specified URL. Enter the following into the interactive shell:
 
 >>> import webbrowser
 >>> webbrowser.open('http://inventwithpython.com')
@@ -37,11 +37,11 @@ Based on the instructions in Appendix B, set up mapIt.py so that when you run it
 
 C:\> mapit 870 Valencia St, San Francisco, CA 94110
 
-. . . the script will use the command-line arguments instead of the clip- board. If there are no command-line arguments, then the program will know to use the contents of the clipboard.
+. . . the script will use the command-line arguments instead of the clipboard. If there are no command-line arguments, then the program will know to use the contents of the clipboard.
 
 First you need to figure out what URL to use for a given street address. When you load http://maps.google.com/ in the browser and search for an address, the URL in the address bar looks something like this: https://www.google.com/maps/place/870+Valencia+St/@37.7590311,-122.4215096,17z/data=!3m1!4b1!4m2!3m1!1s0x808f7e3dadc07a37:0xc86b0b2bb93b73d8.
 
-The address is in the URL, but there’s a lot of additional text there as well. Websites often add extra data to URLs to help track visitors or custom- ize sites. But if you try just going to https://www.google.com/maps/place/870+Valencia+St+San+Francisco+CA/, you’ll find that it still brings up the cor- rect page. So your program can be set to open a web browser to  'https://www.google.com/maps/place/your_address_string' (where  your_address_string is the address you want to map).
+The address is in the URL, but there’s a lot of additional text there as well. Websites often add extra data to URLs to help track visitors or customize sites. But if you try just going to https://www.google.com/maps/place/870+Valencia+St+San+Francisco+CA/, you’ll find that it still brings up the correct page. So your program can be set to open a web browser to  'https://www.google.com/maps/place/your_address_string' (where  your_address_string is the address you want to map).
 
 Step 2: Handle the Command-Line Arguments
 
@@ -83,7 +83,7 @@ webbrowser.open('https://www.google.com/maps/place/' + address)
 
 If there are no command-line arguments, the program will assume the address is stored on the clipboard. You can get the clipboard content with pyperclip.paste() and store it in a variable named  address . Finally, to launch a web browser with the Google Maps URL, call  webbrowser.open() .
 
-While some of the programs you write will perform huge tasks that save you hours, it can be just as satisfying to use a program that conveniently saves you a few seconds each time you perform a common task, such as get- ting a map of an address. Table 11-1 compares the steps needed to display a map with and without mapIt.py.
+While some of the programs you write will perform huge tasks that save you hours, it can be just as satisfying to use a program that conveniently saves you a few seconds each time you perform a common task, such as getting a map of an address. Table 11-1 compares the steps needed to display a map with and without mapIt.py.
 
 Table 11-1:  Getting a Map with and Without mapIt.py
 Manually getting a map Using mapIt.py
@@ -102,7 +102,7 @@ See how mapIt.py makes this task less tedious?
 
 Ideas for Similar Programs
 
-As long as you have a URL, the  webbrowser module lets users cut out the step of opening the browser and directing themselves to a website. Other pro- grams could use this functionality to do the following:
+As long as you have a URL, the  webbrowser module lets users cut out the step of opening the browser and directing themselves to a website. Other programs could use this functionality to do the following:
 
 •  Open all links on a page in separate browser tabs.
 •  Open the browser to the URL for your local weather.
@@ -110,7 +110,7 @@ As long as you have a URL, the  webbrowser module lets users cut out the step of
 
 Downloading Files from the Web with the requests Module
 
-The  requests module lets you easily download files from the Web without having to worry about complicated issues such as network errors, connec- tion problems, and data compression. The  requests module doesn’t come with Python, so you’ll have to install it first. From the command line, run pip install requests . (Appendix A has additional details on how to install third-party modules.)
+The  requests module lets you easily download files from the Web without having to worry about complicated issues such as network errors, connection problems, and data compression. The  requests module doesn’t come with Python, so you’ll have to install it first. From the command line, run pip install requests . (Appendix A has additional details on how to install third-party modules.)
 
 The  requests module was written because Python’s  urllib2 module is too complicated to use. In fact, take a permanent marker and black out this entire paragraph. Forget I ever mentioned  urllib2 . If you need to download things from the Web, just use the  requests module.
 
@@ -118,7 +118,7 @@ Next, do a simple test to make sure the  requests module installed itself correc
 
 >>> import requests
 
-If no error messages show up, then the  requests module has been suc- cessfully installed.
+If no error messages show up, then the  requests module has been successfully installed.
 
 Downloading a Web Page with the requests.get() Function
 
@@ -144,7 +144,7 @@ If the request succeeded, the downloaded web page is stored as a string in the r
 
 Checking for Errors
 
-As you’ve seen, the response object has a  status_code attribute that can be checked against  requests.codes.ok to see whether the download succeeded. A simpler way to check for success is to call the  raise_for_status() method on the response object. This will raise an exception if there was an error down- loading the file and will do nothing if the download succeeded. Enter the following into the interactive shell:
+As you’ve seen, the response object has a  status_code attribute that can be checked against  requests.codes.ok to see whether the download succeeded. A simpler way to check for success is to call the  raise_for_status() method on the response object. This will raise an exception if there was an error downloading the file and will do nothing if the download succeeded. Enter the following into the interactive shell:
 
 >>> res = requests.get('http://inventwithpython.com/page_that_does_not_exist')
 >>> res.raise_for_status()
@@ -172,7 +172,7 @@ Always call  raise_for_status() after calling  requests.get() . You want to be s
 
 Saving Downloaded Files to the Hard Drive
 
-From here, you can save the web page to a file on your hard drive with the standard  open() function and  write() method. There are some slight differ- ences, though. First, you must open the file in write binary mode by passing the string  'wb' as the second argument to  open() . Even if the page is in plain- text (such as the Romeo and Juliet text you downloaded earlier), you need to write binary data instead of text data in order to maintain the Unicode encod- ing of the text.
+From here, you can save the web page to a file on your hard drive with the standard  open() function and  write() method. There are some slight differences, though. First, you must open the file in write binary mode by passing the string  'wb' as the second argument to  open() . Even if the page is in plaintext (such as the Romeo and Juliet text you downloaded earlier), you need to write binary data instead of text data in order to maintain the Unicode encoding of the text.
 
 To write the web page to a file, you can use a  for loop with the response object’s  iter_content() method.
 
@@ -188,7 +188,7 @@ playFile.write(chunk)
 
 The  iter_content() method returns “chunks” of the content on each iteration through the loop. Each chunk is of the bytes data type, and you get to specify how many bytes each chunk will contain. One hundred thousand bytes is generally a good size, so pass  100000 as the argument to iter_content() .
 
-The file RomeoAndJuliet.txt will now exist in the current working direc- tory. Note that while the filename on the website was pg1112.txt, the file on your hard drive has a different filename. The  requests module simply handles downloading the contents of web pages. Once the page is down- loaded, it is simply data in your program. Even if you were to lose your Internet connection after downloading the web page, all the page data would still be on your computer.
+The file RomeoAndJuliet.txt will now exist in the current working directory. Note that while the filename on the website was pg1112.txt, the file on your hard drive has a different filename. The  requests module simply handles downloading the contents of web pages. Once the page is downloaded, it is simply data in your program. Even if you were to lose your Internet connection after downloading the web page, all the page data would still be on your computer.
 
 Unicode Encodings
 
@@ -206,7 +206,7 @@ To review, here’s the complete process for downloading and saving a file:
 4. Call  write() on each iteration to write the content to the file.
 5. Call  close() to close the file.
 
-That’s all there is to the  requests module! The  for loop and  iter_content() stuff may seem complicated compared to the  open() / write() / close() work- flow you’ve been using to write text files, but it’s to ensure that the  requests module doesn’t eat up too much memory even if you download massive files. You can learn about the  requests module’s other features from http:// requests.readthedocs.org/.
+That’s all there is to the  requests module! The  for loop and  iter_content() stuff may seem complicated compared to the  open() / write() / close() workflow you’ve been using to write text files, but it’s to ensure that the  requests module doesn’t eat up too much memory even if you download massive files. You can learn about the  requests module’s other features from http:// requests.readthedocs.org/.
 
 HTML
 
@@ -243,27 +243,27 @@ Some elements have an  id attribute that is used to uniquely identify the elemen
 
 Viewing the Source HTML of a Web Page
 
-You’ll need to look at the HTML source of the web pages that your pro- grams will work with. To do this, right-click (or  ctrl -click on OS X) any web page in your web browser, and select View Source or View page source to see the HTML text of the page (see Figure 11-3). This is the text your browser actually receives. The browser knows how to display, or render, the web page from this HTML.
+You’ll need to look at the HTML source of the web pages that your programs will work with. To do this, right-click (or  ctrl -click on OS X) any web page in your web browser, and select View Source or View page source to see the HTML text of the page (see Figure 11-3). This is the text your browser actually receives. The browser knows how to display, or render, the web page from this HTML.
 
 Figure 11-3: Viewing the source of a web page
 
-I highly recommend viewing the source HTML of some of your favor- ite sites. It’s fine if you don’t fully understand what you are seeing when you look at the source. You won’t need HTML mastery to write simple web scraping programs—after all, you won’t be writing your own websites. You just need enough knowledge to pick out data from an existing site.
+I highly recommend viewing the source HTML of some of your favorite sites. It’s fine if you don’t fully understand what you are seeing when you look at the source. You won’t need HTML mastery to write simple web scraping programs—after all, you won’t be writing your own websites. You just need enough knowledge to pick out data from an existing site.
 
 Opening Your Browser’s Developer Tools
 
-In addition to viewing a web page’s source, you can look through a page’s HTML using your browser’s developer tools. In Chrome and Internet Explorer for Windows, the developer tools are already installed, and you can press F12 to make them appear (see Figure 11-4). Pressing F12 again will make the developer tools disappear. In Chrome, you can also bring up the developer tools by selecting View > Developer > Developer Tools. In OS X, pressing z- option -I will open Chrome’s Developer Tools.
+In addition to viewing a web page’s source, you can look through a page’s HTML using your browser’s developer tools. In Chrome and Internet Explorer for Windows, the developer tools are already installed, and you can press F12 to make them appear (see Figure 11-4). Pressing F12 again will make the developer tools disappear. In Chrome, you can also bring up the developer tools by selecting View > Developer > Developer Tools. In OS X, pressing z-option-I will open Chrome’s Developer Tools.
 
 Figure 11-4: The Developer Tools window in the Chrome browser
 
-In Firefox, you can bring up the Web Developer Tools Inspector by pressing  ctrl - ShiFt -c on Windows and Linux or by pressing z- option -c on OS X. The layout is almost identical to Chrome’s developer tools.
+In Firefox, you can bring up the Web Developer Tools Inspector by pressing Ctrl-Shift-c on Windows and Linux or by pressing z-option-c on OS X. The layout is almost identical to Chrome’s developer tools.
 
-In Safari, open the Preferences window, and on the Advanced pane check the Show Develop menu in the menu bar option. After it has been enabled, you can bring up the developer tools by pressing⌘z- option -i.
+In Safari, open the Preferences window, and on the Advanced pane check the Show Develop menu in the menu bar option. After it has been enabled, you can bring up the developer tools by pressing z-option-i.
 
 After enabling or installing the developer tools in your browser, you can right-click any part of the web page and select Inspect Element from the context menu to bring up the HTML responsible for that part of the page. This will be helpful when you begin to parse HTML for your web scraping programs.
 
 Don’t Use Regular Expressions to Parse HTML
 
-Locating a specific piece of HTML in a string seems like a perfect case for regular expressions. However, I advise you against it. There are many differ- ent ways that HTML can be formatted and still be considered valid HTML, but trying to capture all these possible variations in a regular expression can be tedious and error prone. A module developed specifically for parsing HTML, such as Beautiful Soup, will be less likely to result in bugs.
+Locating a specific piece of HTML in a string seems like a perfect case for regular expressions. However, I advise you against it. There are many different ways that HTML can be formatted and still be considered valid HTML, but trying to capture all these possible variations in a regular expression can be tedious and error prone. A module developed specifically for parsing HTML, such as Beautiful Soup, will be less likely to result in bugs.
 
 You can find an extended argument for why you shouldn’t to parse HTML with regular expressions at  http://autbor.com/htmlregex/ .
 
@@ -271,9 +271,9 @@ Using the Developer Tools to Find HTML Elements
 
 Once your program has downloaded a web page using the  requests module, you will have the page’s HTML content as a single string value. Now you need to figure out which part of the HTML corresponds to the information on the web page you’re interested in.
 
-This is where the browser’s developer tools can help. Say you want to write a program to pull weather forecast data from http://weather.gov/. Before writing any code, do a little research. If you visit the site and search for the 94105 ZIP code, the site will take you to a page showing the fore- cast for that area.
+This is where the browser’s developer tools can help. Say you want to write a program to pull weather forecast data from http://weather.gov/. Before writing any code, do a little research. If you visit the site and search for the 94105 ZIP code, the site will take you to a page showing the forecast for that area.
 
-What if you’re interested in scraping the temperature information for that ZIP code? Right-click where it is on the page (or  control -click on OS X) and select Inspect Element from the context menu that appears. This will bring up the Developer Tools window, which shows you the HTML that pro- duces this particular part of the web page. Figure 11-5 shows the developer tools open to the HTML of the temperature.
+What if you’re interested in scraping the temperature information for that ZIP code? Right-click where it is on the page (or  control -click on OS X) and select Inspect Element from the context menu that appears. This will bring up the Developer Tools window, which shows you the HTML that produces this particular part of the web page. Figure 11-5 shows the developer tools open to the HTML of the temperature.
 
 Figure 11-5: Inspecting the element that holds the temperature text with the developer tools
 
@@ -298,7 +298,7 @@ As you can see, even a simple HTML file involves many different tags and attribu
 
 Creating a Soup Object from HTML
 
-The  bs4.BeautifulSoup() function needs to be called with a string containing the HTML it will parse. The value that  bs4.BeautifulSoup() returns is of the BeautifulSoup data type, which I will call a soup object for short in this book. Enter the following into the interactive shell while your computer is con- nected to the Internet:
+The  bs4.BeautifulSoup() function needs to be called with a string containing the HTML it will parse. The value that  bs4.BeautifulSoup() returns is of the BeautifulSoup data type, which I will call a soup object for short in this book. Enter the following into the interactive shell while your computer is connected to the Internet:
 
 >>> import requests, bs4
 >>> res = requests.get('http://nostarch.com')
@@ -320,9 +320,9 @@ Once you have a soup object, you can use its methods to locate specific parts of
 
 Finding an Element with the select() Method
 
-You can retrieve a web page element from a soup object by calling the  select() method and passing a string of a CSS selector for the element you are look- ing for. Selectors are like regular expressions: They specify a pattern to look for, in this case, in HTML pages instead of general text strings.
+You can retrieve a web page element from a soup object by calling the  select() method and passing a string of a CSS selector for the element you are looking for. Selectors are like regular expressions: They specify a pattern to look for, in this case, in HTML pages instead of general text strings.
 
-A full discussion of CSS selector syntax is beyond the scope of this book (there’s a good selector tutorial at http://autbor.com/selectors/), but here’s a short introduction to selectors. Table 11-2 shows examples of the most com- mon CSS selector patterns.
+A full discussion of CSS selector syntax is beyond the scope of this book (there’s a good selector tutorial at http://autbor.com/selectors/), but here’s a short introduction to selectors. Table 11-2 shows examples of the most common CSS selector patterns.
 
 Table 11-2:  Examples of CSS Selectors
 Selector passed to the  select() method Will match . . .
@@ -349,7 +349,7 @@ attribute named  type with value  button
 
 The various selector patterns can be combined to make sophisticated matches. For example,  soup.select('p #author') will match any element that has an  id attribute of  author , as long as it is also inside a  <p> element.
 
-The  select() method will return a list of tag objects, which is how Beautiful Soup represents an HTML element. The list will contain one tag object for every match in the soup object’s HTML. Tag values can be passed to the str() function to show the HTML tags they represent. Tag values also have an  attrs attribute that shows all the HTML attributes of the tag as a diction- ary. Using the example.html file from earlier, enter the following into the inter- active shell:
+The  select() method will return a list of tag objects, which is how Beautiful Soup represents an HTML element. The list will contain one tag object for every match in the soup object’s HTML. Tag values can be passed to the str() function to show the HTML tags they represent. Tag values also have an  attrs attribute that shows all the HTML attributes of the tag as a dictionary. Using the example.html file from earlier, enter the following into the interactive shell:
 
 >>> import bs4
 >>> exampleFile = open('example.html')
@@ -370,7 +370,7 @@ The  select() method will return a list of tag objects, which is how Beautiful S
 
 This code will pull the element with  id="author" out of our example HTML. We use  select('#author') to return a list of all the elements with id="author" . We store this list of tag objects in the variable  elems , and len(elems) tells us there is one tag object in the list; there was one match. Calling getText() on the element returns the element’s text, or inner HTML. The text of an element is the content between the opening and closing tags: in this case,  'Al Sweigart' .
 
-Passing the element to  str() returns a string with the starting and clos- ing tags and the element’s text. Finally,  attrs gives us a dictionary with the element’s attribute,  'id' , and the value of the  id attribute,  'author' .
+Passing the element to  str() returns a string with the starting and closing tags and the element’s text. Finally,  attrs gives us a dictionary with the element’s attribute,  'id' , and the value of the  id attribute,  'author' .
 
 You can also pull all the  <p> elements from the soup object. Enter this into the interactive shell:
 
@@ -389,7 +389,7 @@ inventwithpython.com">my website</a>.</p>'
 >>> pElems[2].getText()
 'By Al Sweigart'
 
-This time,  select() gives us a list of three matches, which we store in pElems . Using  str() on  pElems[0] ,  pElems[1] , and  pElems[2] shows you each ele- ment as a string, and using  getText() on each element shows you its text.
+This time,  select() gives us a list of three matches, which we store in pElems . Using  str() on  pElems[0] ,  pElems[1] , and  pElems[2] shows you each element as a string, and using  getText() on each element shows you its text.
 
 Getting Data from an Element’s Attributes
 
@@ -411,7 +411,7 @@ Here we use  select() to find any  <span> elements and then store the first matc
 
 Project: “I’m Feeling Lucky” Google Search
 
-Whenever I search a topic on Google, I don’t look at just one search result at a time. By middle-clicking a search result link (or clicking while hold- ing  ctrl ), I open the first several links in a bunch of new tabs to read later. I search Google often enough that this workflow—opening my browser, searching for a topic, and middle-clicking several links one by one—is tedious. It would be nice if I could simply type a search term on the com- mand line and have my computer automatically open a browser with all the top search results in new tabs. Let’s write a script to do this.
+Whenever I search a topic on Google, I don’t look at just one search result at a time. By middle-clicking a search result link (or clicking while holding  ctrl ), I open the first several links in a bunch of new tabs to read later. I search Google often enough that this workflow—opening my browser, searching for a topic, and middle-clicking several links one by one—is tedious. It would be nice if I could simply type a search term on the command line and have my computer automatically open a browser with all the top search results in new tabs. Let’s write a script to do this.
 
 This is what your program does:
 
@@ -445,11 +445,11 @@ The user will specify the search terms using command-line arguments when they la
 
 Step 2: Find All the Results
 
-Now you need to use Beautiful Soup to extract the top search result links from your downloaded HTML. But how do you figure out the right selec- tor for the job? For example, you can’t just search for all  <a> tags, because there are lots of links you don’t care about in the HTML. Instead, you must inspect the search result page with the browser’s developer tools to try to find a selector that will pick out only the links you want.
+Now you need to use Beautiful Soup to extract the top search result links from your downloaded HTML. But how do you figure out the right selector for the job? For example, you can’t just search for all  <a> tags, because there are lots of links you don’t care about in the HTML. Instead, you must inspect the search result page with the browser’s developer tools to try to find a selector that will pick out only the links you want.
 
 After doing a Google search for Beautiful Soup, you can open the browser’s developer tools and inspect some of the link elements on the page. They look incredibly complicated, something like this:  <a href="/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;cad=rja&amp;uact=8&amp;ved=0CCgQFjAA&amp;url=http%3A%2F%2Fwww.crummy.com%2Fsoftware%2FBeautifulSoup%2F&amp;ei=LHBVU_XDD9KVyAShmYDwCw&amp;usg=AFQjCNHAxwplurFOBqg5cehWQEVKi-TuLQ&amp;sig2=sdZu6WVlBlVSDrwhtworMA" onmousedown="return rwt(this,'','','','1','AFQjCNHAxwplurFOBqg5cehWQEVKi-TuLQ','sdZu6WVlBlVSDrwhtworMA','0CCgQFjAA','','',event)" data-href="http://www.crummy.com/software/BeautifulSoup/"><em>Beautiful Soup</em>: We called him Tortoise because he taught us.</a> .
 
-It doesn’t matter that the element looks incredibly complicated. You just need to find the pattern that all the search result links have. But this  <a> ele- ment doesn’t have anything that easily distinguishes it from the nonsearch result  <a> elements on the page.
+It doesn’t matter that the element looks incredibly complicated. You just need to find the pattern that all the search result links have. But this  <a> element doesn’t have anything that easily distinguishes it from the nonsearch result  <a> elements on the page.
 
 Make your code look like the following:
 
@@ -527,7 +527,7 @@ If you open the browser’s developer tools and inspect the elements on the page
 •  The URL of the comic’s image file is given by the  href attribute of an <img> element.
 •  The  <img> element is inside a  <div id="comic"> element.
 •  The Prev button has a  rel HTML attribute with the value  prev .
-•  The first comic’s Prev button links to the http://xkcd.com/# URL, indicat- ing that there are no more previous pages.
+•  The first comic’s Prev button links to the http://xkcd.com/# URL, indicating that there are no more previous pages.
 
 Make your code look like the following:
 
@@ -546,7 +546,7 @@ print('Done.')
 
 You’ll have a  url variable that starts with the value  'http://xkcd.com' and repeatedly update it (in a  for loop) with the URL of the current page’s Prev link. At every step in the loop, you’ll download the comic at  url . You’ll know to end the loop when  url ends with  '#' .
 
-You will download the image files to a folder in the current working directory named xkcd. The call  os.makedirs() ensures that this folder exists, and the  exist_ok=True keyword argument prevents the function from throw- ing an exception if this folder already exists. The rest of the code is just comments that outline the rest of your program.
+You will download the image files to a folder in the current working directory named xkcd. The call  os.makedirs() ensures that this folder exists, and the  exist_ok=True keyword argument prevents the function from throwing an exception if this folder already exists. The rest of the code is just comments that outline the rest of your program.
 
 Step 2: Download the Web Page
 
@@ -595,7 +595,7 @@ print('Done.')
 
 From inspecting the XKCD home page with your developer tools, you know that the  <img> element for the comic image is inside a  <div> element with the  id attribute set to  comic , so the selector  '#comic img' will get you the correct  <img> element from the soup object.
 
-A few XKCD pages have special content that isn’t a simple image file. That’s fine; you’ll just skip those. If your selector doesn’t find any elements, then  soup.select('#comic img') will return a blank list. When that happens, the program can just print an error message and move on without down- loading the image.
+A few XKCD pages have special content that isn’t a simple image file. That’s fine; you’ll just skip those. If your selector doesn’t find any elements, then  soup.select('#comic img') will return a blank list. When that happens, the program can just print an error message and move on without downloading the image.
 
 Otherwise, the selector will return a list containing one  <img> element. You can get the  src attribute from this  <img> element and pass it to  requests.get() to download the comic’s image file.
 
@@ -651,19 +651,19 @@ Downloading pages and following links are the basis of many web crawling program
 •  Copy all the messages off a web forum.
 •  Duplicate the catalog of items for sale on an online store.
 
-The  requests and  BeautifulSoup modules are great as long as you can figure out the URL you need to pass to  requests.get() . However, sometimes this isn’t so easy to find. Or perhaps the website you want your program to navigate requires you to log in first. The  selenium module will give your pro- grams the power to perform such sophisticated tasks.
+The  requests and  BeautifulSoup modules are great as long as you can figure out the URL you need to pass to  requests.get() . However, sometimes this isn’t so easy to find. Or perhaps the website you want your program to navigate requires you to log in first. The  selenium module will give your programs the power to perform such sophisticated tasks.
 
 Controlling the Browser with the selenium Module
 
-The  selenium module lets Python directly control the browser by program- matically clicking links and filling in login information, almost as though there is a human user interacting with the page. Selenium allows you to interact with web pages in a much more advanced way than Requests and Beautiful Soup; but because it launches a web browser, it is a bit slower and hard to run in the background if, say, you just need to download some files from the Web.
+The  selenium module lets Python directly control the browser by programmatically clicking links and filling in login information, almost as though there is a human user interacting with the page. Selenium allows you to interact with web pages in a much more advanced way than Requests and Beautiful Soup; but because it launches a web browser, it is a bit slower and hard to run in the background if, say, you just need to download some files from the Web.
 
 You can install the  selenium module by running  pip install selenium from the command line. (Appendix A has more detailed steps on installing third-party modules.)
 
 Starting a Selenium-Controlled Browser
 
-For these examples, you’ll need the Firefox web browser. This will be the browser that you control. If you don’t already have Firefox, you can down- load it for free from http://getfirefox.com/.
+For these examples, you’ll need the Firefox web browser. This will be the browser that you control. If you don’t already have Firefox, you can download it for free from http://getfirefox.com/.
 
-Importing the modules for Selenium is slightly tricky. Instead of  import selenium , you need to run  from selenium import webdriver . (The exact reason why the  selenium module is set up this way is beyond the scope of this book.) After that, you can launch the Firefox browser with Selenium. Enter the fol- lowing into the interactive shell:
+Importing the modules for Selenium is slightly tricky. Instead of  import selenium , you need to run  from selenium import webdriver . (The exact reason why the  selenium module is set up this way is beyond the scope of this book.) After that, you can launch the Firefox browser with Selenium. Enter the following into the interactive shell:
 
 >>> from selenium import webdriver
 >>> browser = webdriver.Firefox()
@@ -760,7 +760,7 @@ We found an element with the class name  'bookcover' and the tag name  'img' .
 
 Clicking the Page
 
-WebElement objects returned from the  find_element and  find_elements methods have a  click() method that simulates a mouse click on that ele- ment. This method can be used to follow a link, make a selection on a radio button, click a Submit button, or trigger whatever else might happen when the element is clicked by the mouse. For example, enter the following into the interactive shell:
+WebElement objects returned from the  find_element and  find_elements methods have a  click() method that simulates a mouse click on that element. This method can be used to follow a link, make a selection on a radio button, click a Submit button, or trigger whatever else might happen when the element is clicked by the mouse. For example, enter the following into the interactive shell:
 
 >>> from selenium import webdriver
 >>> browser = webdriver.Firefox()
@@ -785,7 +785,7 @@ Sending keystrokes to text fields on a web page is a matter of finding the  <inp
 >>> passwordElem.send_keys('12345')
 >>> passwordElem.submit()
 
-As long as Gmail hasn’t changed the  id of the Username and Pass- word text fields since this book was published, the previous code will fill in those text fields with the provided text. (You can always use the browser’s inspector to verify the  id .) Calling the  submit() method on any element will have the same result as clicking the Submit button for the form that element is in. (You could have just as easily called  emailElem.submit() , and the code would have done the same thing.)
+As long as Gmail hasn’t changed the  id of the Username and Password text fields since this book was published, the previous code will fill in those text fields with the provided text. (You can always use the browser’s inspector to verify the  id .) Calling the  submit() method on any element will have the same result as clicking the Submit button for the form that element is in. (You could have just as easily called  emailElem.submit() , and the code would have done the same thing.)
 
 Sending Special Keys
 
@@ -846,7 +846,7 @@ Practice Questions
 4. How can you get the HTTP status code of a Requests response?
 5. How do you save a Requests response to a file?
 6. What is the keyboard shortcut for opening a browser’s developer tools?
-7.  How can you view (in the developer tools) the HTML of a specific ele- ment on a web page?
+7.  How can you view (in the developer tools) the HTML of a specific element on a web page?
 8. What is the CSS selector string that would find the element with an  id attribute of  main ?
 9. What is the CSS selector string that would find the elements with a CSS class of  highlight ?
 10. What is the CSS selector string that would find all the  <div> elements inside another  <div> element?
@@ -865,7 +865,7 @@ For practice, write programs to do the following tasks.
 
 Command-Line Emailer
 
-Write a program that takes an email address and string of text on the com- mand line and then, using Selenium, logs into your email account and sends an email of the string to the provided address. (You might want to set up a separate email account for this program.)
+Write a program that takes an email address and string of text on the command line and then, using Selenium, logs into your email account and sends an email of the string to the provided address. (You might want to set up a separate email account for this program.)
 
 This would be a nice way to add a notification feature to your programs. You could also write a similar program to send messages from a Facebook or Twitter account.
 
@@ -875,8 +875,8 @@ Write a program that goes to a photo-sharing site like Flickr or Imgur, searches
 
 2048
 
-2048 is a simple game where you combine tiles by sliding them up, down, left, or right with the arrow keys. You can actually get a fairly high score by repeatedly sliding in an up, right, down, and left pattern over and over again. Write a program that will open the game at https://gabrielecirulli.github.io/2048/ and keep sending up, right, down, and left keystrokes to automati- cally play the game.
+2048 is a simple game where you combine tiles by sliding them up, down, left, or right with the arrow keys. You can actually get a fairly high score by repeatedly sliding in an up, right, down, and left pattern over and over again. Write a program that will open the game at https://gabrielecirulli.github.io/2048/ and keep sending up, right, down, and left keystrokes to automatically play the game.
 
 Link Verification
 
-Write a program that, given the URL of a web page, will attempt to down- load every linked page on the page. The program should flag any pages that have a 404 “Not Found” status code and print them out as broken links.
+Write a program that, given the URL of a web page, will attempt to download every linked page on the page. The program should flag any pages that have a 404 “Not Found” status code and print them out as broken links.

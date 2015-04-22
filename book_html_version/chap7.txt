@@ -1,12 +1,12 @@
 You may be familiar with searching for text by pressing  ctrl -F and typing in the words you’re looking for. Regular expressions go one step further: They allow you to specify a pattern of text to search for. You may not know a business’s exact phone number, but if you live in the United States or Canada, you know it will be three digits, followed by a hyphen, and then four more digits (and optionally, a three-digit area code at the start). This is how you, as a human, know a phone number when you see it: 415-555-1234 is a phone number, but 4,155,551,234 is not.
 
-Regular expressions are helpful, but not many non-programmers know about them even though most modern text editors and word pro- cessors, such as Microsoft Word or OpenOffice, have find and find-and- replace features that can search based on regular expressions. Regular expressions are huge time-savers, not just for software users but also for programmers. In fact, tech writer Cory Doctorow argues that even before teaching programming, we should be teaching regular expressions: “Knowing [regular expressions] can mean the difference between solving a problem in 3 steps and solving it in 3,000 steps. When you’re a nerd, you forget that the problems you solve with a couple keystrokes can take other people days of tedious, error-prone work to slog through.” 1
+Regular expressions are helpful, but not many non-programmers know about them even though most modern text editors and word processors, such as Microsoft Word or OpenOffice, have find and find-and-replace features that can search based on regular expressions. Regular expressions are huge time-savers, not just for software users but also for programmers. In fact, tech writer Cory Doctorow argues that even before teaching programming, we should be teaching regular expressions: “Knowing [regular expressions] can mean the difference between solving a problem in 3 steps and solving it in 3,000 steps. When you’re a nerd, you forget that the problems you solve with a couple keystrokes can take other people days of tedious, error-prone work to slog through.” 1
 
 1. Cory Doctorow, “Here’s what ICT should really teach kids: how to do regular expressions,”
 Guardian, December 4, 2012, http://www.theguardian.com/technology/2012/dec/04/ict-teach-kids
 -regular-expressions/.
 
-In this chapter, you’ll start by writing a program to find text patterns without using regular expressions and then see how to use regular expres- sions to make the code much less bloated. I’ll show you basic matching with regular expressions and then move on to some more powerful features, such as string substitution and creating your own character classes. Finally, at the end of the chapter, you’ll write a program that can automatically extract phone numbers and email addresses from a block of text.
+In this chapter, you’ll start by writing a program to find text patterns without using regular expressions and then see how to use regular expressions to make the code much less bloated. I’ll show you basic matching with regular expressions and then move on to some more powerful features, such as string substitution and creating your own character classes. Finally, at the end of the chapter, you’ll write a program that can automatically extract phone numbers and email addresses from a block of text.
 
 Finding Patterns of Text Without Regular Expressions
 
@@ -43,7 +43,7 @@ True
 Moshi moshi is a phone number:
 False
 
-The  isPhoneNumber() function has code that does several checks to see whether the string in  text is a valid phone number. If any of these checks fail, the function returns  False . First the code checks that the string is exactly 12 characters u. Then it checks that the area code (that is, the first three characters in  text ) consists of only numeric characters v. The rest of the function checks that the string follows the pattern of a phone num- ber: The number must have the first hyphen after the area code w, three more numeric characters x, then another hyphen y, and finally four more numbers z. If the program execution manages to get past all the checks, it returns  True {.
+The  isPhoneNumber() function has code that does several checks to see whether the string in  text is a valid phone number. If any of these checks fail, the function returns  False . First the code checks that the string is exactly 12 characters u. Then it checks that the area code (that is, the first three characters in  text ) consists of only numeric characters v. The rest of the function checks that the string follows the pattern of a phone number: The number must have the first hyphen after the area code w, three more numeric characters x, then another hyphen y, and finally four more numbers z. If the program execution manages to get past all the checks, it returns  True {.
 
 Calling  isPhoneNumber() with the argument  '415-555-4242' will return True . Calling  isPhoneNumber() with  'Moshi moshi' will return  False ; the first test fails because  'Moshi moshi' is not 12 characters long. You would have to add even more code to find this pattern of text in a larger string. Replace the last four  print() function calls in isPhoneNumber.py with the following:
 
@@ -72,7 +72,7 @@ While the string in  message is short in this example, it could be millions of c
 
 Finding Patterns of Text with Regular Expressions
 
-The previous phone number–finding program works, but it uses a lot of code to do something limited: The  isPhoneNumber() function is 17 lines but can find only one pattern of phone numbers. What about a phone number formatted like 415.555.4242 or (415) 555-4242? What if the phone num- ber had an extension, like 415-555-4242 x99? The  isPhoneNumber() function would fail to validate them. You could add yet more code for these addi- tional patterns, but there is an easier way.
+The previous phone number–finding program works, but it uses a lot of code to do something limited: The  isPhoneNumber() function is 17 lines but can find only one pattern of phone numbers. What about a phone number formatted like 415.555.4242 or (415) 555-4242? What if the phone number had an extension, like 415-555-4242 x99? The  isPhoneNumber() function would fail to validate them. You could add yet more code for these additional patterns, but there is an easier way.
 
 Regular expressions, called regexes for short, are descriptions for a pattern of text. For example, a  \d in a regex stands for a digit character— that is, any single numeral 0 to 9. The regex  \d\d\d-\d\d\d-\d\d\d\d is used by Python to match the same text the previous  isPhoneNumber() function did: a string of three numbers, a hyphen, three more numbers, another hyphen, and four numbers. Any other string would not match the  \d\d\d-\d\d\d-\d\d \d\d regex.
 
@@ -84,7 +84,7 @@ All the regex functions in Python are in the  re module. Enter the following int
 
 >>> import re
 
-NOTE: Most of the examples that follow in this chapter will require the  re module, so remem- ber to import it at the beginning of any script you write or any time you restart IDLE. Otherwise, you’ll get a  NameError: name 're' is not defined error message.
+NOTE: Most of the examples that follow in this chapter will require the  re module, so remember to import it at the beginning of any script you write or any time you restart IDLE. Otherwise, you’ll get a  NameError: name 're' is not defined error message.
 
 Passing a string value representing your regular expression to  re.compile() returns a regex pattern object (or simply, a regex object).
 
@@ -111,7 +111,7 @@ backslashes. Typing  r'\d\d\d-\d\d\d-\d\d\d\d' is much easier than typing
 
 Matching Regex Objects
 
-A regex object’s  search() method searches the string it is passed for any matches to the regex. The  search() method will return  None if the regex pat- tern is not found in the string. If the pattern is found, the  search() method returns a match object. Match objects have a  group() method that will return the actual matched text from the searched string. (I’ll explain groups shortly.) For example, enter the following into the interactive shell:
+A regex object’s  search() method searches the string it is passed for any matches to the regex. The  search() method will return  None if the regex pattern is not found in the string. If the pattern is found, the  search() method returns a match object. Match objects have a  group() method that will return the actual matched text from the searched string. (I’ll explain groups shortly.) For example, enter the following into the interactive shell:
 
 >>> phoneNumRegex = re.compile(r'\d\d\d-\d\d\d-\d\d\d\d')
 >>> mo = phoneNumRegex.search('My number is 415-555-4242.')
@@ -138,13 +138,13 @@ NOTE: While I encourage you to enter the example code into the interactive shell
 
 More Pattern Matching with Regular Expressions
 
-Now that you know the basic steps for creating and finding regular expres- sion objects with Python, you’re ready to try some of their more powerful pattern-matching capabilities.
+Now that you know the basic steps for creating and finding regular expression objects with Python, you’re ready to try some of their more powerful pattern-matching capabilities.
 
 Grouping with Parentheses
 
 Say you want to separate the area code from the rest of the phone number. Adding parentheses will create groups in the regex:  (\d\d\d)-(\d\d\d-\d\d\d\d) . Then you can use the  group() match object method to grab the matching text from just one group.
 
-The first set of parentheses in a regex string will be group  1 . The sec- ond set will be group  2 . By passing the integer  1 or  2 to the  group() match object method, you can grab different parts of the matched text. Passing  0 or nothing to the  group() method will return the entire matched text. Enter the following into the interactive shell:
+The first set of parentheses in a regex string will be group  1 . The second set will be group  2 . By passing the integer  1 or  2 to the  group() match object method, you can grab different parts of the matched text. Passing  0 or nothing to the  group() method will return the entire matched text. Enter the following into the interactive shell:
 
 >>> phoneNumRegex = re.compile(r'(\d\d\d)-(\d\d\d-\d\d\d\d)')
 >>> mo = phoneNumRegex.search('My number is 415-555-4242.')
@@ -169,7 +169,7 @@ If you would like to retrieve all the groups at once, use the  groups() method�
 
 Since  mo.groups() returns a tuple of multiple values, you can use the multiple-assignment trick to assign each value to a separate variable, as in the previous  areaCode, mainNumber = mo.groups() line.
 
-Parentheses have a special meaning in regular expressions, but what do you do if you need to match a parenthesis in your text? For instance, maybe the phone numbers you are trying to match have the area code set in paren- theses. In this case, you need to escape the  ( and  ) characters with a back- slash. Enter the following into the interactive shell:
+Parentheses have a special meaning in regular expressions, but what do you do if you need to match a parenthesis in your text? For instance, maybe the phone numbers you are trying to match have the area code set in parentheses. In this case, you need to escape the  ( and  ) characters with a backslash. Enter the following into the interactive shell:
 
 >>> phoneNumRegex = re.compile(r'(\(\d\d\d\)) (\d\d\d-\d\d\d\d)')
 >>> mo = phoneNumRegex.search('My phone number is (415) 555-4242.')
@@ -205,9 +205,9 @@ You can also use the pipe to match one of several patterns as part of your regex
 >>> mo.group(1)
 'mobile'
 
-The method call  mo.group() returns the full matched text  'Batmobile' , while  mo.group(1) returns just the part of the matched text inside the first parentheses group,  'mobile' . By using the pipe character and grouping paren- theses, you can specify several alternative patterns you would like your regex to match.
+The method call  mo.group() returns the full matched text  'Batmobile' , while  mo.group(1) returns just the part of the matched text inside the first parentheses group,  'mobile' . By using the pipe character and grouping parentheses, you can specify several alternative patterns you would like your regex to match.
 
-If you need to match an actual pipe character, escape it with a back- slash, like  \| .
+If you need to match an actual pipe character, escape it with a backslash, like  \| .
 
 Optional Matching with the Question Mark
 
@@ -233,7 +233,7 @@ Using the earlier phone number example, you can make the regex look for phone nu
 >>> mo2.group()
 '555-4242'
 
-You can think of the  ? as saying, “Match zero or one of the group pre- ceding this question mark.”
+You can think of the  ? as saying, “Match zero or one of the group preceding this question mark.”
 
 If you need to match an actual question mark character, escape it with  \? .
 
@@ -275,7 +275,7 @@ The regex  Bat(wo)+man will not match the string  'The Adventures of Batman' bec
 
 Matching Specific Repetitions with Curly Braces
 
-If you have a group that you want to repeat a specific number of times, fol- low the group in your regex with a number in curly braces. For example, the regex  (Ha){3} will match the string  'HaHaHa' , but it will not match  'HaHa' , since the latter has only two repeats of the  (Ha) group.
+If you have a group that you want to repeat a specific number of times, follow the group in your regex with a number in curly braces. For example, the regex  (Ha){3} will match the string  'HaHaHa' , but it will not match  'HaHa' , since the latter has only two repeats of the  (Ha) group.
 
 Instead of one number, you can specify a range by writing a minimum, a comma, and a maximum in between the curly braces. For example, the regex  (Ha){3,5} will match  'HaHaHa' ,  'HaHaHaHa' , and  'HaHaHaHaHa' .
 
@@ -305,9 +305,9 @@ Greedy and Nongreedy Matching
 
 Since  (Ha){3,5} can match three, four, or five instances of  Ha in the string 'HaHaHaHaHa' , you may wonder why the match object’s call to  group() in the previous curly brace example returns  'HaHaHaHaHa' instead of the shorter possibilities. After all,  'HaHaHa' and  'HaHaHaHa' are also valid matches of the regular expression  (Ha){3,5} .
 
-Python’s regular expressions are greedy by default, which means that in ambiguous situations they will match the longest string possible. The non- greedy version of the curly brackets, which matches the shortest string pos- sible, has the closing curly bracket followed by a question mark.
+Python’s regular expressions are greedy by default, which means that in ambiguous situations they will match the longest string possible. The nongreedy version of the curly brackets, which matches the shortest string possible, has the closing curly bracket followed by a question mark.
 
-Enter the following into the interactive shell, and notice the differ- ence between the greedy and nongreedy forms of the curly braces search- ing the same string:
+Enter the following into the interactive shell, and notice the difference between the greedy and nongreedy forms of the curly braces searching the same string:
 
 >>> greedyHaRegex = re.compile(r'(Ha){3,5}')
 >>> mo1 = greedyHaRegex.search('HaHaHaHaHa')
@@ -318,11 +318,11 @@ Enter the following into the interactive shell, and notice the differ- ence betw
 >>> mo2.group()
 'HaHaHa'
 
-Note that the question mark can have two meanings in regular expres- sions: declaring a nongreedy match or flagging an optional group. These meanings are entirely unrelated.
+Note that the question mark can have two meanings in regular expressions: declaring a nongreedy match or flagging an optional group. These meanings are entirely unrelated.
 
 The findall() Method
 
-In addition to the  search() method, regex pattern objects also have a findall() method. While  search() will return a match object of the first matched text in the searched string, the  findall() method will return the strings of every match in the searched string. To see how  search() returns a match object only on the first instance of matching text, enter the follow- ing into the interactive shell:
+In addition to the  search() method, regex pattern objects also have a findall() method. While  search() will return a match object of the first matched text in the searched string, the  findall() method will return the strings of every match in the searched string. To see how  search() returns a match object only on the first instance of matching text, enter the following into the interactive shell:
 
 >>> phoneNumRegex = re.compile(r'\d\d\d-\d\d\d-\d\d\d\d')
 >>> mo = phoneNumRegex.search('Cell: 415-555-9999 Work: 212-555-0000')
@@ -343,12 +343,12 @@ If there are groups in the regular expression, then  findall() will return a lis
 
 To summarize what the  findall() method returns, remember the following:
 
-1. When called on a regex with no groups, such as  \d\d\d-\d\d\d-\d\d\d\d , the method  findall() returns a list of string matches, such as  ['415-555- 9999', '212-555-0000'] .
+1. When called on a regex with no groups, such as  \d\d\d-\d\d\d-\d\d\d\d , the method  findall() returns a list of string matches, such as  ['415-555-9999', '212-555-0000'] .
 2. When called on a regex that has groups, such as  (\d\d\d)-(\d\d\d)-(\d\ d\d\d) , the method  findall() returns a list of tuples of strings (one string for each group), such as  [('415', '555', '1122'), ('415', '555', '8899')] .
 
 Character Classes
 
-In the earlier phone number regex example, you learned that  \d could stand for any numeric digit. That is,  \d is shorthand for the regular expres- sion  (0|1|2|3|4|5|6|7|8|9) . There are many such shorthand character classes, as shown in Table 7-1.
+In the earlier phone number regex example, you learned that  \d could stand for any numeric digit. That is,  \d is shorthand for the regular expression  (0|1|2|3|4|5|6|7|8|9) . There are many such shorthand character classes, as shown in Table 7-1.
 
 Table 7-1:  Shorthand Codes for Common Character Classes
 
@@ -363,7 +363,7 @@ underscore character.
 matching “space” characters.)
 \S Any character that is not a space, tab, or newline.
 
-Character classes are nice for shortening regular expressions. The char- acter class  [0-5] will match only the numbers  0 to  5 ; this is much shorter than typing  (0|1|2|3|4|5) .
+Character classes are nice for shortening regular expressions. The character class  [0-5] will match only the numbers  0 to  5 ; this is much shorter than typing  (0|1|2|3|4|5) .
 
 For example, enter the following into the interactive shell:
 
@@ -377,7 +377,7 @@ The regular expression  \d+\s\w+ will match text that has one or more numeric di
 
 Making Your Own Character Classes
 
-There are times when you want to match a set of characters but the short- hand character classes ( \d ,  \w ,  \s , and so on) are too broad. You can define your own character class using square brackets. For example, the character class  [aeiouAEIOU] will match any vowel, both lowercase and uppercase. Try entering the following into the interactive shell:
+There are times when you want to match a set of characters but the shorthand character classes ( \d ,  \w ,  \s , and so on) are too broad. You can define your own character class using square brackets. For example, the character class  [aeiouAEIOU] will match any vowel, both lowercase and uppercase. Try entering the following into the interactive shell:
 
 >>> vowelRegex = re.compile(r'[aeiouAEIOU]')
 >>> vowelRegex.findall('Robocop eats baby food. BABY FOOD.')
@@ -425,7 +425,7 @@ True
 >>> wholeStringIsNum.search('12 34567890') == None
 True
 
-The last two  search() calls in the previous interactive shell example demonstrate how the entire string must match the regex if  ^ and  $ are used. I always confuse the meanings of these two symbols, so I use the mne- monic “Carrots cost dollars” to remind myself that the caret comes first and the dollar sign comes last.
+The last two  search() calls in the previous interactive shell example demonstrate how the entire string must match the regex if  ^ and  $ are used. I always confuse the meanings of these two symbols, so I use the mnemonic “Carrots cost dollars” to remind myself that the caret comes first and the dollar sign comes last.
 
 The Wildcard Character
 
@@ -507,7 +507,7 @@ Normally, regular expressions match text with the exact casing you specify. For 
 >>> regex3 = re.compile('robOcop')
 >>> regex4 = re.compile('RobocOp')
 
-But sometimes you care only about matching the letters without worry- ing whether they’re uppercase or lowercase. To make your regex case-insen- sitive, you can pass  re.IGNORECASE or  re.I as a second argument to  re.compile() . Enter the following into the interactive shell:
+But sometimes you care only about matching the letters without worrying whether they’re uppercase or lowercase. To make your regex case-insensitive, you can pass  re.IGNORECASE or  re.I as a second argument to  re.compile() . Enter the following into the interactive shell:
 
 >>> robocop = re.compile(r'robocop', re.I)
 >>> robocop.search('Robocop is part man, part machine, all cop.').group()
@@ -534,7 +534,7 @@ A**** told C**** that E**** knew B**** was a double agent.'
 
 Managing Complex Regexes
 
-Regular expressions are fine if the text pattern you need to match is simple. But matching complicated text patterns might require long, convoluted reg- ular expressions. You can mitigate this by telling the  re.compile() function to ignore whitespace and comments inside the regular expression string.
+Regular expressions are fine if the text pattern you need to match is simple. But matching complicated text patterns might require long, convoluted regular expressions. You can mitigate this by telling the  re.compile() function to ignore whitespace and comments inside the regular expression string.
 
 This “verbose mode” can be enabled by passing the variable  re.VERBOSE as the second argument to  re.compile() . Now instead of a hard-to-read regular expression like this:
 
@@ -552,13 +552,13 @@ phoneRegex = re.compile(r'''(
 (\s*(ext|x|ext.)\s*\d{2,5})? # Extension
 )''', re.VERBOSE)
 
-Note how the previous example uses the triple-quote syntax ( ''' ) to create a multiline string so that you can spread the regular expression defi- nition over many lines, making it much more legible.
+Note how the previous example uses the triple-quote syntax ( ''' ) to create a multiline string so that you can spread the regular expression definition over many lines, making it much more legible.
 
-The comment rules inside the regular expression string are the same as regular Python code: The  # symbol and everything after it to the end of the line are ignored. Also, the extra spaces inside the multiline string for the reg- ular expression are not considered part of the text pattern to be matched. This lets you organize the regular expression so it’s easier to read.
+The comment rules inside the regular expression string are the same as regular Python code: The  # symbol and everything after it to the end of the line are ignored. Also, the extra spaces inside the multiline string for the regular expression are not considered part of the text pattern to be matched. This lets you organize the regular expression so it’s easier to read.
 
 Combining re.IGNORECASE, re.DOTALL, and re.VERBOSE
 
-What if you want to use  re.VERBOSE to write comments in your regular expres- sion but also want to use  re.IGNORECASE to ignore capitalization? Unfortunately, the  re.compile() function takes only a single value as its second argument. You can get around this limitation by combining the  re.IGNORECASE ,  re.DOTALL , and re.VERBOSE variables using the pipe character ( | ), which in this context is known as the bitwise or operator.
+What if you want to use  re.VERBOSE to write comments in your regular expression but also want to use  re.IGNORECASE to ignore capitalization? Unfortunately, the  re.compile() function takes only a single value as its second argument. You can get around this limitation by combining the  re.IGNORECASE ,  re.DOTALL , and re.VERBOSE variables using the pipe character ( | ), which in this context is known as the bitwise or operator.
 
 So if you want a regular expression that’s case-insensitive and includes newlines to match the dot character, you would form your  re.compile() call like this:
 
@@ -613,7 +613,7 @@ The  TODO comments are just a skeleton for the program. They’ll be replaced as
 
 The phone number begins with an optional area code, so the area code group is followed with a question mark. Since the area code can be just three digits (that is,  \d{3} ) or three digits within parentheses (that is,  \(\d{3}\) ), you should have a pipe joining those parts. You can add the regex comment # Area code to this part of the multiline string to help you remember what (\d{3}|\(\d{3}\))? is supposed to match.
 
-The phone number separator character can be a space ( \s ), hyphen ( - ), or period ( . ), so these parts should also be joined by pipes. The next few parts of the regular expression are straightforward: three digits, followed by another separator, followed by four digits. The last part is an optional extension made up of any number of spaces followed by  ext ,  x , or  ext. , fol- lowed by two to five digits.
+The phone number separator character can be a space ( \s ), hyphen ( - ), or period ( . ), so these parts should also be joined by pipes. The next few parts of the regular expression are straightforward: three digits, followed by another separator, followed by four digits. The last part is an optional extension made up of any number of spaces followed by  ext ,  x , or  ext. , followed by two to five digits.
 
 Step 2: Create a Regex for Email Addresses
 
@@ -667,7 +667,7 @@ As you can see at u, you’ll store the matches in a list variable named matches
 
 Step 4: Join the Matches into a String for the Clipboard
 
-Now that you have the email addresses and phone numbers as a list of strings in  matches , you want to put them on the clipboard. The  pyperclip.copy() func- tion takes only a single string value, not a list of strings, so you call the  join() method on  matches .
+Now that you have the email addresses and phone numbers as a list of strings in  matches , you want to put them on the clipboard. The  pyperclip.copy() function takes only a single string value, not a list of strings, so you call the  join() method on  matches .
 
 To make it easier to see that the program is working, let’s print any matches you find to the terminal. And if no phone numbers or email addresses were found, the program should tell the user this. Make your program look like the following:
 
@@ -703,11 +703,11 @@ Identifying patterns of text (and possibly substituting them with the  sub() met
 •  Find website URLs that begin with http:// or https://.
 •  Clean up dates in different date formats (such as 3/14/2014, 03-14-2014, and 2014/3/14) by replacing them with dates in a single, standard format.
 •  Remove sensitive information such as Social Security or credit card numbers.
-•  Find common typos such as multiple spaces between words, acciden- tally accidentally repeated words, or multiple exclamation marks at the end of sentences. Those are annoying!!
+•  Find common typos such as multiple spaces between words, accidentally accidentally repeated words, or multiple exclamation marks at the end of sentences. Those are annoying!!
 
 Summary
 
-While a computer can search for text quickly, it must be told precisely what to look for. Regular expressions allow you to specify the precise patterns of characters you are looking for. In fact, some word processing and spread- sheet applications provide find-and-replace features that allow you to search using regular expressions.
+While a computer can search for text quickly, it must be told precisely what to look for. Regular expressions allow you to specify the precise patterns of characters you are looking for. In fact, some word processing and spreadsheet applications provide find-and-replace features that allow you to search using regular expressions.
 
 The  re module that comes with Python lets you compile regex pattern objects. These values have several methods:  search() to find a single match, findall() to find all matching instances, and  sub() to do a find-and-replace substitution of text.
 
@@ -770,8 +770,8 @@ For practice, write programs to do the following tasks.
 
 Strong Password Detection
 
-Write a function that uses regular expressions to make sure the password string it is passed is strong. A strong password is defined as one that is at least eight characters long, contains both uppercase and lowercase charac- ters, and has at least one digit. You may need to test the string against mul- tiple regex patterns to validate its strength.
+Write a function that uses regular expressions to make sure the password string it is passed is strong. A strong password is defined as one that is at least eight characters long, contains both uppercase and lowercase characters, and has at least one digit. You may need to test the string against multiple regex patterns to validate its strength.
 
 Regex Version of strip()
 
-Write a function that takes a string and does the same thing as the  strip() string method. If no other arguments are passed other than the string to strip, then whitespace characters will be removed from the beginning and end of the string. Otherwise, the characters specified in the second argu- ment to the function will be removed from the string.
+Write a function that takes a string and does the same thing as the  strip() string method. If no other arguments are passed other than the string to strip, then whitespace characters will be removed from the beginning and end of the string. Otherwise, the characters specified in the second argument to the function will be removed from the string.
