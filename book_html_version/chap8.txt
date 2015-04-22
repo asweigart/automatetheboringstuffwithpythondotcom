@@ -83,23 +83,16 @@ The os.path Module
 
 The  os.path module contains many helpful functions related to filenames and file paths. For instance, you’ve already used  os.path.join() to build paths in a way that will work on any operating system. Since  os.path is a module inside the  os module, you can import it by simply running  import os . Whenever your programs need to work with files, folders, or file paths, you can refer to the short examples in this section. The full documentation for the  os.path module is on the Python website at http://docs.python.org/3/ library/os.path.html.
 
-NOTE: Most of the examples that follow in this section will require the  os module, so remem-
-ber to import it at the beginning of any script you write and any time you restart
-IDLE. Otherwise, you’ll get a  NameError: name 'os' is not defined error message.
+NOTE: Most of the examples that follow in this section will require the  os module, so remem- ber to import it at the beginning of any script you write and any time you restart IDLE. Otherwise, you’ll get a  NameError: name 'os' is not defined error message.
 
 Handling Absolute and Relative Paths
 
-The  os.path module provides functions for returning the absolute path of a
-relative path and for checking whether a given path is an absolute path.
-•  Calling  os.path.abspath(path) will return a string of the absolute path
-of the argument. This is an easy way to convert a relative path into an
-absolute one.
-•  Calling  os.path.isabs(path) will return  True if the argument is an abso-
-lute path and  False if it is a relative path.
-•  Calling  os.path.relpath(path, start) will return a string of a relative path
-from the  start path to  path . If  start is not provided, the current working
-directory is used as the start path.
-Try these functions in the interactive shell:
+The  os.path module provides functions for returning the absolute path of a relative path and for checking whether a given path is an absolute path.
+
+•  Calling  os.path.abspath(path) will return a string of the absolute path of the argument. This is an easy way to convert a relative path into an absolute one.
+•  Calling  os.path.isabs(path) will return  True if the argument is an abso- lute path and  False if it is a relative path.
+•  Calling  os.path.relpath(path, start) will return a string of a relative path from the  start path to  path . If  start is not provided, the current working directory is used as the start path.  Try these functions in the interactive shell:
+
 >>> os.path.abspath('.')
 'C:\\Python34'
 >>> os.path.abspath('.\\Scripts')
@@ -108,100 +101,96 @@ Try these functions in the interactive shell:
 False
 >>> os.path.isabs(os.path.abspath('.'))
 True
-Since C:\Python34 was the working directory when  os.path.abspath() was
-called, the “single-dot” folder represents the absolute path  'C:\\Python34' .
-NOTE: Since your system probably has different files and folders on it than mine, you won’t
-be able to follow every example in this chapter exactly. Still, try to follow along using
-folders that exist on your computer.
+
+Since C:\Python34 was the working directory when  os.path.abspath() was called, the “single-dot” folder represents the absolute path  'C:\\Python34' .
+
+NOTE: Since your system probably has different files and folders on it than mine, you won’t be able to follow every example in this chapter exactly. Still, try to follow along using folders that exist on your computer.
+
 Enter the following calls to  os.path.relpath() into the interactive shell:
+
 >>> os.path.relpath('C:\\Windows', 'C:\\')
 'Windows'
 >>> os.path.relpath('C:\\Windows', 'C:\\spam\\eggs')
 '..\\..\\Windows'
 >>> os.getcwd()
 'C:\\Python34'
-Calling  os.path.dirname(path) will return a string of everything that comes
-before the last slash in the  path argument. Calling  os.path.basename(path) will
-return a string of everything that comes after the last slash in the  path argu-
-ment. The dir name and base name of a path are outlined in Figure 8-4.
-C:\Windows\System32\calc.exe
-Dir name Base name
-Figure 8-4: The base name follows the last slash
-in a path and is the same as the filename. The dir
-name is everything before the last slash.
+
+Calling  os.path.dirname(path) will return a string of everything that comes before the last slash in the  path argument. Calling  os.path.basename(path) will return a string of everything that comes after the last slash in the  path argu- ment. The dir name and base name of a path are outlined in Figure 8-4.
+
+Figure 8-4: The base name follows the last slash in a path and is the same as the filename. The dir name is everything before the last slash.
+
 For example, enter the following into the interactive shell:
+
 >>> path = 'C:\\Windows\\System32\\calc.exe'
 >>> os.path.basename(path)
 'calc.exe'
 >>> os.path.dirname(path)
 'C:\\Windows\\System32'
-If you need a path’s dir name and base name together, you can just call
-os.path.split() to get a tuple value with these two strings, like so:
+
+If you need a path’s dir name and base name together, you can just call os.path.split() to get a tuple value with these two strings, like so:
+
 >>> calcFilePath = 'C:\\Windows\\System32\\calc.exe'
 >>> os.path.split(calcFilePath)
 ('C:\\Windows\\System32', 'calc.exe')
-Notice that you could create the same tuple by calling  os.path.dirname()
-and  os.path.basename() and placing their return values in a tuple.
+
+Notice that you could create the same tuple by calling  os.path.dirname() and  os.path.basename() and placing their return values in a tuple.
+
 >>> (os.path.dirname(calcFilePath), os.path.basename(calcFilePath))
 ('C:\\Windows\\System32', 'calc.exe')
+
 But  os.path.split() is a nice shortcut if you need both values.
-Also, note that  os.path.split() does not take a file path and return a list
-of strings of each folder. For that, use the  split() string method and split on
-the string in  os.sep . Recall from earlier that the  os.sep variable is set to the
-correct folder-separating slash for the computer running the program.
+
+Also, note that  os.path.split() does not take a file path and return a list of strings of each folder. For that, use the  split() string method and split on the string in  os.sep . Recall from earlier that the  os.sep variable is set to the correct folder-separating slash for the computer running the program.
+
 For example, enter the following into the interactive shell:
+
 >>> calcFilePath.split(os.path.sep)
 ['C:', 'Windows', 'System32', 'calc.exe']
-On OS X and Linux systems, there will be a blank string at the start of
-the returned list:
+
+On OS X and Linux systems, there will be a blank string at the start of the returned list:
+
 >>> '/usr/bin'.split(os.path.sep)
 ['', 'usr', 'bin']
-The  split() string method will work to return a list of each part of the
-path. It will work on any operating system if you pass it  os.path.sep .
+
+The  split() string method will work to return a list of each part of the path. It will work on any operating system if you pass it  os.path.sep .
+
 Finding File Sizes and Folder Contents
-Once you have ways of handling file paths, you can then start gathering
-information about specific files and folders. The  os.path module provides
-functions for finding the size of a file in bytes and the files and folders
-inside a given folder.
-•  Calling  os.path.getsize(path) will return the size in bytes of the file in
-the  path argument.
-•  Calling  os.listdir(path) will return a list of filename strings for each file
-in the  path argument. (Note that this function is in the  os module, not
-os.path .)
+
+Once you have ways of handling file paths, you can then start gathering information about specific files and folders. The  os.path module provides functions for finding the size of a file in bytes and the files and folders inside a given folder.
+
+•  Calling  os.path.getsize(path) will return the size in bytes of the file in the  path argument.
+•  Calling  os.listdir(path) will return a list of filename strings for each file in the  path argument. (Note that this function is in the  os module, not os.path .)
+
 Here’s what I get when I try these functions in the interactive shell:
+
 >>> os.path.getsize('C:\\Windows\\System32\\calc.exe')
 776192
 >>> os.listdir('C:\\Windows\\System32')
 ['0409', '12520437.cpx', '12520850.cpx', '5U877.ax', 'aaclient.dll',
 --snip--
 'xwtpdui.dll', 'xwtpw32.dll', 'zh-CN', 'zh-HK', 'zh-TW', 'zipfldr.dll']
-As you can see, the calc.exe program on my computer is 776,192 bytes
-in size, and I have a lot of files in C:\Windows\system32. If I want to find the
-total size of all the files in this directory, I can use  os.path.getsize() and
-os.listdir() together.
+
+As you can see, the calc.exe program on my computer is 776,192 bytes in size, and I have a lot of files in C:\Windows\system32. If I want to find the total size of all the files in this directory, I can use  os.path.getsize() and os.listdir() together.
+
 >>> totalSize = 0
 >>> for filename in os.listdir('C:\\Windows\\System32'):
 ... totalSize = totalSize + os.path.getsize(os.path.join('C:\\Windows\\System32', filename))
 ...
 >>> print(totalSize)
 1117846456
-As I loop over each filename in the C:\Windows\System32 folder, the
-totalSize variable is incremented by the size of each file. Notice how when
-I call  os.path.getsize() , I use  os.path.join() to join the folder name with the
-current filename. The integer that  os.path.getsize() returns is added to the
-value of  totalSize . After looping through all the files, I print  totalSize to see
-the total size of the C:\Windows\System32 folder.
+
+As I loop over each filename in the C:\Windows\System32 folder, the totalSize variable is incremented by the size of each file. Notice how when I call  os.path.getsize() , I use  os.path.join() to join the folder name with the current filename. The integer that  os.path.getsize() returns is added to the value of  totalSize . After looping through all the files, I print  totalSize to see the total size of the C:\Windows\System32 folder.
+
 Checking Path Validity
-Many Python functions will crash with an error if you supply them with a
-path that does not exist. The  os.path module provides functions to check
-whether a given path exists and whether it is a file or folder.
-•  Calling  os.path.exists(path) will return  True if the file or folder referred
-to in the argument exists and will return  False if it does not exist.
-•  Calling  os.path.isfile(path) will return  True if the path argument exists
-and is a file and will return  False otherwise.
-•  Calling  os.path.isdir(path) will return  True if the path argument exists
-and is a folder and will return  False otherwise.
+
+Many Python functions will crash with an error if you supply them with a path that does not exist. The  os.path module provides functions to check whether a given path exists and whether it is a file or folder.
+
+•  Calling  os.path.exists(path) will return  True if the file or folder referred to in the argument exists and will return  False if it does not exist.
+•  Calling  os.path.isfile(path) will return  True if the path argument exists and is a file and will return  False otherwise.
+•  Calling  os.path.isdir(path) will return  True if the path argument exists and is a folder and will return  False otherwise.
+
 Here’s what I get when I try these functions in the interactive shell:
+
 >>> os.path.exists('C:\\Windows')
 True
 >>> os.path.exists('C:\\some_made_up_folder')
@@ -214,107 +203,85 @@ False
 False
 >>> os.path.isfile('C:\\Windows\\System32\\calc.exe')
 True
-You can determine whether there is a DVD or flash drive currently
-attached to the computer by checking for it with the  os.path.exists() func-
-tion. For instance, if I wanted to check for a flash drive with the volume
-named D:\ on my Windows computer, I could do that with the following:
+
+You can determine whether there is a DVD or flash drive currently attached to the computer by checking for it with the  os.path.exists() func- tion. For instance, if I wanted to check for a flash drive with the volume named D:\ on my Windows computer, I could do that with the following:
+
 >>> os.path.exists('D:\\')
 False
+
 Oops! It looks like I forgot to plug in my flash drive.
+
 The File Reading/Writing Process
-Once you are comfortable working with folders and relative paths, you’ll
-be able to specify the location of files to read and write. The functions
-covered in the next few sections will apply to plaintext files. Plaintext files
-contain only basic text characters and do not include font, size, or color
-information. Text files with the .txt extension or Python script files with
-the .py extension are examples of plaintext files. These can be opened with
-Windows’s Notepad or OS X’s TextEdit application. Your programs can easily
-read the contents of plaintext files and treat them as an ordinary string value.
-Binary files are all other file types, such as word processing documents,
-PDFs, images, spreadsheets, and executable programs. If you open a binary
-file in Notepad or TextEdit, it will look like scrambled nonsense, like in
-Figure 8-5.
+
+Once you are comfortable working with folders and relative paths, you’ll be able to specify the location of files to read and write. The functions covered in the next few sections will apply to plaintext files. Plaintext files contain only basic text characters and do not include font, size, or color information. Text files with the .txt extension or Python script files with the .py extension are examples of plaintext files. These can be opened with Windows’s Notepad or OS X’s TextEdit application. Your programs can easily read the contents of plaintext files and treat them as an ordinary string value.
+
+Binary files are all other file types, such as word processing documents, PDFs, images, spreadsheets, and executable programs. If you open a binary file in Notepad or TextEdit, it will look like scrambled nonsense, like in Figure 8-5.
+
 Figure 8-5: The Windows  calc.exe program opened in Notepad
-Since every different type of binary file must be handled in its own
-way, this book will not go into reading and writing raw binary files directly.
-Fortunately, many modules make working with binary files easier—you will
-explore one of them, the  shelve module, later in this chapter.
+
+Since every different type of binary file must be handled in its own way, this book will not go into reading and writing raw binary files directly. Fortunately, many modules make working with binary files easier—you will explore one of them, the  shelve module, later in this chapter.
+
 There are three steps to reading or writing files in Python.
+
 1. Call the  open() function to return a file object value.
 2. Call the  read() or  write() method on the file object.
 3. Close the file by calling the  close() method on the file object.
+
 Opening Files with the open() Function
-To open a file with the  open() function, you pass it a string path indicating
-the file you want to open; it can be either an absolute or relative path. The
-open() function returns a file object value.
-Try it by creating a text file named hello.txt using Notepad or TextEdit.
-Type  Hello world! as the content of this text file and save it in your user
-home folder. Then, if you’re using Windows, enter the following into the
-interactive shell:
+
+To open a file with the  open() function, you pass it a string path indicating the file you want to open; it can be either an absolute or relative path. The open() function returns a file object value.
+
+Try it by creating a text file named hello.txt using Notepad or TextEdit. Type  Hello world! as the content of this text file and save it in your user home folder. Then, if you’re using Windows, enter the following into the interactive shell:
+
 >>> helloFile = open('C:\\Users\\your_home_folder\\hello.txt')
+
 If you’re using OS X, enter the following into the interactive shell instead:
+
 >>> helloFile = open('/Users/your_home_folder/hello.txt')
-Make sure to replace  your_home_folder with your computer username.
-For example, my username is asweigart, so I’d enter  'C:\\Users\\asweigart\\
-hello.txt' on Windows.
-Both these commands will open the file in “reading plaintext” mode,
-or read mode for short. When a file is opened in read mode, Python lets you
-only read data from the file; you can’t write or modify it in any way. Read
-mode is the default mode for files you open in Python. But if you don’t want
-to rely on Python’s defaults, you can explicitly specify the mode by passing
-the string value  'r' as a second argument to  open() . So  open('/Users/asweigart/
-hello.txt', 'r') and  open('/Users/asweigart/hello.txt') do the same thing.
-The call to  open() returns a value called a file object. A file object repre-
-sents a file on your computer; it is simply another type of value in Python,
-much like the lists and dictionaries you’re already familiar with. In the
-previous example, you stored the file object in the variable  helloFile . Now,
-whenever you want to read from or write to the file, you can do so by calling
-methods on the file object in  helloFile .
+
+Make sure to replace  your_home_folder with your computer username. For example, my username is asweigart, so I’d enter  'C:\\Users\\asweigart\\ hello.txt' on Windows.
+
+Both these commands will open the file in “reading plaintext” mode, or read mode for short. When a file is opened in read mode, Python lets you only read data from the file; you can’t write or modify it in any way. Read mode is the default mode for files you open in Python. But if you don’t want to rely on Python’s defaults, you can explicitly specify the mode by passing the string value  'r' as a second argument to  open() . So  open('/Users/asweigart/ hello.txt', 'r') and  open('/Users/asweigart/hello.txt') do the same thing.
+
+The call to  open() returns a value called a file object. A file object repre- sents a file on your computer; it is simply another type of value in Python, much like the lists and dictionaries you’re already familiar with. In the previous example, you stored the file object in the variable  helloFile . Now, whenever you want to read from or write to the file, you can do so by calling methods on the file object in  helloFile .
+
 Reading the Contents of Files
-Now that you have a file object, you can start reading from it. If you want to
-read the entire contents of a file as a string value, use the file object’s  read()
-method. Let’s continue with the hello.txt file object you stored in  helloFile .
-Enter the following into the interactive shell:
+
+Now that you have a file object, you can start reading from it. If you want to read the entire contents of a file as a string value, use the file object’s  read() method. Let’s continue with the hello.txt file object you stored in  helloFile . Enter the following into the interactive shell:
+
 >>> helloContent = helloFile.read()
 >>> helloContent
 'Hello world!'
-If you think of the contents of a file as a single large string value, the
-read() method returns the string that is stored in the file.
-Alternatively, you can use the  readlines() method to get a list of string
-values from the file, one string for each line of text. For example, create a
-file named sonnet29.txt in the same directory as hello.txt and write the follow-
-ing text in it:
+
+If you think of the contents of a file as a single large string value, the read() method returns the string that is stored in the file.
+
+Alternatively, you can use the  readlines() method to get a list of string values from the file, one string for each line of text. For example, create a file named sonnet29.txt in the same directory as hello.txt and write the follow- ing text in it:
+
 When, in disgrace with fortune and men's eyes,
 I all alone beweep my outcast state,
 And trouble deaf heaven with my bootless cries,
 And look upon myself and curse my fate,
-Make sure to separate the four lines with line breaks. Then enter the
-following into the interactive shell:
+
+Make sure to separate the four lines with line breaks. Then enter the following into the interactive shell:
+
 >>> sonnetFile = open('sonnet29.txt')
 >>> sonnetFile.readlines()
 [When, in disgrace with fortune and men's eyes,\n', ' I all alone beweep my
 outcast state,\n', And trouble deaf heaven with my bootless cries,\n', And
 look upon myself and curse my fate,']
-Note that each of the string values ends with a newline character,  \n ,
-except for the last line of the file. A list of strings is often easier to work with
-than a single large string value.
+
+Note that each of the string values ends with a newline character,  \n , except for the last line of the file. A list of strings is often easier to work with than a single large string value.
+
 Writing to Files
-Python allows you to write content to a file in a way similar to how the  print()
-function “writes” strings to the screen. You can’t write to a file you’ve opened
-in read mode, though. Instead, you need to open it in “write plaintext” mode
-or “append plaintext” mode, or write mode and append mode for short.
-Write mode will overwrite the existing file and start from scratch, just
-like when you overwrite a variable’s value with a new value. Pass  'w' as the
-second argument to  open() to open the file in write mode. Append mode,
-on the other hand, will append text to the end of the existing file. You can
-think of this as appending to a list in a variable, rather than overwriting the
-variable altogether. Pass  'a' as the second argument to  open() to open the
-file in append mode.
-If the filename passed to  open() does not exist, both write and append
-mode will create a new, blank file. After reading or writing a file, call the
-close() method before opening the file again.
-Let’s put these concepts together. Enter the following into the inter-
-active shell:
+
+Python allows you to write content to a file in a way similar to how the  print() function “writes” strings to the screen. You can’t write to a file you’ve opened in read mode, though. Instead, you need to open it in “write plaintext” mode or “append plaintext” mode, or write mode and append mode for short.
+
+Write mode will overwrite the existing file and start from scratch, just like when you overwrite a variable’s value with a new value. Pass  'w' as the second argument to  open() to open the file in write mode. Append mode, on the other hand, will append text to the end of the existing file. You can think of this as appending to a list in a variable, rather than overwriting the variable altogether. Pass  'a' as the second argument to  open() to open the file in append mode.
+
+If the filename passed to  open() does not exist, both write and append mode will create a new, blank file. After reading or writing a file, call the close() method before opening the file again.
+
+Let’s put these concepts together. Enter the following into the inter- active shell:
+
 >>> baconFile = open('bacon.txt', 'w')
 >>> baconFile.write('Hello world!\n')
 13
@@ -329,84 +296,61 @@ active shell:
 >>> print(content)
 Hello world!
 Bacon is not a vegetable.
-First, we open bacon.txt in write mode. Since there isn’t a bacon.txt yet,
-Python creates one. Calling  write() on the opened file and passing  write()
-the string argument  'Hello world! /n' writes the string to the file and
-returns the number of characters written, including the newline. Then
-we close the file.
-To add text to the existing contents of the file instead of replacing the
-string we just wrote, we open the file in append mode. We write  'Bacon is
-not a vegetable.' to the file and close it. Finally, to print the file contents to
-the screen, we open the file in its default read mode, call  read() , store the
-resulting file object in  content , close the file, and print  content .
-Note that the  write() method does not automatically add a newline
-character to the end of the string like the  print() function does. You will
-have to add this character yourself.
+
+First, we open bacon.txt in write mode. Since there isn’t a bacon.txt yet, Python creates one. Calling  write() on the opened file and passing  write() the string argument  'Hello world! /n' writes the string to the file and returns the number of characters written, including the newline. Then we close the file.
+
+To add text to the existing contents of the file instead of replacing the string we just wrote, we open the file in append mode. We write  'Bacon is not a vegetable.' to the file and close it. Finally, to print the file contents to the screen, we open the file in its default read mode, call  read() , store the resulting file object in  content , close the file, and print  content .
+
+Note that the  write() method does not automatically add a newline character to the end of the string like the  print() function does. You will have to add this character yourself.
+
 Saving Variables with the shelve Module
-You can save variables in your Python programs to binary shelf files using
-the  shelve module. This way, your program can restore data to variables
-from the hard drive. The  shelve module will let you add Save and Open
-features to your program. For example, if you ran a program and entered
-some configuration settings, you could save those settings to a shelf file and
-then have the program load them the next time it is run.
+
+You can save variables in your Python programs to binary shelf files using the  shelve module. This way, your program can restore data to variables from the hard drive. The  shelve module will let you add Save and Open features to your program. For example, if you ran a program and entered some configuration settings, you could save those settings to a shelf file and then have the program load them the next time it is run.
+
 Enter the following into the interactive shell:
+
 >>> import shelve
 >>> shelfFile = shelve.open('mydata')
 >>> cats = ['Zophie', 'Pooka', 'Simon']
 >>> shelfFile['cats'] = cats
 >>> shelfFile.close()
-To read and write data using the  shelve module, you first import  shelve .
-Call  shelve.open() and pass it a filename, and then store the returned shelf
-value in a variable. You can make changes to the shelf value as if it were a
-dictionary. When you’re done, call  close() on the shelf value. Here, our shelf
-value is stored in  shelfFile . We create a list  cats and write  shelfFile['cats'] =
-cats to store the list in  shelfFile as a value associated with the key  'cats'
-(like in a dictionary). Then we call  close() on  shelfFile .
-After running the previous code on Windows, you will see three new
-files in the current working directory: mydata.bak, mydata.dat, and mydata.
-dir. On OS X, only a single mydata.db file will be created.
-These binary files contain the data you stored in your shelf. The format
-of these binary files is not important; you only need to know what the  shelve
-module does, not how it does it. The module frees you from worrying about
-how to store your program’s data to a file.
-Your programs can use the  shelve module to later reopen and retrieve
-the data from these shelf files. Shelf values don’t have to be opened in read
-or write mode—they can do both once opened. Enter the following into the
-interactive shell:
+
+To read and write data using the  shelve module, you first import  shelve . Call  shelve.open() and pass it a filename, and then store the returned shelf value in a variable. You can make changes to the shelf value as if it were a dictionary. When you’re done, call  close() on the shelf value. Here, our shelf value is stored in  shelfFile . We create a list  cats and write  shelfFile['cats'] = cats to store the list in  shelfFile as a value associated with the key  'cats' (like in a dictionary). Then we call  close() on  shelfFile .
+
+After running the previous code on Windows, you will see three new files in the current working directory: mydata.bak, mydata.dat, and mydata. dir. On OS X, only a single mydata.db file will be created.
+
+These binary files contain the data you stored in your shelf. The format of these binary files is not important; you only need to know what the  shelve module does, not how it does it. The module frees you from worrying about how to store your program’s data to a file.
+
+Your programs can use the  shelve module to later reopen and retrieve the data from these shelf files. Shelf values don’t have to be opened in read or write mode—they can do both once opened. Enter the following into the interactive shell:
+
 >>> shelfFile = shelve.open('mydata')
 >>> type(shelfFile)
 <class 'shelve.DbfilenameShelf'>
 >>> shelfFile['cats']
 ['Zophie', 'Pooka', 'Simon']
 >>> shelfFile.close()
+
 Here, we open the shelf files to check that our data was stored correctly.
-Entering  shelfFile['cats'] returns the same list that we stored earlier, so we
-know that the list is correctly stored, and we call  close() .
-Just like dictionaries, shelf values have  keys() and  values() methods that
-will return list-like values of the keys and values in the shelf. Since these
-methods return list-like values instead of true lists, you should pass them
-to the  list() function to get them in list form. Enter the following into the
-interactive shell:
+
+Entering  shelfFile['cats'] returns the same list that we stored earlier, so we know that the list is correctly stored, and we call  close() .
+
+Just like dictionaries, shelf values have  keys() and  values() methods that will return list-like values of the keys and values in the shelf. Since these methods return list-like values instead of true lists, you should pass them to the  list() function to get them in list form. Enter the following into the interactive shell:
+
 >>> shelfFile = shelve.open('mydata')
 >>> list(shelfFile.keys())
 ['cats']
 >>> list(shelfFile.values())
 [['Zophie', 'Pooka', 'Simon']]
 >>> shelfFile.close()
-Plaintext is useful for creating files that you’ll read in a text editor such
-as Notepad or TextEdit, but if you want to save data from your Python pro-
-grams, use the  shelve module.
+
+Plaintext is useful for creating files that you’ll read in a text editor such as Notepad or TextEdit, but if you want to save data from your Python pro- grams, use the  shelve module.
+
 Saving Variables with the pprint.pformat() Function
-Recall from “Pretty Printing” on page 111 that the  pprint.pprint() func-
-tion will “pretty print” the contents of a list or dictionary to the screen,
-while the  pprint.pformat() function will return this same text as a string
-instead of printing it. Not only is this string formatted to be easy to read,
-but it is also syntactically correct Python code. Say you have a dictionary
-stored in a variable and you want to save this variable and its contents for
-future use. Using  pprint.pformat() will give you a string that you can write
-to .py file. This file will be your very own module that you can import when-
-ever you want to use the variable stored in it.
+
+Recall from “Pretty Printing” on page 111 that the  pprint.pprint() func- tion will “pretty print” the contents of a list or dictionary to the screen, while the  pprint.pformat() function will return this same text as a string instead of printing it. Not only is this string formatted to be easy to read, but it is also syntactically correct Python code. Say you have a dictionary stored in a variable and you want to save this variable and its contents for future use. Using  pprint.pformat() will give you a string that you can write to .py file. This file will be your very own module that you can import when- ever you want to use the variable stored in it.
+
 For example, enter the following into the interactive shell:
+
 >>> import pprint
 >>> cats = [{'name': 'Zophie', 'desc': 'chubby'}, {'name': 'Pooka', 'desc': 'fluffy'}]
 >>> pprint.pformat(cats)
@@ -415,17 +359,11 @@ For example, enter the following into the interactive shell:
 >>> fileObj.write('cats = ' + pprint.pformat(cats) + '\n')
 83
 >>> fileObj.close()
-Here, we import  pprint to let us use  pprint.pformat() . We have a list of
-dictionaries, stored in a variable  cats . To keep the list in  cats available even
-after we close the shell, we use  pprint.pformat() to return it as a string. Once
-we have the data in  cats as a string, it’s easy to write the string to a file, which
-we’ll call myCats.py.
-The modules that an  import statement imports are themselves just
-Python scripts. When the string from  pprint.pformat() is saved to a .py file,
-the file is a module that can be imported just like any other.
-And since Python scripts are themselves just text files with the .py file
-extension, your Python programs can even generate other Python pro-
-grams. You can then import these files into scripts.
+
+Here, we import  pprint to let us use  pprint.pformat() . We have a list of dictionaries, stored in a variable  cats . To keep the list in  cats available even after we close the shell, we use  pprint.pformat() to return it as a string. Once we have the data in  cats as a string, it’s easy to write the string to a file, which we’ll call myCats.py.
+
+The modules that an  import statement imports are themselves just Python scripts. When the string from  pprint.pformat() is saved to a .py file, the file is a module that can be imported just like any other. And since Python scripts are themselves just text files with the .py file extension, your Python programs can even generate other Python pro- grams. You can then import these files into scripts.
+
 >>> import myCats
 >>> myCats.cats
 [{'name': 'Zophie', 'desc': 'chubby'}, {'name': 'Pooka', 'desc': 'fluffy'}]
@@ -433,36 +371,28 @@ grams. You can then import these files into scripts.
 {'name': 'Zophie', 'desc': 'chubby'}
 >>> myCats.cats[0]['name']
 'Zophie'
-The benefit of creating a .py file (as opposed to saving variables with
-the  shelve module) is that because it is a text file, the contents of the file
-can be read and modified by anyone with a simple text editor. For most
-applications, however, saving data using the  shelve module is the preferred
-way to save variables to a file. Only basic data types such as integers, floats,
-strings, lists, and dictionaries can be written to a file as simple text. File
-object values, for example, cannot be encoded as text.
+
+The benefit of creating a .py file (as opposed to saving variables with the  shelve module) is that because it is a text file, the contents of the file can be read and modified by anyone with a simple text editor. For most applications, however, saving data using the  shelve module is the preferred way to save variables to a file. Only basic data types such as integers, floats, strings, lists, and dictionaries can be written to a file as simple text. File object values, for example, cannot be encoded as text.
+
 Project: Generating Random Quiz Files
-Say you’re a geography teacher with 35 students in your class and you want
-to give a pop quiz on US state capitals. Alas, your class has a few bad eggs in
-it, and you can’t trust the students not to cheat. You’d like to randomize the
-order of questions so that each quiz is unique, making it impossible for any-
-one to crib answers from anyone else. Of course, doing this by hand would
-be a lengthy and boring affair. Fortunately, you know some Python.
+
+Say you’re a geography teacher with 35 students in your class and you want to give a pop quiz on US state capitals. Alas, your class has a few bad eggs in it, and you can’t trust the students not to cheat. You’d like to randomize the order of questions so that each quiz is unique, making it impossible for any- one to crib answers from anyone else. Of course, doing this by hand would be a lengthy and boring affair. Fortunately, you know some Python.
+
 Here is what the program does:
+
 •  Creates 35 different quizzes.
 •  Creates 50 multiple-choice questions for each quiz, in random order.
-•  Provides the correct answer and three random wrong answers for each
-question, in random order.
+•  Provides the correct answer and three random wrong answers for each question, in random order.
 •  Writes the quizzes to 35 text files.
-•  Writes the answer keys to 35 text files.
-This means the code will need to do the following:
+•  Writes the answer keys to 35 text files. This means the code will need to do the following:
 •  Store the states and their capitals in a dictionary.
 •  Call  open() ,  write() , and  close() for the quiz and answer key text files.
-•  Use  random.shuffle() to randomize the order of the questions and
-multiple-choice options.
+•  Use  random.shuffle() to randomize the order of the questions and multiple-choice options.
+
 Step 1: Store the Quiz Data in a Dictionary
-The first step is to create a skeleton script and fill it with your quiz data.
-Create a file named randomQuizGenerator.py, and make it look like the
-following:
+
+The first step is to create a skeleton script and fill it with your quiz data. Create a file named randomQuizGenerator.py, and make it look like the following:
+
 #! python3
 # randomQuizGenerator.py
 # Creates quizzes with questions and answers in
@@ -492,23 +422,17 @@ w for quizNum in range(35):
 # TODO Write out the header for the quiz.
 # TODO Shuffle the order of the states.
 # TODO Loop through all 50 states, making a question for each.
-Since this program will be randomly ordering the questions and answers,
-you’ll need to import the  random module u to make use of its functions. The
-capitals variable v contains a dictionary with US states as keys and their capi-
-tals as values. And since you want to create 35 quizzes, the code that actu-
-ally generates the quiz and answer key files (marked with  TODO comments for
-now) will go inside a  for loop that loops 35 times w. (This number can be
-changed to generate any number of quiz files.)
+
+Since this program will be randomly ordering the questions and answers, you’ll need to import the  random module u to make use of its functions. The capitals variable v contains a dictionary with US states as keys and their capi- tals as values. And since you want to create 35 quizzes, the code that actu- ally generates the quiz and answer key files (marked with  TODO comments for now) will go inside a  for loop that loops 35 times w. (This number can be changed to generate any number of quiz files.)
+
 Step 2: Create the Quiz File and Shuffle the Question Order
+
 Now it’s time to start filling in those  TODO s.
-The code in the loop will be repeated 35 times—once for each quiz—
-so you have to worry about only one quiz at a time within the loop. First
-you’ll create the actual quiz file. It needs to have a unique filename and
-should also have some kind of standard header in it, with places for the stu-
-dent to fill in a name, date, and class period. Then you’ll need to get a list
-of states in randomized order, which can be used later to create the ques-
-tions and answers for the quiz.
+
+The code in the loop will be repeated 35 times—once for each quiz— so you have to worry about only one quiz at a time within the loop. First you’ll create the actual quiz file. It needs to have a unique filename and should also have some kind of standard header in it, with places for the stu- dent to fill in a name, date, and class period. Then you’ll need to get a list of states in randomized order, which can be used later to create the ques- tions and answers for the quiz.
+
 Add the following bold lines of code to randomQuizGenerator.py:
+
 --snip--
 # Generate 35 quiz files.
 for quizNum in range(35):
@@ -523,25 +447,15 @@ quizFile.write('\n\n')
 states = list(capitals.keys())
 x random.shuffle(states)
 # TODO Loop through all 50 states, making a question for each.
-The filenames for the quizzes will be capitalsquiz<N>.txt, where <N> is
-a unique number for the quiz that comes from  quizNum , the  for loop’s coun-
-ter. The answer key for capitalsquiz<N>.txt will be stored in a text file named
-capitalsquiz_answers<N>.txt. Each time through the loop, the  %s placeholder
-in  'capitalsquiz%s.txt' and  'capitalsquiz_answers%s.txt' will be replaced by
-(quizNum + 1) , so the first quiz and answer key created will be capitalsquiz1.txt
-and capitalsquiz_answers1.txt. These files will be created with calls to the  open()
-function at u and v, with  'w' as the second argument to open them in
-write mode.
-The  write() statements at w create a quiz header for the student to fill
-out. Finally, a randomized list of US states is created with the help of the
-random.shuffle() function x, which randomly reorders the values in any list
-that is passed to it.
+
+The filenames for the quizzes will be capitalsquiz<N>.txt, where <N> is a unique number for the quiz that comes from  quizNum , the  for loop’s coun- ter. The answer key for capitalsquiz<N>.txt will be stored in a text file named capitalsquiz_answers<N>.txt. Each time through the loop, the  %s placeholder in  'capitalsquiz%s.txt' and  'capitalsquiz_answers%s.txt' will be replaced by (quizNum + 1) , so the first quiz and answer key created will be capitalsquiz1.txt and capitalsquiz_answers1.txt. These files will be created with calls to the  open() function at u and v, with  'w' as the second argument to open them in write mode.
+
+The  write() statements at w create a quiz header for the student to fill out. Finally, a randomized list of US states is created with the help of the random.shuffle() function x, which randomly reorders the values in any list that is passed to it.
+
 Step 3: Create the Answer Options
-Now you need to generate the answer options for each question, which will
-be multiple choice from A to D. You’ll need to create another  for loop—this
-one to generate the content for each of the 50 questions on the quiz. Then
-there will be a third  for loop nested inside to generate the multiple-choice
-options for each question. Make your code look like the following:
+
+Now you need to generate the answer options for each question, which will be multiple choice from A to D. You’ll need to create another  for loop—this one to generate the content for each of the 50 questions on the quiz. Then there will be a third  for loop nested inside to generate the multiple-choice options for each question. Make your code look like the following:
+
 --snip--
 # Generate 35 quiz files.
 for quizNum in range(35):
@@ -557,21 +471,15 @@ y answerOptions = wrongAnswers + [correctAnswer]
 z random.shuffle(answerOptions)
 # TODO Write the question and answer options to the quiz file.
 # TODO Write the answer key to a file.
-The correct answer is easy to get—it’s stored as a value in the  capitals
-dictionary u. This loop will loop through the states in the shuffled  states
-list, from  states[0] to  states[49] , find each state in  capitals , and store that
-state’s corresponding capital in  correctAnswer .
-The list of possible wrong answers is trickier. You can get it by duplicat-
-ing all the values in the  capitals dictionary v, deleting the correct answer w,
-and selecting three random values from this list x. The  random.sample() func-
-tion makes it easy to do this selection. Its first argument is the list you want
-to select from; the second argument is the number of values you want to
-select. The full list of answer options is the combination of these three
-wrong answers with the correct answers y. Finally, the answers need to be
-randomized z so that the correct response isn’t always choice D.
+
+The correct answer is easy to get—it’s stored as a value in the  capitals dictionary u. This loop will loop through the states in the shuffled  states list, from  states[0] to  states[49] , find each state in  capitals , and store that state’s corresponding capital in  correctAnswer .
+
+The list of possible wrong answers is trickier. You can get it by duplicat- ing all the values in the  capitals dictionary v, deleting the correct answer w, and selecting three random values from this list x. The  random.sample() func- tion makes it easy to do this selection. Its first argument is the list you want to select from; the second argument is the number of values you want to select. The full list of answer options is the combination of these three wrong answers with the correct answers y. Finally, the answers need to be randomized z so that the correct response isn’t always choice D.
+
 Step 4: Write Content to the Quiz and Answer Key Files
-All that is left is to write the question to the quiz file and the answer to
-the answer key file. Make your code look like the following:
+
+All that is left is to write the question to the quiz file and the answer to the answer key file. Make your code look like the following:
+
 --snip--
 # Generate 35 quiz files.
 for quizNum in range(35):
@@ -590,18 +498,13 @@ w answerKeyFile.write('%s. %s\n' % (questionNum + 1, 'ABCD'[
 answerOptions.index(correctAnswer)]))
 quizFile.close()
 answerKeyFile.close()
-A  for loop that goes through integers  0 to  3 will write the answer options
-in the  answerOptions list u. The expression  'ABCD'[i] at v treats the string
-'ABCD' as an array and will evaluate to  'A' , 'B' ,  'C' , and then  'D' on each
-respective iteration through the loop.
-In the final line w, the expression  answerOptions.index(correctAnswer)
-will find the integer index of the correct answer in the randomly ordered
-answer options, and  'ABCD'[answerOptions.index(correctAnswer)] will evaluate
-to the correct answer’s letter to be written to the answer key file.
-After you run the program, this is how your capitalsquiz1.txt file will
-look, though of course your questions and answer options may be different
-from those shown here, depending on the outcome of your  random.shuffle()
-calls:
+
+A  for loop that goes through integers  0 to  3 will write the answer options in the  answerOptions list u. The expression  'ABCD'[i] at v treats the string 'ABCD' as an array and will evaluate to  'A' , 'B' ,  'C' , and then  'D' on each respective iteration through the loop.
+
+In the final line w, the expression  answerOptions.index(correctAnswer) will find the integer index of the correct answer in the randomly ordered answer options, and  'ABCD'[answerOptions.index(correctAnswer)] will evaluate to the correct answer’s letter to be written to the answer key file.
+
+After you run the program, this is how your capitalsquiz1.txt file will look, though of course your questions and answer options may be different from those shown here, depending on the outcome of your  random.shuffle() calls:
+
 Name:
 Date:
 Period:
@@ -617,46 +520,41 @@ B. Harrisburg
 C. Denver
 D. Lincoln
 --snip--
+
 The corresponding capitalsquiz_answers1.txt text file will look like this:
+
 1. D
 2. C
 3. A
 4. C
 --snip--
+
 Project: Multiclipboard
-Say you have the boring task of filling out many forms in a web page or soft-
-ware with several text fields. The clipboard saves you from typing the same
-text over and over again. But only one thing can be on the clipboard at a
-time. If you have several different pieces of text that you need to copy and
-paste, you have to keep highlighting and copying the same few things over
-and over again.
-You can write a Python program to keep track of multiple pieces of text.
-This “multiclipboard” will be named mcb.pyw (since “mcb” is shorter to type
-than “multiclipboard”). The .pyw extension means that Python won’t show
-a Terminal window when it runs this program. (See Appendix B for more
-details.)
-The program will save each piece of clipboard text under a keyword.
-For example, when you run  py mcb.pyw save spam , the current contents of the
-clipboard will be saved with the keyword spam. This text can later be loaded
-to the clipboard again by running  py mcb.pyw spam . And if the user forgets
-what keywords they have, they can run  py mcb.pyw list to copy a list of all
-keywords to the clipboard.
+
+Say you have the boring task of filling out many forms in a web page or soft- ware with several text fields. The clipboard saves you from typing the same text over and over again. But only one thing can be on the clipboard at a time. If you have several different pieces of text that you need to copy and paste, you have to keep highlighting and copying the same few things over and over again.
+
+You can write a Python program to keep track of multiple pieces of text. This “multiclipboard” will be named mcb.pyw (since “mcb” is shorter to type than “multiclipboard”). The .pyw extension means that Python won’t show a Terminal window when it runs this program. (See Appendix B for more details.)
+
+The program will save each piece of clipboard text under a keyword. For example, when you run  py mcb.pyw save spam , the current contents of the clipboard will be saved with the keyword spam. This text can later be loaded to the clipboard again by running  py mcb.pyw spam . And if the user forgets what keywords they have, they can run  py mcb.pyw list to copy a list of all keywords to the clipboard.
+
 Here’s what the program does:
+
 •  The command-line argument for the keyword is checked.
-•  If the argument is  save , then the clipboard contents are saved to the
-keyword.
+•  If the argument is  save , then the clipboard contents are saved to the keyword.
 •  If the argument is  list , then all the keywords are copied to the clipboard.
-•  Otherwise, the text for the keyword is copied to the keyboard.
-This means the code will need to do the following:
+•  Otherwise, the text for the keyword is copied to the keyboard. This means the code will need to do the following:
 •  Read the command-line arguments from  sys.argv .
 •  Read and write to the clipboard.
 •  Save and load to a shelf file.
-If you use Windows, you can easily run this script from the Run… win-
-dow by creating a batch file named mcb.bat with the following content:
+
+If you use Windows, you can easily run this script from the Run… win- dow by creating a batch file named mcb.bat with the following content:
+
 @pyw.exe C:\Python34\mcb.pyw %*
+
 Step 1: Comments and Shelf Setup
-Let’s start by making a skeleton script with some comments and basic setup.
-Make your code look like the following:
+
+Let’s start by making a skeleton script with some comments and basic setup. Make your code look like the following:
+
 #! python3
 # mcb.pyw - Multiclipboard
 # A program that can save and load pieces of text to the clipboard.
@@ -667,20 +565,13 @@ v import shelve, pyperclip, sys
 w mcbShelf = shelve.open('mcb')
 # TODO Program code goes here.
 mcbShelf.close()
-It’s common practice to put general usage information in comments
-at the top of the file u. If you ever forget how to run your script, you can
-always look at these comments for a reminder. Then you import your mod-
-ules v. Copying and pasting will require the  pyperclip module, and reading
-the command-line arguments will require the  sys module. The  shelve mod-
-ule will also come in handy: Whenever the user wants to save a new piece
-of clipboard text, you’ll save it to a shelf file. Then, when the user wants to
-paste the text back to their clipboard, you’ll open the shelf file and load it
-back into your program. The shelf file will be named with the prefix mcb w.
+
+It’s common practice to put general usage information in comments at the top of the file u. If you ever forget how to run your script, you can always look at these comments for a reminder. Then you import your mod- ules v. Copying and pasting will require the  pyperclip module, and reading the command-line arguments will require the  sys module. The  shelve mod- ule will also come in handy: Whenever the user wants to save a new piece of clipboard text, you’ll save it to a shelf file. Then, when the user wants to paste the text back to their clipboard, you’ll open the shelf file and load it back into your program. The shelf file will be named with the prefix mcb w.
+
 Step 2: Save Clipboard Content with a Keyword
-The program does different things depending on whether the user wants
-to save text to a keyword, load text into the clipboard, or list all the exist-
-ing keywords. Let’s deal with that first case. Make your code look like the
-following:
+
+The program does different things depending on whether the user wants to save text to a keyword, load text into the clipboard, or list all the exist- ing keywords. Let’s deal with that first case. Make your code look like the following:
+
 --snip--
 import shelve, pyperclip, sys
 mcbShelf = shelve.open('mcb')
@@ -689,18 +580,15 @@ v mcbShelf[sys.argv[2]] = pyperclip.paste()
 elif len(sys.argv) == 2:
 w # TODO Code for "list" and loading goes here.
 mcbShelf.close()
-If the first command-line argument (which will always be at index  1
-of the  sys.argv list) is  'save' u, the second command-line argument is the
-keyword for the current content of the clipboard. The keyword will be used
-as the key for  mcbShelf , and the value will be the text currently on the clip-
-board v.
-If there is only one command-line argument, you will assume it is either
-'list' or a keyword to load content onto the clipboard. You will implement
-that code later. For now, just put a  TODO comment there w.
+
+If the first command-line argument (which will always be at index  1 of the  sys.argv list) is  'save' u, the second command-line argument is the keyword for the current content of the clipboard. The keyword will be used as the key for  mcbShelf , and the value will be the text currently on the clip- board v.
+
+If there is only one command-line argument, you will assume it is either 'list' or a keyword to load content onto the clipboard. You will implement that code later. For now, just put a  TODO comment there w.
+
 Step 3: List Keywords and Load a Keyword’s Content
-Finally, let’s implement the two remaining cases: The user wants to load
-clipboard text in from a keyword, or they want a list of all available key-
-words. Make your code look like the following:
+
+Finally, let’s implement the two remaining cases: The user wants to load clipboard text in from a keyword, or they want a list of all available key- words. Make your code look like the following:
+
 --snip--
 import shelve, pyperclip, sys
 mcbShelf = shelve.open('mcb')
@@ -712,67 +600,51 @@ v pyperclip.copy(str(list(mcbShelf.keys())))
 elif sys.argv[1] in mcbShelf:
 w pyperclip.copy(mcbShelf[sys.argv[1]])
 mcbShelf.close()
-If there is only one command-line argument, first let’s check whether
-it’s  'list' u. If so, a string representation of the list of shelf keys will be cop-
-ied to the clipboard v. The user can paste this list into an open text editor
-to read it.
-Otherwise, you can assume the command-line argument is a keyword.
-If this keyword exists in the  mcbShelf shelf as a key, you can load the value
-onto the clipboard w.
-And that’s it! Launching this program has different steps depending on
-what operating system your computer uses. See Appendix B for details for
-your operating system.
-Recall the password locker program you created in Chapter 6 that
-stored the passwords in a dictionary. Updating the passwords required
-changing the source code of the program. This isn’t ideal because average
-users don’t feel comfortable changing source code to update their software.
-Also, every time you modify the source code to a program, you run the risk
-of accidentally introducing new bugs. By storing the data for a program
-in a different place than the code, you can make your programs easier for
-others to use and more resistant to bugs.
+
+If there is only one command-line argument, first let’s check whether it’s  'list' u. If so, a string representation of the list of shelf keys will be cop- ied to the clipboard v. The user can paste this list into an open text editor to read it.
+
+Otherwise, you can assume the command-line argument is a keyword. If this keyword exists in the  mcbShelf shelf as a key, you can load the value onto the clipboard w.
+
+And that’s it! Launching this program has different steps depending on what operating system your computer uses. See Appendix B for details for your operating system.
+
+Recall the password locker program you created in Chapter 6 that stored the passwords in a dictionary. Updating the passwords required changing the source code of the program. This isn’t ideal because average users don’t feel comfortable changing source code to update their software. Also, every time you modify the source code to a program, you run the risk of accidentally introducing new bugs. By storing the data for a program in a different place than the code, you can make your programs easier for others to use and more resistant to bugs.
+
 Summary
-Files are organized into folders (also called directories), and a path describes
-the location of a file. Every program running on your computer has a cur-
-rent working directory, which allows you to specify file paths relative to the
-current location instead of always typing the full (or absolute) path. The
-os.path module has many functions for manipulating file paths.
-Your programs can also directly interact with the contents of text files.
-The  open() function can open these files to read in their contents as one large
-string (with the  read() method) or as a list of strings (with the  readlines()
-method). The  open() function can open files in write or append mode to
-create new text files or add to existing text files, respectively.
-In previous chapters, you used the clipboard as a way of getting large
-amounts of text into a program, rather than typing it all in. Now you can
-have your programs read files directly from the hard drive, which is a big
-improvement, since files are much less volatile than the clipboard.
-In the next chapter, you will learn how to handle the files themselves,
-by copying them, deleting them, renaming them, moving them, and more.
+
+Files are organized into folders (also called directories), and a path describes the location of a file. Every program running on your computer has a cur- rent working directory, which allows you to specify file paths relative to the current location instead of always typing the full (or absolute) path. The os.path module has many functions for manipulating file paths.
+
+Your programs can also directly interact with the contents of text files. The  open() function can open these files to read in their contents as one large string (with the  read() method) or as a list of strings (with the  readlines() method). The  open() function can open files in write or append mode to create new text files or add to existing text files, respectively.
+
+In previous chapters, you used the clipboard as a way of getting large amounts of text into a program, rather than typing it all in. Now you can have your programs read files directly from the hard drive, which is a big improvement, since files are much less volatile than the clipboard.
+
+In the next chapter, you will learn how to handle the files themselves, by copying them, deleting them, renaming them, moving them, and more.
+
 Practice Questions
+
 1. What is a relative path relative to?
 2. What does an absolute path start with?
 3. What do the  os.getcwd() and  os.chdir() functions do?
 4. What are the  . and  .. folders?
-5. In C:\bacon\eggs\spam.txt, which part is the dir name, and which part is
-the base name?
-6. What are the three “mode” arguments that can be passed to the  open()
-function?
+5. In C:\bacon\eggs\spam.txt, which part is the dir name, and which part is the base name?
+6. What are the three “mode” arguments that can be passed to the  open() function?
 7.  What happens if an existing file is opened in write mode?
 8. What is the difference between the  read() and  readlines() methods?
 9. What data structure does a shelf value resemble?
+
 Practice Projects
+
 For practice, design and write the following programs.
+
 Extending the Multiclipboard
-Extend the multiclipboard program in this chapter so that it has a  delete
-<keyword> command-line argument that will delete a keyword from the shelf.
-Then add a delete command-line argument that will delete all keywords.
+
+Extend the multiclipboard program in this chapter so that it has a  delete <keyword> command-line argument that will delete a keyword from the shelf. Then add a delete command-line argument that will delete all keywords.
+
 Mad Libs
-Create a Mad Libs program that reads in text files and lets the user add
-their own text anywhere the word ADJECTIVE, NOUN, ADVERB, or VERB
-appears in the text file. For example, a text file may look like this:
-The ADJECTIVE panda walked to the NOUN and then VERB. A nearby NOUN was
-unaffected by these events.
-The program would find these occurrences and prompt the user to
-replace them.
+
+Create a Mad Libs program that reads in text files and lets the user add their own text anywhere the word ADJECTIVE, NOUN, ADVERB, or VERB appears in the text file. For example, a text file may look like this: The ADJECTIVE panda walked to the NOUN and then VERB. A nearby NOUN was unaffected by these events.
+
+The program would find these occurrences and prompt the user to replace them.
+
 Enter an adjective:
 silly
 Enter a noun:
@@ -781,11 +653,13 @@ Enter a verb:
 screamed
 Enter a noun:
 pickup truck
+
 The following text file would then be created:
-The silly panda walked to the chandelier and then screamed. A nearby pickup
-truck was unaffected by these events.
+
+The silly panda walked to the chandelier and then screamed. A nearby pickup truck was unaffected by these events.
+
 The results should be printed to the screen and saved to a new text file.
+
 Regex Search
-Write a program that opens all .txt files in a folder and searches for any
-line that matches a user-supplied regular expression. The results should
-be printed to the screen.
+
+Write a program that opens all .txt files in a folder and searches for any line that matches a user-supplied regular expression. The results should be printed to the screen.
