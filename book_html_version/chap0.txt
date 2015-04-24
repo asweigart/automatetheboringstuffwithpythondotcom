@@ -107,9 +107,7 @@ Downloading and Installing Python
 
 You can download Python for Windows, OS X, and Ubuntu for free from http://python.org/downloads/. If you download the latest version from the website’s download page, all of the programs in this book should work.
 
-W A r n I n G
-
-Be sure to download a version of Python 3 (such as 3.4.0). The programs in this book are written to run on Python 3 and may not run correctly, if at all, on Python 2. You’ll find Python installers for 64-bit and 32-bit computers for each operating system on the download page, so first figure out which installer you need. If you bought your computer in 2007 or later, it is most likely a 64-bit system. Otherwise, you have a 32-bit version, but here’s how to find out for sure:
+Warning: Be sure to download a version of Python 3 (such as 3.4.0). The programs in this book are written to run on Python 3 and may not run correctly, if at all, on Python 2. You’ll find Python installers for 64-bit and 32-bit computers for each operating system on the download page, so first figure out which installer you need. If you bought your computer in 2007 or later, it is most likely a 64-bit system. Otherwise, you have a 32-bit version, but here’s how to find out for sure:
 
 •  On Windows, select Start4Control Panel4System and check whether System Type says 64-bit or 32-bit.
 •  On OS X, go the Apple menu, select About This Mac4More Info4 System Report4Hardware, and then look at the Processor Name field. If it says Intel Core Solo or Intel Core Duo, you have a 32-bit machine. If it says anything else (including Intel Core 2 Duo), you have a 64-bit machine.

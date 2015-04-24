@@ -290,7 +290,9 @@ The line  print('Hello world!') means “Print out the text in the string 'Hello
 
 NOTE: You can also use this function to put a blank line on the screen; just call  print() with nothing in between the parentheses.
 
-When writing a function name, the opening and closing parentheses at the end identify it as the name of a function. This is why in this book you’ll see  print() rather than  print . Chapter 2 describes functions in more detail. The input() Function
+When writing a function name, the opening and closing parentheses at the end identify it as the name of a function. This is why in this book you’ll see  print() rather than  print . Chapter 2 describes functions in more detail.
+
+The input() Function
 
 The  input() function waits for the user to type some text on the keyboard and press  enter .
 
