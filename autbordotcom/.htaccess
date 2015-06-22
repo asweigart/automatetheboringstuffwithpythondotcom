@@ -1,4 +1,6 @@
 RewriteEngine on
+RewriteRule ^examples$ https://www.reddit.com/r/Python/comments/34982z/what_cool_program_to_automate_a_daily_task_did/ [L]
+
 RewriteRule ^zophie.png$ http://automatetheboringstuff.com/src/zophie.png [L]
 RewriteRule ^excelSpreadsheets.zip$  [L]
 RewriteRule ^renameDates.py$ http://automatetheboringstuff.com/src/renameDates.py [L]
