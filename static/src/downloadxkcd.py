@@ -18,11 +18,17 @@ while not url.endswith('#'):
     if comicElem == []:
         print('Could not find comic image.')
     else:
-        comicUrl = comicElem[0].get('src')
-        # Download the image.
-        print('Downloading image %s...' % (comicUrl))
-        res = requests.get(comicUrl)
-        res.raise_for_status()
+        try:
+            comicUrl = 'http:' + comicElem[0].get('src')
+            # Download the image.
+            print('Downloading image %s...' % (comicUrl))
+            res = requests.get(comicUrl)
+            res.raise_for_status()
+        except requests.exceptions.MissingSchema:
+            # skip this comic
+            prevLink = soup.select('a[rel="prev"]')[0]
+            url = 'http://xkcd.com' + prevLink.get('href')
+            continue
 
         # Save the image to ./xkcd
         imageFile = open(os.path.join('xkcd', os.path.basename(comicUrl)), 'wb')
