@@ -1,0 +1,758 @@
+{% extends "base.html" %}
+{% set title = 'Automate the Boring Stuff with Python' %}
+{% block content %}
+				
+<article id="post-128" class="post-128 page type-page status-publish hentry">
+	<header class="entry-header">
+		<h1 class="entry-title">Chapter 14 &#8211; Working with CSV Files and JSON Data</h1>	</header><!-- .entry-header -->
+
+	<div class="entry-content">
+		<p><center><a href="/chapter13"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="/chapter15"><img src="/images/next.png" /></a><br />Support the Author: Buy the book on <a href="http://www.amazon.com/gp/product/1593275994/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&amp;camp=1789&amp;creative=9325&amp;creativeASIN=1593275994&amp;linkCode=as2&amp;tag=playwithpyth-20&amp;linkId=2KIYOE7RFLG7D2RJ">Amazon</a> or<br/><a href="http://www.nostarch.com/automatestuff">the book/ebook bundle directly from No Starch Press</a>.<br /><a href="http://www.nostarch.com/automatestuff" ><img class=" size-full wp-image-49 aligncenter" src="/images/automate_small_cover.png" alt="small_cover" width="170" height="225" /></a><br /><a href="//inventwithpython.com">Read the author's other free Python books:</a><br /><a href="//inventwithpython.com/chapters"><img src="/images/smallcover_invent.png" width=120 /></a> <a href="//inventwithpython.com/pygame/chapters"><img src="/images/smallcover_makinggames.png" width=120 /></a> <a href="//inventwithpython.com/hacking/chapters"><img src="/images/smallcover_hacking.png" width=120 /></a></center></p>
+<div class="calibre" id="calibre_link-97">
+<div class="book" title="Chapter 14. Working with CSV Files and JSON Data">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title1"><a id="calibre_link-3274" class="firstname"></a>Working with CSV Files and JSON Data</h1>
+</div>
+</div>
+</div>
+<p class="calibre4"><a id="calibre_link-386" class="calibre1"></a><a id="calibre_link-919" class="calibre1"></a>In <a class="ulink" href="/chapter13" title="Chapter 13. Working with PDF and word Documents">Chapter&nbsp;13</a>, you learned how to extract text from PDF and Word documents. These files were in a binary format, which required special Python modules to access their data. CSV and JSON files, on the other hand, are just plaintext files. You can view them in a text editor, such as IDLE&rsquo;s file editor. But Python also comes with the special <code class="literal1">csv</code> and <code class="literal1">json</code> modules, each providing functions to help you work with these file formats.</p>
+<p class="calibre4">CSV stands for &ldquo;comma-separated values,&rdquo; and CSV files are simplified spreadsheets stored as plaintext files. Python&rsquo;s <code class="literal1">csv</code> module makes it easy to parse CSV files.</p>
+<p class="calibre4">JSON (pronounced &ldquo;JAY-sawn&rdquo; or &ldquo;Jason&rdquo;&mdash;it doesn&rsquo;t matter how because either way people will say you&rsquo;re pronouncing it wrong) is a format that stores information as JavaScript source code in plaintext files.</p>
+<p class="calibre4"><a id="calibre_link-387" class="calibre1"></a><a id="calibre_link-1608" class="calibre1"></a>(JSON is short for JavaScript Object Notation.) You don&rsquo;t need to know the JavaScript programming language to use JSON files, but the JSON format is useful to know because it&rsquo;s used in many web applications.</p>
+<div class="book" title="The CSV Module">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-3275" class="firstname"></a>The CSV Module</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">Each line in a CSV file represents a row in the spreadsheet, and commas separate the cells in the row. For example, the spreadsheet <span class="calibre1"><em class="calibre5">example.xlsx</em></span> from <span class="calibre1"><em class="calibre5"><a class="ulink" href="http://nostarch.com/automatestuff/">http://nostarch.com/automatestuff/</a></em></span> would look like this in a CSV file:</p>
+<p><a id="calibre_link-3276" class="calibre1"></a>
+<pre class="programlisting">4/5/2015 13:34,Apples,73
+4/5/2015 3:41,Cherries,85
+4/6/2015 12:46,Pears,14
+4/8/2015 8:59,Oranges,52
+4/10/2015 2:07,Apples,152
+4/10/2015 18:10,Bananas,23
+4/10/2015 2:40,Strawberries,98</pre>
+<p class="calibre4">I will use this file for this chapter&rsquo;s interactive shell examples. You can download <span class="calibre1"><em class="calibre5">example.csv</em></span> from <span class="calibre1"><em class="calibre5"><a class="ulink" href="http://nostarch.com/automatestuff/">http://nostarch.com/automatestuff/</a></em></span> or enter the text into a text editor and save it as <span class="calibre1"><em class="calibre5">example.csv</em></span>.</p>
+<p class="calibre4">CSV files are simple, lacking many of the features of an Excel spreadsheet. For example, CSV files</p>
+<div class="book">
+<ul class="itemizedlist">
+<li class="listitem">
+<p class="calibre4">Don&rsquo;t have types for their values&mdash;everything is a string</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Don&rsquo;t have settings for font size or color</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Don&rsquo;t have multiple worksheets</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Can&rsquo;t specify cell widths and heights</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Can&rsquo;t have merged cells</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Can&rsquo;t have images or charts embedded in them</p>
+</li>
+</ul>
+</div>
+<p class="calibre4">The advantage of CSV files is simplicity. CSV files are widely supported by many types of programs, can be viewed in text editors (including IDLE&rsquo;s file editor), and are a straightforward way to represent spreadsheet data. The CSV format is exactly as advertised: It&rsquo;s just a text file of comma-separated values.</p>
+<p class="calibre4">Since CSV files are just text files, you might be tempted to read them in as a string and then process that string using the techniques you learned in <a class="ulink" href="/chapter8" title="Chapter 8. Reading and Writing Files">Chapter&nbsp;8</a>. For example, since each cell in a CSV file is separated by a comma, maybe you could just call the <code class="literal1">split()</code> method on each line of text to get the values. But not every comma in a CSV file represents the boundary between two cells. CSV files also have their own set of escape characters to allow commas and other characters to be included <span class="calibre1"><em class="calibre5">as part of the values</em></span>. The <code class="literal1">split()</code> method doesn&rsquo;t handle these escape characters. Because of these potential pitfalls, you should always use the <code class="literal1">csv</code> module for reading and writing CSV files.</p>
+<div class="book" title="Reader Objects">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3277" class="firstname"></a>Reader Objects</h2>
+</div>
+</div>
+</div>
+<p class="calibre4"><a id="calibre_link-388" class="calibre1"></a><a id="calibre_link-980" class="calibre1"></a><a id="calibre_link-1438" class="calibre1"></a>To read data from a CSV file with the <code class="literal1">csv</code> module, you need to create a <code class="literal1">Reader</code> object. A <code class="literal1">Reader</code> object lets you iterate over lines in the CSV file. Enter the following into the interactive shell, with <span class="calibre1"><em class="calibre5">example.csv</em></span> in the current working directory:</p>
+<p><a id="calibre_link-3278" class="calibre1"></a>
+<pre class="programlisting">&#x2776; &gt;&gt;&gt; <span class="calibre1"><strong class="literal">import csv</strong></span>
+&#x2777; &gt;&gt;&gt; <span class="calibre1"><strong class="literal">exampleFile = open('example.csv')</strong></span>
+&#x2778; &gt;&gt;&gt; <span class="calibre1"><strong class="literal">exampleReader = csv.reader(exampleFile)</strong></span>
+&#x2779; &gt;&gt;&gt; <span class="calibre1"><strong class="literal">exampleData = list(exampleReader)</strong></span>
+&#x2779; &gt;&gt;&gt; <span class="calibre1"><strong class="literal">exampleData</strong></span>
+   [['4/5/2015 13:34', 'Apples', '73'], ['4/5/2015 3:41', 'Cherries', '85'],
+   ['4/6/2015 12:46', 'Pears', '14'], ['4/8/2015 8:59', 'Oranges', '52'],
+   ['4/10/2015 2:07', 'Apples', '152'], ['4/10/2015 18:10', 'Bananas', '23'],
+   ['4/10/2015 2:40', 'Strawberries', '98']]</pre>
+<p class="calibre4">The <code class="literal1">csv</code> module comes with Python, so we can import it &#x2776; without having to install it first.</p>
+<p class="calibre4">To read a CSV file with the <code class="literal1">csv</code> module, first open it using the <code class="literal1">open()</code> function &#x2777;, just as you would any other text file. But instead of calling the <code class="literal1">read()</code> or <code class="literal1">readlines()</code> method on the <code class="literal1">File</code> object that <code class="literal1">open()</code> returns, pass it to the <code class="literal1">csv.reader()</code> function &#x2778;. This will return a <code class="literal1">Reader</code> object for you to use. Note that you don&rsquo;t pass a filename string directly to the <code class="literal1">csv.reader()</code> function.</p>
+<p class="calibre4">The most direct way to access the values in the <code class="literal1">Reader</code> object is to convert it to a plain Python list by passing it to <code class="literal1">list()</code> &#x2779;. Using <code class="literal1">list()</code> on this <code class="literal1">Reader</code> object returns a list of lists, which you can store in a variable like <code class="literal1">exampleData</code>. Entering <code class="literal1">exampleData</code> in the shell displays the list of lists &#x277A;.</p>
+<p class="calibre4">Now that you have the CSV file as a list of lists, you can access the value at a particular row and column with the expression <code class="literal1">exampleData[row][col]</code>, where <code class="literal1">row</code> is the index of one of the lists in <code class="literal1">exampleData</code>, and <code class="literal1">col</code> is the index of the item you want from that list. Enter the following into the interactive shell:</p>
+<p><a id="calibre_link-3279" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">exampleData[0][0]</strong></span>
+'4/5/2015 13:34'
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">exampleData[0][1]</strong></span>
+'Apples'
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">exampleData[0][2]</strong></span>
+'73'
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">exampleData[1][1]</strong></span>
+'Cherries'
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">exampleData[6][1]</strong></span>
+'Strawberries'</pre>
+<p class="calibre4"><code class="literal1">exampleData[0][0]</code> goes into the first list and gives us the first string, <code class="literal1">exampleData[0][2]</code> goes into the first list and gives us the third string, and so on.</p>
+</div>
+<div class="book" title="Reading Data from Reader Objects in a for Loop">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3280" class="firstname"></a>Reading Data from Reader Objects in a for Loop</h2>
+</div>
+</div>
+</div>
+<p class="calibre4"><a id="calibre_link-389" class="calibre1"></a><a id="calibre_link-390" class="calibre1"></a><a id="calibre_link-1039" class="calibre1"></a><a id="calibre_link-1155" class="calibre1"></a><a id="calibre_link-1871" class="calibre1"></a>For large CSV files, you&rsquo;ll want to use the <code class="literal1">Reader</code> object in a <code class="literal1">for</code> loop. This avoids loading the entire file into memory at once. For example, enter the following into the interactive shell:</p>
+<p><a id="calibre_link-3281" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">import csv</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">exampleFile = open('example.csv')</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">exampleReader = csv.reader(exampleFile)</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">for row in exampleReader:</strong></span>
+        <span class="calibre1"><strong class="literal">print('Row #' + str(exampleReader.line_num) + ' ' + str(row))</strong></span>
+
+Row #1 ['4/5/2015 13:34', 'Apples', '73']
+Row #2 ['4/5/2015 3:41', 'Cherries', '85']
+Row #3 ['4/6/2015 12:46', 'Pears', '14']
+Row #4 ['4/8/2015 8:59', 'Oranges', '52']
+Row #5 ['4/10/2015 2:07', 'Apples', '152']
+Row #6 ['4/10/2015 18:10', 'Bananas', '23']
+Row #7 ['4/10/2015 2:40', 'Strawberries', '98']</pre>
+<p class="calibre4">After you import the <code class="literal1">csv</code> module and make a <code class="literal1">Reader</code> object from the CSV file, you can loop through the rows in the <code class="literal1">Reader</code> object. Each row is a list of values, with each value representing a cell.</p>
+<p class="calibre4">The <code class="literal1">print()</code> function call prints the number of the current row and the contents of the row. To get the row number, use the <code class="literal1">Reader</code> object&rsquo;s <code class="literal1">line_num</code> variable, which contains the number of the current line.</p>
+<p class="calibre4">The <code class="literal1">Reader</code> object can be looped over only once. To reread the CSV file, you must call <code class="literal1">csv.reader</code> to create a <code class="literal1">Reader</code> object.</p>
+</div>
+<div class="book" title="Writer Objects">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3282" class="firstname"></a>Writer Objects</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">A <code class="literal1">Writer</code> object lets you write data to a CSV file. To create a <code class="literal1">Writer</code> object, you use the <code class="literal1">csv.writer()</code> function. Enter the following into the interactive shell:</p>
+<p><a id="calibre_link-3283" class="calibre1"></a>
+<pre class="programlisting">   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">import csv</strong></span>
+&#x2776; &gt;&gt;&gt; <span class="calibre1"><strong class="literal">outputFile = open('output.csv', 'w', newline='')</strong></span>
+&#x2777; &gt;&gt;&gt; <span class="calibre1"><strong class="literal">outputWriter = csv.writer(outputFile)</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">outputWriter.writerow(['spam', 'eggs', 'bacon', 'ham'])</strong></span>
+   21
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">outputWriter.writerow(['Hello, world!', 'eggs', 'bacon', 'ham'])</strong></span>
+   32
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">outputWriter.writerow([1, 2, 3.141592, 4])</strong></span>
+   16
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">outputFile.close()</strong></span></pre>
+<p class="calibre4">First, call <code class="literal1">open()</code> and pass it <code class="literal1">'w'</code> to open a file in write mode &#x2776;. This will create the object you can then pass to <code class="literal1">csv.writer()</code> &#x2777; to create a <code class="literal1">Writer</code> object.</p>
+<p class="calibre4">On Windows, you&rsquo;ll also need to pass a blank string for the <code class="literal1">open()</code> function&rsquo;s <code class="literal1">newline</code> keyword argument. For technical reasons beyond the scope of this book, if you forget to set the <code class="literal1">newline</code> argument, the rows in <span class="calibre1"><em class="calibre5">output.csv</em></span> will be double-spaced, as shown in <a class="ulink" href="#calibre_link-109" title="Figure 14-1. If you forget the newline=&apos;&apos; keyword argument in open(), the CSV file will be double-spaced.">Figure&nbsp;14-1</a>.</p>
+<div class="figure"><a id="calibre_link-109" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-3284" class="calibre1"></a><img src="/images/000067.png" alt="If you forget the newline=&apos;&apos; keyword argument in open(), the CSV file will be double-spaced." class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;14-1.&nbsp;If you forget the <code class="literal1">newline=''</code> keyword argument in <code class="literal1">open()</code>, the CSV file will be double-spaced.</p>
+</div>
+<p class="calibre4"><a id="calibre_link-1872" class="calibre1"></a>The <code class="literal1">writerow()</code> method for <code class="literal1">Writer</code> objects takes a list argument. Each value in the list is placed in its own cell in the output CSV file. The return value of <code class="literal1">writerow()</code> is the number of characters written to the file for that row (including newline characters).</p>
+<p class="calibre4">This code produces an <span class="calibre1"><em class="calibre5">output.csv</em></span> file that looks like this:</p>
+<p><a id="calibre_link-3285" class="calibre1"></a>
+<pre class="programlisting">spam,eggs,bacon,ham
+"Hello, world!",eggs,bacon,ham
+1,2,3.141592,4</pre>
+<p class="calibre4">Notice how the <code class="literal1">Writer</code> object automatically escapes the comma in the value <code class="literal1">'Hello, world!'</code> with double quotes in the CSV file. The <code class="literal1">csv</code> module saves you from having to handle these special cases yourself.</p>
+</div>
+<div class="book" title="The delimiter and lineterminator Keyword Arguments">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3286" class="firstname"></a>The delimiter and lineterminator Keyword Arguments</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Say you want to separate cells with a tab character instead of a comma and you want the rows to be double-spaced. You could enter something like the following into the interactive shell:</p>
+<p><a id="calibre_link-3287" class="calibre1"></a>
+<pre class="programlisting">   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">import csv</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">csvFile = open('example.tsv', 'w', newline='')</strong></span>
+&#x2776; &gt;&gt;&gt; <span class="calibre1"><strong class="literal">csvWriter = csv.writer(csvFile, delimiter='\t', lineterminator='\n\n')</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">csvWriter.writerow(['apples', 'oranges', 'grapes'])</strong></span>
+   24
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">csvWriter.writerow(['eggs', 'bacon', 'ham'])</strong></span>
+   17
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">csvWriter.writerow(['spam', 'spam', 'spam', 'spam', 'spam', 'spam'])</strong></span>
+   32
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">csvFile.close()</strong></span></pre>
+<p class="calibre4"><a id="calibre_link-391" class="calibre1"></a><a id="calibre_link-392" class="calibre1"></a><a id="calibre_link-393" class="calibre1"></a><a id="calibre_link-394" class="calibre1"></a><a id="calibre_link-1340" class="calibre1"></a>This changes the delimiter and line terminator characters in your file. The <span class="calibre1"><em class="calibre5">delimiter</em></span> is the character that appears between cells on a row. By default, the delimiter for a CSV file is a comma. The <span class="calibre1"><em class="calibre5">line terminator</em></span> is the character that comes at the end of a row. By default, the line terminator is a newline. You can change characters to different values by using the <code class="literal1">delimiter</code> and <code class="literal1">lineterminator</code> keyword arguments with <code class="literal1">csv.writer()</code>.</p>
+<p class="calibre4">Passing <code class="literal1">delimeter='\t'</code> and <code class="literal1">lineterminator='\n\n'</code> &#x2776; changes the character between cells to a tab and the character between rows to two newlines. We then call <code class="literal1">writerow()</code> three times to give us three rows.</p>
+<p class="calibre4">This produces a file named <span class="calibre1"><em class="calibre5">example.tsv</em></span> with the following contents:</p>
+<p><a id="calibre_link-3288" class="calibre1"></a>
+<pre class="programlisting">apples  oranges grapes
+
+eggs    bacon   ham
+spam    spam    spam    spam    spam    spam</pre>
+<p class="calibre4">Now that our cells are separated by tabs, we&rsquo;re using the file extension <span class="calibre1"><em class="calibre5">.tsv</em></span>, for tab-separated values.</p>
+</div>
+</div>
+<div class="book" title="Project: Removing the Header from CSV Files">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-3289" class="firstname"></a>Project: Removing the Header from CSV Files</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">Say you have the boring job of removing the first line from several hundred CSV files. Maybe you&rsquo;ll be feeding them into an automated process that requires just the data and not the headers at the top of the columns. You <span class="calibre1"><em class="calibre5">could</em></span> open each file in Excel, delete the first row, and resave the file&mdash;but that would take hours. Let&rsquo;s write a program to do it instead.</p>
+<p class="calibre4">The program will need to open every file with the <span class="calibre1"><em class="calibre5">.csv</em></span> extension in the current working directory, read in the contents of the CSV file, and rewrite the contents without the first row to a file of the same name. This will replace the old contents of the CSV file with the new, headless contents.</p>
+<div class="note" title="Note">
+<h3 class="title5"><a id="calibre_link-3290" class="calibre1"></a>Note</h3>
+<p class="calibre4"><span class="calibre1"><em class="calibre5">As always, whenever you write a program that modifies files, be sure to back up the files, first just in case your program does not work the way you expect it to. You don&rsquo;t want to accidentally erase your original files.</em></span></p>
+</div>
+<p class="calibre4">At a high level, the program must do the following:</p>
+<div class="book">
+<ul class="itemizedlist">
+<li class="listitem">
+<p class="calibre4">Find all the CSV files in the current working directory.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Read in the full contents of each file.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Write out the contents, skipping the first line, to a new CSV file.</p>
+<p class="calibre4">At the code level, this means the program will need to do the following:</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Loop over a list of files from <code class="literal1">os.listdir()</code>, skipping the non-CSV files.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Create a CSV <code class="literal1">Reader</code> object and read in the contents of the file, using the <code class="literal1">line_num</code> attribute to figure out which line to skip.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Create a CSV <code class="literal1">Writer</code> object and write out the read-in data to the new file.</p>
+</li>
+</ul>
+</div>
+<p class="calibre4"><a id="calibre_link-395" class="calibre1"></a><a id="calibre_link-396" class="calibre1"></a>For this project, open a new file editor window and save it as <span class="calibre1"><em class="calibre5">removeCsvHeader.py</em></span>.</p>
+<div class="book" title="Step 1: Loop Through Each CSV File">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3291" class="firstname"></a>Step 1: Loop Through Each CSV File</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">The first thing your program needs to do is loop over a list of all CSV filenames for the current working directory. Make your <span class="calibre1"><em class="calibre5">removeCsvHeader.py</em></span> look like this:</p>
+<p><a id="calibre_link-3292" class="calibre1"></a>
+<pre class="programlisting">   #! python3
+   # removeCsvHeader.py - Removes the header from all CSV files in the current
+   # working directory.
+
+   import csv, os
+
+   os.makedirs('headerRemoved', exist_ok=True)
+
+   # Loop through every file in the current working directory.
+   for csvFilename in os.listdir('.'):
+       if not csvFilename.endswith('.csv'):
+&#x2776;         continue    # skip non-csv files
+
+       print('Removing header from ' + csvFilename + '...')
+
+       # TODO: Read the CSV file in (skipping first row).
+
+       # TODO: Write out the CSV file.</pre>
+<p class="calibre4">The <code class="literal1">os.makedirs()</code> call will create a <code class="literal1">headerRemoved</code> folder where all the headless CSV files will be written. A <code class="literal1">for</code> loop on <code class="literal1">os.listdir('.')</code> gets you partway there, but it will loop over <span class="calibre1"><em class="calibre5">all</em></span> files in the working directory, so you&rsquo;ll need to add some code at the start of the loop that skips filenames that don&rsquo;t end with <code class="literal1">.csv</code>. The <code class="literal1">continue</code> statement &#x2776; makes the <code class="literal1">for</code> loop move on to the next filename when it comes across a non-CSV file.</p>
+<p class="calibre4">Just so there&rsquo;s <span class="calibre1"><em class="calibre5">some</em></span> output as the program runs, print out a message saying which CSV file the program is working on. Then, add some <code class="literal1">TODO</code> comments for what the rest of the program should do.</p>
+</div>
+<div class="book" title="Step 2: Read in the CSV File">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3293" class="firstname"></a>Step 2: Read in the CSV File</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">The program doesn&rsquo;t remove the first line from the CSV file. Rather, it creates a new copy of the CSV file without the first line. Since the copy&rsquo;s filename is the same as the original filename, the copy will overwrite the original.</p>
+<p class="calibre4">The program will need a way to track whether it is currently looping on the first row. Add the following to <span class="calibre1"><em class="calibre5">removeCsvHeader.py</em></span>.</p>
+<p><a id="calibre_link-3294" class="calibre1"></a>
+<pre class="programlisting">#! python3
+# removeCsvHeader.py - Removes the header from all CSV files in the current
+# working directory.
+
+<span class="calibre1"><em class="literal3">--snip--</em></span>
+<span class="calibre1"><strong class="literal"># Read the CSV file in (skipping first row).</strong></span>
+<span class="calibre1"><strong class="literal">csvRows = []</strong></span>
+<span class="calibre1"><strong class="literal">csvFileObj = open(csvFilename)</strong></span>
+<span class="calibre1"><strong class="literal">readerObj = csv.reader(csvFileObj)</strong></span>
+<span class="calibre1"><strong class="literal">for row in readerObj:</strong></span>
+    <span class="calibre1"><strong class="literal">if readerObj.line_num == 1:</strong></span>
+        <span class="calibre1"><strong class="literal">continue    # skip first row</strong></span>
+    <span class="calibre1"><strong class="literal">csvRows.append(row)</strong></span>
+<span class="calibre1"><strong class="literal">csvFileObj.close()</strong></span>
+
+# TODO: Write out the CSV file.</pre>
+<p class="calibre4"><a id="calibre_link-397" class="calibre1"></a>The <code class="literal1">Reader</code> object&rsquo;s <code class="literal1">line_num</code> attribute can be used to determine which line in the CSV file it is currently reading. Another <code class="literal1">for</code> loop will loop over the rows returned from the CSV <code class="literal1">Reader</code> object, and all rows but the first will be appended to <code class="literal1">csvRows</code>.</p>
+<p class="calibre4">As the <code class="literal1">for</code> loop iterates over each row, the code checks whether <code class="literal1">readerObj.line_num</code> is set to <code class="literal1">1</code>. If so, it executes a <code class="literal1">continue</code> to move on to the next row without appending it to <code class="literal1">csvRows</code>. For every row afterward, the condition will be always be <code class="literal1">False</code>, and the row will be appended to <code class="literal1">csvRows</code>.</p>
+</div>
+<div class="book" title="Step 3: Write Out the CSV File Without the First Row">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3295" class="firstname"></a>Step 3: Write Out the CSV File Without the First Row</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Now that <code class="literal1">csvRows</code> contains all rows but the first row, the list needs to be written out to a CSV file in the <span class="calibre1"><em class="calibre5">headerRemoved</em></span> folder. Add the following to <span class="calibre1"><em class="calibre5">removeCsvHeader.py</em></span>:</p>
+<p><a id="calibre_link-3296" class="calibre1"></a>
+<pre class="programlisting">   #! python3
+   # removeCsvHeader.py - Removes the header from all CSV files in the current
+   # working directory.
+   <span class="calibre1"><em class="literal3">--snip--</em></span>
+
+   # Loop through every file in the current working directory.
+&#x2776; for csvFilename in os.listdir('.'):
+       if not csvFilename.endswith('.csv'):
+           continue    # skip non-CSV files
+
+       <span class="calibre1"><em class="literal3">--snip--</em></span>
+
+       <span class="calibre1"><strong class="literal"># Write out the CSV file.</strong></span>
+       <span class="calibre1"><strong class="literal">csvFileObj = open(os.path.join('headerRemoved', csvFilename), 'w',</strong></span>
+                    <span class="calibre1"><strong class="literal">newline='')</strong></span>
+       <span class="calibre1"><strong class="literal">csvWriter = csv.writer(csvFileObj)</strong></span>
+       <span class="calibre1"><strong class="literal">for row in csvRows:</strong></span>
+           <span class="calibre1"><strong class="literal">csvWriter.writerow(row)</strong></span>
+       <span class="calibre1"><strong class="literal">csvFileObj.close()</strong></span></pre>
+<p class="calibre4">The CSV <code class="literal1">Writer</code> object will write the list to a CSV file in <code class="literal1">headerRemoved</code> using <code class="literal1">csvFilename</code> (which we also used in the CSV reader). This will overwrite the original file.</p>
+<p class="calibre4"><a id="calibre_link-237" class="calibre1"></a><a id="calibre_link-920" class="calibre1"></a><a id="calibre_link-921" class="calibre1"></a>Once we create the <code class="literal1">Writer</code> object, we loop over the sublists stored in <code class="literal1">csvRows</code> and write each sublist to the file.</p>
+<p class="calibre4">After the code is executed, the outer <code class="literal1">for</code> loop &#x2776; will loop to the next filename from <code class="literal1">os.listdir('.')</code>. When that loop is finished, the program will be complete.</p>
+<p class="calibre4">To test your program, download <span class="calibre1"><em class="calibre5">removeCsvHeader.zip</em></span> from <span class="calibre1"><em class="calibre5"><a class="ulink" href="http://nostarch.com/automatestuff/">http://nostarch.com/automatestuff/</a></em></span> and unzip it to a folder. Run the <span class="calibre1"><em class="calibre5">removeCsvHeader.py</em></span> program in that folder. The output will look like this:</p>
+<p><a id="calibre_link-3297" class="calibre1"></a>
+<pre class="programlisting">Removing header from NAICS_data_1048.csv...
+Removing header from NAICS_data_1218.csv...
+<span class="calibre1"><em class="literal3">--snip--</em></span>
+Removing header from NAICS_data_9834.csv...
+Removing header from NAICS_data_9986.csv...</pre>
+<p class="calibre4">This program should print a filename each time it strips the first line from a CSV file.</p>
+</div>
+<div class="book" title="Ideas for Similar Programs">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3298" class="firstname"></a>Ideas for Similar Programs</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">The programs that you could write for CSV files are similar to the kinds you could write for Excel files, since they&rsquo;re both spreadsheet files. You could write programs to do the following:</p>
+<div class="book">
+<ul class="itemizedlist">
+<li class="listitem">
+<p class="calibre4">Compare data between different rows in a CSV file or between multiple CSV files.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Copy specific data from a CSV file to an Excel file, or vice versa.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Check for invalid data or formatting mistakes in CSV files and alert the user to these errors.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Read data from a CSV file as input for your Python programs.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="book" title="JSON and APIs">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-3299" class="firstname"></a>JSON and APIs</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">JavaScript Object Notation is a popular way to format data as a single human-readable string. JSON is the native way that JavaScript programs write their data structures and usually resembles what Python&rsquo;s <code class="literal1">pprint()</code> function would produce. You don&rsquo;t need to know JavaScript in order to work with JSON-formatted data.</p>
+<p class="calibre4">Here&rsquo;s an example of data formatted as JSON:</p>
+<p><a id="calibre_link-3300" class="calibre1"></a>
+<pre class="programlisting">{"name": "Zophie", "isCat": true,
+ "miceCaught": 0, "napsTaken": 37.5,
+ "felineIQ": null}</pre>
+<p class="calibre4">JSON is useful to know, because many websites offer JSON content as a way for programs to interact with the website. This is known as providing an <span class="calibre1"><em class="calibre5">application programming interface (API)</em></span>. Accessing an API is the same <a id="calibre_link-922" class="calibre1"></a><a id="calibre_link-1011" class="calibre1"></a>as accessing any other web page via a URL. The difference is that the data returned by an API is formatted (with JSON, for example) for machines; APIs aren&rsquo;t easy for people to read.</p>
+<p class="calibre4">Many websites make their data available in JSON format. Facebook, Twitter, Yahoo, Google, Tumblr, Wikipedia, Flickr, Data.gov, Reddit, IMDb, Rotten Tomatoes, LinkedIn, and many other popular sites offer APIs for programs to use. Some of these sites require registration, which is almost always free. You&rsquo;ll have to find documentation for what URLs your program needs to request in order to get the data you want, as well as the general format of the JSON data structures that are returned. This documentation should be provided by whatever site is offering the API; if they have a &ldquo;Developers&rdquo; page, look for the documentation there.</p>
+<p class="calibre4">Using APIs, you could write programs that do the following:</p>
+<div class="book">
+<ul class="itemizedlist">
+<li class="listitem">
+<p class="calibre4">Scrape raw data from websites. (Accessing APIs is often more convenient than downloading web pages and parsing HTML with Beautiful Soup.)</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Automatically download new posts from one of your social network accounts and post them to another account. For example, you could take your Tumblr posts and post them to Facebook.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Create a &ldquo;movie encyclopedia&rdquo; for your personal movie collection by pulling data from IMDb, Rotten Tomatoes, and Wikipedia and putting it into a single text file on your computer.</p>
+</li>
+</ul>
+</div>
+<p class="calibre4">You can see some examples of JSON APIs in the resources at <span class="calibre1"><em class="calibre5"><a class="ulink" href="http://nostarch.com/automatestuff/">http://nostarch.com/automatestuff/</a></em></span>.</p>
+</div>
+<div class="book" title="The JSON Module">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-3301" class="firstname"></a>The JSON Module</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">Python&rsquo;s <code class="literal1">json</code> module handles all the details of translating between a string with JSON data and Python values for the <code class="literal1">json.loads()</code> and <code class="literal1">json.dumps()</code> functions. JSON can&rsquo;t store <span class="calibre1"><em class="calibre5">every</em></span> kind of Python value. It can contain values of only the following data types: strings, integers, floats, Booleans, lists, dictionaries, and <code class="literal1">NoneType</code>. JSON cannot represent Python-specific objects, such as <code class="literal1">File</code> objects, CSV <code class="literal1">Reader</code> or <code class="literal1">Writer</code> objects, <code class="literal1">Regex</code> objects, or Selenium <code class="literal1">WebElement</code> objects.</p>
+<div class="book" title="Reading JSON with the loads() Function">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3302" class="firstname"></a>Reading JSON with the loads() Function</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">To translate a string containing JSON data into a Python value, pass it to the <code class="literal1">json.loads()</code> function. (The name means &ldquo;load string,&rdquo; not &ldquo;loads.&rdquo;) Enter the following into the interactive shell:</p>
+<p><a id="calibre_link-3303" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">stringOfJsonData = '{"name": "Zophie", "isCat": true, "miceCaught": 0,</strong></span>
+<span class="calibre1"><strong class="literal">"felineIQ": null}'</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">import json</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">jsonDataAsPythonValue = json.loads(stringOfJsonData)</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">jsonDataAsPythonValue</strong></span>
+{'isCat': True, 'miceCaught': 0, 'name': 'Zophie', 'felineIQ': None}</pre>
+<p class="calibre4"><a id="calibre_link-522" class="calibre1"></a><a id="calibre_link-923" class="calibre1"></a><a id="calibre_link-924" class="calibre1"></a><a id="calibre_link-1341" class="calibre1"></a><a id="calibre_link-1803" class="calibre1"></a><a id="calibre_link-1804" class="calibre1"></a>After you import the <code class="literal1">json</code> module, you can call <code class="literal1">loads()</code> and pass it a string of JSON data. Note that JSON strings always use double quotes. It will return that data as a Python dictionary. Python dictionaries are not ordered, so the key-value pairs may appear in a different order when you print <code class="literal1">jsonDataAsPythonValue</code>.</p>
+</div>
+<div class="book" title="Writing JSON with the dumps() Function">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3304" class="firstname"></a>Writing JSON with the dumps() Function</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">The <code class="literal1">json.dumps()</code> function (which means &ldquo;dump string,&rdquo; not &ldquo;dumps&rdquo;) will translate a Python value into a string of JSON-formatted data. Enter the following into the interactive shell:</p>
+<p><a id="calibre_link-3305" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">pythonValue = {'isCat': True, 'miceCaught': 0, 'name': 'Zophie',</strong></span>
+<span class="calibre1"><strong class="literal">'felineIQ': None}</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">import json</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">stringOfJsonData = json.dumps(pythonValue)</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">stringOfJsonData</strong></span>
+'{"isCat": true, "felineIQ": null, "miceCaught": 0, "name": "Zophie" }'</pre>
+<p class="calibre4">The value can only be one of the following basic Python data types: dictionary, list, integer, float, string, Boolean, or <code class="literal1">None</code>.</p>
+</div>
+</div>
+<div class="book" title="Project: Fetching Current Weather Data">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-3306" class="firstname"></a>Project: Fetching Current Weather Data</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">Checking the weather seems fairly trivial: Open your web browser, click the address bar, type the URL to a weather website (or search for one and then click the link), wait for the page to load, look past all the ads, and so on.</p>
+<p class="calibre4">Actually, there are a lot of boring steps you could skip if you had a program that downloaded the weather forecast for the next few days and printed it as plaintext. This program uses the <code class="literal1">requests</code> module from Chapter 11 to download data from the Web.</p>
+<p class="calibre4">Overall, the program does the following:</p>
+<div class="book">
+<ul class="itemizedlist">
+<li class="listitem">
+<p class="calibre4">Reads the requested location from the command line.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Downloads JSON weather data from OpenWeatherMap.org.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Converts the string of JSON data to a Python data structure.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Prints the weather for today and the next two days.</p>
+<p class="calibre4">So the code will need to do the following:</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Join strings in <code class="literal1">sys.argv</code> to get the location.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Call <code class="literal1">requests.get()</code> to download the weather data.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Call <code class="literal1">json.loads()</code> to convert the JSON data to a Python data structure.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Print the weather forecast.</p>
+</li>
+</ul>
+</div>
+<p class="calibre4">For this project, open a new file editor window and save it as <span class="calibre1"><em class="calibre5">quickWeather.py</em></span>.</p>
+<div class="book" title="Step 1: Get Location from the Command Line Argument">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3307" class="firstname"></a>Step 1: Get Location from the Command Line Argument</h2>
+</div>
+</div>
+</div>
+<p class="calibre4"><a id="calibre_link-1805" class="calibre1"></a><a id="calibre_link-1806" class="calibre1"></a>The input for this program will come from the command line. Make <span class="calibre1"><em class="calibre5">quickWeather.py</em></span> look like this:</p>
+<p><a id="calibre_link-3308" class="calibre1"></a>
+<pre class="programlisting">#! python3
+# quickWeather.py - Prints the weather for a location from the command line.
+
+import json, requests, sys
+
+# Compute location from command line arguments.
+if len(sys.argv) &lt; 2:
+    print('Usage: quickWeather.py location')
+    sys.exit()
+location = ' '.join(sys.argv[1:])
+
+# TODO: Download the JSON data from OpenWeatherMap.org's API.
+
+# TODO: Load JSON data into a Python variable.</pre>
+<p class="calibre4">In Python, command line arguments are stored in the <code class="literal1">sys.argv</code> list. After the <code class="literal1">#!</code> shebang line and <code class="literal1">import</code> statements, the program will check that there is more than one command line argument. (Recall that <code class="literal1">sys.argv</code> will always have at least one element, <code class="literal1">sys.argv[0]</code>, which contains the Python script&rsquo;s filename.) If there is only one element in the list, then the user didn&rsquo;t provide a location on the command line, and a &ldquo;usage&rdquo; message will be provided to the user before the program ends.</p>
+<p class="calibre4">Command line arguments are split on spaces. The command line argument <code class="literal1">San Francisco, CA</code> would make <code class="literal1">sys.argv</code> hold <code class="literal1">['quickWeather.py', 'San', 'Francisco,', 'CA']</code>. Therefore, call the <code class="literal1">join()</code> method to join all the strings except for the first in <code class="literal1">sys.argv</code>. Store this joined string in a variable named <code class="literal1">location</code>.</p>
+</div>
+<div class="book" title="Step 2: Download the JSON Data">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3309" class="firstname"></a>Step 2: Download the JSON Data</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">OpenWeatherMap.org provides real-time weather information in JSON format. Your program simply has to download the page at <span class="calibre1"><em class="calibre5"><a class="ulink" href="http://api.openweathermap.org/data/2.5/forecast/daily?q=&lt;Location&gt;&amp;cnt=3">http://api.openweathermap.org/data/2.5/forecast/daily?q=&lt;Location&gt;&amp;cnt=3</a></em></span>, where <span class="calibre1"><em class="calibre5">&lt;Location&gt;</em></span> is the name of the city whose weather you want. Add the following to <span class="calibre1"><em class="calibre5">quickWeather.py</em></span>.</p>
+<p><a id="calibre_link-3310" class="calibre1"></a>
+<pre class="programlisting">#! python3
+# quickWeather.py - Prints the weather for a location from the command line.
+
+<span class="calibre1"><em class="literal3">--snip--</em></span>
+
+<span class="calibre1"><strong class="literal"># Download the JSON data from OpenWeatherMap.org's API.</strong></span>
+<span class="calibre1"><strong class="literal">url ='http://api.openweathermap.org/data/2.5/forecast/daily?q=%s&amp;cnt=3' % (location)</strong></span>
+<span class="calibre1"><strong class="literal">response = requests.get(url)</strong></span>
+<span class="calibre1"><strong class="literal">response.raise_for_status()</strong></span>
+
+# TODO: Load JSON data into a Python variable.</pre>
+<p class="calibre4"><a id="calibre_link-1012" class="calibre1"></a><a id="calibre_link-1807" class="calibre1"></a>We have <code class="literal1">location</code> from our command line arguments. To make the URL we want to access, we use the <code class="literal1">%s</code> placeholder and insert whatever string is stored in <code class="literal1">location</code> into that spot in the URL string. We store the result in <code class="literal1">url</code> and pass <code class="literal1">url</code> to <code class="literal1">requests.get()</code>. The <code class="literal1">requests.get()</code> call returns a <code class="literal1">Response</code> object, which you can check for errors by calling <code class="literal1">raise_for_status()</code>. If no exception is raised, the downloaded text will be in <code class="literal1">response.text</code>.</p>
+</div>
+<div class="book" title="Step 3: Load JSON Data and Print Weather">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3311" class="firstname"></a>Step 3: Load JSON Data and Print Weather</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">The <code class="literal1">response.text</code> member variable holds a large string of JSON-formatted data. To convert this to a Python value, call the <code class="literal1">json.loads()</code> function. The JSON data will look something like this:</p>
+<p><a id="calibre_link-3312" class="calibre1"></a>
+<pre class="programlisting">{'city': {'coord': {'lat': 37.7771, 'lon': -122.42},
+          'country': 'United States of America',
+          'id': '5391959',
+          'name': 'San Francisco',
+          'population': 0},
+'cnt': 3,
+'cod': '200',
+'list': [{'clouds': 0,
+          'deg': 233,
+          'dt': 1402344000,
+          'humidity': 58,
+          'pressure': 1012.23,
+          'speed': 1.96,
+          'temp': {'day': 302.29,
+                   'eve': 296.46,
+                   'max': 302.29,
+                   'min': 289.77,
+                   'morn': 294.59,
+                   'night': 289.77},
+          'weather': [{'description': 'sky is clear',
+                       'icon': '01d',
+<span class="calibre1"><em class="literal3">--snip--</em></span></pre>
+<p class="calibre4">You can see this data by passing <code class="literal1">weatherData</code> to <code class="literal1">pprint.pprint()</code>. You may want to check <span class="calibre1"><em class="calibre5"><a class="ulink" href="http://openweathermap.org/">http://openweathermap.org/</a></em></span> for more documentation on what these fields mean. For example, the online documentation will tell you that the <code class="literal1">302.29</code> after <code class="literal1">'day'</code> is the daytime temperature in Kelvin, not Celsius or Fahrenheit.</p>
+<p class="calibre4">The weather descriptions you want are after <code class="literal1">'main'</code> and <code class="literal1">'description'</code>. To neatly print them out, add the following to <span class="calibre1"><em class="calibre5">quickWeather.py</em></span>.</p>
+<p><a id="calibre_link-3313" class="calibre1"></a>
+<pre class="programlisting">   ! python3
+   # quickWeather.py - Prints the weather for a location from the command line.
+
+   <span class="calibre1"><em class="literal3">--snip--</em></span>
+
+   <span class="calibre1"><strong class="literal"># Load JSON data into a Python variable.</strong></span>
+   <span class="calibre1"><strong class="literal">weatherData = json.loads(response.text)</strong></span>
+   <span class="calibre1"><strong class="literal"># Print weather descriptions.</strong></span>
+&#x2776; <span class="calibre1"><strong class="literal">w = weatherData['list']</strong></span>
+   <span class="calibre1"><strong class="literal">print('Current weather in %s:' % (location))</strong></span>
+   <span class="calibre1"><strong class="literal">print(w[0]['weather'][0]['main'], '-', w[0]['weather'][0]['description'])</strong></span>
+   <span class="calibre1"><strong class="literal">print()</strong></span>
+   <span class="calibre1"><strong class="literal">print('Tomorrow:')</strong></span>
+   <span class="calibre1"><strong class="literal">print(w[1]['weather'][0]['main'], '-', w[1]['weather'][0]['description'])</strong></span>
+   <span class="calibre1"><strong class="literal">print()</strong></span>
+   <span class="calibre1"><strong class="literal">print('Day after tomorrow:')</strong></span>
+   <span class="calibre1"><strong class="literal">print(w[2]['weather'][0]['main'], '-', w[2]['weather'][0]['description'])</strong></span></pre>
+<p class="calibre4">Notice how the code stores <code class="literal1">weatherData['list']</code> in the variable <code class="literal1">w</code> to save you some typing &#x2776;. You use <code class="literal1">w[0]</code>, <code class="literal1">w[1]</code>, and <code class="literal1">w[2]</code> to retrieve the dictionaries for today, tomorrow, and the day after tomorrow&rsquo;s weather, respectively. Each of these dictionaries has a <code class="literal1">'weather'</code> key, which contains a list value. You&rsquo;re interested in the first list item, a nested dictionary with several more keys, at index 0. Here, we print the values stored in the <code class="literal1">'main'</code> and <code class="literal1">'description'</code> keys, separated by a hyphen.</p>
+<p class="calibre4">When this program is run with the command line argument <code class="literal1">quickWeather.py San Francisco, CA</code>, the output looks something like this:</p>
+<p><a id="calibre_link-3314" class="calibre1"></a>
+<pre class="programlisting">Current weather in San Francisco, CA:
+Clear - sky is clear
+
+Tomorrow:
+Clouds - few clouds
+
+Day after tomorrow:
+Clear - sky is clear</pre>
+<p class="calibre4">(The weather is one of the reasons I like living in San Francisco!)</p>
+</div>
+<div class="book" title="Ideas for Similar Programs">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3315" class="firstname"></a>Ideas for Similar Programs</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Accessing weather data can form the basis for many types of programs. You can create similar programs to do the following:</p>
+<div class="book">
+<ul class="itemizedlist">
+<li class="listitem">
+<p class="calibre4">Collect weather forecasts for several campsites or hiking trails to see which one will have the best weather.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Schedule a program to regularly check the weather and send you a frost alert if you need to move your plants indoors. (<a class="ulink" href="/chapter15" title="Chapter 15. Keeping Time, Scheduling Tasks, and Launching Programs">Chapter&nbsp;15</a> covers scheduling, and <a class="ulink" href="/chapter16" title="Chapter 16. Sending Email and Text Messages">Chapter&nbsp;16</a> explains how to send email.)</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Pull weather data from multiple sites to show all at once, or calculate and show the average of the multiple weather predictions.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="book" title="Summary">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-3316" class="firstname"></a>Summary</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">CSV and JSON are common plaintext formats for storing data. They are easy for programs to parse while still being human readable, so they are often used for simple spreadsheets or web app data. The <code class="literal1">csv</code> and <code class="literal1">json</code> modules greatly simplify the process of reading and writing to CSV and JSON files.</p>
+<p class="calibre4">The last few chapters have taught you how to use Python to parse information from a wide variety of file formats. One common task is taking data from a variety of formats and parsing it for the particular information you need. These tasks are often specific to the point that commercial software is not optimally helpful. By writing your own scripts, you can make the computer handle large amounts of data presented in these formats.</p>
+<p class="calibre4">In <a class="ulink" href="/chapter15" title="Chapter 15. Keeping Time, Scheduling Tasks, and Launching Programs">Chapter&nbsp;15</a>, you&rsquo;ll break away from data formats and learn how to make your programs communicate with you by sending emails and text messages.</p>
+</div>
+<div class="book" title="Practice Questions">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-3317" class="firstname"></a>Practice Questions</h1>
+</div>
+</div>
+</div>
+<div class="book" title="Frequently Asked Questions"><a id="calibre_link-3318" class="calibre1"></a><br />
+<table border="0" width="100%" summary="Q and A Set" class="calibre22">
+<col width="1%" class="calibre23"></col>
+<col class="calibre11"></col>
+<tbody class="calibre16">
+<tr class="calibre13" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3319" class="calibre1"></a><a id="calibre_link-3320" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">1. What are some features Excel spreadsheets have that CSV spreadsheets don&rsquo;t?</p>
+</td>
+</tr>
+<tr class="calibre19" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3321" class="calibre1"></a><a id="calibre_link-3322" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">2. What do you pass to <code class="literal2">csv.reader()</code> and <code class="literal2">csv.writer()</code> to create <code class="literal2">Reader</code> and <code class="literal2">Writer</code> objects?</p>
+</td>
+</tr>
+<tr class="calibre13" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3323" class="calibre1"></a><a id="calibre_link-3324" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">3. What modes do <code class="literal2">File</code> objects for reader and <code class="literal2">Writer</code> objects need to be opened in?</p>
+</td>
+</tr>
+<tr class="calibre19" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3325" class="calibre1"></a><a id="calibre_link-3326" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">4. What method takes a list argument and writes it to a CSV file?</p>
+</td>
+</tr>
+<tr class="calibre13" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3327" class="calibre1"></a><a id="calibre_link-3328" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">5. What do the <code class="literal2">delimiter</code> and <code class="literal2">lineterminator</code> keyword arguments do?</p>
+</td>
+</tr>
+<tr class="calibre19" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3329" class="calibre1"></a><a id="calibre_link-3330" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">6. What function takes a string of JSON data and returns a Python data structure?</p>
+</td>
+</tr>
+<tr class="calibre13" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3331" class="calibre1"></a><a id="calibre_link-3332" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">7. What function takes a Python data structure and returns a string of JSON data?</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="book" title="Practice Project">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-3333" class="firstname"></a>Practice Project</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">For practice, write a program that does the following.</p>
+<div class="book" title="Excel-to-CSV Converter">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3334" class="firstname"></a>Excel-to-CSV Converter</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Excel can save a spreadsheet to a CSV file with a few mouse clicks, but if you had to convert hundreds of Excel files to CSVs, it would take hours of clicking. Using the <code class="literal1">openpyxl</code> module from <a class="ulink" href="/chapter12" title="Chapter 12. Working with Excel Spreadsheets">Chapter&nbsp;12</a>, write a program that reads all the Excel files in the current working directory and outputs them as CSV files.</p>
+<p class="calibre4">A single Excel file might contain multiple sheets; you&rsquo;ll have to create one CSV file per <span class="calibre1"><em class="calibre5">sheet</em></span>. The filenames of the CSV files should be <span class="calibre1"><em class="calibre5">&lt;excel filename&gt;_&lt;sheet title&gt;.csv</em></span>, where <span class="calibre1"><em class="calibre5">&lt;excel filename&gt;</em></span> is the filename of the Excel file without the file extension (for example, <code class="literal1">'spam_data'</code>, not <code class="literal1">'spam_data.xlsx'</code>) and <span class="calibre1"><em class="calibre5">&lt;sheet title&gt;</em></span> is the string from the <code class="literal1">Worksheet</code> object&rsquo;s <code class="literal1">title</code> variable.</p>
+<p class="calibre4">This program will involve many nested <code class="literal1">for</code> loops. The skeleton of the program will look something like this:</p>
+<p><a id="calibre_link-3335" class="calibre1"></a>
+<pre class="programlisting">for excelFile in os.listdir('.'):
+    # Skip non-xlsx files, load the workbook object.
+    for sheetName in wb.get_sheet_names():
+        # Loop through every sheet in the workbook.
+        sheet = wb.get_sheet_by_name(sheetName)
+
+        # Create the CSV filename from the Excel filename and sheet title.
+        # Create the csv.writer object for this CSV file.
+
+        # Loop through every row in the sheet.
+        for rowNum in range(1, sheet.get_highest_row() + 1):
+            rowData = []    # append each cell to this list
+            # Loop through each cell in the row.
+            for colNum in range(1, sheet.get_highest_column() + 1):
+                # Append each cell's data to rowData.
+
+            # Write the rowData list to the CSV file.
+
+        csvFile.close()</pre>
+<p class="calibre4">Download the ZIP file <span class="calibre1"><em class="calibre5">excelSpreadsheets.zip</em></span> from <span class="calibre1"><em class="calibre5"><a class="ulink" href="http://nostarch.com/automatestuff/">http://nostarch.com/automatestuff/</a></em></span>, and unzip the spreadsheets into the same directory as your program. You can use these as the files to test the program on.</p>
+</div>
+</div>
+</div>
+</div>
+<p><center><a href="/chapter13"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="/chapter15"><img src="/images/next.png" /></a></p>
+			</div><!-- .entry-content -->
+</article><!-- #post-## -->
+
+				
+{% endblock %}

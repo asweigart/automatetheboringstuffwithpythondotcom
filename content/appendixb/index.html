@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% set title = 'Automate the Boring Stuff with Python' %}
+{% block content %}
+				
+<article id="post-243" class="post-243 page type-page status-publish hentry">
+	<header class="entry-header">
+		<h1 class="entry-title">Appendix B &#8211; Running Programs</h1>	</header><!-- .entry-header -->
+
+	<div class="entry-content">
+		<p><center><a href="/appendixa"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="/appendixc"><img src="/images/next.png" /></a><br />Support the Author: Buy the book on <a href="http://www.amazon.com/gp/product/1593275994/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&amp;camp=1789&amp;creative=9325&amp;creativeASIN=1593275994&amp;linkCode=as2&amp;tag=playwithpyth-20&amp;linkId=2KIYOE7RFLG7D2RJ">Amazon</a> or<br/><a href="http://www.nostarch.com/automatestuff">the book/ebook bundle directly from No Starch Press</a>.<br /><a href="http://www.nostarch.com/automatestuff" ><img class=" size-full wp-image-49 aligncenter" src="/images/automate_small_cover.png" alt="small_cover" width="170" height="225" /></a><br /><a href="//inventwithpython.com">Read the author's other free Python books:</a><br /><a href="//inventwithpython.com/chapters"><img src="/images/smallcover_invent.png" width=120 /></a> <a href="//inventwithpython.com/pygame/chapters"><img src="/images/smallcover_makinggames.png" width=120 /></a> <a href="//inventwithpython.com/hacking/chapters"><img src="/images/smallcover_hacking.png" width=120 /></a></center></p>
+<div class="calibre" id="calibre_link-1899">
+<div class="book" title="Appendix B. Running Programs">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title1"><a id="calibre_link-3725" class="firstname"></a>Appendix&nbsp;B.&nbsp;Running Programs</h1>
+</div>
+</div>
+</div>
+<p><a href="https://youtu.be/qHcHUHF_Qfo" ><img src="/images/youtubelogo.png"> Running Programs and Command Line Arguments</a></p>
+<p class="calibre4"><a id="calibre_link-1515" class="calibre1"></a><a id="calibre_link-1516" class="calibre1"></a><a id="calibre_link-1572" class="calibre1"></a>If you have a program open in IDLE&rsquo;s file editor, running it is a simple matter of pressing F5 or selecting the Run▸Run Module menu item. This is an easy way to run programs while writing them, but opening IDLE to run your finished programs can be a burden. There are more convenient ways to execute Python scripts.</p>
+<div class="book" title="Shebang Line">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-3726" class="firstname"></a>Shebang Line</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">The first line of all your Python programs should be a <span class="calibre1"><em class="calibre5">shebang</em></span> line, which tells your computer that you want Python to execute this program. The shebang line begins with <code class="literal1">#!</code>, but the rest depends on your operating system.</p>
+<div class="book">
+<ul class="itemizedlist">
+<li class="listitem">
+<p class="calibre4">On Windows, the shebang line is <code class="literal1">#! python3</code>.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">On OS X, the shebang line is <code class="literal1">#! /usr/bin/env python3</code>.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">On Linux, the shebang line is <code class="literal1">#! /usr/bin/python3</code>.</p>
+</li>
+</ul>
+</div>
+<p class="calibre4"><a id="calibre_link-1393" class="calibre1"></a><a id="calibre_link-1517" class="calibre1"></a><a id="calibre_link-1851" class="calibre1"></a>You will be able to run Python scripts from IDLE without the shebang line, but the line is needed to run them from the command line.</p>
+</div>
+<div class="book" title="Running Python Programs on Windows">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-3727" class="firstname"></a>Running Python Programs on Windows</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">On Windows, the Python 3.4 interpreter is located at <span class="calibre1"><em class="calibre5">C:\Python34\python.exe</em></span>. Alternatively, the convenient <span class="calibre1"><em class="calibre5">py.exe</em></span> program will read the shebang line at the top of the <span class="calibre1"><em class="calibre5">.py</em></span> file&rsquo;s source code and run the appropriate version of Python for that script. The <span class="calibre1"><em class="calibre5">py.exe</em></span> program will make sure to run the Python program with the correct version of Python if multiple versions are installed on your computer.</p>
+<p class="calibre4">To make it convenient to run your Python program, create a <span class="calibre1"><em class="calibre5">.bat batch file</em></span> for running the Python program with <span class="calibre1"><em class="calibre5">py.exe</em></span>. To make a batch file, make a new text file containing a single line like the following:</p>
+<p><a id="calibre_link-3728" class="calibre1"></a>
+<pre class="programlisting">@py.exe <span class="calibre1"><em class="literal3">C:\path\to\your\pythonScript.py</em></span> %*</pre>
+<p class="calibre4">Replace this path with the absolute path to your own program, and save this file with a <span class="calibre1"><em class="calibre5">.bat</em></span> file extension (for example, <span class="calibre1"><em class="calibre5">pythonScript.bat</em></span>). This batch file will keep you from having to type the full absolute path for the Python program every time you want to run it. I recommend you place all your batch and <span class="calibre1"><em class="calibre5">.py</em></span> files in a single folder, such as <span class="calibre1"><em class="calibre5">C:\MyPythonScripts</em></span> or <span class="calibre1"><em class="calibre5">C:\Users\YourName\PythonScripts</em></span>.</p>
+<p class="calibre4">The <span class="calibre1"><em class="calibre5">C:\MyPythonScripts</em></span> folder should be added to the system path on Windows so that you can run the batch files in it from the Run dialog. To do this, modify the <code class="literal1">PATH</code> environment variable. Click the <span class="calibre1"><strong class="calibre7">Start</strong></span> button and type <span class="calibre1"><strong class="calibre7">Edit environment variables for your account</strong></span>. This option should auto-complete after you&rsquo;ve begun to type it. The Environment Variables window that appears will look like <a class="ulink" href="#calibre_link-1900" title="Figure B-1. The Environment Variables window on Windows">Figure&nbsp;B-1</a>.</p>
+<p class="calibre4">From System variables, select the Path variable and click <span class="calibre1"><strong class="calibre7">Edit</strong></span>. In the Value text field, append a semicolon, type <span class="calibre1"><strong class="calibre7">C:\MyPythonScripts</strong></span>, and then click <span class="calibre1"><strong class="calibre7">OK</strong></span>. Now you can run any Python script in the <span class="calibre1"><em class="calibre5">C:\MyPythonScripts</em></span> folder by simply pressing <span class="smaller">WIN</span>-R and entering the script&rsquo;s name. Running <code class="literal1">pythonScript</code>, for instance, will run <span class="calibre1"><em class="calibre5">pythonScript.bat</em></span>, which in turn will save you from having to run the whole command <code class="literal1">py.exe C:\ MyPythonScripts\pythonScript.py</code> from the Run dialog.</p>
+<div class="figure"><a id="calibre_link-1900" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-3729" class="calibre1"></a><img src="/images/000077.jpg" alt="The Environment Variables window on Windows" class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;B-1.&nbsp;The Environment Variables window on Windows</p>
+</div>
+</div>
+<div class="book" title="Running Python Programs on OS X and Linux">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-3730" class="firstname"></a>Running Python Programs on OS X and Linux</h1>
+</div>
+</div>
+</div>
+<p class="calibre4"><a id="calibre_link-977" class="calibre1"></a><a id="calibre_link-1197" class="calibre1"></a><a id="calibre_link-1518" class="calibre1"></a><a id="calibre_link-1519" class="calibre1"></a>On OS X, selecting Applications▸Utilities▸Terminal will bring up a <span class="calibre1"><em class="calibre5">Terminal</em></span> window. A Terminal window is a way to enter commands on your computer using only text, rather than clicking through a graphic interface. To bring up the Terminal window on Ubuntu Linux, press the <span class="smaller">WIN</span> (or <span class="smaller">SUPER</span>) key to bring up Dash and type in <span class="calibre1"><strong class="calibre7">Terminal</strong></span>.</p>
+<p class="calibre4">The Terminal window will begin in the home folder of your user account. If my username is <span class="calibre1"><em class="calibre5">asweigart</em></span>, the home folder will be <span class="calibre1"><em class="calibre5">/Users/asweigart</em></span> on OS X and <span class="calibre1"><em class="calibre5">/home/asweigart</em></span> on Linux. The tilde (<code class="literal1">~</code>) character is a shortcut for your home folder, so you can enter <code class="literal1">cd ~</code> to change to your home folder. You can also use the <code class="literal1">cd</code> command to change the current working directory to any other directory. On both OS X and Linux, the <code class="literal1">pwd</code> command will print the current working directory.</p>
+<p class="calibre4">To run your Python programs, save your <span class="calibre1"><em class="calibre5">.py</em></span> file to your home folder. Then, change the <span class="calibre1"><em class="calibre5">.py</em></span> file&rsquo;s permissions to make it executable by running <code class="literal1">chmod +x pythonScript.py</code>. File permissions are beyond the scope of this book, but you will need to run this command on your Python file if you want to run the program from the Terminal window. Once you do so, you will be able to run your script whenever you want by opening a Terminal window and entering <code class="literal1">./pythonScript.py</code>. The shebang line at the top of the script will tell the operating system where to locate the Python interpreter.</p>
+</div>
+</div>
+</div>
+<p><center><a href="/appendixa"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="/appendixc"><img src="/images/next.png" /></a></p>
+			</div><!-- .entry-content -->
+</article><!-- #post-## -->
+
+				
+{% endblock %}

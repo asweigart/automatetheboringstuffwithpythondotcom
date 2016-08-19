@@ -1,0 +1,1208 @@
+{% extends "base.html" %}
+{% set title = 'Automate the Boring Stuff with Python' %}
+{% block content %}
+				
+<article id="post-130" class="post-130 page type-page status-publish hentry">
+	<header class="entry-header">
+		<h1 class="entry-title">Chapter 16 &#8211; Sending Email and Text Messages</h1>	</header><!-- .entry-header -->
+
+	<div class="entry-content">
+		<p><center><a href="/chapter15"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="/chapter17"><img src="/images/next.png" /></a><br />Support the Author: Buy the book on <a href="http://www.amazon.com/gp/product/1593275994/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&amp;camp=1789&amp;creative=9325&amp;creativeASIN=1593275994&amp;linkCode=as2&amp;tag=playwithpyth-20&amp;linkId=2KIYOE7RFLG7D2RJ">Amazon</a> or<br/><a href="http://www.nostarch.com/automatestuff">the book/ebook bundle directly from No Starch Press</a>.<br /><a href="http://www.nostarch.com/automatestuff" ><img class=" size-full wp-image-49 aligncenter" src="/images/automate_small_cover.png" alt="small_cover" width="170" height="225" /></a><br /><a href="//inventwithpython.com">Read the author's other free Python books:</a><br /><a href="//inventwithpython.com/chapters"><img src="/images/smallcover_invent.png" width=120 /></a> <a href="//inventwithpython.com/pygame/chapters"><img src="/images/smallcover_makinggames.png" width=120 /></a> <a href="//inventwithpython.com/hacking/chapters"><img src="/images/smallcover_hacking.png" width=120 /></a></center></p>
+<div class="calibre" id="calibre_link-43">
+<div class="book" title="Chapter 16. Sending Email and Text Messages">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title1"><a id="calibre_link-3432" class="firstname"></a>Sending Email and Text Messages</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">Checking and replying to email is a huge time sink. Of course, you can&rsquo;t just write a program to handle all your email for you, since each message requires its own response. But you can still automate plenty of email-related tasks once you know how to write programs that can send and receive email.</p>
+<p class="calibre4">For example, maybe you have a spreadsheet full of customer records and want to send each customer a different form letter depending on their age and location details. Commercial software might not be able to do this for you; fortunately, you can write your own program to send these emails, saving yourself a lot of time copying and pasting form emails.</p>
+<p class="calibre4">You can also write programs to send emails and SMS texts to notify you of things even while you&rsquo;re away from your computer. If you&rsquo;re automating a task that takes a couple of hours to do, you don&rsquo;t want to go back to your computer every few minutes to check on the program&rsquo;s status. Instead, the program can just text your phone when it&rsquo;s done&mdash;freeing you to focus on more important things while you&rsquo;re away from your computer.</p>
+<div class="book" title="SMTP">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-3433" class="firstname"></a>SMTP</h1>
+</div>
+</div>
+</div>
+<p class="calibre4"><a id="calibre_link-535" class="calibre1"></a><a id="calibre_link-536" class="calibre1"></a><a id="calibre_link-1595" class="calibre1"></a>Much like HTTP is the protocol used by computers to send web pages across the Internet, <span class="calibre1"><em class="calibre5">Simple Mail Transfer Protocol (SMTP)</em></span> is the protocol used for sending email. SMTP dictates how email messages should be formatted, encrypted, and relayed between mail servers, and all the other details that your computer handles after you click Send. You don&rsquo;t need to know these technical details, though, because Python&rsquo;s <code class="literal1">smtplib</code> module simplifies them into a few functions.</p>
+<p class="calibre4">SMTP just deals with sending emails to others. A different protocol, called IMAP, deals with retrieving emails sent to you and is described in <a class="ulink" href="#calibre_link-44" title="IMAP">IMAP</a>.</p>
+</div>
+<div class="book" title="Sending Email">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-46" class="firstname"></a>Sending Email</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">You may be familiar with sending emails from Outlook or Thunderbird or through a website such as Gmail or Yahoo! Mail. Unfortunately, Python doesn&rsquo;t offer you a nice graphical user interface like those services. Instead, you call functions to perform each major step of SMTP, as shown in the following interactive shell example.</p>
+<div class="note" title="Note">
+<h3 class="title5"><a id="calibre_link-3434" class="calibre1"></a>Note</h3>
+<p class="calibre4"><span class="calibre1"><em class="calibre5">Don&rsquo;t enter this example in IDLE; it won&rsquo;t work because</em></span> <a class="ulink" href="http://smtp.example.com">smtp.example.com</a>, <span class="calibre1"><a class="ulink" href="mailto:bob@example.com">bob@example.com</a></span>, MY_SECRET_PASSWORD, <span class="calibre1"><em class="calibre5">and</em></span> <span class="calibre1"><a class="ulink" href="mailto:alice@example.com">alice@example.com</a></span> <span class="calibre1"><em class="calibre5">are just placeholders. This code is just an overview of the process of sending email with Python.</em></span></p>
+</div>
+<p><a id="calibre_link-3435" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">import smtplib</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">smtpObj = smtplib.SMTP('smtp.example.com', 587)</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">smtpObj.ehlo()</strong></span>
+(250, b'mx.example.com at your service, [216.172.148.131]\nSIZE 35882577\
+n8BITMIME\nSTARTTLS\nENHANCEDSTATUSCODES\nCHUNKING')
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">smtpObj.starttls()</strong></span>
+(220, b'2.0.0 Ready to start TLS')
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">smtpObj.login('bob@example.com', '</strong></span> <span class="calibre1"><em class="literal3"><span class="calibre1"><strong class="calibre27">MY_SECRET_PASSWORD</strong></span></em></span><span class="calibre1"><strong class="literal">')</strong></span>
+(235, b'2.7.0 Accepted')
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">smtpObj.sendmail('bob@example.com', 'alice@example.com', 'Subject: So</strong></span>
+<span class="calibre1"><strong class="literal">long.\nDear Alice, so long and thanks for all the fish. Sincerely, Bob')</strong></span>
+{}
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">smtpObj.quit()</strong></span>
+(221, b'2.0.0 closing connection ko10sm23097611pbd.52 - gsmtp')</pre>
+<p class="calibre4">In the following sections, we&rsquo;ll go through each step, replacing the placeholders with your information to connect and log in to an SMTP server, send an email, and disconnect from the server.</p>
+<div class="book" title="Connecting to an SMTP Server">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3436" class="firstname"></a>Connecting to an SMTP Server</h2>
+</div>
+</div>
+</div>
+<p class="calibre4"><a id="calibre_link-249" class="calibre1"></a><a id="calibre_link-341" class="calibre1"></a><a id="calibre_link-537" class="calibre1"></a><a id="calibre_link-756" class="calibre1"></a><a id="calibre_link-803" class="calibre1"></a><a id="calibre_link-1199" class="calibre1"></a><a id="calibre_link-1580" class="calibre1"></a><a id="calibre_link-1596" class="calibre1"></a><a id="calibre_link-1602" class="calibre1"></a><a id="calibre_link-1794" class="calibre1"></a><a id="calibre_link-1884" class="calibre1"></a>If you&rsquo;ve ever set up Thunderbird, Outlook, or another program to connect to your email account, you may be familiar with configuring the SMTP server and port. These settings will be different for each email provider, but a web search for <span class="calibre1"><em class="calibre5">&lt;your provider&gt; smtp settings</em></span> should turn up the server and port to use.</p>
+<p class="calibre4">The domain name for the SMTP server will usually be the name of your email provider&rsquo;s domain name, with <span class="calibre1"><em class="calibre5">smtp.</em></span> in front of it. For example, Gmail&rsquo;s SMTP server is at <span class="calibre1"><em class="calibre5">smtp.gmail.com</em></span>. <a class="ulink" href="#calibre_link-45" title="Table 16-1. Email Providers and Their SMTP Servers">Table&nbsp;16-1</a> lists some common email providers and their SMTP servers. (The port is an integer value and will almost always be 587, which is used by the command encryption standard, TLS.)</p>
+<div class="table"><a id="calibre_link-45" class="calibre1"></a>
+<p class="title7">Table&nbsp;16-1.&nbsp;Email Providers and Their SMTP Servers</p>
+<div class="book">
+<table summary="Email Providers and Their SMTP Servers" class="calibre9">
+<colgroup class="calibre10">
+<col class="calibre11"></col>
+<col class="calibre11"></col>
+</colgroup>
+<thead class="calibre12">
+<tr class="calibre13">
+<th valign="top" class="calibre14">
+<p class="calibre4">Provider</p>
+</th>
+<th valign="top" class="calibre15">
+<p class="calibre4">SMTP server domain name</p>
+</th>
+</tr>
+</thead>
+<tbody class="calibre16">
+<tr class="calibre13">
+<td valign="top" class="calibre17">
+<p class="calibre4">Gmail</p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4"><span class="calibre1"><em class="calibre5">smtp.gmail.com</em></span></p>
+</td>
+</tr>
+<tr class="calibre19">
+<td valign="top" class="calibre17">
+<p class="calibre4">Outlook.com/Hotmail.com</p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4"><span class="calibre1"><em class="calibre5">smtp-mail.outlook.com</em></span></p>
+</td>
+</tr>
+<tr class="calibre13">
+<td valign="top" class="calibre17">
+<p class="calibre4">Yahoo Mail</p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4"><span class="calibre1"><em class="calibre5">smtp.mail.yahoo.com</em></span></p>
+</td>
+</tr>
+<tr class="calibre19">
+<td valign="top" class="calibre17">
+<p class="calibre4">AT&amp;T</p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4"><span class="calibre1"><em class="calibre5">smpt.mail.att.net</em></span> (port 465)</p>
+</td>
+</tr>
+<tr class="calibre13">
+<td valign="top" class="calibre17">
+<p class="calibre4">Comcast</p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4"><span class="calibre1"><em class="calibre5">smtp.comcast.net</em></span></p>
+</td>
+</tr>
+<tr class="calibre19">
+<td valign="top" class="calibre20">
+<p class="calibre4">Verizon</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4"><span class="calibre1"><em class="calibre5">smtp.verizon.net</em></span> (port 465)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p class="calibre4">Once you have the domain name and port information for your email provider, create an <code class="literal1">SMTP</code> object by calling <code class="literal1">smptlib.SMTP()</code>, passing the domain name as a string argument, and passing the port as an integer argument. The <code class="literal1">SMTP</code> object represents a connection to an SMTP mail server and has methods for sending emails. For example, the following call creates an <code class="literal1">SMTP</code> object for connecting to Gmail:</p>
+<p><a id="calibre_link-3437" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">smtpObj = smtplib.SMTP('smtp.gmail.com', 587)</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">type(smtpObj)</strong></span>
+&lt;class 'smtplib.SMTP'&gt;</pre>
+<p class="calibre4">Entering <code class="literal1">type(smtpObj)</code> shows you that there&rsquo;s an <code class="literal1">SMTP</code> object stored in <code class="literal1">smtpObj</code>. You&rsquo;ll need this <code class="literal1">SMTP</code> object in order to call the methods that log you in and send emails. If the <code class="literal1">smptlib.SMTP()</code> call is not successful, your SMTP server might not support TLS on port 587. In this case, you will need to create an <code class="literal1">SMTP</code> object using <code class="literal1">smtplib.SMTP_SSL()</code> and port 465 instead.</p>
+<p><a id="calibre_link-3438" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">smtpObj = smtplib.SMTP_SSL('smtp.gmail.com', 465)</strong></span></pre>
+<div class="note" title="Note">
+<h3 class="title5"><a id="calibre_link-3439" class="calibre1"></a>Note</h3>
+<p class="calibre4"><span class="calibre1"><em class="calibre5">If you are not connected to the Internet, Python will raise a <code class="literal3">socket.gaierror: [Errno 11004] getaddrinfo failed</code> or similar exception.</em></span></p>
+</div>
+<p class="calibre4"><a id="calibre_link-524" class="calibre1"></a><a id="calibre_link-538" class="calibre1"></a><a id="calibre_link-539" class="calibre1"></a><a id="calibre_link-540" class="calibre1"></a><a id="calibre_link-1023" class="calibre1"></a><a id="calibre_link-1597" class="calibre1"></a><a id="calibre_link-1598" class="calibre1"></a><a id="calibre_link-1599" class="calibre1"></a><a id="calibre_link-1622" class="calibre1"></a><a id="calibre_link-1728" class="calibre1"></a>For your programs, the differences between TLS and SSL aren&rsquo;t important. You only need to know which encryption standard your SMTP server uses so you know how to connect to it. In all of the interactive shell examples that follow, the <code class="literal1">smtpObj</code> variable will contain an <code class="literal1">SMTP</code> object returned by the <code class="literal1">smtplib.SMTP()</code> or <code class="literal1">smtplib.SMTP_SSL()</code> function.</p>
+</div>
+<div class="book" title="Sending the SMTP &ldquo;Hello&rdquo; Message">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3440" class="firstname"></a>Sending the SMTP &ldquo;Hello&rdquo; Message</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Once you have the <code class="literal1">SMTP</code> object, call its oddly named <code class="literal1">ehlo()</code> method to &ldquo;say hello&rdquo; to the SMTP email server. This greeting is the first step in SMTP and is important for establishing a connection to the server. You don&rsquo;t need to know the specifics of these protocols. Just be sure to call the <code class="literal1">ehlo()</code> method first thing after getting the <code class="literal1">SMTP</code> object or else the later method calls will result in errors. The following is an example of an <code class="literal1">ehlo()</code> call and its return value:</p>
+<p><a id="calibre_link-3441" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">smtpObj.ehlo()</strong></span>
+(250, b'mx.google.com at your service, [216.172.148.131]\nSIZE 35882577\
+n8BITMIME\nSTARTTLS\nENHANCEDSTATUSCODES\nCHUNKING')</pre>
+<p class="calibre4">If the first item in the returned tuple is the integer <code class="literal1">250</code> (the code for &ldquo;success&rdquo; in SMTP), then the greeting succeeded.</p>
+</div>
+<div class="book" title="Starting TLS Encryption">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3442" class="firstname"></a>Starting TLS Encryption</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">If you are connecting to port 587 on the SMTP server (that is, you&rsquo;re using TLS encryption), you&rsquo;ll need to call the <code class="literal1">starttls()</code> method next. This required step enables encryption for your connection. If you are connecting to port 465 (using SSL), then encryption is already set up, and you should skip this step.</p>
+<p class="calibre4">Here&rsquo;s an example of the <code class="literal1">starttls()</code> method call:</p>
+<p><a id="calibre_link-3443" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">smtpObj.starttls()</strong></span>
+(220, b'2.0.0 Ready to start TLS')</pre>
+<p class="calibre4"><code class="literal1">starttls()</code> puts your SMTP connection in TLS mode. The <code class="literal1">220</code> in the return value tells you that the server is ready.</p>
+</div>
+<div class="book" title="Logging in to the SMTP Server">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3444" class="firstname"></a>Logging in to the SMTP Server</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Once your encrypted connection to the SMTP server is set up, you can log in with your username (usually your email address) and email password by calling the <code class="literal1">login()</code> method.</p>
+<p><a id="calibre_link-3445" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">smtpObj.login('</strong></span> <span class="calibre1"><em class="literal3"><span class="calibre1"><strong class="calibre27">my_email_address@gmail.com</strong></span></em></span> <span class="calibre1"><strong class="literal">', '</strong></span> <span class="calibre1"><em class="literal3"><span class="calibre1"><strong class="calibre27">MY_SECRET_PASSWORD</strong></span></em></span> <span class="calibre1"><strong class="literal">')</strong></span>
+(235, b'2.7.0 Accepted')</pre>
+<div class="sidebar"><a id="calibre_link-48" class="calibre1"></a>
+<p class="title6">Gmail&rsquo;s Application-Specific Passwords</p>
+<p class="calibre4"><a id="calibre_link-239" class="calibre1"></a><a id="calibre_link-541" class="calibre1"></a><a id="calibre_link-757" class="calibre1"></a><a id="calibre_link-881" class="calibre1"></a><a id="calibre_link-1217" class="calibre1"></a><a id="calibre_link-1566" class="calibre1"></a><a id="calibre_link-1600" class="calibre1"></a>Gmail has an additional security feature for Google accounts called <span class="calibre1"><em class="calibre5">application-specific passwords</em></span>. If you receive an <code class="literal1">Application-specific password required</code> error message when your program tries to log in, you will have to set up one of these passwords for your Python script. Check out the resources at <span class="calibre1"><em class="calibre5"><a class="ulink" href="http://nostarch.com/automatestuff/">http://nostarch.com/automatestuff/</a></em></span> for detailed directions on how to set up an application-specific password for your Google account.</p>
+</div>
+<p class="calibre4">Pass a string of your email address as the first argument and a string of your password as the second argument. The <code class="literal1">235</code> in the return value means authentication was successful. Python will raise an <code class="literal1">smtplib.SMTPAuthenticationError</code> exception for incorrect passwords.</p>
+<div class="warning" title="Warning">
+<h3 class="title5"><a id="calibre_link-3446" class="calibre1"></a>Warning</h3>
+<p class="calibre4"><span class="calibre1"><em class="calibre5">Be careful about putting passwords in your source code. If anyone ever copies your program, they&rsquo;ll have access to your email account! It&rsquo;s a good idea to call <code class="literal3">input()</code> and have the user type in the password. It may be inconvenient to have to enter a password each time you run your program, but this approach will prevent you from leaving your password in an unencrypted file on your computer where a hacker or laptop thief could easily get it.</em></span></p>
+</div>
+</div>
+<div class="book" title="Sending an Email">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3447" class="firstname"></a>Sending an Email</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Once you are logged in to your email provider&rsquo;s SMTP server, you can call the <code class="literal1">sendmail()</code> method to actually send the email. The <code class="literal1">sendmail()</code> method call looks like this:</p>
+<p><a id="calibre_link-3448" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">smtpObj.sendmail('</strong></span> <span class="calibre1"><em class="literal3"><span class="calibre1"><strong class="calibre27">my_email_address@gmail.com</strong></span></em></span> <span class="calibre1"><strong class="literal">', '</strong></span> <span class="calibre1"><em class="literal3"><span class="calibre1"><strong class="calibre27">recipient@example.com</strong></span></em></span> <span class="calibre1"><strong class="literal">',</strong></span>
+<span class="calibre1"><strong class="literal">'Subject: So long.\nDear Alice, so long and thanks for all the fish. Sincerely,</strong></span>
+<span class="calibre1"><strong class="literal">Bob')</strong></span>
+{}</pre>
+<p class="calibre4">The <code class="literal1">sendmail()</code> method requires three arguments.</p>
+<div class="book">
+<ul class="itemizedlist">
+<li class="listitem">
+<p class="calibre4">Your email address as a string (for the email&rsquo;s &ldquo;from&rdquo; address)</p>
+</li>
+<li class="listitem">
+<p class="calibre4">The recipient&rsquo;s email address as a string or a list of strings for multiple recipients (for the &ldquo;to&rdquo; address)</p>
+</li>
+<li class="listitem">
+<p class="calibre4">The email body as a string</p>
+</li>
+</ul>
+</div>
+<p class="calibre4">The start of the email body string <span class="calibre1"><em class="calibre5">must</em></span> begin with <code class="literal1">'Subject: \n'</code> for the subject line of the email. The <code class="literal1">'\n'</code> newline character separates the subject line from the main body of the email.</p>
+<p class="calibre4">The return value from <code class="literal1">sendmail()</code> is a dictionary. There will be one key-value pair in the dictionary for each recipient for whom email delivery <span class="calibre1"><em class="calibre5">failed</em></span>. An empty dictionary means all recipients were <span class="calibre1"><em class="calibre5">successfully</em></span> sent the email.</p>
+</div>
+<div class="book" title="Disconnecting from the SMTP Server">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3449" class="firstname"></a>Disconnecting from the SMTP Server</h2>
+</div>
+</div>
+</div>
+<p class="calibre4"><a id="calibre_link-542" class="calibre1"></a><a id="calibre_link-543" class="calibre1"></a><a id="calibre_link-544" class="calibre1"></a><a id="calibre_link-849" class="calibre1"></a><a id="calibre_link-856" class="calibre1"></a><a id="calibre_link-894" class="calibre1"></a><a id="calibre_link-1417" class="calibre1"></a><a id="calibre_link-1423" class="calibre1"></a><a id="calibre_link-1601" class="calibre1"></a>Be sure to call the <code class="literal1">quit()</code> method when you are done sending emails. This will disconnect your program from the SMTP server.</p>
+<p><a id="calibre_link-3450" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">smtpObj.quit()</strong></span>
+(221, b'2.0.0 closing connection ko10sm23097611pbd.52 - gsmtp')</pre>
+<p class="calibre4">The <code class="literal1">221</code> in the return value means the session is ending.</p>
+<p class="calibre4">To review all the steps for connecting and logging in to the server, sending email, and disconnection, see <a class="ulink" href="#calibre_link-46" title="Sending Email">Sending Email</a>.</p>
+</div>
+</div>
+<div class="book" title="IMAP">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-44" class="firstname"></a>IMAP</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">Just as SMTP is the protocol for sending email, the <span class="calibre1"><em class="calibre5">Internet Message Access Protocol (IMAP)</em></span> specifies how to communicate with an email provider&rsquo;s server to retrieve emails sent to your email address. Python comes with an <code class="literal1">imaplib</code> module, but in fact the third-party <code class="literal1">imapclient</code> module is easier to use. This chapter provides an introduction to using IMAPClient; the full documentation is at <span class="calibre1"><em class="calibre5"><a class="ulink" href="http://imapclient.readthedocs.org/">http://imapclient.readthedocs.org/</a></em></span>.</p>
+<p class="calibre4">The <code class="literal1">imapclient</code> module downloads emails from an IMAP server in a rather complicated format. Most likely, you&rsquo;ll want to convert them from this format into simple string values. The <code class="literal1">pyzmail</code> module does the hard job of parsing these email messages for you. You can find the complete documentation for PyzMail at <span class="calibre1"><em class="calibre5"><a class="ulink" href="http://www.magiksys.net/pyzmail/">http://www.magiksys.net/pyzmail/</a></em></span>.</p>
+<p class="calibre4">Install <code class="literal1">imapclient</code> and <code class="literal1">pyzmail</code> from a Terminal window. Appendix A has steps on how to install third-party modules.</p>
+</div>
+<div class="book" title="Retrieving and Deleting Emails with IMAP">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-53" class="firstname"></a>Retrieving and Deleting Emails with IMAP</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">Finding and retrieving an email in Python is a multistep process that requires both the <code class="literal1">imapclient</code> and <code class="literal1">pyzmail</code> third-party modules. Just to give you an overview, here&rsquo;s a full example of logging in to an IMAP server, searching for emails, fetching them, and then extracting the text of the email messages from them.</p>
+<p><a id="calibre_link-3451" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">import imapclient</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">imapObj = imapclient.IMAPClient('imap.gmail.com', ssl=True)</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">imapObj.login('</strong></span> <span class="calibre1"><em class="literal3"><span class="calibre1"><strong class="calibre27">my_email_address@gmail.com</strong></span></em></span> <span class="calibre1"><strong class="literal">', '</strong></span> <span class="calibre1"><em class="literal3"><span class="calibre1"><strong class="calibre27">MY_SECRET_PASSWORD</strong></span></em></span> <span class="calibre1"><strong class="literal">')</strong></span>
+'my_email_address@gmail.com Jane Doe authenticated (Success)'
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">imapObj.select_folder('INBOX', readonly=True)</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">UIDs = imapObj.search(['SINCE 05-Jul-2014'])</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">UIDs</strong></span>
+[40032, 40033, 40034, 40035, 40036, 40037, 40038, 40039, 40040, 40041]
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">rawMessages = imapObj.fetch([40041], ['BODY[]', 'FLAGS'])</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">import pyzmail</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">message = pyzmail.PyzMessage.factory(rawMessages[40041]['BODY[]'])</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">message.get_subject()</strong></span>
+'Hello!'
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">message.get_addresses('from')</strong></span>
+[('Edward Snowden', 'esnowden@nsa.gov')]
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">message.get_addresses('to')</strong></span>
+[(Jane Doe', 'jdoe@example.com')]
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">message.get_addresses('cc')</strong></span>
+[]
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">message.get_addresses('bcc')</strong></span>
+[]
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">message.text_part != None</strong></span>
+True
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">message.text_part.get_payload().decode(message.text_part.charset)</strong></span>
+'Follow the money.\r\n\r\n-Ed\r\n'
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">message.html_part != None</strong></span>
+True
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">message.html_part.get_payload().decode(message.html_part.charset)</strong></span>
+'&lt;div dir="ltr"&gt;&lt;div&gt;So long, and thanks for all the fish!&lt;br&gt;&lt;br&gt;&lt;/div&gt;-
+Al&lt;br&gt;&lt;/div&gt;\r\n'
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">imapObj.logout()</strong></span></pre>
+<p class="calibre4"><a id="calibre_link-250" class="calibre1"></a><a id="calibre_link-342" class="calibre1"></a><a id="calibre_link-758" class="calibre1"></a><a id="calibre_link-804" class="calibre1"></a><a id="calibre_link-857" class="calibre1"></a><a id="calibre_link-1200" class="calibre1"></a><a id="calibre_link-1795" class="calibre1"></a><a id="calibre_link-1885" class="calibre1"></a>You don&rsquo;t have to memorize these steps. After we go through each step in detail, you can come back to this overview to refresh your memory.</p>
+<div class="book" title="Connecting to an IMAP Server">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3452" class="firstname"></a>Connecting to an IMAP Server</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Just like you needed an <code class="literal1">SMTP</code> object to connect to an SMTP server and send email, you need an <code class="literal1">IMAPClient</code> object to connect to an IMAP server and receive email. First you&rsquo;ll need the domain name of your email provider&rsquo;s IMAP server. This will be different from the SMTP server&rsquo;s domain name. <a class="ulink" href="#calibre_link-47" title="Table 16-2. Email Providers and Their IMAP Servers">Table&nbsp;16-2</a> lists the IMAP servers for several popular email providers.</p>
+<div class="table"><a id="calibre_link-47" class="calibre1"></a>
+<p class="title7">Table&nbsp;16-2.&nbsp;Email Providers and Their IMAP Servers</p>
+<div class="book">
+<table summary="Email Providers and Their IMAP Servers" class="calibre9">
+<colgroup class="calibre10">
+<col class="calibre11"></col>
+<col class="calibre11"></col>
+</colgroup>
+<thead class="calibre12">
+<tr class="calibre13">
+<th valign="top" class="calibre14">
+<p class="calibre4">Provider</p>
+</th>
+<th valign="top" class="calibre15">
+<p class="calibre4">IMAP server domain name</p>
+</th>
+</tr>
+</thead>
+<tbody class="calibre16">
+<tr class="calibre13">
+<td valign="top" class="calibre17">
+<p class="calibre4">Gmail</p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4"><span class="calibre1"><em class="calibre5">imap.gmail.com</em></span></p>
+</td>
+</tr>
+<tr class="calibre19">
+<td valign="top" class="calibre17">
+<p class="calibre4">Outlook.com/Hotmail.com</p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4"><span class="calibre1"><em class="calibre5">imap-mail.outlook.com</em></span></p>
+</td>
+</tr>
+<tr class="calibre13">
+<td valign="top" class="calibre17">
+<p class="calibre4">Yahoo Mail</p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4"><span class="calibre1"><em class="calibre5">imap.mail.yahoo.com</em></span></p>
+</td>
+</tr>
+<tr class="calibre19">
+<td valign="top" class="calibre17">
+<p class="calibre4">AT&amp;T</p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4"><span class="calibre1"><em class="calibre5">imap.mail.att.net</em></span></p>
+</td>
+</tr>
+<tr class="calibre13">
+<td valign="top" class="calibre17">
+<p class="calibre4">Comcast</p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4"><span class="calibre1"><em class="calibre5">imap.comcast.net</em></span></p>
+</td>
+</tr>
+<tr class="calibre19">
+<td valign="top" class="calibre20">
+<p class="calibre4">Verizon</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4"><span class="calibre1"><em class="calibre5">incoming.verizon.net</em></span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p class="calibre4">Once you have the domain name of the IMAP server, call the <code class="literal1">imapclient.IMAPClient()</code> function to create an <code class="literal1">IMAPClient</code> object. Most email providers require SSL encryption, so pass the <code class="literal1">ssl=True</code> keyword argument. Enter the following into the interactive shell (using your provider&rsquo;s domain name):</p>
+<p><a id="calibre_link-3453" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">import imapclient</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">imapObj = imapclient.IMAPClient('imap.gmail.com', ssl=True)</strong></span></pre>
+<p class="calibre4"><a id="calibre_link-545" class="calibre1"></a><a id="calibre_link-546" class="calibre1"></a><a id="calibre_link-547" class="calibre1"></a><a id="calibre_link-850" class="calibre1"></a><a id="calibre_link-851" class="calibre1"></a><a id="calibre_link-852" class="calibre1"></a><a id="calibre_link-979" class="calibre1"></a><a id="calibre_link-1024" class="calibre1"></a><a id="calibre_link-1543" class="calibre1"></a>In all of the interactive shell examples in the following sections, the <code class="literal1">imapObj</code> variable will contain an <code class="literal1">IMAPClient</code> object returned from the <code class="literal1">imapclient.IMAPClient()</code> function. In this context, a <span class="calibre1"><em class="calibre5">client</em></span> is the object that connects to the server.</p>
+</div>
+<div class="book" title="Logging in to the IMAP Server">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3454" class="firstname"></a>Logging in to the IMAP Server</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Once you have an <code class="literal1">IMAPClient</code> object, call its <code class="literal1">login()</code> method, passing in the username (this is usually your email address) and password as strings.</p>
+<p><a id="calibre_link-3455" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">imapObj.login('</strong></span> <span class="calibre1"><em class="literal3"><span class="calibre1"><strong class="calibre27">my_email_address@gmail.com</strong></span></em></span> <span class="calibre1"><strong class="literal">', '</strong></span> <span class="calibre1"><em class="literal3"><span class="calibre1"><strong class="calibre27">MY_SECRET_PASSWORD</strong></span></em></span> <span class="calibre1"><strong class="literal">')</strong></span>
+'my_email_address@gmail.com Jane Doe authenticated (Success)'</pre>
+<div class="warning" title="Warning">
+<h3 class="title5"><a id="calibre_link-3456" class="calibre1"></a>Warning</h3>
+<p class="calibre4"><span class="calibre1"><em class="calibre5">Remember, never write a password directly into your code! Instead, design your program to accept the password returned from <code class="literal3">input()</code></em></span>.</p>
+</div>
+<p class="calibre4">If the IMAP server rejects this username/password combination, Python will raise an <code class="literal1">imaplib.error</code> exception. For Gmail accounts, you may need to use an application-specific password; for more details, see <a class="ulink" href="#calibre_link-48" title="Gmail&rsquo;s Application-Specific Passwords">Gmail&rsquo;s Application-Specific Passwords</a>.</p>
+</div>
+<div class="book" title="Searching for Email">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3457" class="firstname"></a>Searching for Email</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Once you&rsquo;re logged on, actually retrieving an email that you&rsquo;re interested in is a two-step process. First, you must select a folder you want to search through. Then, you must call the <code class="literal1">IMAPClient</code> object&rsquo;s <code class="literal1">search()</code> method, passing in a string of IMAP search keywords.</p>
+<div class="book" title="Selecting a Folder">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h3 class="title8"><a id="calibre_link-3458" class="firstname"></a>Selecting a Folder</h3>
+</div>
+</div>
+</div>
+<p class="calibre4">Almost every account has an <code class="literal1">INBOX</code> folder by default, but you can also get a list of folders by calling the <code class="literal1">IMAPClient</code> object&rsquo;s <code class="literal1">list_folders()</code> method. This returns a list of tuples. Each tuple contains information about a single folder. Continue the interactive shell example by entering the following:</p>
+<p><a id="calibre_link-3459" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">import pprint</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">pprint.pprint(imapObj.list_folders())</strong></span>
+[(('\\HasNoChildren',), '/', 'Drafts'),
+ (('\\HasNoChildren',), '/', 'Filler'),
+ (('\\HasNoChildren',), '/', 'INBOX'),
+ (('\\HasNoChildren',), '/', 'Sent'),
+<span class="calibre1"><em class="literal3">--snip-</em></span>
+ (('\\HasNoChildren', '\\Flagged'), '/', '[Gmail]/Starred'),
+ (('\\HasNoChildren', '\\Trash'), '/', '[Gmail]/Trash')]</pre>
+<p class="calibre4"><a id="calibre_link-233" class="calibre1"></a><a id="calibre_link-267" class="calibre1"></a><a id="calibre_link-275" class="calibre1"></a><a id="calibre_link-1167" class="calibre1"></a><a id="calibre_link-1547" class="calibre1"></a><a id="calibre_link-1581" class="calibre1"></a><a id="calibre_link-1679" class="calibre1"></a><a id="calibre_link-1705" class="calibre1"></a>This is what your output might look like if you have a Gmail account. (Gmail calls its folders <span class="calibre1"><em class="calibre5">labels</em></span>, but they work the same way as folders.) The three values in each of the tuples&mdash;for example, <code class="literal1">(('\\HasNoChildren',), '/', 'INBOX')</code>&mdash;are as follows:</p>
+<div class="book">
+<ul class="itemizedlist">
+<li class="listitem">
+<p class="calibre4">A tuple of the folder&rsquo;s flags. (Exactly what these flags represent is beyond the scope of this book, and you can safely ignore this field.)</p>
+</li>
+<li class="listitem">
+<p class="calibre4">The delimiter used in the name string to separate parent folders and subfolders.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">The full name of the folder.</p>
+</li>
+</ul>
+</div>
+<p class="calibre4">To select a folder to search through, pass the folder&rsquo;s name as a string into the <code class="literal1">IMAPClient</code> object&rsquo;s <code class="literal1">select_folder()</code> method.</p>
+<p><a id="calibre_link-3460" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">imapObj.select_folder('INBOX', readonly=True)</strong></span></pre>
+<p class="calibre4">You can ignore <code class="literal1">select_folder()</code>&rsquo;s return value. If the selected folder does not exist, Python will raise an <code class="literal1">imaplib.error</code> exception.</p>
+<p class="calibre4">The <code class="literal1">readonly=True</code> keyword argument prevents you from accidentally making changes or deletions to any of the emails in this folder during the subsequent method calls. Unless you <span class="calibre1"><em class="calibre5">want</em></span> to delete emails, it&rsquo;s a good idea to always set <code class="literal1">readonly</code> to <code class="literal1">True</code>.</p>
+</div>
+<div class="book" title="Performing the Search">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h3 class="title8"><a id="calibre_link-3461" class="firstname"></a>Performing the Search</h3>
+</div>
+</div>
+</div>
+<p class="calibre4">With a folder selected, you can now search for emails with the <code class="literal1">IMAPClient</code> object&rsquo;s <code class="literal1">search()</code> method. The argument to <code class="literal1">search()</code> is a list of strings, each formatted to the IMAP&rsquo;s search keys. <a class="ulink" href="#calibre_link-49" title="Table 16-3. IMAP Search Keys">Table&nbsp;16-3</a> describes the various search keys.</p>
+<div class="table"><a id="calibre_link-49" class="calibre1"></a>
+<p class="title7">Table&nbsp;16-3.&nbsp;IMAP Search Keys</p>
+<div class="book">
+<table summary="IMAP Search Keys" class="calibre9">
+<colgroup class="calibre10">
+<col class="calibre11"></col>
+<col class="calibre11"></col>
+</colgroup>
+<thead class="calibre12">
+<tr class="calibre13">
+<th valign="top" class="calibre14">
+<p class="calibre4">Search key</p>
+</th>
+<th valign="top" class="calibre15">
+<p class="calibre4">Meaning</p>
+</th>
+</tr>
+</thead>
+<tbody class="calibre16">
+<tr class="calibre13">
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">'ALL'</code></p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4">Returns all messages in the folder. You may run in to <code class="literal2">imaplib</code> size limits if you request all the messages in a large folder. See <a class="ulink" href="#calibre_link-50" title="Size Limits">Size Limits</a>.</p>
+</td>
+</tr>
+<tr class="calibre19">
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">'BEFORE</code> <span class="calibre1"><em class="calibre5"><code class="literal4">date'</code></em></span>, <code class="literal2">'ON</code> <span class="calibre1"><em class="calibre5"><code class="literal4">date'</code></em></span>, <code class="literal2">'SINCE</code> <span class="calibre1"><em class="calibre5"><code class="literal4">date'</code></em></span></p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4">These three search keys return, respectively, messages that were received by the IMAP server before, on, or after the given <span class="calibre1"><em class="calibre5"><code class="literal4">date</code></em></span>. The date must be formatted like <code class="literal2">05-Jul-2015</code>. Also, while <code class="literal2">'SINCE 05-Jul-2015'</code> will match messages on and after July 5, <code class="literal2">'BEFORE 05-Jul-2015'</code> will match only messages before July 5 but not on July 5 itself.</p>
+</td>
+</tr>
+<tr class="calibre13">
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">'SUBJECT</code> <span class="calibre1"><em class="calibre5"><code class="literal4">string'</code></em></span>, <code class="literal2">'BODY</code> <span class="calibre1"><em class="calibre5"><code class="literal4">string'</code></em></span>, <code class="literal2">'TEXT</code> <span class="calibre1"><em class="calibre5"><code class="literal4">string'</code></em></span></p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4">Returns messages where <span class="calibre1"><em class="calibre5"><code class="literal4">string</code></em></span> is found in the subject, body, or either, respectively. If <span class="calibre1"><em class="calibre5"><code class="literal4">string</code></em></span> has spaces in it, then enclose it with double quotes: <code class="literal2">'TEXT "search with spaces"'</code>.<a id="calibre_link-236" class="calibre1"></a><a id="calibre_link-264" class="calibre1"></a><a id="calibre_link-308" class="calibre1"></a><a id="calibre_link-454" class="calibre1"></a><a id="calibre_link-507" class="calibre1"></a><a id="calibre_link-659" class="calibre1"></a><a id="calibre_link-718" class="calibre1"></a><a id="calibre_link-942" class="calibre1"></a><a id="calibre_link-1164" class="calibre1"></a><a id="calibre_link-1185" class="calibre1"></a><a id="calibre_link-1545" class="calibre1"></a><a id="calibre_link-1592" class="calibre1"></a><a id="calibre_link-1730" class="calibre1"></a><a id="calibre_link-1762" class="calibre1"></a><a id="calibre_link-1763" class="calibre1"></a><a id="calibre_link-1766" class="calibre1"></a><a id="calibre_link-1767" class="calibre1"></a><a id="calibre_link-1774" class="calibre1"></a></p>
+</td>
+</tr>
+<tr class="calibre19">
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">'FROM</code> <span class="calibre1"><em class="calibre5"><code class="literal4">string'</code></em></span>, <code class="literal2">'TO</code> <span class="calibre1"><em class="calibre5"><code class="literal4">string'</code></em></span>, <code class="literal2">'CC</code> <span class="calibre1"><em class="calibre5"><code class="literal4">string'</code></em></span>, <code class="literal2">'BCC</code> <span class="calibre1"><em class="calibre5"><code class="literal4">string'</code></em></span></p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4">Returns all messages where <span class="calibre1"><em class="calibre5"><code class="literal4">string</code></em></span> is found in the &ldquo;from&rdquo; emailaddress, &ldquo;to&rdquo; addresses, &ldquo;cc&rdquo; (carbon copy) addresses, or &ldquo;bcc&rdquo; (blind carbon copy) addresses, respectively. If there are multiple email addresses in <span class="calibre1"><em class="calibre5"><code class="literal4">string</code></em></span>, then separate them with spaces and enclose them all with double quotes: <code class="literal2">'CC</code> <span class="calibre1"><em class="calibre5"><code class="literal4">"firstcc@example.com secondcc@example.com"'</code></em></span>.</p>
+</td>
+</tr>
+<tr class="calibre13">
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">'SEEN'</code>, <code class="literal2">'UNSEEN'</code></p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4">Returns all messages with and without the <span class="calibre1"><em class="calibre5">\Seen</em></span> flag, respectively. An email obtains the <span class="calibre1"><em class="calibre5">\Seen</em></span> flag if it has been accessed with a <code class="literal2">fetch()</code> method call (described later) or if it is clicked when you&rsquo;re checking your email in an email program or web browser. It&rsquo;s more common to say the email has been &ldquo;read&rdquo; rather than &ldquo;seen,&rdquo; but they mean the same thing.</p>
+</td>
+</tr>
+<tr class="calibre19">
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">'ANSWERED'</code>, <code class="literal2">'UNANSWERED'</code></p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4">Returns all messages with and without the <span class="calibre1"><em class="calibre5">\Answered</em></span> flag, respectively. A message obtains the <span class="calibre1"><em class="calibre5">\Answered</em></span> flag when it is replied to.</p>
+</td>
+</tr>
+<tr class="calibre13">
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">'DELETED'</code>, <code class="literal2">'UNDELETED'</code></p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4">Returns all messages with and without the <span class="calibre1"><em class="calibre5">\Deleted</em></span> flag, respectively. Email messages deleted with the <code class="literal2">delete_messages()</code> method are given the <span class="calibre1"><em class="calibre5">\Deleted</em></span> flag but are not permanently deleted until the <code class="literal2">expunge()</code> method is called (see <a class="ulink" href="#calibre_link-51" title="Deleting Emails">Deleting Emails</a>). Note that some email providers, such as Gmail, automatically expunge emails.</p>
+</td>
+</tr>
+<tr class="calibre19">
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">'DRAFT'</code>, <code class="literal2">'UNDRAFT'</code></p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4">Returns all messages with and without the <span class="calibre1"><em class="calibre5">\Draft</em></span> flag, respectively. Draft messages are usually kept in a separate <code class="literal2">Drafts</code> folder rather than in the <code class="literal2">INBOX</code> folder.</p>
+</td>
+</tr>
+<tr class="calibre13">
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">'FLAGGED'</code>, <code class="literal2">'UNFLAGGED'</code></p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4">Returns all messages with and without the <span class="calibre1"><em class="calibre5">\Flagged</em></span> flag, respectively. This flag is usually used to mark email messages as &ldquo;Important&rdquo; or &ldquo;Urgent.&rdquo;</p>
+</td>
+</tr>
+<tr class="calibre19">
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">'LARGER</code> <span class="calibre1"><em class="calibre5"><code class="literal4">N'</code></em></span>, <code class="literal2">'SMALLER</code> <span class="calibre1"><em class="calibre5"><code class="literal4">N'</code></em></span></p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4">Returns all messages larger or smaller than <span class="calibre1"><em class="calibre5"><code class="literal4">N</code></em></span> bytes, respectively.</p>
+</td>
+</tr>
+<tr class="calibre13">
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">'NOT</code> <span class="calibre1"><em class="calibre5"><code class="literal4">search-key'</code></em></span></p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4">Returns the messages that <span class="calibre1"><em class="calibre5"><code class="literal4">search-key</code></em></span> would <span class="calibre1"><em class="calibre5">not</em></span> have returned.</p>
+</td>
+</tr>
+<tr class="calibre19">
+<td valign="top" class="calibre20">
+<p class="calibre4"><code class="literal2">'OR</code> <span class="calibre1"><em class="calibre5"><code class="literal4">search-key1 search-key2'</code></em></span></p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">Returns the messages that match <span class="calibre1"><em class="calibre5">either</em></span> the first or second <span class="calibre1"><em class="calibre5"><code class="literal4">search-key</code></em></span>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p class="calibre4">Note that some IMAP servers may have slightly different implementations for how they handle their flags and search keys. It may require some experimentation in the interactive shell to see exactly how they behave.</p>
+<p class="calibre4">You can pass multiple IMAP search key strings in the list argument to the <code class="literal1">search()</code> method. The messages returned are the ones that match <span class="calibre1"><em class="calibre5">all</em></span> the search keys. If you want to match <span class="calibre1"><em class="calibre5">any</em></span> of the search keys, use the <code class="literal1">OR</code> search key. For the <code class="literal1">NOT</code> and <code class="literal1">OR</code> search keys, one and two complete search keys follow the <code class="literal1">NOT</code> and <code class="literal1">OR</code>, respectively.</p>
+<p class="calibre4">Here are some example <code class="literal1">search()</code> method calls along with their meanings:</p>
+<div class="book">
+<ul class="itemizedlist">
+<li class="listitem">
+<p title="imapObj.search([&apos;ALL&apos;])" class="calibre4"><span class="calibre1"><strong class="calibre7"><span class="calibre1"><strong class="calibre7"><code class="literal">imapObj.search(['ALL'])</code></strong></span></strong></span>.&nbsp;Returns every message in the currently selected folder.</p>
+</li>
+<li class="listitem">
+<p title="imapObj.search([&apos;ON 05-Jul-2015&apos;])" class="calibre4"><span class="calibre1"><strong class="calibre7"><span class="calibre1"><strong class="calibre7"><code class="literal">imapObj.search(['ON 05-Jul-2015'])</code></strong></span></strong></span>.&nbsp;Returns every message sent on July 5, 2015.</p>
+</li>
+<li class="listitem">
+<p title="imapObj.search([&apos;SINCE 01-Jan-2015&apos;, &apos;BEFORE 01-Feb-2015&apos;, &apos;UNSEEN&apos;])" class="calibre4"><span class="calibre1"><strong class="calibre7"><span class="calibre1"><strong class="calibre7"><code class="literal">imapObj.search(['SINCE 01-Jan-2015', 'BEFORE 01-Feb-2015', 'UNSEEN'])</code></strong></span></strong></span>.&nbsp;<a id="calibre_link-619" class="calibre1"></a>Returns every message sent in January 2015 that is unread. (Note that this means <span class="calibre1"><em class="calibre5">on and after</em></span> January 1 and up to <span class="calibre1"><em class="calibre5">but not including</em></span> February 1.)</p>
+</li>
+<li class="listitem">
+<p title="imapObj.search([&apos;SINCE 01-Jan-2015&apos;, &apos;FROM alice@example.com&apos;])" class="calibre4"><span class="calibre1"><strong class="calibre7"><span class="calibre1"><strong class="calibre7"><code class="literal">imapObj.search(['SINCE 01-Jan-2015', 'FROM alice@example.com'])</code></strong></span></strong></span>.&nbsp;Returns every message from <span class="calibre1"><em class="calibre5"><span class="calibre1"><a class="ulink" href="mailto:alice@example.com">alice@example.com</a></span></em></span> sent since the start of 2015.</p>
+</li>
+<li class="listitem">
+<p title="imapObj.search([&apos;SINCE 01-Jan-2015&apos;, &apos;NOT FROM alice@example.com&apos;])" class="calibre4"><span class="calibre1"><strong class="calibre7"><span class="calibre1"><strong class="calibre7"><code class="literal">imapObj.search(['SINCE 01-Jan-2015', 'NOT FROM alice@example.com'])</code></strong></span></strong></span>.&nbsp;Returns every message sent from everyone except <span class="calibre1"><em class="calibre5"><span class="calibre1"><a class="ulink" href="mailto:alice@example.com">alice@example.com</a></span></em></span> since the start of 2015.</p>
+</li>
+<li class="listitem">
+<p title="imapObj.search([&apos;OR FROM alice@example.com FROM bob@example.com&apos;])" class="calibre4"><span class="calibre1"><strong class="calibre7"><span class="calibre1"><strong class="calibre7"><code class="literal">imapObj.search(['OR FROM alice@example.com FROM bob@example.com'])</code></strong></span></strong></span>.&nbsp;Returns every message ever sent from <span class="calibre1"><em class="calibre5"><span class="calibre1"><a class="ulink" href="mailto:alice@example.com">alice@example.com</a></span></em></span> or <span class="calibre1"><em class="calibre5"><span class="calibre1"><a class="ulink" href="mailto:bob@example.com">bob@example.com</a></span></em></span>.</p>
+</li>
+<li class="listitem">
+<p title="imapObj.search([&apos;FROM alice@example.com&apos;, &apos;FROM bob@example.com&apos;])" class="calibre4"><span class="calibre1"><strong class="calibre7"><span class="calibre1"><strong class="calibre7"><code class="literal">imapObj.search(['FROM alice@example.com', 'FROM bob@example.com'])</code></strong></span></strong></span>.&nbsp;Trick example! This search will never return any messages, because messages must match <span class="calibre1"><em class="calibre5">all</em></span> search keywords. Since there can be only one &ldquo;from&rdquo; address, it is impossible for a message to be from both <span class="calibre1"><em class="calibre5"><span class="calibre1"><a class="ulink" href="mailto:alice@example.com">alice@example.com</a></span></em></span> and <span class="calibre1"><em class="calibre5"><span class="calibre1"><a class="ulink" href="mailto:bob@example.com">bob@example.com</a></span></em></span>.</p>
+</li>
+</ul>
+</div>
+<p class="calibre4">The <code class="literal1">search()</code> method doesn&rsquo;t return the emails themselves but rather unique IDs (UIDs) for the emails, as integer values. You can then pass these UIDs to the <code class="literal1">fetch()</code> method to obtain the email content.</p>
+<p class="calibre4">Continue the interactive shell example by entering the following:</p>
+<p><a id="calibre_link-3462" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">UIDs = imapObj.search(['SINCE 05-Jul-2015'])</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">UIDs</strong></span>
+[40032, 40033, 40034, 40035, 40036, 40037, 40038, 40039, 40040, 40041]</pre>
+<p class="calibre4">Here, the list of message IDs (for messages received July 5 onward) returned by <code class="literal1">search()</code> is stored in <code class="literal1">UIDs</code>. The list of UIDs returned on your computer will be different from the ones shown here; they are unique to a particular email account. When you later pass UIDs to other function calls, use the UID values you received, not the ones printed in this book&rsquo;s examples.</p>
+</div>
+<div class="book" title="Size Limits">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h3 class="title8"><a id="calibre_link-50" class="firstname"></a>Size Limits</h3>
+</div>
+</div>
+</div>
+<p class="calibre4">If your search matches a large number of email messages, Python might raise an exception that says <code class="literal1">imaplib.error: got more than 10000 bytes</code>. When this happens, you will have to disconnect and reconnect to the IMAP server and try again.</p>
+<p class="calibre4">This limit is in place to prevent your Python programs from eating up too much memory. Unfortunately, the default size limit is often too small. You can change this limit from 10,000 bytes to 10,000,000 bytes by running this code:</p>
+<p><a id="calibre_link-3463" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">import imaplib</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">imaplib._MAXLINE = 10000000</strong></span></pre>
+<p class="calibre4">This should prevent this error message from coming up again. You may want to make these two lines part of every IMAP program you write.</p>
+<div class="sidebar"><a id="calibre_link-3464" class="calibre1"></a>
+<p class="title6">Using Imapclient&rsquo;s Gmail_Search( ) Method</p>
+<p class="calibre4"><a id="calibre_link-548" class="calibre1"></a><a id="calibre_link-549" class="calibre1"></a><a id="calibre_link-550" class="calibre1"></a><a id="calibre_link-620" class="calibre1"></a><a id="calibre_link-759" class="calibre1"></a><a id="calibre_link-853" class="calibre1"></a>If you are logging in to the <span class="calibre1"><em class="calibre5">imap.gmail.com</em></span> server to access a Gmail account, the <code class="literal1">IMAPClient</code> object provides an extra search function that mimics the search bar at the top of the Gmail web page, as highlighted in <a class="ulink" href="#calibre_link-52" title="Figure 16-1. The search bar at the top of the Gmail web page">Figure&nbsp;16-1</a>.</p>
+<div class="figure1"><a id="calibre_link-52" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-3465" class="calibre1"></a><img src="/images/000087.jpg" alt="The search bar at the top of the Gmail web page" class="calibre8" /></div>
+</div>
+<p class="title9">Figure&nbsp;16-1.&nbsp;The search bar at the top of the Gmail web page</p>
+</div>
+<p class="calibre4">Instead of searching with IMAP search keys, you can use Gmail&rsquo;s more sophisticated search engine. Gmail does a good job of matching closely related words (for example, a search for <span class="calibre1"><em class="calibre5">driving</em></span> will also match <span class="calibre1"><em class="calibre5">drive</em></span> and <span class="calibre1"><em class="calibre5">drove</em></span>) and sorting the search results by most significant matches. You can also use Gmail&rsquo;s advanced search operators (see <span class="calibre1"><em class="calibre5"><a class="ulink" href="http://nostarch.com/automatestuff/">http://nostarch.com/automatestuff/</a></em></span> for more information). If you are logging in to a Gmail account, pass the search terms to the <code class="literal1">gmail_search()</code> method instead of the <code class="literal1">search()</code> method, like in the following interactive shell example:</p>
+<p><a id="calibre_link-3466" class="calibre1"></a>
+<pre class="programlisting1">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">UIDs = imapObj.gmail_search('meaning of life')</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">UIDs</strong></span>
+[42]</pre>
+<p class="calibre4">Ah, yes&mdash;<span class="calibre1"><em class="calibre5">there&rsquo;s</em></span> that email with the meaning of life! I was looking for that.</p>
+</div>
+</div>
+</div>
+<div class="book" title="Fetching an Email and Marking It As Read">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3467" class="firstname"></a>Fetching an Email and Marking It As Read</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Once you have a list of UIDs, you can call the <code class="literal1">IMAPClient</code> object&rsquo;s <code class="literal1">fetch()</code> method to get the actual email content.</p>
+<p class="calibre4">The list of UIDs will be <code class="literal1">fetch()</code>&rsquo;s first argument. The second argument should be the list <code class="literal1">['BODY[]']</code>, which tells <code class="literal1">fetch()</code> to download all the body content for the emails specified in your UID list.</p>
+<p class="calibre4"><a id="calibre_link-551" class="calibre1"></a><a id="calibre_link-1418" class="calibre1"></a><a id="calibre_link-1419" class="calibre1"></a><a id="calibre_link-1568" class="calibre1"></a>Let&rsquo;s continue our interactive shell example.</p>
+<p><a id="calibre_link-3468" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">rawMessages = imapObj.fetch(UIDs, ['BODY[]'])</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">import pprint</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">pprint.pprint(rawMessages)</strong></span>
+{40040: {'BODY[]': 'Delivered-To: my_email_address@gmail.com\r\n'
+                   'Received: by 10.76.71.167 with SMTP id '
+<span class="calibre1"><em class="literal3">--snip--</em></span>
+                   '\r\n'
+                   '------=_Part_6000970_707736290.1404819487066--\r\n',
+         'SEQ': 5430}}</pre>
+<p class="calibre4">Import <code class="literal1">pprint</code> and pass the return value from <code class="literal1">fetch()</code>, stored in the variable <code class="literal1">rawMessages</code>, to <code class="literal1">pprint.pprint()</code> to &ldquo;pretty print&rdquo; it, and you&rsquo;ll see that this return value is a nested dictionary of messages with UIDs as the keys. Each message is stored as a dictionary with two keys: <code class="literal1">'BODY[]'</code> and <code class="literal1">'SEQ'</code>. The <code class="literal1">'BODY[]'</code> key maps to the actual body of the email. The <code class="literal1">'SEQ'</code> key is for a <span class="calibre1"><em class="calibre5">sequence number</em></span>, which has a similar role to the UID. You can safely ignore it.</p>
+<p class="calibre4">As you can see, the message content in the <code class="literal1">'BODY[]'</code> key is pretty unintelligible. It&rsquo;s in a format called RFC 822, which is designed for IMAP servers to read. But you don&rsquo;t need to understand the RFC 822 format; later in this chapter, the <code class="literal1">pyzmail</code> module will make sense of it for you.</p>
+<p class="calibre4">When you selected a folder to search through, you called <code class="literal1">select_folder()</code> with the <code class="literal1">readonly=True</code> keyword argument. Doing this will prevent you from accidentally deleting an email&mdash;but it also means that emails will not get marked as read if you fetch them with the <code class="literal1">fetch()</code> method. If you <span class="calibre1"><em class="calibre5">do</em></span> want emails to be marked as read when you fetch them, you will need to pass <code class="literal1">readonly=False</code> to <code class="literal1">select_folder()</code>. If the selected folder is already in readonly mode, you can reselect the current folder with another call to <code class="literal1">select_folder()</code>, this time with the <code class="literal1">readonly=False</code> keyword argument:</p>
+<p><a id="calibre_link-3469" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">imapObj.select_folder('INBOX', readonly=False)</strong></span></pre>
+</div>
+<div class="book" title="Getting Email Addresses from a Raw Message">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3470" class="firstname"></a>Getting Email Addresses from a Raw Message</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">The raw messages returned from the <code class="literal1">fetch()</code> method still aren&rsquo;t very useful to people who just want to read their email. The <code class="literal1">pyzmail</code> module parses these raw messages and returns them as <code class="literal1">PyzMessage</code> objects, which make the subject, body, &ldquo;To&rdquo; field, &ldquo;From&rdquo; field, and other sections of the email easily accessible to your Python code.</p>
+<p class="calibre4">Continue the interactive shell example with the following (using UIDs from your own email account, not the ones shown here):</p>
+<p><a id="calibre_link-3471" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">import pyzmail</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">message = pyzmail.PyzMessage.factory(rawMessages[40041]['BODY[]'])</strong></span></pre>
+<p class="calibre4">First, import <code class="literal1">pyzmail</code>. Then, to create a <code class="literal1">PyzMessage</code> object of an email, call the <code class="literal1">pyzmail.PyzMessage.factory()</code> function and pass it the <code class="literal1">'BODY[]'</code> section of the raw message. Store the result in <code class="literal1">message</code>. Now <code class="literal1">message</code> contains <a id="calibre_link-448" class="calibre1"></a><a id="calibre_link-734" class="calibre1"></a><a id="calibre_link-745" class="calibre1"></a><a id="calibre_link-752" class="calibre1"></a>a <code class="literal1">PyzMessage</code> object, which has several methods that make it easy to get the email&rsquo;s subject line, as well as all sender and recipient addresses. The <code class="literal1">get_subject()</code> method returns the subject as a simple string value. The <code class="literal1">get_addresses()</code> method returns a list of addresses for the field you pass it. For example, the method calls might look like this:</p>
+<p><a id="calibre_link-3472" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">message.get_subject()</strong></span>
+'Hello!'
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">message.get_addresses('from')</strong></span>
+[('Edward Snowden', 'esnowden@nsa.gov')]
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">message.get_addresses('to')</strong></span>
+[(Jane Doe', 'my_email_address@gmail.com')]
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">message.get_addresses('cc')</strong></span>
+[]
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">message.get_addresses('bcc')</strong></span>
+[]</pre>
+<p class="calibre4">Notice that the argument for <code class="literal1">get_addresses()</code> is <code class="literal1">'from'</code>, <code class="literal1">'to'</code>, <code class="literal1">'cc'</code>, or <code class="literal1">'bcc'</code>. The return value of <code class="literal1">get_addresses()</code> is a list of tuples. Each tuple contains two strings: The first is the name associated with the email address, and the second is the email address itself. If there are no addresses in the requested field, <code class="literal1">get_addresses()</code> returns a blank list. Here, the <code class="literal1">'cc'</code> carbon copy and <code class="literal1">'bcc'</code> blind carbon copy fields both contained no addresses and so returned empty lists.</p>
+</div>
+<div class="book" title="Getting the Body from a Raw Message">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3473" class="firstname"></a>Getting the Body from a Raw Message</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Emails can be sent as plaintext, HTML, or both. Plaintext emails contain only text, while HTML emails can have colors, fonts, images, and other features that make the email message look like a small web page. If an email is only plaintext, its <code class="literal1">PyzMessage</code> object will have its <code class="literal1">html_part</code> attributes set to <code class="literal1">None</code>. Likewise, if an email is only HTML, its <code class="literal1">PyzMessage</code> object will have its <code class="literal1">text_part</code> attribute set to <code class="literal1">None</code>.</p>
+<p class="calibre4">Otherwise, the <code class="literal1">text_part</code> or <code class="literal1">html_part</code> value will have a <code class="literal1">get_payload()</code> method that returns the email&rsquo;s body as a value of the <span class="calibre1"><em class="calibre5">bytes</em></span> data type. (The bytes data type is beyond the scope of this book.) But this <span class="calibre1"><em class="calibre5">still</em></span> isn&rsquo;t a string value that we can use. Ugh! The last step is to call the <code class="literal1">decode()</code> method on the bytes value returned by <code class="literal1">get_payload()</code>. The <code class="literal1">decode()</code> method takes one argument: the message&rsquo;s character encoding, stored in the <code class="literal1">text_part.charset</code> or <code class="literal1">html_part.charset</code> attribute. This, finally, will return the string of the email&rsquo;s body.</p>
+<p class="calibre4">Continue the interactive shell example by entering the following:</p>
+<p><a id="calibre_link-3474" class="calibre1"></a>
+<pre class="programlisting">&#x2776; &gt;&gt;&gt; <span class="calibre1"><strong class="literal">message.text_part != None</strong></span>
+   True
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">message.text_part.get_payload().decode(message.text_part.charset)</strong></span>
+&#x2777; 'So long, and thanks for all the fish!\r\n\r\n-Al\r\n'
+&#x2778; &gt;&gt;&gt; <span class="calibre1"><strong class="literal">message.html_part != None</strong></span>
+   True
+&#x2779; &gt;&gt;&gt; <span class="calibre1"><strong class="literal">message.html_part.get_payload().decode(message.html_part.charset)</strong></span>
+   '&lt;div dir="ltr"&gt;&lt;div&gt;So long, and thanks for all the fish!&lt;br&gt;&lt;br&gt;&lt;/div&gt;-Al
+   &lt;br&gt;&lt;/div&gt;\r\n'</pre>
+<p class="calibre4"><a id="calibre_link-455" class="calibre1"></a><a id="calibre_link-552" class="calibre1"></a><a id="calibre_link-553" class="calibre1"></a><a id="calibre_link-612" class="calibre1"></a><a id="calibre_link-854" class="calibre1"></a><a id="calibre_link-855" class="calibre1"></a><a id="calibre_link-1031" class="calibre1"></a>The email we&rsquo;re working with has both plaintext and HTML content, so the <code class="literal1">PyzMessage</code> object stored in <code class="literal1">message</code> has <code class="literal1">text_part</code> and <code class="literal1">html_part</code> attributes not equal to <code class="literal1">None</code> &#x2776; &#x2778;. Calling <code class="literal1">get_payload()</code> on the message&rsquo;s <code class="literal1">text_part</code> and then calling <code class="literal1">decode()</code> on the bytes value returns a string of the text version of the email &#x2777;. Using <code class="literal1">get_payload()</code> and <code class="literal1">decode()</code> with the message&rsquo;s <code class="literal1">html_part</code> returns a string of the HTML version of the email &#x2779;.</p>
+</div>
+<div class="book" title="Deleting Emails">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-51" class="firstname"></a>Deleting Emails</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">To delete emails, pass a list of message UIDs to the <code class="literal1">IMAPClient</code> object&rsquo;s <code class="literal1">delete_messages()</code> method. This marks the emails with the <span class="calibre1"><em class="calibre5">\Deleted</em></span> flag. Calling the <code class="literal1">expunge()</code> method will permanently delete all emails with the <span class="calibre1"><em class="calibre5">\Deleted</em></span> flag in the currently selected folder. Consider the following interactive shell example:</p>
+<p><a id="calibre_link-3475" class="calibre1"></a>
+<pre class="programlisting">&#x2776; &gt;&gt;&gt; <span class="calibre1"><strong class="literal">imapObj.select_folder('INBOX', readonly=False)</strong></span>
+&#x2777; &gt;&gt;&gt; <span class="calibre1"><strong class="literal">UIDs = imapObj.search(['ON 09-Jul-2015'])</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">UIDs</strong></span>
+   [40066]
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">imapObj.delete_messages(UIDs)</strong></span>
+&#x2778; {40066: ('\\Seen', '\\Deleted')}
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">imapObj.expunge()</strong></span>
+   ('Success', [(5452, 'EXISTS')])</pre>
+<p class="calibre4">Here we select the inbox by calling <code class="literal1">select_folder()</code> on the <code class="literal1">IMAPClient</code> object and passing <code class="literal1">'INBOX'</code> as the first argument; we also pass the keyword argument <code class="literal1">readonly=False</code> so that we can delete emails &#x2776;. We search the inbox for messages received on a specific date and store the returned message IDs in <code class="literal1">UIDs</code> &#x2777;. Calling <code class="literal1">delete_message()</code> and passing it <code class="literal1">UIDs</code> returns a dictionary; each key-value pair is a message ID and a tuple of the message&rsquo;s flags, which should now include <span class="calibre1"><em class="calibre5">\Deleted</em></span> &#x2778;. Calling <code class="literal1">expunge()</code> then permanently deletes messages with the <span class="calibre1"><em class="calibre5">\Deleted</em></span> flag and returns a success message if there were no problems expunging the emails. Note that some email providers, such as Gmail, automatically expunge emails deleted with <code class="literal1">delete_messages()</code> instead of waiting for an expunge command from the IMAP client.</p>
+</div>
+<div class="book" title="Disconnecting from the IMAP Server">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3476" class="firstname"></a>Disconnecting from the IMAP Server</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">When your program has finished retrieving or deleting emails, simply call the IMAPClient&rsquo;s <code class="literal1">logout()</code> method to disconnect from the IMAP server.</p>
+<p><a id="calibre_link-3477" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">imapObj.logout()</strong></span></pre>
+<p class="calibre4"><a id="calibre_link-554" class="calibre1"></a><a id="calibre_link-596" class="calibre1"></a><a id="calibre_link-1345" class="calibre1"></a><a id="calibre_link-1560" class="calibre1"></a><a id="calibre_link-1561" class="calibre1"></a><a id="calibre_link-1562" class="calibre1"></a>If your program runs for several minutes or more, the IMAP server may <span class="calibre1"><em class="calibre5">time out</em></span>, or automatically disconnect. In this case, the next method call your program makes on the <code class="literal1">IMAPClient</code> object will raise an exception like the following:</p>
+<p><a id="calibre_link-3478" class="calibre1"></a>
+<pre class="programlisting">imaplib.abort: socket error: [WinError 10054] An existing connection was
+forcibly closed by the remote host</pre>
+<p class="calibre4">In this event, your program will have to call <code class="literal1">imapclient.IMAPClient()</code> to connect again.</p>
+<p class="calibre4">Whew! That&rsquo;s it. There were a lot of hoops to jump through, but you now have a way to get your Python programs to log in to an email account and fetch emails. You can always consult the overview in <a class="ulink" href="#calibre_link-53" title="Retrieving and Deleting Emails with IMAP">Retrieving and Deleting Emails with IMAP</a> whenever you need to remember all of the steps.</p>
+</div>
+</div>
+<div class="book" title="Project: Sending Member Dues Reminder Emails">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-3479" class="firstname"></a>Project: Sending Member Dues Reminder Emails</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">Say you have been &ldquo;volunteered&rdquo; to track member dues for the Mandatory Volunteerism Club. This is a truly boring job, involving maintaining a spreadsheet of everyone who has paid each month and emailing reminders to those who haven&rsquo;t. Instead of going through the spreadsheet yourself and copying and pasting the same email to everyone who is behind on dues, let&rsquo;s&mdash;you guessed it&mdash;write a script that does this for you.</p>
+<p class="calibre4">At a high level, here&rsquo;s what your program will do:</p>
+<div class="book">
+<ul class="itemizedlist">
+<li class="listitem">
+<p class="calibre4">Read data from an Excel spreadsheet.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Find all members who have not paid dues for the latest month.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Find their email addresses and send them personalized reminders.</p>
+</li>
+</ul>
+</div>
+<p class="calibre4">This means your code will need to do the following:</p>
+<div class="book">
+<ul class="itemizedlist">
+<li class="listitem">
+<p class="calibre4">Open and read the cells of an Excel document with the <code class="literal1">openpyxl</code> module. (See <a class="ulink" href="/chapter12" title="Chapter 12. Working with Excel Spreadsheets">Chapter&nbsp;12</a> for working with Excel files.)</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Create a dictionary of members who are behind on their dues.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Log in to an SMTP server by calling <code class="literal1">smtplib.SMTP()</code>, <code class="literal1">ehlo()</code>, <code class="literal1">starttls()</code>, and <code class="literal1">login()</code>.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">For all members behind on their dues, send a personalized reminder email by calling the <code class="literal1">sendmail()</code> method.</p>
+</li>
+</ul>
+</div>
+<p class="calibre4">Open a new file editor window and save it as <span class="calibre1"><em class="calibre5">sendDuesReminders.py</em></span>.</p>
+<div class="book" title="Step 1: Open the Excel File">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3480" class="firstname"></a>Step 1: Open the Excel File</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Let&rsquo;s say the Excel spreadsheet you use to track membership dues payments looks like <a class="ulink" href="#calibre_link-55" title="Figure 16-2. The spreadsheet for tracking member dues payments">Figure&nbsp;16-2</a> and is in a file named <span class="calibre1"><em class="calibre5">duesRecords.xlsx</em></span>. You can download this file from <span class="calibre1"><em class="calibre5"><a class="ulink" href="http://nostarch.com/automatestuff/">http://nostarch.com/automatestuff/</a></em></span>.</p>
+<div class="figure"><a id="calibre_link-55" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-3481" class="calibre1"></a><img src="/images/000022.jpg" alt="The spreadsheet for tracking member dues payments" class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;16-2.&nbsp;The spreadsheet for tracking member dues payments</p>
+</div>
+<p class="calibre4"><a id="calibre_link-743" class="calibre1"></a>This spreadsheet has every member&rsquo;s name and email address. Each month has a column tracking members&rsquo; payment statuses. The cell for each member is marked with the text <span class="calibre1"><em class="calibre5">paid</em></span> once they have paid their dues.</p>
+<p class="calibre4">The program will have to open <span class="calibre1"><em class="calibre5">duesRecords.xlsx</em></span> and figure out the column for the latest month by calling the <code class="literal1">get_highest_column()</code> method. (You can consult <a class="ulink" href="/chapter12" title="Chapter 12. Working with Excel Spreadsheets">Chapter&nbsp;12</a> for more information on accessing cells in Excel spreadsheet files with the <code class="literal1">openpyxl</code> module.) Enter the following code into the file editor window:</p>
+<p><a id="calibre_link-3482" class="calibre1"></a>
+<pre class="programlisting">   #! python3
+   # sendDuesReminders.py - Sends emails based on payment status in spreadsheet.
+
+   import openpyxl, smtplib, sys
+
+   # Open the spreadsheet and get the latest dues status.
+&#x2776; wb = openpyxl.load_workbook('duesRecords.xlsx')
+&#x2777; sheet = wb.get_sheet_by_name('Sheet1')
+
+&#x2778; lastCol = sheet.get_highest_column()
+&#x2779; latestMonth = sheet.cell(row=1, column=lastCol).value
+
+   # TODO: Check each member's payment status.
+
+   # TODO: Log in to email account.
+
+   # TODO: Send out reminder emails.</pre>
+<p class="calibre4">After importing the <code class="literal1">openpyxl</code>, <code class="literal1">smtplib</code>, and <code class="literal1">sys</code> modules, we open our <span class="calibre1"><em class="calibre5">duesRecords.xlsx</em></span> file and store the resulting <code class="literal1">Workbook</code> object in <code class="literal1">wb</code> &#x2776;. Then we get Sheet 1 and store the resulting <code class="literal1">Worksheet</code> object in <code class="literal1">sheet</code> &#x2777;. Now that we have a <code class="literal1">Worksheet</code> object, we can access rows, columns, and cells. We store the highest column in <code class="literal1">lastCol</code> &#x2778;, and we then use row number 1 and <code class="literal1">lastCol</code> to access the cell that should hold the most recent month. We get the value in this cell and store it in <code class="literal1">latestMonth</code> &#x2779;.</p>
+</div>
+<div class="book" title="Step 2: Find All Unpaid Members">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3483" class="firstname"></a>Step 2: Find All Unpaid Members</h2>
+</div>
+</div>
+</div>
+<p class="calibre4"><a id="calibre_link-1563" class="calibre1"></a><a id="calibre_link-1564" class="calibre1"></a>Once you&rsquo;ve determined the column number of the latest month (stored in <code class="literal1">lastCol</code>), you can loop through all rows after the first row (which has the column headers) to see which members have the text <span class="calibre1"><em class="calibre5">paid</em></span> in the cell for that month&rsquo;s dues. If the member hasn&rsquo;t paid, you can grab the member&rsquo;s name and email address from columns 1 and 2, respectively. This information will go into the <code class="literal1">unpaidMembers</code> dictionary, which will track all members who haven&rsquo;t paid in the most recent month. Add the following code to <span class="calibre1"><em class="calibre5">sendDuesReminder.py</em></span>.</p>
+<p><a id="calibre_link-3484" class="calibre1"></a>
+<pre class="programlisting">   #! python3
+   # sendDuesReminders.py - Sends emails based on payment status in spreadsheet.
+
+   <span class="calibre1"><em class="literal3">--snip--</em></span>
+
+   <span class="calibre1"><strong class="literal"># Check each member's payment status.</strong></span>
+   <span class="calibre1"><strong class="literal">unpaidMembers = {}</strong></span>
+&#x2776; <span class="calibre1"><strong class="literal">for r in range(2, sheet.get_highest_row() + 1):</strong></span>
+&#x2777;     <span class="calibre1"><strong class="literal">payment = sheet.cell(row=r, column=lastCol).value</strong></span>
+       <span class="calibre1"><strong class="literal">if payment != 'paid':</strong></span>
+&#x2778;         <span class="calibre1"><strong class="literal">name = sheet.cell(row=r, column=1).value</strong></span>
+&#x2779;         <span class="calibre1"><strong class="literal">email = sheet.cell(row=r, column=2).value</strong></span>
+&#x277A;         <span class="calibre1"><strong class="literal">unpaidMembers[name] = email</strong></span></pre>
+<p class="calibre4">This code sets up an empty dictionary <code class="literal1">unpaidMembers</code> and then loops through all the rows after the first &#x2776;. For each row, the value in the most recent column is stored in <code class="literal1">payment</code> &#x2777;. If <code class="literal1">payment</code> is not equal to <code class="literal1">'paid'</code>, then the value of the first column is stored in <code class="literal1">name</code> &#x2778;, the value of the second column is stored in <code class="literal1">email</code> &#x2779;, and <code class="literal1">name</code> and <code class="literal1">email</code> are added to <code class="literal1">unpaidMembers</code> &#x277A;.</p>
+</div>
+<div class="book" title="Step 3: Send Customized Email Reminders">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3485" class="firstname"></a>Step 3: Send Customized Email Reminders</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Once you have a list of all unpaid members, it&rsquo;s time to send them email reminders. Add the following code to your program, except with your real email address and provider information:</p>
+<p><a id="calibre_link-3486" class="calibre1"></a>
+<pre class="programlisting">#! python3
+# sendDuesReminders.py - Sends emails based on payment status in spreadsheet.
+
+<span class="calibre1"><em class="literal3">--snip--</em></span>
+
+<span class="calibre1"><strong class="literal"># Log in to email account.</strong></span>
+<span class="calibre1"><strong class="literal">smtpObj = smtplib.SMTP('smtp.gmail.com', 587)</strong></span>
+<span class="calibre1"><strong class="literal">smtpObj.ehlo()</strong></span>
+<span class="calibre1"><strong class="literal">smtpObj.starttls()</strong></span>
+<span class="calibre1"><strong class="literal">smtpObj.login('</strong></span> <span class="calibre1"><em class="literal3"><span class="calibre1"><strong class="calibre27">my_email_address@gmail.com</strong></span></em></span> <span class="calibre1"><strong class="literal">', sys.argv[1])</strong></span></pre>
+<p class="calibre4"><a id="calibre_link-525" class="calibre1"></a><a id="calibre_link-1025" class="calibre1"></a><a id="calibre_link-1424" class="calibre1"></a><a id="calibre_link-1567" class="calibre1"></a><a id="calibre_link-1623" class="calibre1"></a>Create an <code class="literal1">SMTP</code> object by calling <code class="literal1">smtplib.SMTP()</code> and passing it the domain name and port for your provider. Call <code class="literal1">ehlo()</code> and <code class="literal1">starttls()</code>, and then call <code class="literal1">login()</code> and pass it your email address and <code class="literal1">sys.argv[1]</code>, which will store your password string. You&rsquo;ll enter the password as a command line argument each time you run the program, to avoid saving your password in your source code.</p>
+<p class="calibre4">Once your program has logged in to your email account, it should go through the <code class="literal1">unpaidMembers</code> dictionary and send a personalized email to each member&rsquo;s email address. Add the following to <span class="calibre1"><em class="calibre5">sendDuesReminders.py</em></span>:</p>
+<p><a id="calibre_link-3487" class="calibre1"></a>
+<pre class="programlisting">   #! python3
+   # sendDuesReminders.py - Sends emails based on payment status in spreadsheet.
+
+   <span class="calibre1"><em class="literal3">--snip--</em></span>
+
+   <span class="calibre1"><strong class="literal"># Send out reminder emails.</strong></span>
+   <span class="calibre1"><strong class="literal">for name, email in unpaidMembers.items():</strong></span>
+&#x2776;     <span class="calibre1"><strong class="literal">body = "Subject: %s dues unpaid.\nDear %s,\nRecords show that you have not</strong></span>
+   <span class="calibre1"><strong class="literal">paid dues for %s. Please make this payment as soon as possible. Thank you!'" %</strong></span>
+   <span class="calibre1"><strong class="literal">(latestMonth, name, latestMonth)</strong></span>
+&#x2777;     <span class="calibre1"><strong class="literal">print('Sending email to %s...' % email)</strong></span>
+&#x2778;     <span class="calibre1"><strong class="literal">sendmailStatus = smtpObj.sendmail('<span class="calibre1"><em class="calibre27">my_email_address@gmail.com</em></span>', email, body)</strong></span>
+
+&#x2779;     <span class="calibre1"><strong class="literal">if sendmailStatus != {}:</strong></span>
+           <span class="calibre1"><strong class="literal">print('There was a problem sending email to %s: %s' % (email,</strong></span>
+           <span class="calibre1"><strong class="literal">sendmailStatus))</strong></span>
+   <span class="calibre1"><strong class="literal">smtpObj.quit()</strong></span></pre>
+<p class="calibre4">This code loops through the names and emails in <code class="literal1">unpaidMembers</code>. For each member who hasn&rsquo;t paid, we customize a message with the latest month and the member&rsquo;s name, and store the message in <code class="literal1">body</code> &#x2776;. We print output saying that we&rsquo;re sending an email to this member&rsquo;s email address &#x2777;. Then we call <code class="literal1">sendmail()</code>, passing it the from address and the customized message &#x2778;. We store the return value in <code class="literal1">sendmailStatus</code>.</p>
+<p class="calibre4">Remember that the <code class="literal1">sendmail()</code> method will return a nonempty dictionary value if the SMTP server reported an error sending that particular email. The last part of the <code class="literal1">for</code> loop at &#x2779; checks if the returned dictionary is nonempty, and if it is, prints the recipient&rsquo;s email address and the returned dictionary.</p>
+<p class="calibre4">After the program is done sending all the emails, the <code class="literal1">quit()</code> method is called to disconnect from the SMTP server.</p>
+<p class="calibre4">When you run the program, the output will look something like this:</p>
+<p><a id="calibre_link-3488" class="calibre1"></a>
+<pre class="programlisting">Sending email to alice@example.com...
+Sending email to bob@example.com...
+Sending email to eve@example.com...</pre>
+<p class="calibre4">The recipients will receive an email that looks like <a class="ulink" href="#calibre_link-56" title="Figure 16-3. An automatically sent email from sendDuesReminders.py">Figure&nbsp;16-3</a>.</p>
+<div class="figure"><a id="calibre_link-56" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-3489" class="calibre1"></a><img src="/images/000025.jpg" alt="An automatically sent email from sendDuesReminders.py" class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;16-3.&nbsp;An automatically sent email from <span class="calibre1"><em class="calibre5">sendDuesReminders.py</em></span></p>
+</div>
+</div>
+</div>
+<div class="book" title="Sending Text Messages with Twilio">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-3490" class="firstname"></a>Sending Text Messages with Twilio</h1>
+</div>
+</div>
+</div>
+<p class="calibre4"><a id="calibre_link-1574" class="calibre1"></a><a id="calibre_link-1593" class="calibre1"></a><a id="calibre_link-1701" class="calibre1"></a><a id="calibre_link-1744" class="calibre1"></a><a id="calibre_link-1746" class="calibre1"></a>Most people are more likely to be near their phones than their computers, so text messages can be a more immediate and reliable way of sending notifications than email. Also, the short length of text messages makes it more likely that a person will get around to reading them.</p>
+<p class="calibre4">In this section, you&rsquo;ll learn how to sign up for the free Twilio service and use its Python module to send text messages. Twilio is an <span class="calibre1"><em class="calibre5">SMS gateway service</em></span>, which means it&rsquo;s a service that allows you to send text messages from your programs. Although you will be limited in how many texts you can send per month and the texts will be prefixed with the words <span class="calibre1"><em class="calibre5">Sent from a Twilio trial account</em></span>, this trial service is probably adequate for your personal programs. The free trial is indefinite; you won&rsquo;t have to upgrade to a paid plan later.</p>
+<p class="calibre4">Twilio isn&rsquo;t the only SMS gateway service. If you prefer not to use Twilio, you can find alternative services by searching online for <span class="calibre1"><em class="calibre5">free sms gateway</em></span>, <span class="calibre1"><em class="calibre5">python sms api</em></span>, or even <span class="calibre1"><em class="calibre5">twilio alternatives</em></span>.</p>
+<p class="calibre4">Before signing up for a Twilio account, install the <code class="literal1">twilio</code> module. Appendix A has more details about installing third-party modules.</p>
+<div class="note" title="Note">
+<h3 class="title5"><a id="calibre_link-3491" class="calibre1"></a>Note</h3>
+<p class="calibre4"><span class="calibre1"><em class="calibre5">This section is specific to the United States. Twilio does offer SMS texting services for countries outside of the United States, but those specifics aren&rsquo;t covered in this book. The <code class="literal3">twilio</code> module and its functions, however, will work the same outside the United States. See</em></span> <a class="ulink" href="http://twilio.com/">http://twilio.com/</a> <span class="calibre1"><em class="calibre5">for more information.</em></span></p>
+</div>
+<div class="book" title="Signing Up for a Twilio Account">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3492" class="firstname"></a>Signing Up for a Twilio Account</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Go to <span class="calibre1"><em class="calibre5"><a class="ulink" href="http://twilio.com/">http://twilio.com/</a></em></span> and fill out the sign-up form. Once you&rsquo;ve signed up for a new account, you&rsquo;ll need to verify a mobile phone number that you want to send texts to. (This verification is necessary to prevent people from using the service to spam random phone numbers with text messages.)</p>
+<p class="calibre4">After receiving the text with the verification number, enter it into the Twilio website to prove that you own the mobile phone you are verifying. You will now be able to send texts to this phone number using the <code class="literal1">twilio</code> module.</p>
+<p class="calibre4">Twilio provides your trial account with a phone number to use as the sender of text messages. You will need two more pieces of information: your account SID and the auth (authentication) token. You can find this information on the Dashboard page when you are logged in to your Twilio account. These values act as your Twilio username and password when logging in from a Python program.</p>
+</div>
+<div class="book" title="Sending Text Messages">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3493" class="firstname"></a>Sending Text Messages</h2>
+</div>
+</div>
+</div>
+<p class="calibre4"><a id="calibre_link-1058" class="calibre1"></a><a id="calibre_link-1575" class="calibre1"></a><a id="calibre_link-1594" class="calibre1"></a><a id="calibre_link-1702" class="calibre1"></a><a id="calibre_link-1745" class="calibre1"></a><a id="calibre_link-1747" class="calibre1"></a>Once you&rsquo;ve installed the <code class="literal1">twilio</code> module, signed up for a Twilio account, verified your phone number, registered a Twilio phone number, and obtained your account SID and auth token, you will finally be ready to send yourself text messages from your Python scripts.</p>
+<p class="calibre4">Compared to all the registration steps, the actual Python code is fairly simple. With your computer connected to the Internet, enter the following into the interactive shell, replacing the <code class="literal1">accountSID</code>, <code class="literal1">authToken</code>, <code class="literal1">myTwilioNumber</code>, and <code class="literal1">myCellPhone</code> variable values with your real information:</p>
+<p><a id="calibre_link-3494" class="calibre1"></a>
+<pre class="programlisting">&#x2776; &gt;&gt;&gt; <span class="calibre1"><strong class="literal">from twilio.rest import TwilioRestClient</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">accountSID = '<span class="calibre1"><em class="calibre27">ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</em></span>'</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">authToken = '<span class="calibre1"><em class="calibre27">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</em></span>'</strong></span>
+&#x2777; &gt;&gt;&gt; <span class="calibre1"><strong class="literal">twilioCli = TwilioRestClient(accountSID, authToken)</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">myTwilioNumber = '+14955551234'</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">myCellPhone = '+14955558888'</strong></span>
+&#x2778; &gt;&gt;&gt; <span class="calibre1"><strong class="literal">message = twilioCli.messages.create(body='Mr. Watson - Come here - I want</strong></span>
+   <span class="calibre1"><strong class="literal">to see you.', from_=myTwilioNumber, to=myCellPhone)</strong></span></pre>
+<p class="calibre4">A few moments after typing the last line, you should receive a text message that reads <span class="calibre1"><em class="calibre5">Sent from your Twilio trial account - Mr. Watson - Come here - I want to see you</em></span>.</p>
+<p class="calibre4">Because of the way the <code class="literal1">twilio</code> module is set up, you need to import it using <code class="literal1">from twilio.rest import TwilioRestClient</code>, not just <code class="literal1">import twilio</code> &#x2776;. Store your account SID in <code class="literal1">accountSID</code> and your auth token in <code class="literal1">authToken</code> and then call <code class="literal1">TwilioRestClient()</code> and pass it <code class="literal1">accountSID</code> and <code class="literal1">authToken</code>. The call to <code class="literal1">TwilioRestClient()</code> returns a <code class="literal1">TwilioRestClient</code> object &#x2777;. This object has a <code class="literal1">messages</code> attribute, which in turn has a <code class="literal1">create()</code> method you can use to send text messages. This is the method that will instruct Twilio&rsquo;s servers to send your text message. After storing your Twilio number and cell phone number in <code class="literal1">myTwilioNumber</code> and <code class="literal1">myCellPhone</code>, respectively, call <code class="literal1">create()</code> and pass it keyword arguments specifying the body of the text message, the sender&rsquo;s number (<code class="literal1">myTwilioNumber</code>), and the recipient&rsquo;s number (<code class="literal1">myCellPhone</code>) &#x2778;.</p>
+<p class="calibre4">The <code class="literal1">Message</code> object returned from the <code class="literal1">create()</code> method will have information about the text message that was sent. Continue the interactive shell example by entering the following:</p>
+<p><a id="calibre_link-3495" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">message.to</strong></span>
+'+14955558888'
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">message.from</strong></span>_
+'+14955551234'
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">message.body</strong></span>
+'Mr. Watson - Come here - I want to see you.'</pre>
+<p class="calibre4">The <code class="literal1">to</code>, <code class="literal1">from_</code>, and <code class="literal1">body</code> attributes should hold your cell phone number, Twilio number, and message, respectively. Note that the sending phone number is in the <code class="literal1">from_</code> attribute&mdash;with an underscore at the end&mdash;not <code class="literal1">from</code>. This is because <code class="literal1">from</code> is a keyword in Python (you&rsquo;ve seen it used in the <code class="literal1">from</code> <a id="calibre_link-1579" class="calibre1"></a><a id="calibre_link-1635" class="calibre1"></a><code class="literal1">modulename import *</code> form of <code class="literal1">import</code> statement, for example), so it cannot be used as an attribute name. Continue the interactive shell example with the following:</p>
+<p><a id="calibre_link-3496" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">message.status</strong></span>
+'queued'
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">message.date_created</strong></span>
+datetime.datetime(2015, 7, 8, 1, 36, 18)
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">message.date_sent == None</strong></span>
+True</pre>
+<p class="calibre4">The <code class="literal1">status</code> attribute should give you a string. The <code class="literal1">date_created</code> and <code class="literal1">date_sent</code> attributes should give you a <code class="literal1">datetime</code> object if the message has been created and sent. It may seem odd that the <code class="literal1">status</code> attribute is set to <code class="literal1">'queued'</code> and the <code class="literal1">date_sent</code> attribute is set to <code class="literal1">None</code> when you&rsquo;ve already received the text message. This is because you captured the <code class="literal1">Message</code> object in the <code class="literal1">message</code> variable <span class="calibre1"><em class="calibre5">before</em></span> the text was actually sent. You will need to refetch the <code class="literal1">Message</code> object in order to see its most up-to-date <code class="literal1">status</code> and <code class="literal1">date_sent</code>. Every Twilio message has a unique string ID (SID) that can be used to fetch the latest update of the <code class="literal1">Message</code> object. Continue the interactive shell example by entering the following:</p>
+<p><a id="calibre_link-3497" class="calibre1"></a>
+<pre class="programlisting">   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">message.sid</strong></span>
+   'SM09520de7639ba3af137c6fcb7c5f4b51'
+&#x2776; &gt;&gt;&gt; <span class="calibre1"><strong class="literal">updatedMessage = twilioCli.messages.get(message.sid)</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">updatedMessage.status</strong></span>
+   'delivered'
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">updatedMessage.date_sent</strong></span>
+   datetime.datetime(2015, 7, 8, 1, 36, 18)</pre>
+<p class="calibre4">Entering <code class="literal1">message.sid</code> show you this message&rsquo;s long SID. By passing this SID to the Twilio client&rsquo;s <code class="literal1">get()</code> method &#x2776;, you can retrieve a new <code class="literal1">Message</code> object with the most up-to-date information. In this new <code class="literal1">Message</code> object, the <code class="literal1">status</code> and <code class="literal1">date_sent</code> attributes are correct.</p>
+<p class="calibre4">The <code class="literal1">status</code> attribute will be set to one of the following string values: <code class="literal1">'queued'</code>, <code class="literal1">'sending'</code>, <code class="literal1">'sent'</code>, <code class="literal1">'delivered'</code>, <code class="literal1">'undelivered'</code>, or <code class="literal1">'failed'</code>. These statuses are self-explanatory, but for more precise details, take a look at the resources at <span class="calibre1"><em class="calibre5"><a class="ulink" href="http://nostarch.com/automatestuff/">http://nostarch.com/automatestuff/</a></em></span>.</p>
+<div class="sidebar"><a id="calibre_link-3498" class="calibre1"></a>
+<p class="title6">Receiving Text Messages with Python</p>
+<p class="calibre4">Unfortunately, receiving text messages with Twilio is a bit more complicated than sending them. Twilio requires that you have a website running its own web application. That&rsquo;s beyond the scope of this book, but you can find more details in the resources for this book (<span class="calibre1"><em class="calibre5"><a class="ulink" href="http://nostarch.com/automatestuff/">http://nostarch.com/automatestuff/</a></em></span>).</p>
+</div>
+</div>
+</div>
+<div class="book" title="Project: &ldquo;Just Text Me&rdquo; Module">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-3499" class="firstname"></a>Project: &ldquo;Just Text Me&rdquo; Module</h1>
+</div>
+</div>
+</div>
+<p class="calibre4"><a id="calibre_link-1346" class="calibre1"></a><a id="calibre_link-1703" class="calibre1"></a><a id="calibre_link-1748" class="calibre1"></a>The person you&rsquo;ll most often text from your programs is probably you. Texting is a great way to send yourself notifications when you&rsquo;re away from your computer. If you&rsquo;ve automated a boring task with a program that takes a couple of hours to run, you could have it notify you with a text when it&rsquo;s finished. Or you may have a regularly scheduled program running that sometimes needs to contact you, such as a weather-checking program that texts you a reminder to pack an umbrella.</p>
+<p class="calibre4">As a simple example, here&rsquo;s a small Python program with a <code class="literal1">textmyself()</code> function that sends a message passed to it as a string argument. Open a new file editor window and enter the following code, replacing the account SID, auth token, and phone numbers with your own information. Save it as <span class="calibre1"><em class="calibre5">textMyself.py</em></span>.</p>
+<p><a id="calibre_link-3500" class="calibre1"></a>
+<pre class="programlisting">   #! python3
+   # textMyself.py - Defines the textmyself() function that texts a message
+   # passed to it as a string.
+
+   # Preset values:
+   accountSID = '<span class="calibre1"><em class="literal3">ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</em></span>'
+   authToken = '<span class="calibre1"><em class="literal3">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</em></span>'
+   myNumber = '+15559998888'
+   twilioNumber = '+15552225678'
+
+   from twilio.rest import TwilioRestClient
+
+&#x2776; def textmyself(message):
+&#x2777;     twilioCli = TwilioRestClient(accountSID, authToken)
+&#x2778;     twilioCli.messages.create(body=message, from_=twilioNumber, to=myNumber)</pre>
+<p class="calibre4">This program stores an account SID, auth token, sending number, and receiving number. It then defined <code class="literal1">textmyself()</code> to take on argument &#x2776;, make a <code class="literal1">TwilioRestClient</code> object &#x2777;, and call <code class="literal1">create()</code> with the message you passed &#x2778;.</p>
+<p class="calibre4">If you want to make the <code class="literal1">textmyself()</code> function available to your other programs, simply place the <span class="calibre1"><em class="calibre5">textMyself.py</em></span> file in the same folder as the Python executable (<span class="calibre1"><em class="calibre5">C:\Python34</em></span> on Windows, <span class="calibre1"><em class="calibre5">/usr/local/lib/python3.4</em></span> on OS X, and <span class="calibre1"><em class="calibre5">/usr/bin/python3</em></span> on Linux). Now you can use the function in your other programs. Whenever you want one of your programs to text you, just add the following:</p>
+<p><a id="calibre_link-3501" class="calibre1"></a>
+<pre class="programlisting">import textmyself
+textmyself.textmyself('The boring task is finished.')</pre>
+<p class="calibre4">You need to sign up for Twilio and write the texting code only once. After that, it&rsquo;s just two lines of code to send a text from any of your other programs.</p>
+</div>
+<div class="book" title="Summary">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-3502" class="firstname"></a>Summary</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">We communicate with each other on the Internet and over cell phone networks in dozens of different ways, but email and texting predominate. Your programs can communicate through these channels, which gives them powerful new notification features. You can even write programs running on different computers that communicate with one another directly via email, with one program sending emails with SMTP and the other retrieving them with IMAP.</p>
+<p class="calibre4">Python&rsquo;s <code class="literal1">smtplib</code> provides functions for using the SMTP to send emails through your email provider&rsquo;s SMTP server. Likewise, the third-party <code class="literal1">imapclient</code> and <code class="literal1">pyzmail</code> modules let you access IMAP servers and retrieve emails sent to you. Although IMAP is a bit more involved than SMTP, it&rsquo;s also quite powerful and allows you to search for particular emails, download them, and parse them to extract the subject and body as string values.</p>
+<p class="calibre4">Texting is a bit different from email, since, unlike email, more than just an Internet connection is needed to send SMS texts. Fortunately, services such as Twilio provide modules to allow you to send text messages from your programs. Once you go through an initial setup process, you&rsquo;ll be able to send texts with just a couple lines of code.</p>
+<p class="calibre4">With these modules in your skill set, you&rsquo;ll be able to program the specific conditions under which your programs should send notifications or reminders. Now your programs will have reach far beyond the computer they&rsquo;re running on!</p>
+</div>
+<div class="book" title="Practice Questions">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-3503" class="firstname"></a>Practice Questions</h1>
+</div>
+</div>
+</div>
+<div class="book" title="Frequently Asked Questions"><a id="calibre_link-3504" class="calibre1"></a><br />
+<table border="0" width="100%" summary="Q and A Set" class="calibre22">
+<col width="1%" class="calibre23"></col>
+<col class="calibre11"></col>
+<tbody class="calibre16">
+<tr class="calibre13" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3505" class="calibre1"></a><a id="calibre_link-3506" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">1. What is the protocol for sending email? For checking and receiving email?</p>
+</td>
+</tr>
+<tr class="calibre19" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3507" class="calibre1"></a><a id="calibre_link-3508" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">2. What four <code class="literal2">smtplib</code> functions/methods must you call to log in to an SMTP server?</p>
+</td>
+</tr>
+<tr class="calibre13" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3509" class="calibre1"></a><a id="calibre_link-3510" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">3. What two <code class="literal2">imapclient</code> functions/methods must you call to log in to an IMAP server?</p>
+</td>
+</tr>
+<tr class="calibre19" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3511" class="calibre1"></a><a id="calibre_link-3512" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">4. What kind of argument do you pass to <code class="literal2">imapObj.search()</code>?</p>
+</td>
+</tr>
+<tr class="calibre13" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3513" class="calibre1"></a><a id="calibre_link-3514" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">5. What do you do if your code gets an error message that says <code class="literal2">got more than 10000 bytes</code>?</p>
+</td>
+</tr>
+<tr class="calibre19" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3515" class="calibre1"></a><a id="calibre_link-3516" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">6. The <code class="literal2">imapclient</code> module handles connecting to an IMAP server and finding emails. What is one module that handles reading the emails that <code class="literal2">imapclient</code> collects?</p>
+</td>
+</tr>
+<tr class="calibre13" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3517" class="calibre1"></a><a id="calibre_link-3518" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">7. What three pieces of information do you need from Twilio before you can send text messages?</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="book" title="Practice Projects">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-3519" class="firstname"></a>Practice Projects</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">For practice, write programs that do the following.</p>
+<div class="book" title="Random Chore Assignment Emailer">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3520" class="firstname"></a>Random Chore Assignment Emailer</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Write a program that takes a list of people&rsquo;s email addresses and a list of chores that need to be done and randomly assigns chores to people. Email each person their assigned chores. If you&rsquo;re feeling ambitious, keep a record of each person&rsquo;s previously assigned chores so that you can make sure the program avoids assigning anyone the same chore they did last time. For another possible feature, schedule the program to run once a week automatically.</p>
+<p class="calibre4">Here&rsquo;s a hint: If you pass a list to the <code class="literal1">random.choice()</code> function, it will return a randomly selected item from the list. Part of your code could look like this:</p>
+<p><a id="calibre_link-3521" class="calibre1"></a>
+<pre class="programlisting">chores = ['dishes', 'bathroom', 'vacuum', 'walk dog']
+randomChore = random.choice(chores)
+chores.remove(randomChore) # this chore is now taken, so remove it</pre>
+</div>
+<div class="book" title="Umbrella Reminder">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3522" class="firstname"></a>Umbrella Reminder</h2>
+</div>
+</div>
+</div>
+<p class="calibre4"><a class="ulink" href="/chapter11" title="Chapter 11. Web Scraping">Chapter&nbsp;11</a> showed you how to use the <code class="literal1">requests</code> module to scrape data from <span class="calibre1"><em class="calibre5"><a class="ulink" href="http://weather.gov/">http://weather.gov/</a></em></span>. Write a program that runs just before you wake up in the morning and checks whether it&rsquo;s raining that day. If so, have the program text you a reminder to pack an umbrella before leaving the house.</p>
+</div>
+<div class="book" title="Auto Unsubscriber">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3523" class="firstname"></a>Auto Unsubscriber</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Write a program that scans through your email account, finds all the unsubscribe links in all your emails, and automatically opens them in a browser. This program will have to log in to your email provider&rsquo;s IMAP server and download all of your emails. You can use BeautifulSoup (covered in <a class="ulink" href="/chapter11" title="Chapter 11. Web Scraping">Chapter&nbsp;11</a>) to check for any instance where the word <span class="calibre1"><em class="calibre5">unsubscribe</em></span> occurs within an HTML link tag.</p>
+<p class="calibre4">Once you have a list of these URLs, you can use <code class="literal1">webbrowser.open()</code> to automatically open all of these links in a browser.</p>
+<p class="calibre4">You&rsquo;ll still have to manually go through and complete any additional steps to unsubscribe yourself from these lists. In most cases, this involves clicking a link to confirm.</p>
+<p class="calibre4">But this script saves you from having to go through all of your emails looking for unsubscribe links. You can then pass this script along to your friends so they can run it on their email accounts. (Just make sure your email password isn&rsquo;t hardcoded in the source code!)</p>
+</div>
+<div class="book" title="Controlling Your Computer Through Email">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3524" class="firstname"></a>Controlling Your Computer Through Email</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Write a program that checks an email account every 15 minutes for any instructions you email it and executes those instructions automatically. For example, BitTorrent is a peer-to-peer downloading system. Using free BitTorrent software such as qBittorrent, you can download large media files on your home computer. If you email the program a (completely legal, not at all piratical) BitTorrent link, the program will eventually check its email, find this message, extract the link, and then launch qBittorrent to start downloading the file. This way, you can have your home computer begin downloads while you&rsquo;re away, and the (completely legal, not at all piratical) download can be finished by the time you return home.</p>
+<p class="calibre4"><a class="ulink" href="/chapter15" title="Chapter 15. Keeping Time, Scheduling Tasks, and Launching Programs">Chapter&nbsp;15</a> covers how to launch programs on your computer using the <code class="literal1">subprocess.Popen()</code> function. For example, the following call would launch the qBittorrent program, along with a torrent file:</p>
+<p><a id="calibre_link-3525" class="calibre1"></a>
+<pre class="programlisting">qbProcess = subprocess.Popen(['C:\\Program Files (x86)\\qBittorrent\\
+qbittorrent.exe', 'shakespeare_complete_works.torrent'])</pre>
+<p class="calibre4">Of course, you&rsquo;ll want the program to make sure the emails come from you. In particular, you might want to require that the emails contain a password, since it is fairly trivial for hackers to fake a &ldquo;from&rdquo; address in emails. The program should delete the emails it finds so that it doesn&rsquo;t repeat instructions every time it checks the email account. As an extra feature, have the program email or text you a confirmation every time it executes a command. Since you won&rsquo;t be sitting in front of the computer that is running the program, it&rsquo;s a good idea to use the logging functions (see <a class="ulink" href="/chapter10" title="Chapter 10. Debugging">Chapter&nbsp;10</a>) to write a text file log that you can check if errors come up.</p>
+<p class="calibre4">qBittorrent (as well as other BitTorrent applications) has a feature where it can quit automatically after the download completes. <a class="ulink" href="/chapter15" title="Chapter 15. Keeping Time, Scheduling Tasks, and Launching Programs">Chapter&nbsp;15</a> explains how you can determine when a launched application has quit with the <code class="literal1">wait()</code> method for <code class="literal1">Popen</code> objects. The <code class="literal1">wait()</code> method call will block until qBittorrent has stopped, and then your program can email or text you a notification that the download has completed.</p>
+<p class="calibre4">There are a lot of possible features you could add to this project. If you get stuck, you can download an example implementation of this program from <span class="calibre1"><em class="calibre5"><a class="ulink" href="http://nostarch.com/automatestuff/">http://nostarch.com/automatestuff/</a></em></span>.</p>
+</div>
+</div>
+</div>
+</div>
+<p><center><a href="/chapter15"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="/chapter17"><img src="/images/next.png" /></a></p>
+			</div><!-- .entry-content -->
+</article><!-- #post-## -->
+
+				
+{% endblock %}

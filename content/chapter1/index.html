@@ -1,0 +1,892 @@
+{% extends "base.html" %}
+{% set title = 'Automate the Boring Stuff with Python' %}
+{% block content %}
+	
+				
+<article id="post-60" class="post-60 page type-page status-publish hentry">
+	<header class="entry-header">
+		<h1 class="entry-title">Chapter  1 &#8211; Python Basics</h1>	</header><!-- .entry-header -->
+
+	<div class="entry-content">
+		<p><center><a href="/chapter0"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="/chapter2"><img src="/images/next.png" /></a><br />Support the Author: Buy the book on <a href="http://www.amazon.com/gp/product/1593275994/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&amp;camp=1789&amp;creative=9325&amp;creativeASIN=1593275994&amp;linkCode=as2&amp;tag=playwithpyth-20&amp;linkId=2KIYOE7RFLG7D2RJ">Amazon</a> or<br/><a href="http://www.nostarch.com/automatestuff">the book/ebook bundle directly from No Starch Press</a>.<br /><a href="http://www.nostarch.com/automatestuff" ><img class=" size-full wp-image-49 aligncenter" src="/images/automate_small_cover.png" alt="small_cover" width="170" height="225" /></a><br /><a href="//inventwithpython.com">Read the author's other free Python books:</a><br /><a href="//inventwithpython.com/chapters"><img src="/images/smallcover_invent.png" width=120 /></a> <a href="//inventwithpython.com/pygame/chapters"><img src="/images/smallcover_makinggames.png" width=120 /></a> <a href="//inventwithpython.com/hacking/chapters"><img src="/images/smallcover_hacking.png" width=120 /></a></center></p>
+<div class="calibre" id="calibre_link-29">
+<div class="book" title="Chapter 1. Python Basics">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title1"><a id="calibre_link-1948" class="firstname"></a>Python Basics</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">
+<p><p><a href="https://www.youtube.com/watch?v=7qHMXu99d88" ><img src="/images/youtubelogo.png"> Lesson 2 - Expressions, Data Types, & Variables</a></p><br />
+The Python programming language has a wide range of syntactical constructions, standard library functions, and interactive development environment features. Fortunately, you can ignore most of that; you just need to learn enough to write some handy little programs.</p>
+<p class="calibre4">You will, however, have to learn some basic programming concepts before you can do anything. Like a wizard-in-training, you might think these concepts seem arcane and tedious, but with some knowledge and practice, you&rsquo;ll be able to command your computer like a magic wand to perform incredible feats.</p>
+<p class="calibre4">This chapter has a few examples that encourage you to type into the interactive shell, which lets you execute Python instructions one at a time and shows you the results instantly. Using the interactive shell is great for learning what basic Python instructions do, so give it a try as you follow along. You&rsquo;ll remember the things you do much better than the things you only read.</p>
+<div class="book" title="Entering Expressions into the Interactive Shell">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-1949" class="firstname"></a>Entering Expressions into the Interactive Shell</h1>
+</div>
+</div>
+</div>
+<p class="calibre4"><a id="calibre_link-379" class="calibre1"></a><a id="calibre_link-565" class="calibre1"></a><a id="calibre_link-567" class="calibre1"></a><a id="calibre_link-610" class="calibre1"></a><a id="calibre_link-814" class="calibre1"></a><a id="calibre_link-1177" class="calibre1"></a><a id="calibre_link-1779" class="calibre1"></a>You run the interactive shell by launching IDLE, which you installed with Python in the introduction. On Windows, open the Start menu, select <span class="calibre1"><strong class="calibre7">All Programs</strong></span> ▸ <span class="calibre1"><strong class="calibre7">Python 3.3</strong></span>, and then select <span class="calibre1"><strong class="calibre7">IDLE (Python GUI)</strong></span>. On OS X, select <span class="calibre1"><strong class="calibre7">Applications</strong></span> ▸ <span class="calibre1"><strong class="calibre7">MacPython 3.3</strong></span> ▸ <span class="calibre1"><strong class="calibre7">IDLE</strong></span>. On Ubuntu, open a new Terminal window and enter <span class="calibre1"><strong class="calibre7"><code class="literal">idle3</code></strong></span>.</p>
+<p class="calibre4">A window with the <code class="literal1">&gt;&gt;&gt;</code> prompt should appear; that&rsquo;s the interactive shell. Enter <span class="calibre1"><strong class="calibre7"><code class="literal">2 + 2</code></strong></span> at the prompt to have Python do some simple math.</p>
+<p><a id="calibre_link-1950" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">2 + 2</strong></span>
+4</pre>
+<p class="calibre4">The IDLE window should now show some text like this:</p>
+<p><a id="calibre_link-1951" class="calibre1"></a>
+<pre class="programlisting">Python 3.3.2 (v3.3.2:d047928ae3f6, May 16 2013, 00:06:53) [MSC v.1600 64 bit
+(AMD64)] on win32
+Type "copyright", "credits" or "license()" for more information.
+&gt;&gt;&gt; 2 + 2
+4
+&gt;&gt;&gt;</pre>
+<p class="calibre4">In Python, <code class="literal1">2 + 2</code> is called an <span class="calibre1"><em class="calibre5">expression</em></span>, which is the most basic kind of programming instruction in the language. Expressions consist of <span class="calibre1"><em class="calibre5">values</em></span> (such as <code class="literal1">2</code>) and <span class="calibre1"><em class="calibre5">operators</em></span> (such as <code class="literal1">+</code>), and they can always <span class="calibre1"><em class="calibre5">evaluate</em></span> (that is, reduce) down to a single value. That means you can use expressions anywhere in Python code that you could also use a value.</p>
+<p class="calibre4">In the previous example, <code class="literal1">2 + 2</code> is evaluated down to a single value, <code class="literal1">4</code>. A single value with no operators is also considered an expression, though it evaluates only to itself, as shown here:</p>
+<p><a id="calibre_link-1952" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">2</strong></span>
+2</pre>
+<div class="sidebar"><a id="calibre_link-1953" class="calibre1"></a>
+<p class="title6">Errors are Okay!</p>
+<p class="calibre4">Programs will crash if they contain code the computer can&rsquo;t understand, which will cause Python to show an error message. An error message won&rsquo;t break your computer, though, so don&rsquo;t be afraid to make mistakes. A <span class="calibre1"><em class="calibre5">crash</em></span> just means the program stopped running unexpectedly.</p>
+<p class="calibre4">If you want to know more about an error message, you can search for the exact message text online to find out more about that specific error. You can also check out the resources at <span class="calibre1"><em class="calibre5"><a class="ulink" href="http://nostarch.com/automatestuff/">http://nostarch.com/automatestuff/</a></em></span> to see a list of common Python error messages and their meanings.</p>
+</div>
+<p class="calibre4"><a id="calibre_link-159" class="calibre1"></a><a id="calibre_link-162" class="calibre1"></a><a id="calibre_link-173" class="calibre1"></a><a id="calibre_link-176" class="calibre1"></a><a id="calibre_link-178" class="calibre1"></a><a id="calibre_link-186" class="calibre1"></a><a id="calibre_link-200" class="calibre1"></a><a id="calibre_link-221" class="calibre1"></a><a id="calibre_link-490" class="calibre1"></a><a id="calibre_link-609" class="calibre1"></a><a id="calibre_link-888" class="calibre1"></a><a id="calibre_link-1056" class="calibre1"></a><a id="calibre_link-1097" class="calibre1"></a><a id="calibre_link-1135" class="calibre1"></a><a id="calibre_link-1178" class="calibre1"></a><a id="calibre_link-1183" class="calibre1"></a><a id="calibre_link-1295" class="calibre1"></a><a id="calibre_link-1479" class="calibre1"></a><a id="calibre_link-1688" class="calibre1"></a>There are plenty of other operators you can use in Python expressions, too. For example, <a class="ulink" href="#calibre_link-101" title="Table 1-1. Math Operators from Highest to Lowest Precedence">Table&nbsp;1-1</a> lists all the math operators in Python.</p>
+<div class="table"><a id="calibre_link-101" class="calibre1"></a>
+<p class="title7">Table&nbsp;1-1.&nbsp;Math Operators from Highest to Lowest Precedence</p>
+<div class="book">
+<table summary="Math Operators from Highest to Lowest Precedence" class="calibre9">
+<colgroup class="calibre10">
+<col class="calibre11"></col>
+<col class="calibre11"></col>
+<col class="calibre11"></col>
+<col class="calibre11"></col>
+</colgroup>
+<thead class="calibre12">
+<tr class="calibre13">
+<th valign="top" class="calibre14">
+<p class="calibre4">Operator</p>
+</th>
+<th valign="top" class="calibre14">
+<p class="calibre4">Operation</p>
+</th>
+<th valign="top" class="calibre14">
+<p class="calibre4">Example</p>
+</th>
+<th valign="top" class="calibre15">
+<p class="calibre4">Evaluates to...</p>
+</th>
+</tr>
+</thead>
+<tbody class="calibre16">
+<tr class="calibre13">
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">**</code></p>
+</td>
+<td valign="top" class="calibre17">
+<p class="calibre4">Exponent</p>
+</td>
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">2 ** 3</code></p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4"><code class="literal2">8</code></p>
+</td>
+</tr>
+<tr class="calibre19">
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">%</code></p>
+</td>
+<td valign="top" class="calibre17">
+<p class="calibre4">Modulus/remainder</p>
+</td>
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">22 % 8</code></p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4"><code class="literal2">6</code></p>
+</td>
+</tr>
+<tr class="calibre13">
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">//</code></p>
+</td>
+<td valign="top" class="calibre17">
+<p class="calibre4">Integer division/floored quotient</p>
+</td>
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">22 // 8</code></p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4"><code class="literal2">2</code></p>
+</td>
+</tr>
+<tr class="calibre19">
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">/</code></p>
+</td>
+<td valign="top" class="calibre17">
+<p class="calibre4">Division</p>
+</td>
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">22 / 8</code></p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4"><code class="literal2">2.75</code></p>
+</td>
+</tr>
+<tr class="calibre13">
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">*</code></p>
+</td>
+<td valign="top" class="calibre17">
+<p class="calibre4">Multiplication</p>
+</td>
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">3 * 5</code></p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4"><code class="literal2">15</code></p>
+</td>
+</tr>
+<tr class="calibre19">
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">-</code></p>
+</td>
+<td valign="top" class="calibre17">
+<p class="calibre4">Subtraction</p>
+</td>
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">5 - 2</code></p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4"><code class="literal2">3</code></p>
+</td>
+</tr>
+<tr class="calibre13">
+<td valign="top" class="calibre20">
+<p class="calibre4"><code class="literal2">+</code></p>
+</td>
+<td valign="top" class="calibre20">
+<p class="calibre4">Addition</p>
+</td>
+<td valign="top" class="calibre20">
+<p class="calibre4"><code class="literal2">2 + 2</code></p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4"><code class="literal2">4</code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p class="calibre4">The order of operations (also called <span class="calibre1"><em class="calibre5">precedence</em></span>) of Python math operators is similar to that of mathematics. The <code class="literal1">**</code> operator is evaluated first; the <code class="literal1">*</code>, <code class="literal1">/</code>, <code class="literal1">//</code>, and <code class="literal1">%</code> operators are evaluated next, from left to right; and the <code class="literal1">+</code> and <code class="literal1">-</code> operators are evaluated last (also from left to right). You can use parentheses to override the usual precedence if you need to. Enter the following expressions into the interactive shell:</p>
+<p><a id="calibre_link-1954" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">2 + 3 * 6</strong></span>
+20
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">(2 + 3) * 6</strong></span>
+30
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">48565878 * 578453</strong></span>
+28093077826734
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">2 ** 8</strong></span>
+256
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">23 /</strong></span> 7
+3.2857142857142856
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">23 // 7</strong></span>
+3
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">23 % 7</strong></span>
+2
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">2     +            2</strong></span>
+4
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">(5 - 1) * ((7 + 1) / (3 - 1))</strong></span>
+16.0</pre>
+<p class="calibre4">In each case, you as the programmer must enter the expression, but Python does the hard part of evaluating it down to a single value. Python will keep evaluating parts of the expression until it becomes a single value, as shown in <a class="ulink" href="#calibre_link-102" title="Figure 1-1. Evaluating an expression reduces it to a single value.">Figure&nbsp;1-1</a>.</p>
+<div class="figure"><a id="calibre_link-102" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-1955" class="calibre1"></a><img src="/images/000056.png" alt="Evaluating an expression reduces it to a single value." class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;1-1.&nbsp;Evaluating an expression reduces it to a single value.</p>
+</div>
+<p class="calibre4"><a id="calibre_link-408" class="calibre1"></a><a id="calibre_link-1414" class="calibre1"></a>These rules for putting operators and values together to form expressions are a fundamental part of Python as a programming language, just like the grammar rules that help us communicate. Here&rsquo;s an example:</p>
+<div class="book">
+<ul class="itemizedlist">
+<li class="listitem">
+<p class="calibre4"><span class="calibre1"><strong class="calibre7">This is a grammatically correct English sentence.</strong></span></p>
+</li>
+<li class="listitem">
+<p class="calibre4"><span class="calibre1"><strong class="calibre7">This grammatically is sentence not English correct a.</strong></span></p>
+</li>
+</ul>
+</div>
+<p class="calibre4">The second line is difficult to parse because it doesn&rsquo;t follow the rules of English. Similarly, if you type in a bad Python instruction, Python won&rsquo;t be able to understand it and will display a <code class="literal1">SyntaxError</code> error message, as shown here:</p>
+<p><a id="calibre_link-1956" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">5 +</strong></span>
+  File "&lt;stdin&gt;", line 1
+    5 +
+      ^
+SyntaxError: invalid syntax
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">42 + 5 + * 2</strong></span>
+  File "&lt;stdin&gt;", line 1
+    42 + 5 + * 2
+             ^
+SyntaxError: invalid syntax</pre>
+<p class="calibre4">You can always test to see whether an instruction works by typing it into the interactive shell. Don&rsquo;t worry about breaking the computer: The worst thing that could happen is that Python responds with an error message. Professional software developers get error messages while writing code all the time.</p>
+</div>
+<div class="book" title="The Integer, Floating-Point, and String Data Types">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-1957" class="firstname"></a>The Integer, Floating-Point, and String Data Types</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">Remember that expressions are just values combined with operators, and they always evaluate down to a single value. A <span class="calibre1"><em class="calibre5">data type</em></span> is a category for values, and every value belongs to exactly one data type. The most <a id="calibre_link-187" class="calibre1"></a><a id="calibre_link-222" class="calibre1"></a><a id="calibre_link-272" class="calibre1"></a><a id="calibre_link-360" class="calibre1"></a><a id="calibre_link-409" class="calibre1"></a><a id="calibre_link-410" class="calibre1"></a><a id="calibre_link-411" class="calibre1"></a><a id="calibre_link-662" class="calibre1"></a><a id="calibre_link-887" class="calibre1"></a><a id="calibre_link-889" class="calibre1"></a><a id="calibre_link-1636" class="calibre1"></a><a id="calibre_link-1637" class="calibre1"></a><a id="calibre_link-1677" class="calibre1"></a>common data types in Python are listed in <a class="ulink" href="#calibre_link-103" title="Table 1-2. Common Data Types">Table&nbsp;1-2</a>. The values <code class="literal1">-2</code> and <code class="literal1">30</code>, for example, are said to be <span class="calibre1"><em class="calibre5">integer</em></span> values. The integer (or <span class="calibre1"><em class="calibre5">int</em></span>) data type indicates values that are whole numbers. Numbers with a decimal point, such as <code class="literal1">3.14</code>, are called <span class="calibre1"><em class="calibre5">floating-point numbers</em></span> (or <span class="calibre1"><em class="calibre5">floats</em></span>). Note that even though the value <code class="literal1">42</code> is an integer, the value <code class="literal1">42.0</code> would be a floating-point number.</p>
+<div class="table"><a id="calibre_link-103" class="calibre1"></a>
+<p class="title7">Table&nbsp;1-2.&nbsp;Common Data Types</p>
+<div class="book">
+<table summary="Common Data Types" class="calibre9">
+<colgroup class="calibre10">
+<col class="calibre11"></col>
+<col class="calibre11"></col>
+</colgroup>
+<thead class="calibre12">
+<tr class="calibre13">
+<th valign="top" class="calibre14">
+<p class="calibre4">Data type</p>
+</th>
+<th valign="top" class="calibre15">
+<p class="calibre4">Examples</p>
+</th>
+</tr>
+</thead>
+<tbody class="calibre16">
+<tr class="calibre13">
+<td valign="top" class="calibre17">
+<p class="calibre4">Integers</p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4"><code class="literal2">-2</code>, <code class="literal2">-1</code>, <code class="literal2">0</code>, <code class="literal2">1</code>, <code class="literal2">2</code>, <code class="literal2">3</code>, <code class="literal2">4</code>, <code class="literal2">5</code></p>
+</td>
+</tr>
+<tr class="calibre19">
+<td valign="top" class="calibre17">
+<p class="calibre4">Floating-point numbers</p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4"><code class="literal2">-1.25</code>, <code class="literal2">-1.0</code>, -<code class="literal2">-0.5</code>, <code class="literal2">0.0</code>, <code class="literal2">0.5</code>, <code class="literal2">1.0</code>, <code class="literal2">1.25</code></p>
+</td>
+</tr>
+<tr class="calibre13">
+<td valign="top" class="calibre20">
+<p class="calibre4">Strings</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4"><code class="literal2">'a'</code>, <code class="literal2">'aa'</code>, <code class="literal2">'aaa'</code>, <code class="literal2">'Hello!'</code>, <code class="literal2">'11 cats'</code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p class="calibre4">Python programs can also have text values called <span class="calibre1"><em class="calibre5">strings</em></span>, or <span class="calibre1"><em class="calibre5">strs</em></span> (pronounced &ldquo;stirs&rdquo;). Always surround your string in single quote (<code class="literal1">'</code>) characters (as in <code class="literal1">'Hello'</code> or <code class="literal1">'Goodbye cruel world!'</code>) so Python knows where the string begins and ends. You can even have a string with no characters in it, <code class="literal1">''</code>, called a <span class="calibre1"><em class="calibre5">blank string</em></span>. Strings are explained in greater detail in <a class="ulink" href="/chapter4" title="Chapter 4. Lists">Chapter&nbsp;4</a>.</p>
+<p class="calibre4">If you ever see the error message <code class="literal1">SyntaxError: EOL while scanning string literal</code>, you probably forgot the final single quote character at the end of the string, such as in this example:</p>
+<p><a id="calibre_link-1958" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">'Hello world!</strong></span>
+SyntaxError: EOL while scanning string literal</pre>
+</div>
+<div class="book" title="String Concatenation and Replication">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-1959" class="firstname"></a>String Concatenation and Replication</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">The meaning of an operator may change based on the data types of the values next to it. For example, <code class="literal1">+</code> is the addition operator when it operates on two integers or floating-point values. However, when <code class="literal1">+</code> is used on two string values, it joins the strings as the <span class="calibre1"><em class="calibre5">string concatenation</em></span> operator. Enter the following into the interactive shell:</p>
+<p><a id="calibre_link-1960" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">'Alice' + 'Bob'</strong></span>
+'AliceBob'</pre>
+<p class="calibre4">The expression evaluates down to a single, new string value that combines the text of the two strings. However, if you try to use the <code class="literal1">+</code> operator on a string and an integer value, Python will not know how to handle this, and it will display an error message.</p>
+<p><a id="calibre_link-1961" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">'Alice' + 42</strong></span>
+Traceback (most recent call last):
+  File "&lt;pyshell#26&gt;", line 1, in &lt;module&gt;
+    'Alice' + 42
+TypeError: Can't convert 'int' object to str implicitly</pre>
+<p class="calibre4"><a id="calibre_link-151" class="calibre1"></a><a id="calibre_link-247" class="calibre1"></a><a id="calibre_link-1489" class="calibre1"></a><a id="calibre_link-1638" class="calibre1"></a><a id="calibre_link-1782" class="calibre1"></a><a id="calibre_link-1783" class="calibre1"></a>The error message <code class="literal1">Can't convert 'int' object to str implicitly</code> means that Python thought you were trying to concatenate an integer to the string <code class="literal1">'Alice'</code>. Your code will have to explicitly convert the integer to a string, because Python cannot do this automatically. (Converting data types will be explained in <a class="ulink" href="#calibre_link-104" title="Dissecting Your Program">Dissecting Your Program</a> when talking about the <code class="literal1">str()</code>, <code class="literal1">int()</code>, and <code class="literal1">float()</code> functions.)</p>
+<p class="calibre4">The <code class="literal1">*</code> operator is used for multiplication when it operates on two integer or floating-point values. But when the <code class="literal1">*</code> operator is used on one string value and one integer value, it becomes the <span class="calibre1"><em class="calibre5">string replication</em></span> operator. Enter a string multiplied by a number into the interactive shell to see this in action.</p>
+<p><a id="calibre_link-1962" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">'Alice' * 5</strong></span>
+'AliceAliceAliceAliceAlice'</pre>
+<p class="calibre4">The expression evaluates down to a single string value that repeats the original a number of times equal to the integer value. String replication is a useful trick, but it&rsquo;s not used as often as string concatenation.</p>
+<p class="calibre4">The <code class="literal1">*</code> operator can be used with only two numeric values (for multiplication) or one string value and one integer value (for string replication). Otherwise, Python will just display an error message.</p>
+<p><a id="calibre_link-1963" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">'Alice' * 'Bob'</strong></span>
+Traceback (most recent call last):
+  File "&lt;pyshell#32&gt;", line 1, in &lt;module&gt;
+    'Alice' * 'Bob'
+TypeError: can't multiply sequence by non-int of type 'str'
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">'Alice' * 5.0</strong></span>
+Traceback (most recent call last):
+  File "&lt;pyshell#33&gt;", line 1, in &lt;module&gt;
+    'Alice' * 5.0
+TypeError: can't multiply sequence by non-int of type 'float'</pre>
+<p class="calibre4">It makes sense that Python wouldn&rsquo;t understand these expressions: You can&rsquo;t multiply two words, and it&rsquo;s hard to replicate an arbitrary string a fractional number of times.</p>
+</div>
+<div class="book" title="Storing Values in Variables">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-1964" class="firstname"></a>Storing Values in Variables</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">A <span class="calibre1"><em class="calibre5">variable</em></span> is like a box in the computer&rsquo;s memory where you can store a single value. If you want to use the result of an evaluated expression later in your program, you can save it inside a variable.</p>
+<div class="book" title="Assignment Statements">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-1965" class="firstname"></a>Assignment Statements</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">You&rsquo;ll store values in variables with an <span class="calibre1"><em class="calibre5">assignment statement</em></span>. An assignment statement consists of a variable name, an equal sign (called the <span class="calibre1"><em class="calibre5">assignment operator</em></span>), and the value to be stored. If you enter the assignment statement <code class="literal1">spam = 42</code>, then a variable named <code class="literal1">spam</code> will have the integer value <code class="literal1">42</code> stored in it.</p>
+<p class="calibre4"><a id="calibre_link-1784" class="calibre1"></a><a id="calibre_link-1785" class="calibre1"></a>Think of a variable as a labeled box that a value is placed in, as in <a class="ulink" href="#calibre_link-105" title="Figure 1-2. spam = 42 is like telling the program, &ldquo;The variable spam now has the integer value 42 in it.&rdquo;">Figure&nbsp;1-2</a>.</p>
+<div class="figure"><a id="calibre_link-105" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-1966" class="calibre1"></a><img src="/images/000060.jpg" alt="spam = 42 is like telling the program, &ldquo;The variable spam now has the integer value 42 in it.&rdquo;" class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;1-2.&nbsp;spam = 42 is like telling the program, &ldquo;The variable spam now has the integer value 42 in it.&rdquo;</p>
+</div>
+<p class="calibre4">For example, enter the following into the interactive shell:</p>
+<p><a id="calibre_link-1967" class="calibre1"></a>
+<pre class="programlisting">&#x2776; &gt;&gt;&gt; <span class="calibre1"><strong class="literal">spam = 40</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">spam</strong></span>
+   40
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">eggs = 2</strong></span>
+&#x2777; &gt;&gt;&gt; <span class="calibre1"><strong class="literal">spam + eggs</strong></span>
+   42
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">spam + eggs + spam</strong></span>
+   82
+&#x2462; &gt;&gt;&gt; <span class="calibre1"><strong class="literal">spam = spam + 2</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">spam</strong></span>
+   42</pre>
+<p class="calibre4">A variable is <span class="calibre1"><em class="calibre5">initialized</em></span> (or created) the first time a value is stored in it &#x2776;. After that, you can use it in expressions with other variables and values &#x2777;. When a variable is assigned a new value &#x2462;, the old value is forgotten, which is why <code class="literal1">spam</code> evaluated to <code class="literal1">42</code> instead of <code class="literal1">40</code> at the end of the example. This is called <span class="calibre1"><em class="calibre5">overwriting</em></span> the variable. Enter the following code into the interactive shell to try overwriting a string:</p>
+<p><a id="calibre_link-1968" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">spam = 'Hello'</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">spam</strong></span>
+'Hello'
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">spam = 'Goodbye'</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">spam</strong></span>
+'Goodbye'</pre>
+<p class="calibre4">Just like the box in <a class="ulink" href="#calibre_link-106" title="Figure 1-3. When a new value is assigned to a variable, the old one is forgotten.">Figure&nbsp;1-3</a>, the <code class="literal1">spam</code> variable in this example stores <code class="literal1">'Hello'</code> until you replace it with <code class="literal1">'Goodbye'</code>.</p>
+<div class="figure"><a id="calibre_link-106" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-1969" class="calibre1"></a><img src="/images/000064.jpg" alt="When a new value is assigned to a variable, the old one is forgotten." class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;1-3.&nbsp;When a new value is assigned to a variable, the old one is forgotten.</p>
+</div>
+</div>
+<div class="book" title="Variable Names">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-1970" class="firstname"></a>Variable Names</h2>
+</div>
+</div>
+</div>
+<p class="calibre4"><a id="calibre_link-207" class="calibre1"></a><a id="calibre_link-1765" class="calibre1"></a><a id="calibre_link-1786" class="calibre1"></a><a class="ulink" href="#calibre_link-107" title="Table 1-3. Valid and Invalid Variable Names">Table&nbsp;1-3</a> has examples of legal variable names. You can name a variable anything as long as it obeys the following three rules:</p>
+<div class="book">
+<ol class="orderedlist">
+<li class="listitem">
+<p class="calibre4">It can be only one word.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">It can use only letters, numbers, and the underscore (<code class="literal1">_</code>) character.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">It can&rsquo;t begin with a number.</p>
+</li>
+</ol>
+</div>
+<div class="table"><a id="calibre_link-107" class="calibre1"></a>
+<p class="title7">Table&nbsp;1-3.&nbsp;Valid and Invalid Variable Names</p>
+<div class="book">
+<table summary="Valid and Invalid Variable Names" class="calibre9">
+<colgroup class="calibre10">
+<col class="calibre11"></col>
+<col class="calibre11"></col>
+</colgroup>
+<thead class="calibre12">
+<tr class="calibre13">
+<th valign="top" class="calibre14">
+<p class="calibre4">Valid variable names</p>
+</th>
+<th valign="top" class="calibre15">
+<p class="calibre4">Invalid variable names</p>
+</th>
+</tr>
+</thead>
+<tbody class="calibre16">
+<tr class="calibre13">
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">balance</code></p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4"><code class="literal2">current-balance</code> (hyphens are not allowed)</p>
+</td>
+</tr>
+<tr class="calibre19">
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">currentBalance</code></p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4"><code class="literal2">current balance</code> (spaces are not allowed)</p>
+</td>
+</tr>
+<tr class="calibre13">
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">current_balance</code></p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4"><code class="literal2">4account</code> (can&rsquo;t begin with a number)</p>
+</td>
+</tr>
+<tr class="calibre19">
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">_spam</code></p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4"><code class="literal2">42</code> (can&rsquo;t begin with a number)</p>
+</td>
+</tr>
+<tr class="calibre13">
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">SPAM</code></p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4"><code class="literal2">total_$um</code> (special characters like <code class="literal2">$</code> are not allowed)</p>
+</td>
+</tr>
+<tr class="calibre19">
+<td valign="top" class="calibre20">
+<p class="calibre4"><code class="literal2">account4</code></p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4"><code class="literal2">'hello'</code> (special characters like <code class="literal2">'</code> are not allowed)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p class="calibre4"><a id="calibre_link-300" class="calibre1"></a><a id="calibre_link-306" class="calibre1"></a><a id="calibre_link-621" class="calibre1"></a><a id="calibre_link-815" class="calibre1"></a><a id="calibre_link-891" class="calibre1"></a><a id="calibre_link-892" class="calibre1"></a><a id="calibre_link-1415" class="calibre1"></a>Variable names are case-sensitive, meaning that <code class="literal1">spam</code>, <code class="literal1">SPAM</code>, <code class="literal1">Spam</code>, and <code class="literal1">sPaM</code> are four different variables. It is a Python convention to start your variables with a lowercase letter.</p>
+<p class="calibre4">This book uses camelcase for variable names instead of underscores; that is, variables <code class="literal1">lookLikeThis</code> instead of <code class="literal1">looking_like_this</code>. Some experienced programmers may point out that the official Python code style, PEP 8, says that underscores should be used. I unapologetically prefer camelcase and point to &ldquo;A Foolish Consistency Is the Hobgoblin of Little Minds&rdquo; in PEP 8 itself:</p>
+<div class="blockquote">
+<blockquote class="blockquote1">
+<p class="calibre3">&ldquo;Consistency with the style guide is important. But most importantly: know when to be inconsistent&mdash;sometimes the style guide just doesn&rsquo;t apply. When in doubt, use your best judgment.&rdquo;</p>
+</blockquote>
+</div>
+<p class="calibre4">A good variable name describes the data it contains. Imagine that you moved to a new house and labeled all of your moving boxes as <span class="calibre1"><em class="calibre5">Stuff</em></span>. You&rsquo;d never find anything! The variable names <code class="literal1">spam</code>, <code class="literal1">eggs</code>, and <code class="literal1">bacon</code> are used as generic names for the examples in this book and in much of Python&rsquo;s documentation (inspired by the Monty Python &ldquo;Spam&rdquo; sketch), but in your programs, a descriptive name will help make your code more readable.</p>
+</div>
+</div>
+<div class="book" title="Your First Program">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-1971" class="firstname"></a>Your First Program</h1>
+</div>
+</div>
+</div>
+<p><a href="https://www.youtube.com/watch?v=buMTH6ICnqk" ><img src="/images/youtubelogo.png"> Lesson 3 - Your First Program</a></p>
+<p class="calibre4">While the interactive shell is good for running Python instructions one at a time, to write entire Python programs, you&rsquo;ll type the instructions into the file editor. The <span class="calibre1"><em class="calibre5">file editor</em></span> is similar to text editors such as Notepad or TextMate, but it has some specific features for typing in source code. To open the file editor in IDLE, select <span class="calibre1"><strong class="calibre7">File</strong></span>▸<span class="calibre1"><strong class="calibre7">New File</strong></span>.</p>
+<p class="calibre4">The window that appears should contain a cursor awaiting your input, but it&rsquo;s different from the interactive shell, which runs Python instructions as soon as you press <span class="smaller">ENTER</span>. The file editor lets you type in many instructions, save the file, and run the program. Here&rsquo;s how you can tell the difference between the two:</p>
+<div class="book">
+<ul class="itemizedlist">
+<li class="listitem">
+<p class="calibre4">The interactive shell window will always be the one with the <code class="literal1">&gt;&gt;&gt;</code> prompt.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">The file editor window will not have the <code class="literal1">&gt;&gt;&gt;</code> prompt.</p>
+</li>
+</ul>
+</div>
+<p class="calibre4">Now it&rsquo;s time to create your first program! When the file editor window opens, type the following into it:</p>
+<p><a id="calibre_link-1972" class="calibre1"></a>
+<pre class="programlisting">&#x2776; # This program says hello and asks for my name.
+
+&#x2777; print('Hello world!')
+   print('What is your name?')    # ask for their name
+&#x2462; myName = input()
+&#x2463; print('It is good to meet you, ' + myName)
+&#x2464; print('The length of your name is:')
+   print(len(myName))
+&#x2465; print('What is your age?')    # ask for their age
+   myAge = input()
+   print('You will be ' + str(int(myAge) + 1) + ' in a year.')</pre>
+<p class="calibre4"><a id="calibre_link-1697" class="calibre1"></a>Once you&rsquo;ve entered your source code, save it so that you won&rsquo;t have to retype it each time you start IDLE. From the menu at the top of the file editor window, select <span class="calibre1"><strong class="calibre7">File</strong></span>▸<span class="calibre1"><strong class="calibre7">Save As</strong></span>. In the Save As window, enter <span class="calibre1"><strong class="calibre7"><code class="literal">hello.py</code></strong></span> in the File Name field and then click <span class="calibre1"><strong class="calibre7">Save</strong></span>.</p>
+<p class="calibre4">You should save your programs every once in a while as you type them. That way, if the computer crashes or you accidentally exit from IDLE, you won&rsquo;t lose the code. As a shortcut, you can press <span class="smaller">CTRL</span>-S on Windows and Linux or ⌘-S on OS X to save your file.</p>
+<p class="calibre4">Once you&rsquo;ve saved, let&rsquo;s run our program. Select <span class="calibre1"><strong class="calibre7">Run</strong></span>▸<span class="calibre1"><strong class="calibre7">Run Module</strong></span> or just press the <span class="calibre1"><strong class="calibre7">F5</strong></span> key. Your program should run in the interactive shell window that appeared when you first started IDLE. Remember, you have to press F5 from the file editor window, not the interactive shell window. Enter your name when your program asks for it. The program&rsquo;s output in the interactive shell should look something like this:</p>
+<p><a id="calibre_link-1973" class="calibre1"></a>
+<pre class="programlisting">Python 3.3.2 (v3.3.2:d047928ae3f6, May 16 2013, 00:06:53) [MSC v.1600 64 bit
+(AMD64)] on win32
+Type "copyright", "credits" or "license()" for more information.
+&gt;&gt;&gt; ================================ RESTART ================================
+&gt;&gt;&gt;
+Hello world!
+What is your name?
+<span class="calibre1"><strong class="literal">Al</strong></span>
+It is good to meet you, Al
+The length of your name is:
+2
+What is your age?
+<span class="calibre1"><strong class="literal">4</strong></span>
+You will be 5 in a year.
+&gt;&gt;&gt;</pre>
+<p class="calibre4">When there are no more lines of code to execute, the Python program <span class="calibre1"><em class="calibre5">terminates</em></span>; that is, it stops running. (You can also say that the Python program <span class="calibre1"><em class="calibre5">exits</em></span>.)</p>
+<p class="calibre4">You can close the file editor by clicking the X at the top of the window. To reload a saved program, select <span class="calibre1"><strong class="calibre7">File</strong></span>▸<span class="calibre1"><strong class="calibre7">Open</strong></span> from the menu. Do that now, and in the window that appears, choose <span class="calibre1"><em class="calibre5"><span class="calibre1"><strong class="calibre7">hello.py</strong></span></em></span>, and click the <span class="calibre1"><strong class="calibre7">Open</strong></span> button. Your previously saved <span class="calibre1"><em class="calibre5">hello.py</em></span> program should open in the file editor window.</p>
+</div>
+<div class="book" title="Dissecting Your Program">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-104" class="firstname"></a>Dissecting Your Program</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">With your new program open in the file editor, let&rsquo;s take a quick tour of the Python instructions it uses by looking at what each line of code does.</p>
+<div class="book" title="Comments">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-1974" class="firstname"></a>Comments</h2>
+</div>
+</div>
+</div>
+<p class="calibre4"><a id="calibre_link-241" class="calibre1"></a><a id="calibre_link-298" class="calibre1"></a><a id="calibre_link-346" class="calibre1"></a><a id="calibre_link-721" class="calibre1"></a><a id="calibre_link-879" class="calibre1"></a><a id="calibre_link-1210" class="calibre1"></a><a id="calibre_link-1299" class="calibre1"></a><a id="calibre_link-1317" class="calibre1"></a>The following line is called a <span class="calibre1"><em class="calibre5">comment</em></span>.</p>
+<p><a id="calibre_link-1975" class="calibre1"></a>
+<pre class="programlisting">&#x2776; # This program says hello and asks for my name.</pre>
+<p class="calibre4">Python ignores comments, and you can use them to write notes or remind yourself what the code is trying to do. Any text for the rest of the line following a hash mark (<code class="literal1">#</code>) is part of a comment.</p>
+<p class="calibre4">Sometimes, programmers will put a <code class="literal1">#</code> in front of a line of code to temporarily remove it while testing a program. This is called <span class="calibre1"><em class="calibre5">commenting out</em></span> code, and it can be useful when you&rsquo;re trying to figure out why a program doesn&rsquo;t work. You can remove the <code class="literal1">#</code> later when you are ready to put the line back in.</p>
+<p class="calibre4">Python also ignores the blank line after the comment. You can add as many blank lines to your program as you want. This can make your code easier to read, like paragraphs in a book.</p>
+</div>
+<div class="book" title="The print() Function">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-1976" class="firstname"></a>The print() Function</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">The <code class="literal1">print()</code> function displays the string value inside the parentheses on the screen.</p>
+<p><a id="calibre_link-1977" class="calibre1"></a>
+<pre class="programlisting">&#x2777; print('Hello world!')
+   print('What is your name?') # ask for their name</pre>
+<p class="calibre4">The line <code class="literal1">print('Hello world!')</code> means &ldquo;Print out the text in the string <code class="literal1">'Hello world!'</code>.&rdquo; When Python executes this line, you say that Python is <span class="calibre1"><em class="calibre5">calling</em></span> the <code class="literal1">print()</code> function and the string value is being <span class="calibre1"><em class="calibre5">passed</em></span> to the function. A value that is passed to a function call is an <span class="calibre1"><em class="calibre5">argument</em></span>. Notice that the quotes are not printed to the screen. They just mark where the string begins and ends; they are not part of the string value.</p>
+<div class="note" title="Note">
+<h3 class="title5"><a id="calibre_link-1978" class="calibre1"></a>Note</h3>
+<p class="calibre4"><span class="calibre1"><em class="calibre5">You can also use this function to put a blank line on the screen; just call <code class="literal3">print()</code> with nothing in between the parentheses.</em></span></p>
+</div>
+<p class="calibre4">When writing a function name, the opening and closing parentheses at the end identify it as the name of a function. This is why in this book you&rsquo;ll see <code class="literal1">print()</code> rather than <code class="literal1">print</code>. <a class="ulink" href="/chapter2" title="Chapter 2. Flow Control">Chapter&nbsp;2</a> describes functions in more detail.</p>
+</div>
+<div class="book" title="The input() Function">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-1979" class="firstname"></a>The input() Function</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">The <code class="literal1">input()</code> function waits for the user to type some text on the keyboard and press <span class="smaller">ENTER</span>.</p>
+<p><a id="calibre_link-1980" class="calibre1"></a>
+<pre class="programlisting">&#x2462; myName = input()</pre>
+<p class="calibre4">This function call evaluates to a string equal to the user&rsquo;s text, and the previous line of code assigns the <code class="literal1">myName</code> variable to this string value.</p>
+<p class="calibre4"><a id="calibre_link-954" class="calibre1"></a><a id="calibre_link-1300" class="calibre1"></a>You can think of the <code class="literal1">input()</code> function call as an expression that evaluates to whatever string the user typed in. If the user entered <code class="literal1">'Al'</code>, then the expression would evaluate to <code class="literal1">myName = 'Al'</code>.</p>
+</div>
+<div class="book" title="Printing the User&rsquo;s Name">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-1981" class="firstname"></a>Printing the User&rsquo;s Name</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">The following call to <code class="literal1">print()</code> actually contains the expression <code class="literal1">'It is good to meet you, ' + myName</code> between the parentheses.</p>
+<p><a id="calibre_link-1982" class="calibre1"></a>
+<pre class="programlisting">&#x2463; print('It is good to meet you, ' + myName)</pre>
+<p class="calibre4">Remember that expressions can always evaluate to a single value. If <code class="literal1">'Al'</code> is the value stored in <code class="literal1">myName</code> on the previous line, then this expression evaluates to <code class="literal1">'It is good to meet you, Al'</code>. This single string value is then passed to <code class="literal1">print()</code>, which prints it on the screen.</p>
+</div>
+<div class="book" title="The len() Function">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-1983" class="firstname"></a>The len() Function</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">You can pass the <code class="literal1">len()</code> function a string value (or a variable containing a string), and the function evaluates to the integer value of the number of characters in that string.</p>
+<p><a id="calibre_link-1984" class="calibre1"></a>
+<pre class="programlisting">&#x2464; print('The length of your name is:')
+   print(len(myName))</pre>
+<p class="calibre4">Enter the following into the interactive shell to try this:</p>
+<p><a id="calibre_link-1985" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">len('hello')</strong></span>
+5
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">len('My very energetic monster just scarfed nachos.')</strong></span>
+46
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">len('')</strong></span>
+0</pre>
+<p class="calibre4">Just like those examples, <code class="literal1">len(myName)</code> evaluates to an integer. It is then passed to <code class="literal1">print()</code> to be displayed on the screen. Notice that <code class="literal1">print()</code> allows you to pass it either integer values or string values. But notice the error that shows up when you type the following into the interactive shell:</p>
+<p><a id="calibre_link-1986" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">print('I am ' + 29 + ' years old.')</strong></span>
+Traceback (most recent call last):
+  File "&lt;pyshell#6&gt;", line 1, in &lt;module&gt;
+    print('I am ' + 29 + ' years old.')
+TypeError: Can't convert 'int' object to str implicitly</pre>
+<p class="calibre4">The <code class="literal1">print()</code> function isn&rsquo;t causing that error, but rather it&rsquo;s the expression you tried to pass to <code class="literal1">print()</code>. You get the same error message if you type the expression into the interactive shell on its own.</p>
+<p><a id="calibre_link-1987" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">'I am ' + 29 + ' years old.'</strong></span>
+Traceback (most recent call last):
+  File "&lt;pyshell#7&gt;", line 1, in &lt;module&gt;
+    'I am ' + 29 + ' years old.'
+TypeError: Can't convert 'int' object to str implicitly</pre>
+<p class="calibre4"><a id="calibre_link-661" class="calibre1"></a><a id="calibre_link-896" class="calibre1"></a><a id="calibre_link-1631" class="calibre1"></a>Python gives an error because you can use the <code class="literal1">+</code> operator only to add two integers together or concatenate two strings. You can&rsquo;t add an integer to a string because this is ungrammatical in Python. You can fix this by using a string version of the integer instead, as explained in the next section.</p>
+</div>
+<div class="book" title="The str(), int(), and float() Functions">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-1988" class="firstname"></a>The str(), int(), and float() Functions</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">If you want to concatenate an integer such as <code class="literal1">29</code> with a string to pass to <code class="literal1">print()</code>, you&rsquo;ll need to get the value <code class="literal1">'29'</code>, which is the string form of <code class="literal1">29</code>. The <code class="literal1">str()</code> function can be passed an integer value and will evaluate to a string value version of it, as follows:</p>
+<p><a id="calibre_link-1989" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">str(29)</strong></span>
+'29'
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">print('I am ' + str(29) + ' years old.')</strong></span>
+I am 29 years old.</pre>
+<p class="calibre4">Because <code class="literal1">str(29)</code> evaluates to <code class="literal1">'29'</code>, the expression <code class="literal1">'I am ' + str(29) + ' years old.'</code> evaluates to <code class="literal1">'I am ' + '29' + ' years old.'</code>, which in turn evaluates to <code class="literal1">'I am 29 years old.'</code>. This is the value that is passed to the <code class="literal1">print()</code> function.</p>
+<p class="calibre4">The <code class="literal1">str()</code>, <code class="literal1">int()</code>, and <code class="literal1">float()</code> functions will evaluate to the string, integer, and floating-point forms of the value you pass, respectively. Try converting some values in the interactive shell with these functions, and watch what happens.</p>
+<p><a id="calibre_link-1990" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">str(0)</strong></span>
+'0'
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">str(-3.14)</strong></span>
+'-3.14'
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">int('42')</strong></span>
+42
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">int('-99')</strong></span>
+-99
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">int(1.25)</strong></span>
+1
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">int(1.99)</strong></span>
+1
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">float('3.14')</strong></span>
+3.14
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">float(10)</strong></span>
+10.0</pre>
+<p class="calibre4">The previous examples call the <code class="literal1">str()</code>, <code class="literal1">int()</code>, and <code class="literal1">float()</code> functions and pass them values of the other data types to obtain a string, integer, or floating-point form of those values.</p>
+<p class="calibre4">The <code class="literal1">str()</code> function is handy when you have an integer or float that you want to concatenate to a string. The <code class="literal1">int()</code> function is also helpful if you have a number as a string value that you want to use in some mathematics. For example, the <code class="literal1">input()</code> function always returns a string, even if the user enters a number. Enter <span class="calibre1"><strong class="calibre7"><code class="literal">spam = input()</code></strong></span> into the interactive shell and enter <span class="calibre1"><strong class="calibre7"><code class="literal">101</code></strong></span> when it waits for your text.</p>
+<p><a id="calibre_link-1991" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">spam = input()</strong></span>
+101
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">spam</strong></span>
+'101'</pre>
+<p class="calibre4">The value stored inside <code class="literal1">spam</code> isn&rsquo;t the integer <code class="literal1">101</code> but the string <code class="literal1">'101'</code>. If you want to do math using the value in <code class="literal1">spam</code>, use the <code class="literal1">int()</code> function to get the integer form of <code class="literal1">spam</code> and then store this as the new value in <code class="literal1">spam</code>.</p>
+<p><a id="calibre_link-1992" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">spam = int(spam)</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">spam</strong></span>
+101</pre>
+<p class="calibre4">Now you should be able to treat the <code class="literal1">spam</code> variable as an integer instead of a string.</p>
+<p><a id="calibre_link-1993" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">spam * 10 / 5</strong></span>
+202.0</pre>
+<p class="calibre4">Note that if you pass a value to <code class="literal1">int()</code> that it cannot evaluate as an integer, Python will display an error message.</p>
+<p><a id="calibre_link-1994" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">int('99.99')</strong></span>
+Traceback (most recent call last):
+  File "&lt;pyshell#18&gt;", line 1, in &lt;module&gt;
+    int('99.99')
+ValueError: invalid literal for int() with base 10: '99.99'
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">int('twelve')</strong></span>
+Traceback (most recent call last):
+  File "&lt;pyshell#19&gt;", line 1, in &lt;module&gt;
+    int('twelve')
+ValueError: invalid literal for int() with base 10: 'twelve'</pre>
+<p class="calibre4">The <code class="literal1">int()</code> function is also useful if you need to round a floating-point number down. If you want to round a floating-point number up, just add <code class="literal1">1</code> to it afterward.</p>
+<p><a id="calibre_link-1995" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">int(7.7)</strong></span>
+7
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">int(7.7) + 1</strong></span>
+8</pre>
+<p class="calibre4"><a id="calibre_link-447" class="calibre1"></a><a id="calibre_link-663" class="calibre1"></a><a id="calibre_link-890" class="calibre1"></a>In your program, you used the <code class="literal1">int()</code> and <code class="literal1">str()</code> functions in the last three lines to get a value of the appropriate data type for the code.</p>
+<p><a id="calibre_link-1996" class="calibre1"></a>
+<pre class="programlisting">&#x2465; print('What is your age?') # ask for their age
+   myAge = input()
+   print('You will be ' + str(int(myAge) + 1) + ' in a year.')</pre>
+<p class="calibre4">The <code class="literal1">myAge</code> variable contains the value returned from <code class="literal1">input()</code>. Because the <code class="literal1">input()</code> function always returns a string (even if the user typed in a number), you can use the <code class="literal1">int(myAge)</code> code to return an integer value of the string in <code class="literal1">myAge</code>. This integer value is then added to <code class="literal1">1</code> in the expression <code class="literal1">int(myAge) + 1</code>.</p>
+<p class="calibre4">The result of this addition is passed to the <code class="literal1">str()</code> function: <code class="literal1">str(int(myAge) + 1)</code>. The string value returned is then concatenated with the strings <code class="literal1">'You will be '</code> and <code class="literal1">' in a year.'</code> to evaluate to one large string value. This large string is finally passed to <code class="literal1">print()</code> to be displayed on the screen.</p>
+<p class="calibre4">Let&rsquo;s say the user enters the string <code class="literal1">'4'</code> for <code class="literal1">myAge</code>. The string <code class="literal1">'4'</code> is converted to an integer, so you can add one to it. The result is <code class="literal1">5</code>. The <code class="literal1">str()</code> function converts the result back to a string, so you can concatenate it with the second string, <code class="literal1">'in a year.'</code>, to create the final message. These evaluation steps would look something like <a class="ulink" href="#calibre_link-108" title="Figure 1-4. The evaluation steps, if 4 was stored in myAge">Figure&nbsp;1-4</a>.</p>
+<div class="sidebar"><a id="calibre_link-1997" class="calibre1"></a>
+<p class="title6">Text and Number Equivalence</p>
+<p class="calibre4">Although the string value of a number is considered a completely different value from the integer or floating-point version, an integer can be equal to a floating point.</p>
+<p><a id="calibre_link-1998" class="calibre1"></a>
+<pre class="programlisting1">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">42 == '42'</strong></span>
+False
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">42 == 42.0</strong></span>
+True
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">42.0 == 0042.000</strong></span>
+True</pre>
+<p class="calibre4">Python makes this distinction because strings are text, while integers and floats are both numbers.</p>
+</div>
+<div class="figure"><a id="calibre_link-108" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-1999" class="calibre1"></a><img src="/images/000069.png" alt="The evaluation steps, if 4 was stored in myAge" class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;1-4.&nbsp;The evaluation steps, if <code class="literal1">4</code> was stored in <code class="literal1">myAge</code></p>
+</div>
+</div>
+</div>
+<div class="book" title="Summary">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-2000" class="firstname"></a>Summary</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">You can compute expressions with a calculator or type string concatenations with a word processor. You can even do string replication easily by copying and pasting text. But expressions, and their component values&mdash;operators, variables, and function calls&mdash;are the basic building blocks that make programs. Once you know how to handle these elements, you will be able to instruct Python to operate on large amounts of data for you.</p>
+<p class="calibre4">It is good to remember the different types of operators (<code class="literal1">+</code>, <code class="literal1">-</code>, <code class="literal1">*</code>, <code class="literal1">/</code>, <code class="literal1">//</code>, <code class="literal1">%</code>, and <code class="literal1">**</code> for math operations, and <code class="literal1">+</code> and <code class="literal1">*</code> for string operations) and the three data types (integers, floating-point numbers, and strings) introduced in this chapter.</p>
+<p class="calibre4">A few different functions were introduced as well. The <code class="literal1">print()</code> and <code class="literal1">input()</code> functions handle simple text output (to the screen) and input (from the keyboard). The <code class="literal1">len()</code> function takes a string and evaluates to an int of the number of characters in the string. The <code class="literal1">str()</code>, <code class="literal1">int()</code>, and <code class="literal1">float()</code> functions will evaluate to the string, integer, or floating-point number form of the value they are passed.</p>
+<p class="calibre4">In the next chapter, you will learn how to tell Python to make intelligent decisions about what code to run, what code to skip, and what code to repeat based on the values it has. This is known as <span class="calibre1"><em class="calibre5">flow control</em></span>, and it allows you to write programs that make intelligent decisions.</p>
+</div>
+<div class="book" title="Practice Questions">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-2001" class="firstname"></a>Practice Questions</h1>
+</div>
+</div>
+</div>
+<div class="book" title="Frequently Asked Questions"><a id="calibre_link-2002" class="calibre1"></a><br />
+<table border="0" width="100%" summary="Q and A Set" class="calibre22">
+<col width="1%" class="calibre23"></col>
+<col class="calibre11"></col>
+<tbody class="calibre16">
+<tr class="calibre13" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-2003" class="calibre1"></a><a id="calibre_link-2004" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">1. Which of the following are operators, and which are values?</p>
+<p><a id="calibre_link-2005" class="calibre1"></a>
+<pre class="programlisting2">*
+'hello'
+-88.8
+-
+/
++
+5</pre>
+</td>
+</tr>
+<tr class="calibre19" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-2006" class="calibre1"></a><a id="calibre_link-2007" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">2. Which of the following is a variable, and which is a string?</p>
+<p><a id="calibre_link-2008" class="calibre1"></a>
+<pre class="programlisting2">spam
+'spam'</pre>
+</td>
+</tr>
+<tr class="calibre13" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-2009" class="calibre1"></a><a id="calibre_link-2010" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">3. Name three data types.</p>
+</td>
+</tr>
+<tr class="calibre19" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-2011" class="calibre1"></a><a id="calibre_link-2012" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">4. What is an expression made up of? What do all expressions do?</p>
+</td>
+</tr>
+<tr class="calibre13" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-2013" class="calibre1"></a><a id="calibre_link-2014" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">5. This chapter introduced assignment statements, like <code class="literal2">spam = 10</code>. What is the difference between an expression and a statement?</p>
+</td>
+</tr>
+<tr class="calibre19" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-2015" class="calibre1"></a><a id="calibre_link-2016" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">6. What does the variable <code class="literal2">bacon</code> contain after the following code runs?</p>
+<p><a id="calibre_link-2017" class="calibre1"></a>
+<pre class="programlisting2">bacon = 20
+bacon + 1</pre>
+</td>
+</tr>
+<tr class="calibre13" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-2018" class="calibre1"></a><a id="calibre_link-2019" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">7. What should the following two expressions evaluate to?</p>
+<p><a id="calibre_link-2020" class="calibre1"></a>
+<pre class="programlisting2">'spam' + 'spamspam'
+'spam' * 3</pre>
+</td>
+</tr>
+<tr class="calibre19" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-2021" class="calibre1"></a><a id="calibre_link-2022" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">8. Why is <code class="literal2">eggs</code> a valid variable name while <code class="literal2">100</code> is invalid?</p>
+</td>
+</tr>
+<tr class="calibre13" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-2023" class="calibre1"></a><a id="calibre_link-2024" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">9. What three functions can be used to get the integer, floating-point number, or string version of a value?</p>
+</td>
+</tr>
+<tr class="calibre19" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-2025" class="calibre1"></a><a id="calibre_link-2026" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">10. Why does this expression cause an error? How can you fix it?</p>
+<p><a id="calibre_link-2027" class="calibre1"></a>
+<pre class="programlisting2">'I have eaten ' + 99 + ' burritos.'</pre>
+<p class="calibre4"><span class="calibre1"><strong class="calibre7">Extra credit:</strong></span> Search online for the Python documentation for the <code class="literal2">len()</code> function. It will be on a web page titled &ldquo;Built-in Functions.&rdquo; Skim the list of other functions Python has, look up what the <code class="literal2">round()</code> function does, and experiment with it in the interactive shell.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<p><center><a href="/chapter0"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="/chapter2"><img src="/images/next.png" /></a></center></p>
+			</div><!-- .entry-content -->
+</article><!-- #post-## -->
+
+
+				
+{% endblock %}
