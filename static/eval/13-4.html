@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>12-4</title>
+  <style>
+  .showEval, .setup { font-family: monospace; font-size: 2em; }
+  .showEval span { vertical-align: text-top; }
+  </style>
+  <script src="jquery-1.11.1.min.js"></script>
+  <script src="showEval-0.9.0.js"></script>
+</head>
+<body>
+
+
+<table border=0 width="100%" height="400">
+  <tr><td valign="top">
+<button id="nextStep">Next Step</button>
+<button id="reset">Reset</button>
+<div class="setup">spam = [['cat', 'bat'], [10, 20, 30, 40, 50]]<br /><br /></div>
+<div id="showeval"></div>
+
+</td></tr></table>
+
+
+<script>
+
+$( "#nextStep" ).click(function() { s.evaluateStep(); });
+$( "#reset" ).click(function() { s.reset(0); });
+
+
+
+$(document).ready(function() {
+  steps1 = ["{{spam}}{{[['cat', 'bat'], [10, 20, 30, 40, 50]]}}[1][4]",
+            "{{[['cat', 'bat'], [10, 20, 30, 40, 50]][1]}}{{[10, 20, 30, 40, 50]}}[4]",
+            "{{[10, 20, 30, 40, 50][4]}}{{50}}"];
+  s = new SHOWEVAL.ShowEval($('#showeval'), steps1, true);
+
+
+
+});
+
+</script>
+
+</body>
+</html>
