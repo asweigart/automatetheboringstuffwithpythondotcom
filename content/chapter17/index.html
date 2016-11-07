@@ -130,7 +130,7 @@
 </div>
 <p class="calibre4">Pillow offers the <code class="literal1">ImageColor.getcolor()</code> function so you don&rsquo;t have to memorize RGBA values for the colors you want to use. This function takes a color name string as its first argument, and the string <code class="literal1">'RGBA'</code> as its second argument, and it returns an RGBA tuple.</p>
 <div class="sidebar"><a id="calibre_link-3529" class="calibre1"></a>
-<p class="title6">CMYK and RGB Coloring</p>
+<p class="title5">CMYK and RGB Coloring</p>
 <p class="calibre4"><a id="calibre_link-225" class="calibre1"></a><a id="calibre_link-330" class="calibre1"></a><a id="calibre_link-337" class="calibre1"></a><a id="calibre_link-367" class="calibre1"></a><a id="calibre_link-828" class="calibre1"></a><a id="calibre_link-1498" class="calibre1"></a><a id="calibre_link-1690" class="calibre1"></a>In grade school you learned that mixing red, yellow, and blue paints can form other colors; for example, you can mix blue and yellow to make green paint. This is known as the <span class="calibre1"><em class="calibre5">subtractive color model</em></span>, and it applies to dyes, inks, and pigments. This is why color printers have <span class="calibre1"><em class="calibre5">CMYK</em></span> ink cartridges: the <span class="calibre1"><em class="calibre5">Cyan</em></span> (blue), <span class="calibre1"><em class="calibre5">Magenta</em></span> (red), <span class="calibre1"><em class="calibre5">Yellow</em></span>, and <span class="calibre1"><em class="calibre5">blacK</em></span> ink can be mixed together to form any color.</p>
 <p class="calibre4">However, the physics of light uses what&rsquo;s called an <span class="calibre1"><em class="calibre5">additive color model</em></span>. When combining light (such as the light given off by your computer screen), red, green, and blue light can be combined to form any other color. This is why <span class="calibre1"><em class="calibre5">RGB</em></span> values represent color in computer programs.</p>
 </div>
@@ -352,7 +352,7 @@
 <p class="title4">Figure&nbsp;17-6.&nbsp;Nested <code class="literal1">for</code> loops used with <code class="literal1">paste()</code> to duplicate the cat&rsquo;s face (a duplicat, if you will).</p>
 </div>
 <div class="sidebar"><a id="calibre_link-3551" class="calibre1"></a>
-<p class="title6">Pasting Transparent Pixels</p>
+<p class="title5">Pasting Transparent Pixels</p>
 <p class="calibre4"><a id="calibre_link-834" class="calibre1"></a><a id="calibre_link-835" class="calibre1"></a><a id="calibre_link-1262" class="calibre1"></a><a id="calibre_link-1263" class="calibre1"></a><a id="calibre_link-1735" class="calibre1"></a>Normally transparent pixels are pasted as white pixels. If the image you want to paste has transparent pixels, pass the <code class="literal1">Image</code> object as the third argument so that a solid rectangle isn&rsquo;t pasted. This third argument is the &ldquo;mask&rdquo; <code class="literal1">Image</code> object. A mask is an <code class="literal1">Image</code> object where the alpha value is significant, but the red, green, and blue values are ignored. The mask tells the <code class="literal1">paste()</code> function which pixels it should copy and which it should leave transparent. Advanced usage of masks is beyond this book, but if you want to paste an image that has transparent pixels, pass the <code class="literal1">Image</code> object again as the third argument.</p>
 </div>
 </div>

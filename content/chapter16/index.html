@@ -198,7 +198,7 @@ n8BITMIME\nSTARTTLS\nENHANCEDSTATUSCODES\nCHUNKING')</pre>
 <pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">smtpObj.login('</strong></span> <span class="calibre1"><em class="literal3"><span class="calibre1"><strong class="calibre27">my_email_address@gmail.com</strong></span></em></span> <span class="calibre1"><strong class="literal">', '</strong></span> <span class="calibre1"><em class="literal3"><span class="calibre1"><strong class="calibre27">MY_SECRET_PASSWORD</strong></span></em></span> <span class="calibre1"><strong class="literal">')</strong></span>
 (235, b'2.7.0 Accepted')</pre>
 <div class="sidebar"><a id="calibre_link-48" class="calibre1"></a>
-<p class="title6">Gmail&rsquo;s Application-Specific Passwords</p>
+<p class="title5">Gmail&rsquo;s Application-Specific Passwords</p>
 <p class="calibre4"><a id="calibre_link-239" class="calibre1"></a><a id="calibre_link-541" class="calibre1"></a><a id="calibre_link-757" class="calibre1"></a><a id="calibre_link-881" class="calibre1"></a><a id="calibre_link-1217" class="calibre1"></a><a id="calibre_link-1566" class="calibre1"></a><a id="calibre_link-1600" class="calibre1"></a>Gmail has an additional security feature for Google accounts called <span class="calibre1"><em class="calibre5">application-specific passwords</em></span>. If you receive an <code class="literal1">Application-specific password required</code> error message when your program tries to log in, you will have to set up one of these passwords for your Python script. Check out the resources at <span class="calibre1"><em class="calibre5"><a class="ulink" href="http://nostarch.com/automatestuff/">http://nostarch.com/automatestuff/</a></em></span> for detailed directions on how to set up an application-specific password for your Google account.</p>
 </div>
 <p class="calibre4">Pass a string of your email address as the first argument and a string of your password as the second argument. The <code class="literal1">235</code> in the return value means authentication was successful. Python will raise an <code class="literal1">smtplib.SMTPAuthenticationError</code> exception for incorrect passwords.</p>
@@ -639,7 +639,7 @@ Al&lt;br&gt;&lt;/div&gt;\r\n'
 &gt;&gt;&gt; <span class="calibre1"><strong class="literal">imaplib._MAXLINE = 10000000</strong></span></pre>
 <p class="calibre4">This should prevent this error message from coming up again. You may want to make these two lines part of every IMAP program you write.</p>
 <div class="sidebar"><a id="calibre_link-3464" class="calibre1"></a>
-<p class="title6">Using Imapclient&rsquo;s Gmail_Search( ) Method</p>
+<p class="title5">Using Imapclient&rsquo;s Gmail_Search( ) Method</p>
 <p class="calibre4"><a id="calibre_link-548" class="calibre1"></a><a id="calibre_link-549" class="calibre1"></a><a id="calibre_link-550" class="calibre1"></a><a id="calibre_link-620" class="calibre1"></a><a id="calibre_link-759" class="calibre1"></a><a id="calibre_link-853" class="calibre1"></a>If you are logging in to the <span class="calibre1"><em class="calibre5">imap.gmail.com</em></span> server to access a Gmail account, the <code class="literal1">IMAPClient</code> object provides an extra search function that mimics the search bar at the top of the Gmail web page, as highlighted in <a class="ulink" href="#calibre_link-52" title="Figure 16-1. The search bar at the top of the Gmail web page">Figure&nbsp;16-1</a>.</p>
 <div class="figure1"><a id="calibre_link-52" class="calibre1"></a>
 <div class="book">
@@ -1009,7 +1009,7 @@ True</pre>
 <p class="calibre4">Entering <code class="literal1">message.sid</code> show you this message&rsquo;s long SID. By passing this SID to the Twilio client&rsquo;s <code class="literal1">get()</code> method &#x2776;, you can retrieve a new <code class="literal1">Message</code> object with the most up-to-date information. In this new <code class="literal1">Message</code> object, the <code class="literal1">status</code> and <code class="literal1">date_sent</code> attributes are correct.</p>
 <p class="calibre4">The <code class="literal1">status</code> attribute will be set to one of the following string values: <code class="literal1">'queued'</code>, <code class="literal1">'sending'</code>, <code class="literal1">'sent'</code>, <code class="literal1">'delivered'</code>, <code class="literal1">'undelivered'</code>, or <code class="literal1">'failed'</code>. These statuses are self-explanatory, but for more precise details, take a look at the resources at <span class="calibre1"><em class="calibre5"><a class="ulink" href="http://nostarch.com/automatestuff/">http://nostarch.com/automatestuff/</a></em></span>.</p>
 <div class="sidebar"><a id="calibre_link-3498" class="calibre1"></a>
-<p class="title6">Receiving Text Messages with Python</p>
+<p class="title5">Receiving Text Messages with Python</p>
 <p class="calibre4">Unfortunately, receiving text messages with Twilio is a bit more complicated than sending them. Twilio requires that you have a website running its own web application. That&rsquo;s beyond the scope of this book, but you can find more details in the resources for this book (<span class="calibre1"><em class="calibre5"><a class="ulink" href="http://nostarch.com/automatestuff/">http://nostarch.com/automatestuff/</a></em></span>).</p>
 </div>
 </div>

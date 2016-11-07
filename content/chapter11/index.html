@@ -324,7 +324,7 @@ except Exception as exc:
 </div>
 <p class="calibre4"><a id="calibre_link-504" class="calibre1"></a><a id="calibre_link-912" class="calibre1"></a><a id="calibre_link-1492" class="calibre1"></a><a id="calibre_link-1768" class="calibre1"></a><a id="calibre_link-1816" class="calibre1"></a>From here, you can save the web page to a file on your hard drive with the standard <code class="literal1">open()</code> function and <code class="literal1">write()</code> method. There are some slight differences, though. First, you must open the file in <span class="calibre1"><em class="calibre5">write binary</em></span> mode by passing the string <code class="literal1">'wb'</code> as the second argument to <code class="literal1">open()</code>. Even if the page is in plaintext (such as the <span class="calibre1"><em class="calibre5">Romeo and Juliet</em></span> text you downloaded earlier), you need to write binary data instead of text data in order to maintain the <span class="calibre1"><em class="calibre5">Unicode encoding</em></span> of the text.</p>
 <div class="sidebar"><a id="calibre_link-2935" class="calibre1"></a>
-<p class="title6">Unicode Encodings</p>
+<p class="title5">Unicode Encodings</p>
 <p class="calibre4">Unicode encodings are beyond the scope of this book, but you can learn more about them from these web pages:</p>
 <div class="book">
 <ul class="itemizedlist">
@@ -473,7 +473,7 @@ except Exception as exc:
 <p class="calibre4">In Safari, open the Preferences window, and on the Advanced pane check the <span class="calibre1"><strong class="calibre7">Show Develop menu in the menu bar</strong></span> option. After it has been enabled, you can bring up the developer tools by pressing <span class="inlinemediaobject"><a id="calibre_link-2949" class="calibre1"></a><img src="/images/000085.jpg" alt="" class="calibre29" /></span>-<span class="smaller">OPTION</span>-I.</p>
 <p class="calibre4">After enabling or installing the developer tools in your browser, you can right-click any part of the web page and select <span class="calibre1"><strong class="calibre7">Inspect Element</strong></span> from the context menu to bring up the HTML responsible for that part of the page. This will be helpful when you begin to parse HTML for your web scraping programs.</p>
 <div class="sidebar"><a id="calibre_link-2950" class="calibre1"></a>
-<p class="title6">Don&rsquo;t Use Regular Expressions to Parse HTML</p>
+<p class="title5">Don&rsquo;t Use Regular Expressions to Parse HTML</p>
 <p class="calibre4">Locating a specific piece of HTML in a string seems like a perfect case for regular expressions. However, I advise you against it. There are many different ways that HTML can be formatted and still be considered valid HTML, but trying to capture all these possible variations in a regular expression can be tedious and error prone. A module developed specifically for parsing HTML, such as Beautiful Soup, will be less likely to result in bugs.</p>
 <p class="calibre4">You can find an extended argument for why you shouldn&rsquo;t to parse HTML with regular expressions at <span class="calibre1"><em class="calibre5"><a class="ulink" href="http://stackoverflow.com/a/1732454/1893164/">http://stackoverflow.com/a/1732454/1893164/</a></em></span>.</p>
 </div>
