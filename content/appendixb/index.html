@@ -51,7 +51,11 @@
 </div>
 </div>
 </div>
-<p class="calibre4">On Windows, the Python 3.4 interpreter is located at <span class="calibre1"><em class="calibre5">C:\Python34\python.exe</em></span>. Alternatively, the convenient <span class="calibre1"><em class="calibre5">py.exe</em></span> program will read the shebang line at the top of the <span class="calibre1"><em class="calibre5">.py</em></span> file&rsquo;s source code and run the appropriate version of Python for that script. The <span class="calibre1"><em class="calibre5">py.exe</em></span> program will make sure to run the Python program with the correct version of Python if multiple versions are installed on your computer.</p>
+<p class="calibre4">On Windows, the Python 3.4 interpreter is located at <span class="calibre1"><em class="calibre5">C:\Python34\python.exe</em></span>. Alternatively, the convenient <span class="calibre1"><em class="calibre5">py.exe</em></span> program will read the shebang line at the top of the <span class="calibre1"><em class="calibre5">.py</em></span> file&rsquo;s source code and run the appropriate version of Python for that script. The <span class="calibre1"><em class="calibre5">py.exe</em></span> program will make sure to run the Python program with the correct version of Python if multiple versions are installed on your computer. Use the <em>-3</em> command line argument to make <em>py.exe</em> run the latest Python 3 version installed. Use the <code class="literal1">cd</code> command to change to the directory (that is, folder) that contains your Python script file. Then use the <em>py</em> program to run your script:</p>
+
+<p class="calibre4"><code class="literal1">C:\Users\Al>cd c:\folderwithyourscript<br/>
+C:\folderwithyourscript>py -3 yourscript.py</code></p>
+
 <p class="calibre4">To make it convenient to run your Python program, create a <span class="calibre1"><em class="calibre5">.bat batch file</em></span> for running the Python program with <span class="calibre1"><em class="calibre5">py.exe</em></span>. To make a batch file, make a new text file containing a single line like the following:</p>
 <p><a id="calibre_link-3728" class="calibre1"></a>
 <pre class="programlisting">@py.exe <span class="calibre1"><em class="literal3">C:\path\to\your\pythonScript.py</em></span> %*</pre>
