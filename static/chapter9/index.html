@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en-US" class="no-js">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Chapter  9 &#8211; Organizing Files | Automate the Boring Stuff with Python</title>
+	<style>body { font-family: sans-serif; background: #fffce3; }</style>
+
+	</head>
+
+<body class="page page-id-123 page-template-default"><div>UNDER CONSTRUCTION: The site went down and backups failed, so this website will look messy for a while. Thanks for your patience! -Al</div>
+	<div id="page" class="hfeed site">
+		<div class="site-toggles">
+			<a href class="main-navigation-toggle"><i class="fa fa-bars"></i></a>
+							<a href class="widget-area-toggle"><i class="fa fa-align-right"></i></a>
+					</div>
+
+		<nav id="site-navigation" class="main-navigation" role="navigation">
+			<a href class="main-navigation-toggle"><i class="fa fa-times"></i></a>
+			<h4 class="main-navigation-title">Menu</h4>
+			<div class="menu"><ul><li ><a href="https://automatetheboringstuff.com/">Home</a></li><li class="page_item page-item-241"><a href="https://automatetheboringstuff.com/appendixa/">Appendix A &#8211; Installing Third-Party Modules</a></li><li class="page_item page-item-243"><a href="https://automatetheboringstuff.com/appendixb/">Appendix B &#8211; Running Programs</a></li><li class="page_item page-item-244"><a href="https://automatetheboringstuff.com/appendixc/">Appendix C &#8211; Answers to the Practice Questions</a></li><li class="page_item page-item-43"><a href="https://automatetheboringstuff.com/chapter0/">Chapter  0 &#8211; Introduction</a></li><li class="page_item page-item-60"><a href="https://automatetheboringstuff.com/chapter1/">Chapter  1 &#8211; Python Basics</a></li><li class="page_item page-item-70"><a href="https://automatetheboringstuff.com/chapter2/">Chapter  2 &#8211; Flow Control</a></li><li class="page_item page-item-112"><a href="https://automatetheboringstuff.com/chapter3/">Chapter  3 &#8211; Functions</a></li><li class="page_item page-item-113"><a href="https://automatetheboringstuff.com/chapter4/">Chapter  4 &#8211; Lists</a></li><li class="page_item page-item-114"><a href="https://automatetheboringstuff.com/chapter5/">Chapter  5 &#8211; Dictionaries and Structuring Data</a></li><li class="page_item page-item-115"><a href="https://automatetheboringstuff.com/chapter6/">Chapter  6 &#8211; Manipulating Strings</a></li><li class="page_item page-item-116"><a href="https://automatetheboringstuff.com/chapter7/">Chapter  7 &#8211; Pattern Matching with Regular Expressions</a></li><li class="page_item page-item-122"><a href="https://automatetheboringstuff.com/chapter8/">Chapter  8 &#8211; Reading and Writing Files</a></li><li class="page_item page-item-123 current_page_item"><a href="https://automatetheboringstuff.com/chapter9/">Chapter  9 &#8211; Organizing Files</a></li><li class="page_item page-item-124"><a href="https://automatetheboringstuff.com/chapter10/">Chapter 10 &#8211; Debugging</a></li><li class="page_item page-item-125"><a href="https://automatetheboringstuff.com/chapter11/">Chapter 11 &#8211; Web Scraping</a></li><li class="page_item page-item-126"><a href="https://automatetheboringstuff.com/chapter12/">Chapter 12 &#8211; Working with Excel Spreadsheets</a></li><li class="page_item page-item-127"><a href="https://automatetheboringstuff.com/chapter13/">Chapter 13 &#8211; Working with PDF and Word Documents</a></li><li class="page_item page-item-128"><a href="https://automatetheboringstuff.com/chapter14/">Chapter 14 &#8211; Working with CSV Files and JSON Data</a></li><li class="page_item page-item-129"><a href="https://automatetheboringstuff.com/chapter15/">Chapter 15 &#8211; Keeping Time, Scheduling Tasks, and Launching Programs</a></li><li class="page_item page-item-130"><a href="https://automatetheboringstuff.com/chapter16/">Chapter 16 &#8211; Sending Email and Text Messages</a></li><li class="page_item page-item-131"><a href="https://automatetheboringstuff.com/chapter17/">Chapter 17 &#8211; Manipulating Images</a></li><li class="page_item page-item-132"><a href="https://automatetheboringstuff.com/chapter18/">Chapter 18 &#8211; Controlling the Keyboard and Mouse with GUI Automation</a></li><li class="page_item page-item-472"><a href="https://automatetheboringstuff.com/how-to-do-pycon-or-any-tech-conference/">How to Do PyCon (or any tech conference)</a></li><li class="page_item page-item-355"><a href="https://automatetheboringstuff.com/list-of-css-selector-tutorials/">List of CSS Selector Tutorials</a></li><li class="page_item page-item-359"><a href="https://automatetheboringstuff.com/list-of-json-apis/">List of JSON APIs</a></li><li class="page_item page-item-363"><a href="https://automatetheboringstuff.com/list-of-programming-practice-sites/">List of Programming Practice Sites</a></li><li class="page_item page-item-30"><a href="https://automatetheboringstuff.com/list-of-web-comics/">List of Web Comics</a></li><li class="page_item page-item-32"><a href="https://automatetheboringstuff.com/schedulers/">Schedulers</a></li></ul></div>
+					</nav><!-- #site-navigation -->
+
+					<header id="masthead" class="site-header" role="banner">
+				<a class="skip-link screen-reader-text" href="#content" data-backstretch="https://automatetheboringstuff.com/wp-content/uploads/2014/12/cropped-automatecover2.jpg">Skip to content</a>
+				<div class="site-branding">
+					<h1 class="site-title"><a href="https://automatetheboringstuff.com/" rel="home">Automate the Boring Stuff with Python</a></h1>
+					<h2 class="site-description">Practical Programming for Total Beginners</h2>
+				</div>
+			</header><!-- #masthead -->
+		
+		<div id="content" class="site-content">
+	<div id="primary" class="content-area">
+		<main id="main" class="site-main" role="main">
+
+			
+				
+<article id="post-123" class="post-123 page type-page status-publish hentry">
+	<header class="entry-header">
+		<h1 class="entry-title">Chapter  9 &#8211; Organizing Files</h1>	</header><!-- .entry-header -->
+
+	<div class="entry-content">
+		<p><center><a href="/chapter8"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="/chapter10"><img src="/images/next.png" /></a><br />Support the Author: Buy the book on <a href="http://www.amazon.com/gp/product/1593275994/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&amp;camp=1789&amp;creative=9325&amp;creativeASIN=1593275994&amp;linkCode=as2&amp;tag=playwithpyth-20&amp;linkId=2KIYOE7RFLG7D2RJ">Amazon</a> or<br/><a href="http://www.nostarch.com/automatestuff">the book/ebook bundle directly from No Starch Press</a>.<br /><a href="http://www.nostarch.com/automatestuff" ><img class=" size-full wp-image-49 aligncenter" src="/images/automate_small_cover.png" alt="small_cover" width="170" height="225" /></a><br /><a href="//inventwithpython.com">Read the author's other free Python books:</a><br /><a href="//inventwithpython.com/chapters"><img src="/images/smallcover_invent.png" width=120 /></a> <a href="//inventwithpython.com/pygame/chapters"><img src="/images/smallcover_makinggames.png" width=120 /></a> <a href="//inventwithpython.com/hacking/chapters"><img src="/images/smallcover_hacking.png" width=120 /></a></center></p>
+<div class="calibre" id="calibre_link-95">
+<div class="book" title="Chapter 9. Organizing Files">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title1"><a id="calibre_link-2776" class="firstname"></a>Organizing Files</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">In the previous chapter, you learned how to create and write to new files in Python. Your programs can also organize preexisting files on the hard drive. Maybe you’ve had the experience of going through a folder full of dozens, hundreds, or even thousands of files and copying, renaming, moving, or compressing them all by hand. Or consider tasks such as these:</p>
+<div class="book">
+<ul class="itemizedlist">
+<li class="listitem">
+<p class="calibre4">Making copies of all PDF files (and <span class="calibre1"><em class="calibre5">only</em></span> the PDF files) in every sub-folder of a folder</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Removing the leading zeros in the filenames for every file in a folder of hundreds of files named <span class="calibre1"><em class="calibre5">spam001.txt</em></span>, <span class="calibre1"><em class="calibre5">spam002.txt</em></span>, <span class="calibre1"><em class="calibre5">spam003.txt</em></span>, and so on</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Compressing the contents of several folders into one ZIP file (which could be a simple backup system)</p>
+</li>
+</ul>
+</div>
+<p class="calibre4"><a id="calibre_link-371" class="calibre1"></a><a id="calibre_link-373" class="calibre1"></a><a id="calibre_link-482" class="calibre1"></a><a id="calibre_link-641" class="calibre1"></a><a id="calibre_link-689" class="calibre1"></a>All this boring stuff is just begging to be automated in Python. By programming your computer to do these tasks, you can transform it into a quick-working file clerk who never makes mistakes.</p>
+<p class="calibre4">As you begin working with files, you may find it helpful to be able to quickly see what the extension (.<span class="calibre1"><em class="calibre5">txt</em></span>, .<span class="calibre1"><em class="calibre5">pdf</em></span>, .<span class="calibre1"><em class="calibre5">jpg</em></span>, and so on) of a file is. With OS X and Linux, your file browser most likely shows extensions automatically. With Windows, file extensions may be hidden by default. To show extensions, go to <span class="calibre1"><strong class="calibre7">Start</strong></span>▸ <span class="calibre1"><strong class="calibre7">Control Panel</strong></span>▸<span class="calibre1"><strong class="calibre7">Appearance and Personalization</strong></span>▸<span class="calibre1"><strong class="calibre7">Folder Options</strong></span>. On the View tab, under Advanced Settings, uncheck the <span class="calibre1"><strong class="calibre7">Hide extensions for known file types</strong></span> checkbox.</p>
+<div class="book" title="The shutil Module">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-2777" class="firstname"></a>The shutil Module</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">The <code class="literal1">shutil</code> (or shell utilities) module has functions to let you copy, move, rename, and delete files in your Python programs. To use the <code class="literal1">shutil</code> functions, you will first need to use <code class="literal1">import shutil</code>.</p>
+<div class="book" title="Copying Files and Folders">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-2778" class="firstname"></a>Copying Files and Folders</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">The <code class="literal1">shutil</code> module provides functions for copying files, as well as entire folders.</p>
+<p class="calibre4">Calling <code class="literal1">shutil.copy(</code><span class="calibre1"><em class="calibre5"><code class="literal3">source, destination</code></em></span><code class="literal1">)</code> will copy the file at the path <span class="calibre1"><em class="calibre5"><code class="literal3">source</code></em></span> to the folder at the path <span class="calibre1"><em class="calibre5"><code class="literal3">destination</code></em></span>. (Both <span class="calibre1"><em class="calibre5"><code class="literal3">source</code></em></span> and <span class="calibre1"><em class="calibre5"><code class="literal3">destination</code></em></span> are strings.) If <span class="calibre1"><em class="calibre5"><code class="literal3">destination</code></em></span> is a filename, it will be used as the new name of the copied file. This function returns a string of the path of the copied file.</p>
+<p class="calibre4">Enter the following into the interactive shell to see how <code class="literal1">shutil.copy()</code> works:</p>
+<p><a id="calibre_link-2779" class="calibre1"></a>
+<pre class="programlisting">   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">import shutil, os</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">os.chdir('C:\\')</strong></span>
+➊ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">shutil.copy('C:\\spam.txt', 'C:\\delicious')</strong></span>
+   'C:\\delicious\\spam.txt'
+➋ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">shutil.copy('eggs.txt', 'C:\\delicious\\eggs2.txt')</strong></span>
+   'C:\\delicious\\eggs2.txt'</pre>
+<p class="calibre4">The first <code class="literal1">shutil.copy()</code> call copies the file at <span class="calibre1"><em class="calibre5">C:\spam.txt</em></span> to the folder <span class="calibre1"><em class="calibre5">C:\delicious</em></span>. The return value is the path of the newly copied file. Note that since a folder was specified as the destination ➊, the original <span class="calibre1"><em class="calibre5">spam.txt</em></span> filename is used for the new, copied file’s filename. The second <code class="literal1">shutil.copy()</code> call ➋ also copies the file at <span class="calibre1"><em class="calibre5">C:\eggs.txt</em></span> to the folder <span class="calibre1"><em class="calibre5">C:\delicious</em></span> but gives the copied file the name <span class="calibre1"><em class="calibre5">eggs2.txt</em></span>.</p>
+<p class="calibre4">While <code class="literal1">shutil.copy()</code> will copy a single file, <code class="literal1">shutil.copytree()</code> will copy an entire folder and every folder and file contained in it. Calling <code class="literal1">shutil.copytree(</code><span class="calibre1"><em class="calibre5"><code class="literal3">source, destination</code></em></span><code class="literal1">)</code> will copy the folder at the path <span class="calibre1"><em class="calibre5"><code class="literal3">source</code></em></span>, along with all of its files and subfolders, to the folder at the path <span class="calibre1"><em class="calibre5"><code class="literal3">destination</code></em></span>. The <span class="calibre1"><em class="calibre5"><code class="literal3">source</code></em></span> and <span class="calibre1"><em class="calibre5"><code class="literal3">destination</code></em></span> parameters are both strings. The function returns a string of the path of the copied folder.</p>
+<p class="calibre4"><a id="calibre_link-483" class="calibre1"></a><a id="calibre_link-484" class="calibre1"></a><a id="calibre_link-642" class="calibre1"></a><a id="calibre_link-643" class="calibre1"></a><a id="calibre_link-690" class="calibre1"></a><a id="calibre_link-691" class="calibre1"></a><a id="calibre_link-1117" class="calibre1"></a><a id="calibre_link-1125" class="calibre1"></a><a id="calibre_link-1483" class="calibre1"></a><a id="calibre_link-1576" class="calibre1"></a><a id="calibre_link-1577" class="calibre1"></a>Enter the following into the interactive shell:</p>
+<p><a id="calibre_link-2780" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">import shutil, os</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">os.chdir('C:\\')</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">shutil.copytree('C:\\bacon', 'C:\\bacon_backup')</strong></span>
+'C:\\bacon_backup'</pre>
+<p class="calibre4">The <code class="literal1">shutil.copytree()</code> call creates a new folder named <span class="calibre1"><em class="calibre5">bacon_backup</em></span> with the same content as the original <span class="calibre1"><em class="calibre5">bacon</em></span> folder. You have now safely backed up your precious, precious bacon.</p>
+</div>
+<div class="book" title="Moving and Renaming Files and Folders">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-2781" class="firstname"></a>Moving and Renaming Files and Folders</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Calling <code class="literal1">shutil.move(</code><span class="calibre1"><em class="calibre5"><code class="literal3">source, destination</code></em></span><code class="literal1">)</code> will move the file or folder at the path <span class="calibre1"><em class="calibre5"><code class="literal3">source</code></em></span> to the path <span class="calibre1"><em class="calibre5"><code class="literal3">destination</code></em></span> and will return a string of the absolute path of the new location.</p>
+<p class="calibre4">If <span class="calibre1"><em class="calibre5"><code class="literal3">destination</code></em></span> points to a folder, the <span class="calibre1"><em class="calibre5"><code class="literal3">source</code></em></span> file gets moved into <span class="calibre1"><em class="calibre5"><code class="literal3">destination</code></em></span> and keeps its current filename. For example, enter the following into the interactive shell:</p>
+<p><a id="calibre_link-2782" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">import shutil</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">shutil.move('C:\\bacon.txt', 'C:\\eggs')</strong></span>
+'C:\\eggs\\bacon.txt'</pre>
+<p class="calibre4">Assuming a folder named <span class="calibre1"><em class="calibre5">eggs</em></span> already exists in the <span class="calibre1"><em class="calibre5">C:\</em></span> directory, this <code class="literal1">shutil.move()</code> calls says, “Move <span class="calibre1"><em class="calibre5">C:\bacon.txt</em></span> into the folder <span class="calibre1"><em class="calibre5">C:\eggs</em></span>.”</p>
+<p class="calibre4">If there had been a <span class="calibre1"><em class="calibre5">bacon.txt</em></span> file already in <span class="calibre1"><em class="calibre5">C:\eggs</em></span>, it would have been overwritten. Since it’s easy to accidentally overwrite files in this way, you should take some care when using <code class="literal1">move()</code>.</p>
+<p class="calibre4">The <span class="calibre1"><em class="calibre5"><code class="literal3">destination</code></em></span> path can also specify a filename. In the following example, the <span class="calibre1"><em class="calibre5"><code class="literal3">source</code></em></span> file is moved <span class="calibre1"><em class="calibre5">and</em></span> renamed.</p>
+<p><a id="calibre_link-2783" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">shutil.move('C:\\bacon.txt', 'C:\\eggs\\new_bacon.txt')</strong></span>
+'C:\\eggs\\new_bacon.txt'</pre>
+<p class="calibre4">This line says, “Move <span class="calibre1"><em class="calibre5">C:\bacon.txt</em></span> into the folder <span class="calibre1"><em class="calibre5">C:\eggs</em></span>, and while you’re at it, rename that <span class="calibre1"><em class="calibre5">bacon.txt</em></span> file to <span class="calibre1"><em class="calibre5">new_bacon.txt</em></span>.”</p>
+<p class="calibre4">Both of the previous examples worked under the assumption that there was a folder <span class="calibre1"><em class="calibre5">eggs</em></span> in the <span class="calibre1"><em class="calibre5">C:\</em></span> directory. But if there is no <span class="calibre1"><em class="calibre5">eggs</em></span> folder, then <code class="literal1">move()</code> will rename <span class="calibre1"><em class="calibre5">bacon.txt</em></span> to a file named <span class="calibre1"><em class="calibre5">eggs</em></span>.</p>
+<p><a id="calibre_link-2784" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">shutil.move('C:\\bacon.txt', 'C:\\eggs')</strong></span>
+'C:\\eggs'</pre>
+<p class="calibre4">Here, <code class="literal1">move()</code> can’t find a folder named <span class="calibre1"><em class="calibre5">eggs</em></span> in the <span class="calibre1"><em class="calibre5">C:\</em></span> directory and so assumes that <span class="calibre1"><em class="calibre5"><code class="literal3">destination</code></em></span> must be specifying a filename, not a folder. So the <span class="calibre1"><em class="calibre5">bacon.txt</em></span> text file is renamed to <span class="calibre1"><em class="calibre5">eggs</em></span> (a text file without the <span class="calibre1"><em class="calibre5">.txt</em></span> file extension)&mdash;probably not what you wanted! This can be a tough-to-spot bug in <a id="calibre_link-456" class="calibre1"></a><a id="calibre_link-485" class="calibre1"></a><a id="calibre_link-644" class="calibre1"></a><a id="calibre_link-692" class="calibre1"></a><a id="calibre_link-1503" class="calibre1"></a><a id="calibre_link-1504" class="calibre1"></a><a id="calibre_link-1578" class="calibre1"></a><a id="calibre_link-1773" class="calibre1"></a>your programs since the <code class="literal1">move()</code> call can happily do something that might be quite different from what you were expecting. This is yet another reason to be careful when using <code class="literal1">move()</code>.</p>
+<p class="calibre4">Finally, the folders that make up the destination must already exist, or else Python will throw an exception. Enter the following into the interactive shell:</p>
+<p><a id="calibre_link-2785" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">shutil.move('spam.txt', 'c:\\does_not_exist\\eggs\\ham')</strong></span>
+Traceback (most recent call last):
+  File "C:\Python34\lib\shutil.py", line 521, in move
+    os.rename(src, real_dst)
+FileNotFoundError: [WinError 3] The system cannot find the path specified:
+'spam.txt' -&gt; 'c:\\does_not_exist\\eggs\\ham'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "&lt;pyshell#29&gt;", line 1, in &lt;module&gt;
+    shutil.move('spam.txt', 'c:\\does_not_exist\\eggs\\ham')
+  File "C:\Python34\lib\shutil.py", line 533, in move
+    copy2(src, real_dst)
+  File "C:\Python34\lib\shutil.py", line 244, in copy2
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+  File "C:\Python34\lib\shutil.py", line 108, in copyfile
+    with open(dst, 'wb') as fdst:
+FileNotFoundError: [Errno 2] No such file or directory: 'c:\\does_not_exist\\
+eggs\\ham'</pre>
+<p class="calibre4">Python looks for <span class="calibre1"><em class="calibre5">eggs</em></span> and <span class="calibre1"><em class="calibre5">ham</em></span> inside the directory <span class="calibre1"><em class="calibre5">does_not_exist</em></span>. It doesn’t find the nonexistent directory, so it can’t move <span class="calibre1"><em class="calibre5">spam.txt</em></span> to the path you specified.</p>
+</div>
+<div class="book" title="Permanently Deleting Files and Folders">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-2786" class="firstname"></a>Permanently Deleting Files and Folders</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">You can delete a single file or a single empty folder with functions in the <code class="literal1">os</code> module, whereas to delete a folder and all of its contents, you use the <code class="literal1">shutil</code> module.</p>
+<div class="book">
+<ul class="itemizedlist">
+<li class="listitem">
+<p class="calibre4">Calling <code class="literal1">os.unlink(</code><span class="calibre1"><em class="calibre5"><code class="literal3">path</code></em></span><code class="literal1">)</code> will delete the file at <span class="calibre1"><em class="calibre5"><code class="literal3">path</code></em></span>.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Calling <code class="literal1">os.rmdir(</code><span class="calibre1"><em class="calibre5"><code class="literal3">path</code></em></span><code class="literal1">)</code> will delete the folder at <span class="calibre1"><em class="calibre5"><code class="literal3">path</code></em></span>. This folder must be empty of any files or folders.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Calling <code class="literal1">shutil.rmtree(</code><span class="calibre1"><em class="calibre5"><code class="literal3">path</code></em></span><code class="literal1">)</code> will remove the folder at <span class="calibre1"><em class="calibre5"><code class="literal3">path</code></em></span>, and all files and folders it contains will also be deleted.</p>
+</li>
+</ul>
+</div>
+<p class="calibre4">Be careful when using these functions in your programs! It’s often a good idea to first run your program with these calls commented out and with <code class="literal1">print()</code> calls added to show the files that would be deleted. Here is <a id="calibre_link-457" class="calibre1"></a><a id="calibre_link-486" class="calibre1"></a><a id="calibre_link-645" class="calibre1"></a><a id="calibre_link-693" class="calibre1"></a><a id="calibre_link-1559" class="calibre1"></a>a Python program that was intended to delete files that have the <span class="calibre1"><em class="calibre5">.txt</em></span> file extension but has a typo (highlighted in bold) that causes it to delete <span class="calibre1"><em class="calibre5">.rxt</em></span> files instead:</p>
+<p><a id="calibre_link-2787" class="calibre1"></a>
+<pre class="programlisting">import os
+for filename in os.listdir():
+    if filename.endswith('.<span class="calibre1"><strong class="literal">r</strong></span>xt'):
+        os.unlink(filename)</pre>
+<p class="calibre4">If you had any important files ending with <span class="calibre1"><em class="calibre5">.rxt</em></span>, they would have been accidentally, permanently deleted. Instead, you should have first run the program like this:</p>
+<p><a id="calibre_link-2788" class="calibre1"></a>
+<pre class="programlisting">import os
+for filename in os.listdir():
+    if filename.endswith('.rxt'):
+        #os.unlink(filename)
+        print(filename)</pre>
+<p class="calibre4">Now the <code class="literal1">os.unlink()</code> call is commented, so Python ignores it. Instead, you will print the filename of the file that would have been deleted. Running this version of the program first will show you that you’ve accidentally told the program to delete <span class="calibre1"><em class="calibre5">.rxt</em></span> files instead of <span class="calibre1"><em class="calibre5">.txt</em></span> files.</p>
+<p class="calibre4">Once you are certain the program works as intended, delete the <code class="literal1">print(filename)</code> line and uncomment the <code class="literal1">os.unlink(filename)</code> line. Then run the program again to actually delete the files.</p>
+</div>
+<div class="book" title="Safe Deletes with the send2trash Module">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-2789" class="firstname"></a>Safe Deletes with the send2trash Module</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Since Python’s built-in <code class="literal1">shutil.rmtree()</code> function irreversibly deletes files and folders, it can be dangerous to use. A much better way to delete files and folders is with the third-party <code class="literal1">send2trash</code> module. You can install this module by running <code class="literal1">pip install send2trash</code> from a Terminal window. (See Appendix A for a more in-depth explanation of how to install third-party modules.)</p>
+<p class="calibre4">Using <code class="literal1">send2trash</code> is much safer than Python’s regular delete functions, because it will send folders and files to your computer’s trash or recycle bin instead of permanently deleting them. If a bug in your program deletes something with <code class="literal1">send2trash</code> you didn’t intend to delete, you can later restore it from the recycle bin.</p>
+<p class="calibre4">After you have installed <code class="literal1">send2trash</code>, enter the following into the interactive shell:</p>
+<p><a id="calibre_link-2790" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">import send2trash</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">baconFile = open('bacon.txt', 'a') # creates the file</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">baconFile.write('Bacon is not a vegetable.')</strong></span>
+25
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">baconFile.close()</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">send2trash.send2trash('bacon.txt')</strong></span></pre>
+<p class="calibre4"><a id="calibre_link-487" class="calibre1"></a><a id="calibre_link-646" class="calibre1"></a><a id="calibre_link-694" class="calibre1"></a><a id="calibre_link-1800" class="calibre1"></a>In general, you should always use the <code class="literal1">send2trash.send2trash()</code> function to delete files and folders. But while sending files to the recycle bin lets you recover them later, it will not free up disk space like permanently deleting them does. If you want your program to free up disk space, use the <code class="literal1">os</code> and <code class="literal1">shutil</code> functions for deleting files and folders. Note that the <code class="literal1">send2trash()</code> function can only send files to the recycle bin; it cannot pull files out of it.</p>
+</div>
+</div>
+<div class="book" title="Walking a Directory Tree">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-2791" class="firstname"></a>Walking a Directory Tree</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">Say you want to rename every file in some folder and also every file in every subfolder of that folder. That is, you want to walk through the directory tree, touching each file as you go. Writing a program to do this could get tricky; fortunately, Python provides a function to handle this process for you.</p>
+<p class="calibre4">Let’s look at the <span class="calibre1"><em class="calibre5">C:\delicious</em></span> folder with its contents, shown in <a class="ulink" href="#calibre_link-99" title="Figure 9-1. An example folder that contains three folders and four files">Figure&nbsp;9-1</a>.</p>
+<div class="figure"><a id="calibre_link-99" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-2792" class="calibre1"></a><img src="/images/000054.jpg" alt="An example folder that contains three folders and four files" class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;9-1.&nbsp;An example folder that contains three folders and four files</p>
+</div>
+<p class="calibre4">Here is an example program that uses the <code class="literal1">os.walk()</code> function on the directory tree from <a class="ulink" href="#calibre_link-99" title="Figure 9-1. An example folder that contains three folders and four files">Figure&nbsp;9-1</a>:</p>
+<p><a id="calibre_link-2793" class="calibre1"></a>
+<pre class="programlisting">import os
+
+for folderName, subfolders, filenames in os.walk('C:\\delicious'):
+    print('The current folder is ' + folderName)
+
+    for subfolder in subfolders:
+        print('SUBFOLDER OF ' + folderName + ': ' + subfolder)
+    for filename in filenames:
+        print('FILE INSIDE ' + folderName + ': '+ filename)
+
+    print('')</pre>
+<p class="calibre4"><a id="calibre_link-353" class="calibre1"></a><a id="calibre_link-647" class="calibre1"></a><a id="calibre_link-1886" class="calibre1"></a>The <code class="literal1">os.walk()</code> function is passed a single string value: the path of a folder. You can use <code class="literal1">os.walk()</code> in a <code class="literal1">for</code> loop statement to walk a directory tree, much like how you can use the <code class="literal1">range()</code> function to walk over a range of numbers. Unlike <code class="literal1">range()</code>, the <code class="literal1">os.walk()</code> function will return three values on each iteration through the loop:</p>
+<div class="book">
+<ol class="orderedlist">
+<li class="listitem">
+<p class="calibre4">A string of the current folder’s name</p>
+</li>
+<li class="listitem">
+<p class="calibre4">A list of strings of the folders in the current folder</p>
+</li>
+<li class="listitem">
+<p class="calibre4">A list of strings of the files in the current folder</p>
+</li>
+</ol>
+</div>
+<p class="calibre4">(By current folder, I mean the folder for the current iteration of the <code class="literal1">for</code> loop. The current working directory of the program is <span class="calibre1"><em class="calibre5">not</em></span> changed by <code class="literal1">os.walk()</code>.)</p>
+<p class="calibre4">Just like you can choose the variable name <code class="literal1">i</code> in the code <code class="literal1">for i in range(10):</code>, you can also choose the variable names for the three values listed earlier. I usually use the names <code class="literal1">foldername</code>, <code class="literal1">subfolders</code>, and <code class="literal1">filenames</code>.</p>
+<p class="calibre4">When you run this program, it will output the following:</p>
+<p><a id="calibre_link-2794" class="calibre1"></a>
+<pre class="programlisting">The current folder is C:\delicious
+SUBFOLDER OF C:\delicious: cats
+SUBFOLDER OF C:\delicious: walnut
+FILE INSIDE C:\delicious: spam.txt
+
+The current folder is C:\delicious\cats
+FILE INSIDE C:\delicious\cats: catnames.txt
+FILE INSIDE C:\delicious\cats: zophie.jpg
+
+The current folder is C:\delicious\walnut
+SUBFOLDER OF C:\delicious\walnut: waffles
+
+The current folder is C:\delicious\walnut\waffles
+FILE INSIDE C:\delicious\walnut\waffles: butter.txt.</pre>
+<p class="calibre4">Since <code class="literal1">os.walk()</code> returns lists of strings for the <code class="literal1">subfolder</code> and <code class="literal1">filename</code> variables, you can use these lists in their own <code class="literal1">for</code> loops. Replace the <code class="literal1">print()</code> function calls with your own custom code. (Or if you don’t need one or both of them, remove the <code class="literal1">for</code> loops.)</p>
+</div>
+<div class="book" title="Compressing Files with the zipfile Module">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-2795" class="firstname"></a>Compressing Files with the zipfile Module</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">You may be familiar with ZIP files (with the <span class="calibre1"><em class="calibre5">.zip</em></span> file extension), which can hold the compressed contents of many other files. Compressing a file reduces its size, which is useful when transferring it over the Internet. And <a id="calibre_link-354" class="calibre1"></a><a id="calibre_link-648" class="calibre1"></a><a id="calibre_link-1151" class="calibre1"></a><a id="calibre_link-1440" class="calibre1"></a><a id="calibre_link-1887" class="calibre1"></a><a id="calibre_link-1891" class="calibre1"></a><a id="calibre_link-1892" class="calibre1"></a>since a ZIP file can also contain multiple files and subfolders, it’s a handy way to package several files into one. This single file, called an <span class="calibre1"><em class="calibre5">archive file</em></span>, can then be, say, attached to an email.</p>
+<p class="calibre4">Your Python programs can both create and open (or <span class="calibre1"><em class="calibre5">extract</em></span>) ZIP files using functions in the <code class="literal1">zipfile</code> module. Say you have a ZIP file named <span class="calibre1"><em class="calibre5">example.zip</em></span> that has the contents shown in <a class="ulink" href="#calibre_link-100" title="Figure 9-2. The contents of example.zip">Figure&nbsp;9-2</a>.</p>
+<p class="calibre4">You can download this ZIP file from <span class="calibre1"><em class="calibre5"><a class="ulink" href="http://nostarch.com/automatestuff/">http://nostarch.com/automatestuff/</a></em></span> or just follow along using a ZIP file already on your computer.</p>
+<div class="figure"><a id="calibre_link-100" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-2796" class="calibre1"></a><img src="/images/000059.jpg" alt="The contents of example.zip" class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;9-2.&nbsp;The contents of <span class="calibre1"><em class="calibre5">example.zip</em></span></p>
+</div>
+<div class="book" title="Reading ZIP Files">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-2797" class="firstname"></a>Reading ZIP Files</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">To read the contents of a ZIP file, first you must create a <code class="literal1">ZipFile</code> object (note the capital letters <span class="calibre1"><em class="calibre5">Z</em></span> and <span class="calibre1"><em class="calibre5">F</em></span>). <code class="literal1">ZipFile</code> objects are conceptually similar to the <code class="literal1">File</code> objects you saw returned by the <code class="literal1">open()</code> function in the previous chapter: They are values through which the program interacts with the file. To create a <code class="literal1">ZipFile</code> object, call the <code class="literal1">zipfile.ZipFile()</code> function, passing it a string of the <span class="calibre1"><em class="calibre5">.zip</em></span> file’s filename. Note that <code class="literal1">zipfile</code> is the name of the Python module, and <code class="literal1">ZipFile()</code> is the name of the function.</p>
+<p class="calibre4">For example, enter the following into the interactive shell:</p>
+<p><a id="calibre_link-2798" class="calibre1"></a>
+<pre class="programlisting">   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">import zipfile, os</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">os.chdir('C:\\')    # move to the folder with example.zip</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">exampleZip = zipfile.ZipFile('example.zip')</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">exampleZip.namelist()</strong></span>
+   ['spam.txt', 'cats/', 'cats/catnames.txt', 'cats/zophie.jpg']
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">spamInfo = exampleZip.getinfo('spam.txt')</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">spamInfo.file_size</strong></span>
+   13908
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">spamInfo.compress_size</strong></span>
+   3828
+➊ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">'Compressed file is %sx smaller!' % (round(spamInfo.file_size / spamInfo</strong></span>
+   <span class="calibre1"><strong class="literal">.compress_size, 2))</strong></span>
+   'Compressed file is 3.63x smaller!'
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">exampleZip.close()</strong></span></pre>
+<p class="calibre4">A <code class="literal1">ZipFile</code> object has a <code class="literal1">namelist()</code> method that returns a list of strings for all the files and folders contained in the ZIP file. These strings can be passed to the <code class="literal1">getinfo() ZipFile</code> method to return a <code class="literal1">ZipInfo</code> object about that particular file. <code class="literal1">ZipInfo</code> objects have their own attributes, such as <code class="literal1">file_size</code> and <code class="literal1">compress_size</code> in bytes, which hold integers of the original file size and compressed file size, respectively. While a <code class="literal1">ZipFile</code> object represents an entire archive file, a <code class="literal1">ZipInfo</code> object holds useful information about a <span class="calibre1"><em class="calibre5">single file</em></span> in the archive.</p>
+<p class="calibre4">The command at ➊ calculates how efficiently <span class="calibre1"><em class="calibre5">example.zip</em></span> is compressed by dividing the original file size by the compressed file size and prints this information using a string formatted with <code class="literal1">%s</code>.</p>
+</div>
+<div class="book" title="Extracting from ZIP Files">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-2799" class="firstname"></a>Extracting from ZIP Files</h2>
+</div>
+</div>
+</div>
+<p class="calibre4"><a id="calibre_link-355" class="calibre1"></a><a id="calibre_link-356" class="calibre1"></a><a id="calibre_link-614" class="calibre1"></a><a id="calibre_link-615" class="calibre1"></a><a id="calibre_link-616" class="calibre1"></a><a id="calibre_link-649" class="calibre1"></a><a id="calibre_link-650" class="calibre1"></a><a id="calibre_link-1888" class="calibre1"></a><a id="calibre_link-1889" class="calibre1"></a>The <code class="literal1">extractall()</code> method for <code class="literal1">ZipFile</code> objects extracts all the files and folders from a ZIP file into the current working directory.</p>
+<p><a id="calibre_link-2800" class="calibre1"></a>
+<pre class="programlisting">   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">import zipfile, os</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">os.chdir('C:\\')    # move to the folder with example.zip</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">exampleZip = zipfile.ZipFile('example.zip')</strong></span>
+➊ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">exampleZip.extractall()</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">exampleZip.close()</strong></span></pre>
+<p class="calibre4">After running this code, the contents of <span class="calibre1"><em class="calibre5">example.zip</em></span> will be extracted to <span class="calibre1"><em class="calibre5">C:\</em></span>. Optionally, you can pass a folder name to <code class="literal1">extractall()</code> to have it extract the files into a folder other than the current working directory. If the folder passed to the <code class="literal1">extractall()</code> method does not exist, it will be created. For instance, if you replaced the call at ➊ with <code class="literal1">exampleZip.extractall('C:\\ delicious')</code>, the code would extract the files from <span class="calibre1"><em class="calibre5">example.zip</em></span> into a newly created <span class="calibre1"><em class="calibre5">C:\delicious</em></span> folder.</p>
+<p class="calibre4">The <code class="literal1">extract()</code> method for <code class="literal1">ZipFile</code> objects will extract a single file from the ZIP file. Continue the interactive shell example:</p>
+<p><a id="calibre_link-2801" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">exampleZip.extract('spam.txt')</strong></span>
+'C:\\spam.txt'
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">exampleZip.extract('spam.txt', 'C:\\some\\new\\folders')</strong></span>
+'C:\\some\\new\\folders\\spam.txt'
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">exampleZip.close()</strong></span></pre>
+<p class="calibre4">The string you pass to <code class="literal1">extract()</code> must match one of the strings in the list returned by <code class="literal1">namelist()</code>. Optionally, you can pass a second argument to <code class="literal1">extract()</code> to extract the file into a folder other than the current working directory. If this second argument is a folder that doesn’t yet exist, Python will create the folder. The value that <code class="literal1">extract()</code> returns is the absolute path to which the file was extracted.</p>
+</div>
+<div class="book" title="Creating and Adding to ZIP Files">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-2802" class="firstname"></a>Creating and Adding to ZIP Files</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">To create your own compressed ZIP files, you must open the <code class="literal1">ZipFile</code> object in <span class="calibre1"><em class="calibre5">write mode</em></span> by passing <code class="literal1">'w'</code> as the second argument. (This is similar to opening a text file in write mode by passing <code class="literal1">'w'</code> to the <code class="literal1">open()</code> function.)</p>
+<p class="calibre4">When you pass a path to the <code class="literal1">write()</code> method of a <code class="literal1">ZipFile</code> object, Python will compress the file at that path and add it into the ZIP file. The <code class="literal1">write()</code> method’s first argument is a string of the filename to add. The second argument is the <span class="calibre1"><em class="calibre5">compression type</em></span> parameter, which tells the computer what algorithm it should use to compress the files; you can always just set this value to <code class="literal1">zipfile.ZIP_DEFLATED</code>. (This specifies the <span class="calibre1"><em class="calibre5">deflate</em></span> compression algorithm, which works well on all types of data.) Enter the following into the interactive shell:</p>
+<p><a id="calibre_link-2803" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">import zipfile</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">newZip = zipfile.ZipFile('new.zip', 'w')</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">newZip.write('spam.txt', compress_type=zipfile.ZIP_DEFLATED)</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">newZip.close()</strong></span></pre>
+<p class="calibre4"><a id="calibre_link-651" class="calibre1"></a><a id="calibre_link-1332" class="calibre1"></a><a id="calibre_link-1484" class="calibre1"></a><a id="calibre_link-1485" class="calibre1"></a><a id="calibre_link-1486" class="calibre1"></a>This code will create a new ZIP file named <span class="calibre1"><em class="calibre5">new.zip</em></span> that has the compressed contents of <span class="calibre1"><em class="calibre5">spam.txt</em></span>.</p>
+<p class="calibre4">Keep in mind that, just as with writing to files, write mode will erase all existing contents of a ZIP file. If you want to simply add files to an existing ZIP file, pass <code class="literal1">'a'</code> as the second argument to <code class="literal1">zipfile.ZipFile()</code> to open the ZIP file in <span class="calibre1"><em class="calibre5">append mode</em></span>.</p>
+</div>
+</div>
+<div class="book" title="Project: Renaming Files with American-Style Dates to European-Style Dates">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-2804" class="firstname"></a>Project: Renaming Files with American-Style Dates to European-Style Dates</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">Say your boss emails you thousands of files with American-style dates (MM-DD-YYYY) in their names and needs them renamed to European-style dates (DD-MM-YYYY). This boring task could take all day to do by hand! Let’s write a program to do it instead.</p>
+<p class="calibre4">Here’s what the program does:</p>
+<div class="book">
+<ul class="itemizedlist">
+<li class="listitem">
+<p class="calibre4">It searches all the filenames in the current working directory for American-style dates.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">When one is found, it renames the file with the month and day swapped to make it European-style.</p>
+</li>
+</ul>
+</div>
+<p class="calibre4">This means the code will need to do the following:</p>
+<div class="book">
+<ul class="itemizedlist">
+<li class="listitem">
+<p class="calibre4">Create a regex that can identify the text pattern of American-style dates.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Call <code class="literal1">os.listdir()</code> to find all the files in the working directory.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Loop over each filename, using the regex to check whether it has a date.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">If it has a date, rename the file with <code class="literal1">shutil.move()</code>.</p>
+</li>
+</ul>
+</div>
+<p class="calibre4">For this project, open a new file editor window and save your code as <span class="calibre1"><em class="calibre5">renameDates.py</em></span>.</p>
+<div class="book" title="Step 1: Create a Regex for American-Style Dates">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-2805" class="firstname"></a>Step 1: Create a Regex for American-Style Dates</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">The first part of the program will need to import the necessary modules and create a regex that can identify MM-DD-YYYY dates. The to-do comments will remind you what’s left to write in this program. Typing them as <code class="literal1">TODO</code> makes them easy to find using IDLE’s <span class="smaller">CTRL</span>-F find feature. Make your code look like the following:</p>
+<p><a id="calibre_link-2806" class="calibre1"></a>
+<pre class="programlisting">   #! python3
+   # renameDates.py - Renames filenames with American MM-DD-YYYY date format
+   # to European DD-MM-YYYY.
+
+➊ import shutil, os, re
+
+   # Create a regex that matches files with the American date format.
+➋ datePattern = re.compile(r"""^(.*?) # all text before the date
+       ((0|1)?\d)-                     # one or two digits for the month
+       ((0|1|2|3)?\d)-                 # one or two digits for the day
+       ((19|20)\d\d)                   # four digits for the year
+       (.*?)$                          # all text after the date
+➌     """, re.VERBOSE)
+
+   # TODO: Loop over the files in the working directory.
+
+   # TODO: Skip files without a date.
+
+   # TODO: Get the different parts of the filename.
+
+   # TODO: Form the European-style filename.
+
+   # TODO: Get the full, absolute file paths.
+
+   # TODO: Rename the files.</pre>
+<p class="calibre4"><a id="calibre_link-1487" class="calibre1"></a>From this chapter, you know the <code class="literal1">shutil.move()</code> function can be used to rename files: Its arguments are the name of the file to rename and the new filename. Because this function exists in the <code class="literal1">shutil</code> module, you must import that module ➊.</p>
+<p class="calibre4">But before renaming the files, you need to identify which files you want to rename. Filenames with dates such as <span class="calibre1"><em class="calibre5">spam4-4-1984.txt</em></span> and <span class="calibre1"><em class="calibre5">01-03-2014eggs.zip</em></span> should be renamed, while filenames without dates such as <span class="calibre1"><em class="calibre5">littlebrother.epub</em></span> can be ignored.</p>
+<p class="calibre4">You can use a regular expression to identify this pattern. After importing the <code class="literal1">re</code> module at the top, call <code class="literal1">re.compile()</code> to create a <code class="literal1">Regex</code> object ➋. Passing <code class="literal1">re.VERBOSE</code> for the second argument ➌ will allow whitespace and comments in the regex string to make it more readable.</p>
+<p class="calibre4">The regular expression string begins with <code class="literal1">^(.*?)</code> to match any text at the beginning of the filename that might come before the date. The <code class="literal1">((0|1)?\d)</code> group matches the month. The first digit can be either <code class="literal1">0</code> or <code class="literal1">1</code>, so the regex matches <code class="literal1">12</code> for December but also <code class="literal1">02</code> for February. This digit is also optional so that the month can be <code class="literal1">04</code> or <code class="literal1">4</code> for April. The group for the day is <code class="literal1">((0|1|2|3)?\d)</code> and follows similar logic; <code class="literal1">3</code>, <code class="literal1">03</code>, and <code class="literal1">31</code> are all valid numbers for days. (Yes, this regex will accept some invalid dates such as <code class="literal1">4-31-2014</code>, <code class="literal1">2-29-2013</code>, and <code class="literal1">0-15-2014</code>. Dates have a lot of thorny special cases that can be easy to miss. But for simplicity, the regex in this program works well enough.)</p>
+<p class="calibre4">While 1885 is a valid year, you can just look for years in the 20th or 21st century. This will keep your program from accidentally matching nondate filenames with a date-like format, such as <span class="calibre1"><em class="calibre5">10-10-1000.txt</em></span>.</p>
+<p class="calibre4">The <code class="literal1">(.*?)$</code> part of the regex will match any text that comes after the date.</p>
+</div>
+<div class="book" title="Step 2: Identify the Date Parts from the Filenames">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-2807" class="firstname"></a>Step 2: Identify the Date Parts from the Filenames</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Next, the program will have to loop over the list of filename strings returned from <code class="literal1">os.listdir()</code> and match them against the regex. Any files that do not have a date in them should be skipped. For filenames that have a date, the matched text will be stored in several variables. Fill in the first three <code class="literal1">TODO</code>s in your program with the following code:</p>
+<p><a id="calibre_link-2808" class="calibre1"></a>
+<pre class="programlisting">   #! python3
+   # renameDates.py - Renames filenames with American MM-DD-YYYY date format
+   # to European DD-MM-YYYY.
+
+   --<span class="calibre1"><em class="literal3">snip</em></span>--
+
+   <span class="calibre1"><strong class="literal"># Loop over the files in the working directory.</strong></span>
+   <span class="calibre1"><strong class="literal">for amerFilename in os.listdir('.'):</strong></span>
+       <span class="calibre1"><strong class="literal">mo = datePattern.search(amerFilename)</strong></span>
+
+       <span class="calibre1"><strong class="literal"># Skip files without a date.</strong></span>
+➊     <span class="calibre1"><strong class="literal">if mo == None:</strong></span>
+➋         <span class="calibre1"><strong class="literal">continue</strong></span>
+
+➌     <span class="calibre1"><strong class="literal"># Get the different parts of the filename.</strong></span>
+       <span class="calibre1"><strong class="literal">beforePart = mo.group(1)</strong></span>
+       <span class="calibre1"><strong class="literal">monthPart  = mo.group(2)</strong></span>
+       <span class="calibre1"><strong class="literal">dayPart    = mo.group(4)</strong></span>
+       <span class="calibre1"><strong class="literal">yearPart   = mo.group(6)</strong></span>
+       <span class="calibre1"><strong class="literal">afterPart  = mo.group(8)</strong></span>
+
+   --<span class="calibre1"><em class="literal3">snip</em></span>--</pre>
+<p class="calibre4">If the <code class="literal1">Match</code> object returned from the <code class="literal1">search()</code> method is <code class="literal1">None</code> ➊, then the filename in <code class="literal1">amerFilename</code> does not match the regular expression. The <code class="literal1">continue</code> statement ➋ will skip the rest of the loop and move on to the next filename.</p>
+<p class="calibre4">Otherwise, the various strings matched in the regular expression groups are stored in variables named <code class="literal1">beforePart</code>, <code class="literal1">monthPart</code>, <code class="literal1">dayPart</code>, <code class="literal1">yearPart</code>, and <code class="literal1">afterPart</code> ➌. The strings in these variables will be used to form the European-style filename in the next step.</p>
+<p class="calibre4">To keep the group numbers straight, try reading the regex from the beginning and count up each time you encounter an opening parenthesis. Without thinking about the code, just write an outline of the regular expression. This can help you visualize the groups. For example:</p>
+<p><a id="calibre_link-2809" class="calibre1"></a>
+<pre class="programlisting">datePattern = re.compile(r"""^(<span class="calibre1"><strong class="literal">1</strong></span>) # all text before the date
+    (<span class="calibre1"><strong class="literal">2</strong></span> (<span class="calibre1"><strong class="literal">3</strong></span>) )-                     # one or two digits for the month
+    (<span class="calibre1"><strong class="literal">4</strong></span> (<span class="calibre1"><strong class="literal">5</strong></span>) )-                     # one or two digits for the day
+    (<span class="calibre1"><strong class="literal">6</strong></span> (<span class="calibre1"><strong class="literal">7</strong></span>) )                      # four digits for the year
+    (<span class="calibre1"><strong class="literal">8</strong></span>)$                          # all text after the date
+    """, re.VERBOSE)</pre>
+<p class="calibre4">Here, the numbers <span class="calibre1"><strong class="calibre7"><code class="literal">1</code></strong></span> through <span class="calibre1"><strong class="calibre7"><code class="literal">8</code></strong></span> represent the groups in the regular expression you wrote. Making an outline of the regular expression, with just the parentheses and group numbers, can give you a clearer understanding of your regex before you move on with the rest of the program.</p>
+</div>
+<div class="book" title="Step 3: Form the New Filename and Rename the Files">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-2810" class="firstname"></a>Step 3: Form the New Filename and Rename the Files</h2>
+</div>
+</div>
+</div>
+<p class="calibre4"><a id="calibre_link-357" class="calibre1"></a><a id="calibre_link-652" class="calibre1"></a><a id="calibre_link-695" class="calibre1"></a><a id="calibre_link-1333" class="calibre1"></a><a id="calibre_link-1488" class="calibre1"></a><a id="calibre_link-1890" class="calibre1"></a>As the final step, concatenate the strings in the variables made in the previous step with the European-style date: The date comes before the month. Fill in the three remaining <code class="literal1">TODO</code>s in your program with the following code:</p>
+<p><a id="calibre_link-2811" class="calibre1"></a>
+<pre class="programlisting">   #! python3
+   # renameDates.py - Renames filenames with American MM-DD-YYYY date format
+   # to European DD-MM-YYYY.
+
+   --<span class="calibre1"><em class="literal3">snip</em></span>--
+
+       <span class="calibre1"><strong class="literal"># Form the European-style filename.</strong></span>
+➊     <span class="calibre1"><strong class="literal">euroFilename = beforePart + dayPart + '-' + monthPart + '-' + yearPart +</strong></span>
+                      <span class="calibre1"><strong class="literal">afterPart</strong></span>
+
+       <span class="calibre1"><strong class="literal"># Get the full, absolute file paths.</strong></span>
+       <span class="calibre1"><strong class="literal">absWorkingDir = os.path.abspath('.')</strong></span>
+       <span class="calibre1"><strong class="literal">amerFilename = os.path.join(absWorkingDir, amerFilename)</strong></span>
+       <span class="calibre1"><strong class="literal">euroFilename = os.path.join(absWorkingDir, euroFilename)</strong></span>
+
+       <span class="calibre1"><strong class="literal"># Rename the files.</strong></span>
+➋     <span class="calibre1"><strong class="literal">print('Renaming "%s" to "%s"...' % (amerFilename, euroFilename))</strong></span>
+➌     <span class="calibre1"><strong class="literal">#shutil.move(amerFilename, euroFilename)   # uncomment after testing</strong></span></pre>
+<p class="calibre4">Store the concatenated string in a variable named <code class="literal1">euroFilename</code> ➊. Then, pass the original filename in <code class="literal1">amerFilename</code> and the new <code class="literal1">euroFilename</code> variable to the <code class="literal1">shutil.move()</code> function to rename the file ➌.</p>
+<p class="calibre4">This program has the <code class="literal1">shutil.move()</code> call commented out and instead prints the filenames that will be renamed ➋. Running the program like this first can let you double-check that the files are renamed correctly. Then you can uncomment the <code class="literal1">shutil.move()</code> call and run the program again to actually rename the files.</p>
+</div>
+<div class="book" title="Ideas for Similar Programs">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-2812" class="firstname"></a>Ideas for Similar Programs</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">There are many other reasons why you might want to rename a large number of files.</p>
+<div class="book">
+<ul class="itemizedlist">
+<li class="listitem">
+<p class="calibre4">To add a prefix to the start of the filename, such as adding <span class="calibre1"><em class="calibre5">spam_</em></span> to rename <span class="calibre1"><em class="calibre5">eggs.txt</em></span> to <span class="calibre1"><em class="calibre5">spam_eggs.txt</em></span></p>
+</li>
+<li class="listitem">
+<p class="calibre4">To change filenames with European-style dates to American-style dates</p>
+</li>
+<li class="listitem">
+<p class="calibre4">To remove the zeros from files such as <span class="calibre1"><em class="calibre5">spam0042.txt</em></span></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="book" title="Project: Backing Up a Folder into a ZIP File">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-2813" class="firstname"></a>Project: Backing Up a Folder into a ZIP File</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">Say you’re working on a project whose files you keep in a folder named <span class="calibre1"><em class="calibre5">C:\AlsPythonBook</em></span>. You’re worried about losing your work, so you’d like to create ZIP file “snapshots” of the entire folder. You’d like to keep different versions, so you want the ZIP file’s filename to increment each time it is made; for example, <span class="calibre1"><em class="calibre5">AlsPythonBook_1.zip</em></span>, <span class="calibre1"><em class="calibre5">AlsPythonBook_2.zip</em></span>, <a id="calibre_link-696" class="calibre1"></a><span class="calibre1"><em class="calibre5">AlsPythonBook_3.zip</em></span>, and so on. You could do this by hand, but it is rather annoying, and you might accidentally misnumber the ZIP files’ names. It would be much simpler to run a program that does this boring task for you.</p>
+<p class="calibre4">For this project, open a new file editor window and save it as <span class="calibre1"><em class="calibre5">backupToZip.py</em></span>.</p>
+<div class="book" title="Step 1: Figure Out the ZIP File’s Name">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-2814" class="firstname"></a>Step 1: Figure Out the ZIP File’s Name</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">The code for this program will be placed into a function named <code class="literal1">backupToZip()</code>. This will make it easy to copy and paste the function into other Python programs that need this functionality. At the end of the program, the function will be called to perform the backup. Make your program look like this:</p>
+<p><a id="calibre_link-2815" class="calibre1"></a>
+<pre class="programlisting">   #! python3
+   # backupToZip.py - Copies an entire folder and its contents into
+   # a ZIP file whose filename increments.
+
+➊ import zipfile, os
+
+   def backupToZip(folder):
+       # Backup the entire contents of "folder" into a ZIP file.
+
+       folder = os.path.abspath(folder) # make sure folder is absolute
+
+       # Figure out the filename this code should use based on
+       # what files already exist.
+➋     number = 1
+➌     while True:
+           zipFilename = os.path.basename(folder) + '_' + str(number) + '.zip'
+           if not os.path.exists(zipFilename):
+               break
+           number = number + 1
+
+➍     # TODO: Create the ZIP file.
+
+       # TODO: Walk the entire folder tree and compress the files in each folder.
+       print('Done.')
+
+   backupToZip('C:\\delicious')</pre>
+<p class="calibre4">Do the basics first: Add the shebang (<code class="literal1">#!</code>) line, describe what the program does, and import the <code class="literal1">zipfile</code> and <code class="literal1">os</code> modules ➊.</p>
+<p class="calibre4">Define a <code class="literal1">backupToZip()</code> function that takes just one parameter, <code class="literal1">folder</code>. This parameter is a string path to the folder whose contents should be backed up. The function will determine what filename to use for the ZIP file it will create; then the function will create the file, walk the <code class="literal1">folder</code> folder, and add each of the subfolders and files to the ZIP file. Write <code class="literal1">TODO</code> comments for these steps in the source code to remind yourself to do them later ➍.</p>
+<p class="calibre4">The first part, naming the ZIP file, uses the base name of the absolute path of <code class="literal1">folder</code>. If the folder being backed up is <span class="calibre1"><em class="calibre5">C:\delicious</em></span>, the ZIP file’s name should be <span class="calibre1"><em class="calibre5">delicious_N.zip</em></span>, where <span class="calibre1"><em class="calibre5">N</em></span> = 1 is the first time you run the program, <span class="calibre1"><em class="calibre5">N</em></span> = 2 is the second time, and so on.</p>
+<p class="calibre4"><a id="calibre_link-697" class="calibre1"></a><a id="calibre_link-698" class="calibre1"></a>You can determine what <span class="calibre1"><em class="calibre5">N</em></span> should be by checking whether <span class="calibre1"><em class="calibre5">delicious_1.zip</em></span> already exists, then checking whether <span class="calibre1"><em class="calibre5">delicious_2.zip</em></span> already exists, and so on. Use a variable named <code class="literal1">number</code> for <span class="calibre1"><em class="calibre5">N</em></span> ➋, and keep incrementing it inside the loop that calls <code class="literal1">os.path.exists()</code> to check whether the file exists ➌. The first nonexistent filename found will cause the loop to <code class="literal1">break</code>, since it will have found the filename of the new zip.</p>
+</div>
+<div class="book" title="Step 2: Create the New ZIP File">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-2816" class="firstname"></a>Step 2: Create the New ZIP File</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Next let’s create the ZIP file. Make your program look like the following:</p>
+<p><a id="calibre_link-2817" class="calibre1"></a>
+<pre class="programlisting">   #! python3
+   # backupToZip.py - Copies an entire folder and its contents into
+   # a ZIP file whose filename increments.
+
+   --<span class="calibre1"><em class="literal3">snip</em></span>--
+       while True:
+           zipFilename = os.path.basename(folder) + '_' + str(number) + '.zip'
+           if not os.path.exists(zipFilename):
+               break
+           number = number + 1
+
+       <span class="calibre1"><strong class="literal"># Create the ZIP file.</strong></span>
+       <span class="calibre1"><strong class="literal">print('Creating %s...' % (zipFilename))</strong></span>
+➊     <span class="calibre1"><strong class="literal">backupZip = zipfile.ZipFile(zipFilename, 'w')</strong></span>
+
+       # TODO: Walk the entire folder tree and compress the files in each folder.
+       print('Done.')
+
+   backupToZip('C:\\delicious')</pre>
+<p class="calibre4">Now that the new ZIP file’s name is stored in the <code class="literal1">zipFilename</code> variable, you can call <code class="literal1">zipfile.ZipFile()</code> to actually create the ZIP file ➊. Be sure to pass <code class="literal1">'w'</code> as the second argument so that the ZIP file is opened in write mode.</p>
+</div>
+<div class="book" title="Step 3: Walk the Directory Tree and Add to the ZIP File">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-2818" class="firstname"></a>Step 3: Walk the Directory Tree and Add to the ZIP File</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Now you need to use the <code class="literal1">os.walk()</code> function to do the work of listing every file in the folder and its subfolders. Make your program look like the following:</p>
+<p><a id="calibre_link-2819" class="calibre1"></a>
+<pre class="programlisting">   #! python3
+   # backupToZip.py - Copies an entire folder and its contents into
+   # a ZIP file whose filename increments.
+
+   --<span class="calibre1"><em class="literal3">snip</em></span>--
+
+       <span class="calibre1"><strong class="literal"># Walk the entire folder tree and compress the files in each folder.</strong></span>
+➊     <span class="calibre1"><strong class="literal">for foldername, subfolders, filenames in os.walk(folder):</strong></span>
+           <span class="calibre1"><strong class="literal">print('Adding files in %s...' % (foldername))</strong></span>
+           <span class="calibre1"><strong class="literal"># Add the current folder to the ZIP file.</strong></span>
+➋         <span class="calibre1"><strong class="literal">backupZip.write(foldername)</strong></span>
+           <span class="calibre1"><strong class="literal"># Add all the files in this folder to the ZIP file.</strong></span>
+➌         <span class="calibre1"><strong class="literal">for filename in filenames:</strong></span>
+               <span class="calibre1"><strong class="literal">newBase = os.path.basename(folder) + '_'</strong></span>
+               <span class="calibre1"><strong class="literal">if filename.startswith(newBase) and filename.endswith('.zip')</strong></span>
+                   <span class="calibre1"><strong class="literal">continue   # don't backup the backup ZIP files</strong></span>
+               <span class="calibre1"><strong class="literal">backupZip.write(os.path.join(foldername, filename))</strong></span>
+       <span class="calibre1"><strong class="literal">backupZip.close()</strong></span>
+       print('Done.')
+
+
+   backupToZip('C:\\delicious')</pre>
+<p class="calibre4">You can use <code class="literal1">os.walk()</code> in a <code class="literal1">for</code> loop ➊, and on each iteration it will return the iteration’s current folder name, the subfolders in that folder, and the filenames in that folder.</p>
+<p class="calibre4">In the <code class="literal1">for</code> loop, the folder is added to the ZIP file ➋. The nested <code class="literal1">for</code> loop can go through each filename in the <code class="literal1">filenames</code> list ➌. Each of these is added to the ZIP file, except for previously made backup ZIPs.</p>
+<p class="calibre4">When you run this program, it will produce output that will look something like this:</p>
+<p><a id="calibre_link-2820" class="calibre1"></a>
+<pre class="programlisting">Creating delicious_1.zip...
+Adding files in C:\delicious...
+Adding files in C:\delicious\cats...
+Adding files in C:\delicious\waffles...
+Adding files in C:\delicious\walnut...
+Adding files in C:\delicious\walnut\waffles...
+Done.</pre>
+<p class="calibre4">The second time you run it, it will put all the files in <span class="calibre1"><em class="calibre5">C:\delicious</em></span> into a ZIP file named <span class="calibre1"><em class="calibre5">delicious_2.zip</em></span>, and so on.</p>
+</div>
+<div class="book" title="Ideas for Similar Programs">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-2821" class="firstname"></a>Ideas for Similar Programs</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">You can walk a directory tree and add files to compressed ZIP archives in several other programs. For example, you can write programs that do the following:</p>
+<div class="book">
+<ul class="itemizedlist">
+<li class="listitem">
+<p class="calibre4">Walk a directory tree and archive just files with certain extensions, such as <span class="calibre1"><em class="calibre5">.txt</em></span> or <span class="calibre1"><em class="calibre5">.py</em></span>, and nothing else</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Walk a directory tree and archive every file except the <span class="calibre1"><em class="calibre5">.txt</em></span> and <span class="calibre1"><em class="calibre5">.py</em></span> ones</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Find the folder in a directory tree that has the greatest number of files or the folder that uses the most disk space</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="book" title="Summary">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-2822" class="firstname"></a>Summary</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">Even if you are an experienced computer user, you probably handle files manually with the mouse and keyboard. Modern file explorers make it easy to work with a few files. But sometimes you’ll need to perform a task that would take hours using your computer’s file explorer.</p>
+<p class="calibre4">The <code class="literal1">os</code> and <code class="literal1">shutil</code> modules offer functions for copying, moving, renaming, and deleting files. When deleting files, you might want to use the <code class="literal1">send2trash</code> module to move files to the recycle bin or trash rather than permanently deleting them. And when writing programs that handle files, it’s a good idea to comment out the code that does the actual copy/move/ rename/delete and add a <code class="literal1">print()</code> call instead so you can run the program and verify exactly what it will do.</p>
+<p class="calibre4">Often you will need to perform these operations not only on files in one folder but also on every folder in that folder, every folder in those folders, and so on. The <code class="literal1">os.walk()</code> function handles this trek across the folders for you so that you can concentrate on what your program needs to do with the files in them.</p>
+<p class="calibre4">The <code class="literal1">zipfile</code> module gives you a way of compressing and extracting files in <span class="calibre1"><em class="calibre5">.zip</em></span> archives through Python. Combined with the file-handling functions of <code class="literal1">os</code> and <code class="literal1">shutil</code>, <code class="literal1">zipfile</code> makes it easy to package up several files from anywhere on your hard drive. These <span class="calibre1"><em class="calibre5">.zip</em></span> files are much easier to upload to websites or send as email attachments than many separate files.</p>
+<p class="calibre4">Previous chapters of this book have provided source code for you to copy. But when you write your own programs, they probably won’t come out perfectly the first time. The next chapter focuses on some Python modules that will help you analyze and debug your programs so that you can quickly get them working correctly.</p>
+</div>
+<div class="book" title="Practice Questions">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-2823" class="firstname"></a>Practice Questions</h1>
+</div>
+</div>
+</div>
+<div class="book" title="Frequently Asked Questions"><a id="calibre_link-2824" class="calibre1"></a><br />
+<table border="0" width="100%" summary="Q and A Set" class="calibre22">
+<col width="1%" class="calibre23"></col>
+<col class="calibre11"></col>
+<tbody class="calibre16">
+<tr class="calibre13" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-2825" class="calibre1"></a><a id="calibre_link-2826" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">1. What is the difference between <code class="literal2">shutil.copy()</code> and <code class="literal2">shutil.copytree()</code>?</p>
+</td>
+</tr>
+<tr class="calibre19" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-2827" class="calibre1"></a><a id="calibre_link-2828" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">2. What function is used to rename files?</p>
+</td>
+</tr>
+<tr class="calibre13" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-2829" class="calibre1"></a><a id="calibre_link-2830" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">3. What is the difference between the delete functions in the <code class="literal2">send2trash</code> and <code class="literal2">shutil</code> modules?</p>
+</td>
+</tr>
+<tr class="calibre19" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-2831" class="calibre1"></a><a id="calibre_link-2832" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">4. <code class="literal2">ZipFile</code> objects have a <code class="literal2">close()</code> method just like <code class="literal2">File</code> objects’ <code class="literal2">close()</code> method. What <code class="literal2">ZipFile</code> method is equivalent to <code class="literal2">File</code> objects’ <code class="literal2">open()</code> method?</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="book" title="Practice Projects">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-2833" class="firstname"></a>Practice Projects</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">For practice, write programs to do the following tasks.</p>
+<div class="book" title="Selective Copy">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-2834" class="firstname"></a>Selective Copy</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Write a program that walks through a folder tree and searches for files with a certain file extension (such as <span class="calibre1"><em class="calibre5">.pdf</em></span> or <span class="calibre1"><em class="calibre5">.jpg</em></span>). Copy these files from whatever location they are in to a new folder.</p>
+</div>
+<div class="book" title="Deleting Unneeded Files">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-2835" class="firstname"></a>Deleting Unneeded Files</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">It’s not uncommon for a few unneeded but humongous files or folders to take up the bulk of the space on your hard drive. If you’re trying to free up room on your computer, you’ll get the most bang for your buck by deleting the most massive of the unwanted files. But first you have to find them.</p>
+<p class="calibre4">Write a program that walks through a folder tree and searches for exceptionally large files or folders&mdash;say, ones that have a file size of more than 100MB. (Remember, to get a file’s size, you can use <code class="literal1">os.path.getsize()</code> from the <code class="literal1">os</code> module.) Print these files with their absolute path to the screen.</p>
+</div>
+<div class="book" title="Filling in the Gaps">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-2836" class="firstname"></a>Filling in the Gaps</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Write a program that finds all files with a given prefix, such as <span class="calibre1"><em class="calibre5">spam001.txt</em></span>, <span class="calibre1"><em class="calibre5">spam002.txt</em></span>, and so on, in a single folder and locates any gaps in the numbering (such as if there is a <span class="calibre1"><em class="calibre5">spam001.txt</em></span> and <span class="calibre1"><em class="calibre5">spam003.txt</em></span> but no <span class="calibre1"><em class="calibre5">spam002.txt</em></span>). Have the program rename all the later files to close this gap.</p>
+<p class="calibre4">As an added challenge, write another program that can insert gaps into numbered files so that a new file can be added.</p>
+</div>
+</div>
+</div>
+</div>
+<p><center><a href="/chapter8"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="/chapter10"><img src="/images/next.png" /></a><br />Support the Author: Buy the book on <a href="http://www.amazon.com/gp/product/1593275994/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&amp;camp=1789&amp;creative=9325&amp;creativeASIN=1593275994&amp;linkCode=as2&amp;tag=playwithpyth-20&amp;linkId=2KIYOE7RFLG7D2RJ">Amazon</a> or<br/><a href="http://www.nostarch.com/automatestuff">the book/ebook bundle directly from No Starch Press</a>.<br /><a href="http://www.nostarch.com/automatestuff" ><img class=" size-full wp-image-49 aligncenter" src="/images/automate_small_cover.png" alt="small_cover" width="170" height="225" /></a><br /><a href="//inventwithpython.com">Read the author's other free Python books:</a><br /><a href="//inventwithpython.com/chapters"><img src="/images/smallcover_invent.png" width=120 /></a> <a href="//inventwithpython.com/pygame/chapters"><img src="/images/smallcover_makinggames.png" width=120 /></a> <a href="//inventwithpython.com/hacking/chapters"><img src="/images/smallcover_hacking.png" width=120 /></a></center></p>
+<p style="text-align: center;"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img class="alignnone size-full wp-image-54" src="/images/cc-by-nc-sa_small.png" alt="cc-by-nc-sa_small" width="100" height="35" /> Released under Creative Commons: BY-NC-SA 4.0</a></p>
+			</div><!-- .entry-content -->
+</article><!-- #post-## -->
+
+				
+			
+		</main><!-- #main -->
+	</div><!-- #primary -->
+
+</body>
+</html>
+
+<!-- Dynamic page generated in 0.274 seconds. -->
+<!-- Cached page generated by WP-Super-Cache on 2016-08-18 04:05:23 -->
+
+<!-- super cache -->

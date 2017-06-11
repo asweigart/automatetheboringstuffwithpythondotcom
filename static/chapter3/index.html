@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en-US" class="no-js">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Chapter  3 &#8211; Functions | Automate the Boring Stuff with Python</title>
+	<style>body { font-family: sans-serif; background: #fffce3; }</style>
+
+	</head>
+
+<body class="page page-id-112 page-template-default"><div>UNDER CONSTRUCTION: The site went down and backups failed, so this website will look messy for a while. Thanks for your patience! -Al</div>
+	<div id="page" class="hfeed site">
+		<div class="site-toggles">
+			<a href class="main-navigation-toggle"><i class="fa fa-bars"></i></a>
+							<a href class="widget-area-toggle"><i class="fa fa-align-right"></i></a>
+					</div>
+
+		<nav id="site-navigation" class="main-navigation" role="navigation">
+			<a href class="main-navigation-toggle"><i class="fa fa-times"></i></a>
+			<h4 class="main-navigation-title">Menu</h4>
+			<div class="menu"><ul><li ><a href="https://automatetheboringstuff.com/">Home</a></li><li class="page_item page-item-241"><a href="https://automatetheboringstuff.com/appendixa/">Appendix A &#8211; Installing Third-Party Modules</a></li><li class="page_item page-item-243"><a href="https://automatetheboringstuff.com/appendixb/">Appendix B &#8211; Running Programs</a></li><li class="page_item page-item-244"><a href="https://automatetheboringstuff.com/appendixc/">Appendix C &#8211; Answers to the Practice Questions</a></li><li class="page_item page-item-43"><a href="https://automatetheboringstuff.com/chapter0/">Chapter  0 &#8211; Introduction</a></li><li class="page_item page-item-60"><a href="https://automatetheboringstuff.com/chapter1/">Chapter  1 &#8211; Python Basics</a></li><li class="page_item page-item-70"><a href="https://automatetheboringstuff.com/chapter2/">Chapter  2 &#8211; Flow Control</a></li><li class="page_item page-item-112 current_page_item"><a href="https://automatetheboringstuff.com/chapter3/">Chapter  3 &#8211; Functions</a></li><li class="page_item page-item-113"><a href="https://automatetheboringstuff.com/chapter4/">Chapter  4 &#8211; Lists</a></li><li class="page_item page-item-114"><a href="https://automatetheboringstuff.com/chapter5/">Chapter  5 &#8211; Dictionaries and Structuring Data</a></li><li class="page_item page-item-115"><a href="https://automatetheboringstuff.com/chapter6/">Chapter  6 &#8211; Manipulating Strings</a></li><li class="page_item page-item-116"><a href="https://automatetheboringstuff.com/chapter7/">Chapter  7 &#8211; Pattern Matching with Regular Expressions</a></li><li class="page_item page-item-122"><a href="https://automatetheboringstuff.com/chapter8/">Chapter  8 &#8211; Reading and Writing Files</a></li><li class="page_item page-item-123"><a href="https://automatetheboringstuff.com/chapter9/">Chapter  9 &#8211; Organizing Files</a></li><li class="page_item page-item-124"><a href="https://automatetheboringstuff.com/chapter10/">Chapter 10 &#8211; Debugging</a></li><li class="page_item page-item-125"><a href="https://automatetheboringstuff.com/chapter11/">Chapter 11 &#8211; Web Scraping</a></li><li class="page_item page-item-126"><a href="https://automatetheboringstuff.com/chapter12/">Chapter 12 &#8211; Working with Excel Spreadsheets</a></li><li class="page_item page-item-127"><a href="https://automatetheboringstuff.com/chapter13/">Chapter 13 &#8211; Working with PDF and Word Documents</a></li><li class="page_item page-item-128"><a href="https://automatetheboringstuff.com/chapter14/">Chapter 14 &#8211; Working with CSV Files and JSON Data</a></li><li class="page_item page-item-129"><a href="https://automatetheboringstuff.com/chapter15/">Chapter 15 &#8211; Keeping Time, Scheduling Tasks, and Launching Programs</a></li><li class="page_item page-item-130"><a href="https://automatetheboringstuff.com/chapter16/">Chapter 16 &#8211; Sending Email and Text Messages</a></li><li class="page_item page-item-131"><a href="https://automatetheboringstuff.com/chapter17/">Chapter 17 &#8211; Manipulating Images</a></li><li class="page_item page-item-132"><a href="https://automatetheboringstuff.com/chapter18/">Chapter 18 &#8211; Controlling the Keyboard and Mouse with GUI Automation</a></li><li class="page_item page-item-472"><a href="https://automatetheboringstuff.com/how-to-do-pycon-or-any-tech-conference/">How to Do PyCon (or any tech conference)</a></li><li class="page_item page-item-355"><a href="https://automatetheboringstuff.com/list-of-css-selector-tutorials/">List of CSS Selector Tutorials</a></li><li class="page_item page-item-359"><a href="https://automatetheboringstuff.com/list-of-json-apis/">List of JSON APIs</a></li><li class="page_item page-item-363"><a href="https://automatetheboringstuff.com/list-of-programming-practice-sites/">List of Programming Practice Sites</a></li><li class="page_item page-item-30"><a href="https://automatetheboringstuff.com/list-of-web-comics/">List of Web Comics</a></li><li class="page_item page-item-32"><a href="https://automatetheboringstuff.com/schedulers/">Schedulers</a></li></ul></div>
+					</nav><!-- #site-navigation -->
+
+					<header id="masthead" class="site-header" role="banner">
+				<a class="skip-link screen-reader-text" href="#content" data-backstretch="https://automatetheboringstuff.com/wp-content/uploads/2014/12/cropped-automatecover2.jpg">Skip to content</a>
+				<div class="site-branding">
+					<h1 class="site-title"><a href="https://automatetheboringstuff.com/" rel="home">Automate the Boring Stuff with Python</a></h1>
+					<h2 class="site-description">Practical Programming for Total Beginners</h2>
+				</div>
+			</header><!-- #masthead -->
+		
+		<div id="content" class="site-content">
+	<div id="primary" class="content-area">
+		<main id="main" class="site-main" role="main">
+
+			
+				
+<article id="post-112" class="post-112 page type-page status-publish hentry">
+	<header class="entry-header">
+		<h1 class="entry-title">Chapter  3 &#8211; Functions</h1>	</header><!-- .entry-header -->
+
+	<div class="entry-content">
+		<p><center><a href="/chapter2"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="/chapter4"><img src="/images/next.png" /></a><br />Support the Author: Buy the book on <a href="http://www.amazon.com/gp/product/1593275994/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&amp;camp=1789&amp;creative=9325&amp;creativeASIN=1593275994&amp;linkCode=as2&amp;tag=playwithpyth-20&amp;linkId=2KIYOE7RFLG7D2RJ">Amazon</a> or<br/><a href="http://www.nostarch.com/automatestuff">the book/ebook bundle directly from No Starch Press</a>.<br /><a href="http://www.nostarch.com/automatestuff" ><img class=" size-full wp-image-49 aligncenter" src="/images/automate_small_cover.png" alt="small_cover" width="170" height="225" /></a><br /><a href="//inventwithpython.com">Read the author's other free Python books:</a><br /><a href="//inventwithpython.com/chapters"><img src="/images/smallcover_invent.png" width=120 /></a> <a href="//inventwithpython.com/pygame/chapters"><img src="/images/smallcover_makinggames.png" width=120 /></a> <a href="//inventwithpython.com/hacking/chapters"><img src="/images/smallcover_hacking.png" width=120 /></a></center></p>
+<div class="calibre" id="calibre_link-16">
+<div class="book" title="Chapter 3. Functions">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title1"><a id="calibre_link-2142" class="firstname"></a>Functions</h1>
+</div>
+</div>
+</div>
+<p><a href="https://youtu.be/WB4hJJkfhLU" ><img src="/images/youtubelogo.png"> Lesson 9 - import Statements, sys.exit(), the pyperclip Module</a></p>
+<p class="calibre4"><a id="calibre_link-723" class="calibre1"></a>You’re already familiar with the <code class="literal1">print()</code>, <code class="literal1">input()</code>, and <code class="literal1">len()</code> functions from the previous chapters. Python provides several builtin functions like these, but you can also write your own functions. A <span class="calibre1"><em class="calibre5">function</em></span> is like a mini-program within a program.</p>
+<p class="calibre4">To better understand how functions work, let’s create one. Type this program into the file editor and save it as <span class="calibre1"><em class="calibre5">helloFunc.py</em></span>:</p>
+<p><a id="calibre_link-2143" class="calibre1"></a>
+<pre class="programlisting">➊ def hello():
+➋     print('Howdy!')
+       print('Howdy!!!')
+       print('Hello there.')
+➌ hello()
+   hello()
+   hello()</pre>
+<p class="calibre4"><a id="calibre_link-450" class="calibre1"></a><a id="calibre_link-452" class="calibre1"></a><a id="calibre_link-1321" class="calibre1"></a>The first line is a <code class="literal1">def</code> statement ➊, which defines a function named <code class="literal1">hello()</code>. The code in the block that follows the <code class="literal1">def</code> statement ➋ is the body of the function. This code is executed when the function is called, not when the function is first defined.</p>
+<p class="calibre4">The <code class="literal1">hello()</code> lines after the function ➌ are function calls. In code, a function call is just the function’s name followed by parentheses, possibly with some number of arguments in between the parentheses. When the program execution reaches these calls, it will jump to the top line in the function and begin executing the code there. When it reaches the end of the function, the execution returns to the line that called the function and continues moving through the code as before.</p>
+<p class="calibre4">Since this program calls <code class="literal1">hello()</code> three times, the code in the <code class="literal1">hello()</code> function is executed three times. When you run this program, the output looks like this:</p>
+<p><a id="calibre_link-2144" class="calibre1"></a>
+<pre class="programlisting">Howdy!
+Howdy!!!
+Hello there.
+Howdy!
+Howdy!!!
+Hello there.
+Howdy!
+Howdy!!!
+Hello there.</pre>
+<p class="calibre4">A major purpose of functions is to group code that gets executed multiple times. Without a function defined, you would have to copy and paste this code each time, and the program would look like this:</p>
+<p><a id="calibre_link-2145" class="calibre1"></a>
+<pre class="programlisting">print('Howdy!')
+print('Howdy!!!')
+print('Hello there.')
+print('Howdy!')
+print('Howdy!!!')
+print('Hello there.')
+print('Howdy!')
+print('Howdy!!!')
+print('Hello there.')</pre>
+<p class="calibre4">In general, you always want to avoid duplicating code, because if you ever decide to update the code&mdash;if, for example, you find a bug you need to fix&mdash;you’ll have to remember to change the code everywhere you copied it.</p>
+<p class="calibre4">As you get more programming experience, you’ll often find yourself <span class="calibre1"><em class="calibre5">deduplicating</em></span> code, which means getting rid of duplicated or copy-and-pasted code. Deduplication makes your programs shorter, easier to read, and easier to update.</p>
+<div class="book" title="def Statements with Parameters">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-2146" class="firstname"></a>def Statements with Parameters</h1>
+</div>
+</div>
+</div>
+<p class="calibre4"><a id="calibre_link-242" class="calibre1"></a><a id="calibre_link-453" class="calibre1"></a><a id="calibre_link-724" class="calibre1"></a><a id="calibre_link-725" class="calibre1"></a><a id="calibre_link-726" class="calibre1"></a><a id="calibre_link-727" class="calibre1"></a><a id="calibre_link-1206" class="calibre1"></a><a id="calibre_link-1495" class="calibre1"></a>When you call the <code class="literal1">print()</code> or <code class="literal1">len()</code> function, you pass in values, called <span class="calibre1"><em class="calibre5">arguments</em></span> in this context, by typing them between the parentheses. You can also define your own functions that accept arguments. Type this example into the file editor and save it as <span class="calibre1"><em class="calibre5">helloFunc2.py</em></span>:</p>
+<p><a id="calibre_link-2147" class="calibre1"></a>
+<pre class="programlisting">➊ def hello(name):
+➋     print('Hello ' + name)
+
+➌ hello('Alice')
+  hello('Bob')</pre>
+<p class="calibre4">When you run this program, the output looks like this:</p>
+<p><a id="calibre_link-2148" class="calibre1"></a>
+<pre class="programlisting">Hello Alice
+Hello Bob</pre>
+<p class="calibre4">The definition of the <code class="literal1">hello()</code> function in this program has a parameter called <code class="literal1">name</code> ➊. A <span class="calibre1"><em class="calibre5">parameter</em></span> is a variable that an argument is stored in when a function is called. The first time the <code class="literal1">hello()</code> function is called, it’s with the argument <code class="literal1">'Alice'</code> ➌. The program execution enters the function, and the variable <code class="literal1">name</code> is automatically set to <code class="literal1">'Alice'</code>, which is what gets printed by the <code class="literal1">print()</code> statement ➋.</p>
+<p class="calibre4">One special thing to note about parameters is that the value stored in a parameter is forgotten when the function returns. For example, if you added <code class="literal1">print(name)</code> after <code class="literal1">hello('Bob')</code> in the previous program, the program would give you a <code class="literal1">NameError</code> because there is no variable named <code class="literal1">name</code>. This variable was destroyed after the function call <code class="literal1">hello('Bob')</code> had returned, so <code class="literal1">print(name)</code> would refer to a <code class="literal1">name</code> variable that does not exist.</p>
+<p class="calibre4">This is similar to how a program’s variables are forgotten when the program terminates. I’ll talk more about why that happens later in the chapter, when I discuss what a function’s local scope is.</p>
+</div>
+<div class="book" title="Return Values and return Statements">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-2149" class="firstname"></a>Return Values and return Statements</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">When you call the <code class="literal1">len()</code> function and pass it an argument such as <code class="literal1">'Hello'</code>, the function call evaluates to the integer value <code class="literal1">5</code>, which is the length of the string you passed it. In general, the value that a function call evaluates to is called the <span class="calibre1"><em class="calibre5">return value</em></span> of the function.</p>
+<p class="calibre4">When creating a function using the <code class="literal1">def</code> statement, you can specify what the return value should be with a <code class="literal1">return</code> statement. A <code class="literal1">return</code> statement consists of the following:</p>
+<div class="book">
+<ul class="itemizedlist">
+<li class="listitem">
+<p class="calibre4">The <code class="literal1">return</code> keyword</p>
+</li>
+<li class="listitem">
+<p class="calibre4">The value or expression that the function should return</p>
+</li>
+</ul>
+</div>
+<p class="calibre4">When an expression is used with a <code class="literal1">return</code> statement, the return value is what this expression evaluates to. For example, the following program defines a function that returns a different string depending on what number it is passed as an argument. Type this code into the file editor and save it as <span class="calibre1"><em class="calibre5">magic8Ball.py</em></span>:</p>
+<p><a id="calibre_link-2150" class="calibre1"></a>
+<pre class="programlisting">➊ import random
+➋ def getAnswer(answerNumber):
+➌     if answerNumber == 1:
+           return 'It is certain'
+       elif answerNumber == 2:
+           return 'It is decidedly so'
+       elif answerNumber == 3:
+           return 'Yes'
+       elif answerNumber == 4:
+           return 'Reply hazy try again'
+       elif answerNumber == 5:
+           return 'Ask again later'
+       elif answerNumber == 6:
+           return 'Concentrate and ask again'
+       elif answerNumber == 7:
+           return 'My reply is no'
+       elif answerNumber == 8:
+           return 'Outlook not so good'
+       elif answerNumber == 9:
+           return 'Very doubtful'
+
+➍ r = random.randint(1, 9)
+➎ fortune = getAnswer(r)
+➏ print(fortune)</pre>
+<p class="calibre4">When this program starts, Python first imports the <code class="literal1">random</code> module ➊. Then the <code class="literal1">getAnswer()</code> function is defined ➋. Because the function is being defined (and not called), the execution skips over the code in it. Next, the <code class="literal1">random.randint()</code> function is called with two arguments, <code class="literal1">1</code> and <code class="literal1">9</code> ➍. It evaluates to a random integer between <code class="literal1">1</code> and <code class="literal1">9</code> (including <code class="literal1">1</code> and <code class="literal1">9</code> themselves), and this value is stored in a variable named <code class="literal1">r</code>.</p>
+<p class="calibre4">The <code class="literal1">getAnswer()</code> function is called with <code class="literal1">r</code> as the argument ➎. The program execution moves to the top of the <code class="literal1">getAnswer()</code> function ➌, and the value <code class="literal1">r</code> is stored in a parameter named <code class="literal1">answerNumber</code>. Then, depending on this value in <code class="literal1">answerNumber</code>, the function returns one of many possible string values. The program execution returns to the line at the bottom of the program that originally called <code class="literal1">getAnswer()</code> ➎. The returned string is assigned to a variable named <code class="literal1">fortune</code>, which then gets passed to a <code class="literal1">print()</code> call ➏ and is printed to the screen.</p>
+<p class="calibre4"><a id="calibre_link-243" class="calibre1"></a><a id="calibre_link-413" class="calibre1"></a><a id="calibre_link-728" class="calibre1"></a><a id="calibre_link-729" class="calibre1"></a><a id="calibre_link-941" class="calibre1"></a><a id="calibre_link-1156" class="calibre1"></a><a id="calibre_link-1787" class="calibre1"></a>Note that since you can pass return values as an argument to another function call, you could shorten these three lines:</p>
+<p><a id="calibre_link-2151" class="calibre1"></a>
+<pre class="programlisting">r = random.randint(1, 9)
+fortune = getAnswer(r)
+print(fortune)</pre>
+<p class="calibre4">to this single equivalent line:</p>
+<p><a id="calibre_link-2152" class="calibre1"></a>
+<pre class="programlisting">print(getAnswer(random.randint(1, 9)))</pre>
+<p class="calibre4">Remember, expressions are composed of values and operators. A function call can be used in an expression because it evaluates to its return value.</p>
+</div>
+<div class="book" title="The None Value">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-2153" class="firstname"></a>The None Value</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">In Python there is a value called <code class="literal1">None</code>, which represents the absence of a value. <code class="literal1">None</code> is the only value of the <code class="literal1">NoneType</code> data type. (Other programming languages might call this value <code class="literal1">null</code>, <code class="literal1">nil</code>, or <code class="literal1">undefined</code>.) Just like the Boolean <code class="literal1">True</code> and <code class="literal1">False</code> values, <code class="literal1">None</code> must be typed with a capital <span class="calibre1"><em class="calibre5">N</em></span>.</p>
+<p class="calibre4">This value-without-a-value can be helpful when you need to store something that won’t be confused for a real value in a variable. One place where <code class="literal1">None</code> is used is as the return value of <code class="literal1">print()</code>. The <code class="literal1">print()</code> function displays text on the screen, but it doesn’t need to return anything in the same way <code class="literal1">len()</code> or <code class="literal1">input()</code> does. But since all function calls need to evaluate to a return value, <code class="literal1">print()</code> returns <code class="literal1">None</code>. To see this in action, enter the following into the interactive shell:</p>
+<p><a id="calibre_link-2154" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">spam = print('Hello!')</strong></span>
+Hello!
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">None == spam</strong></span>
+True</pre>
+<p class="calibre4">Behind the scenes, Python adds <code class="literal1">return None</code> to the end of any function definition with no <code class="literal1">return</code> statement. This is similar to how a <code class="literal1">while</code> or <code class="literal1">for</code> loop implicitly ends with a <code class="literal1">continue</code> statement. Also, if you use a <code class="literal1">return</code> statement without a value (that is, just the <code class="literal1">return</code> keyword by itself), then <code class="literal1">None</code> is returned.</p>
+</div>
+<div class="book" title="Keyword Arguments and print()">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-2155" class="firstname"></a>Keyword Arguments and print()</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">Most arguments are identified by their position in the function call. For example, <code class="literal1">random.randint(1, 10)</code> is different from <code class="literal1">random.randint(10, 1)</code>. The function call <code class="literal1">random.randint(1, 10)</code> will return a random integer between <code class="literal1">1</code> and <code class="literal1">10</code>, because the first argument is the low end of the range and the second argument is the high end (while <code class="literal1">random.randint(10, 1)</code> causes an error).</p>
+<p class="calibre4"><a id="calibre_link-1301" class="calibre1"></a>However, <span class="calibre1"><em class="calibre5">keyword arguments</em></span> are identified by the keyword put before them in the function call. Keyword arguments are often used for optional parameters. For example, the <code class="literal1">print()</code> function has the optional parameters <code class="literal1">end</code> and <code class="literal1">sep</code> to specify what should be printed at the end of its arguments and between its arguments (separating them), respectively.</p>
+<p class="calibre4">If you ran the following program:</p>
+<p><a id="calibre_link-2156" class="calibre1"></a>
+<pre class="programlisting">print('Hello')
+print('World')</pre>
+<p class="calibre4">the output would look like this:</p>
+<p><a id="calibre_link-2157" class="calibre1"></a>
+<pre class="programlisting">Hello
+World</pre>
+<p class="calibre4">The two strings appear on separate lines because the <code class="literal1">print()</code> function automatically adds a newline character to the end of the string it is passed. However, you can set the <code class="literal1">end</code> keyword argument to change this to a different string. For example, if the program were this:</p>
+<p><a id="calibre_link-2158" class="calibre1"></a>
+<pre class="programlisting">print('Hello', end='')
+print('World')</pre>
+<p class="calibre4">the output would look like this:</p>
+<p><a id="calibre_link-2159" class="calibre1"></a>
+<pre class="programlisting">HelloWorld</pre>
+<p class="calibre4">The output is printed on a single line because there is no longer a new-line printed after <code class="literal1">'Hello'</code>. Instead, the blank string is printed. This is useful if you need to disable the newline that gets added to the end of every <code class="literal1">print()</code> function call.</p>
+<p class="calibre4">Similarly, when you pass multiple string values to <code class="literal1">print()</code>, the function will automatically separate them with a single space. Enter the following into the interactive shell:</p>
+<p><a id="calibre_link-2160" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">print('cats', 'dogs', 'mice')</strong></span>
+cats dogs mice</pre>
+<p class="calibre4">But you could replace the default separating string by passing the <code class="literal1">sep</code> keyword argument. Enter the following into the interactive shell:</p>
+<p><a id="calibre_link-2161" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">print('cats', 'dogs', 'mice', sep=',')</strong></span>
+cats,dogs,mice</pre>
+<p class="calibre4">You can add keyword arguments to the functions you write as well, but first you’ll have to learn about the list and dictionary data types in the next two chapters. For now, just know that some functions have optional keyword arguments that can be specified when the function is called.</p>
+</div>
+<div class="book" title="Local and Global Scope">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-2162" class="firstname"></a>Local and Global Scope</h1>
+</div>
+</div>
+</div>
+<p><a href="https://youtu.be/M-CoVBK_bLE" ><img src="/images/youtubelogo.png"> Global Scope and Local Scope</a></p>
+<p class="calibre4"><a id="calibre_link-1013" class="calibre1"></a><a id="calibre_link-1322" class="calibre1"></a><a id="calibre_link-1525" class="calibre1"></a><a id="calibre_link-1788" class="calibre1"></a>Parameters and variables that are assigned in a called function are said to exist in that function’s <span class="calibre1"><em class="calibre5">local scope</em></span>. Variables that are assigned outside all functions are said to exist in the <span class="calibre1"><em class="calibre5">global scope</em></span>. A variable that exists in a local scope is called a <span class="calibre1"><em class="calibre5">local variable</em></span>, while a variable that exists in the global scope is called a <span class="calibre1"><em class="calibre5">global variable</em></span>. A variable must be one or the other; it cannot be both local and global.</p>
+<p class="calibre4">Think of a <span class="calibre1"><em class="calibre5">scope</em></span> as a container for variables. When a scope is destroyed, all the values stored in the scope’s variables are forgotten. There is only one global scope, and it is created when your program begins. When your program terminates, the global scope is destroyed, and all its variables are forgotten. Otherwise, the next time you ran your program, the variables would remember their values from the last time you ran it.</p>
+<p class="calibre4">A local scope is created whenever a function is called. Any variables assigned in this function exist within the local scope. When the function returns, the local scope is destroyed, and these variables are forgotten. The next time you call this function, the local variables will not remember the values stored in them from the last time the function was called.</p>
+<p class="calibre4">Scopes matter for several reasons:</p>
+<div class="book">
+<ul class="itemizedlist">
+<li class="listitem">
+<p class="calibre4">Code in the global scope cannot use any local variables.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">However, a local scope can access global variables.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Code in a function’s local scope cannot use variables in any other local scope.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">You can use the same name for different variables if they are in different scopes. That is, there can be a local variable named <code class="literal1">spam</code> and a global variable also named <code class="literal1">spam</code>.</p>
+</li>
+</ul>
+</div>
+<p class="calibre4">The reason Python has different scopes instead of just making everything a global variable is so that when variables are modified by the code in a particular call to a function, the function interacts with the rest of the program only through its parameters and the return value. This narrows down the list code lines that may be causing a bug. If your program contained nothing but global variables and had a bug because of a variable being set to a bad value, then it would be hard to track down where this bad value was set. It could have been set from anywhere in the program&mdash;and your program could be hundreds or thousands of lines long! But if the bug is because of a local variable with a bad value, you know that only the code in that one function could have set it incorrectly.</p>
+<p class="calibre4">While using global variables in small programs is fine, it is a bad habit to rely on global variables as your programs get larger and larger.</p>
+<div class="book" title="Local Variables Cannot Be Used in the Global Scope">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-2163" class="firstname"></a>Local Variables Cannot Be Used in the Global Scope</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Consider this program, which will cause an error when you run it:</p>
+<p><a id="calibre_link-2164" class="calibre1"></a>
+<pre class="programlisting">def spam():
+    eggs = 31337
+spam()
+print(eggs)</pre>
+<p class="calibre4">If you run this program, the output will look like this:</p>
+<p><a id="calibre_link-2165" class="calibre1"></a>
+<pre class="programlisting">Traceback (most recent call last):
+  File "C:/test3784.py", line 4, in &lt;module&gt;
+    print(eggs)
+NameError: name 'eggs' is not defined</pre>
+<p class="calibre4">The error happens because the <code class="literal1">eggs</code> variable exists only in the local scope created when <code class="literal1">spam()</code> is called. Once the program execution returns from <code class="literal1">spam</code>, that local scope is destroyed, and there is no longer a variable named <code class="literal1">eggs</code>. So when your program tries to run <code class="literal1">print(eggs)</code>, Python gives you an error saying that <code class="literal1">eggs</code> is not defined. This makes sense if you think about it; when the program execution is in the global scope, no local scopes exist, so there can’t be any local variables. This is why only global variables can be used in the global scope.</p>
+</div>
+<div class="book" title="Local Scopes Cannot Use Variables in Other Local Scopes">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-2166" class="firstname"></a>Local Scopes Cannot Use Variables in Other Local Scopes</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">A new local scope is created whenever a function is called, including when a function is called from another function. Consider this program:</p>
+<p><a id="calibre_link-2167" class="calibre1"></a>
+<pre class="programlisting">  def spam():
+➊    eggs = 99
+➋    bacon()
+➌    print(eggs)
+
+  def bacon():
+      ham = 101
+➍    eggs = 0
+
+➎ spam()</pre>
+<p class="calibre4">When the program starts, the <code class="literal1">spam()</code> function is called ➎, and a local scope is created. The local variable <code class="literal1">eggs</code> ➊ is set to <code class="literal1">99</code>. Then the <code class="literal1">bacon()</code> function is called ➋, and a second local scope is created. Multiple local scopes can exist at the same time. In this new local scope, the local variable <code class="literal1">ham</code> is set to <code class="literal1">101</code>, and a local variable <code class="literal1">eggs</code>&mdash;which is different from the one in <code class="literal1">spam()</code>’s local scope&mdash;is also created ➍ and set to <code class="literal1">0</code>.</p>
+<p class="calibre4">When <code class="literal1">bacon()</code> returns, the local scope for that call is destroyed. The program execution continues in the <code class="literal1">spam()</code> function to print the value of <code class="literal1">eggs</code> ➌, and since the local scope for the call to <code class="literal1">spam()</code> still exists here, the <code class="literal1">eggs</code> variable is set to <code class="literal1">99</code>. This is what the program prints.</p>
+<p class="calibre4">The upshot is that local variables in one function are completely separate from the local variables in another function.</p>
+</div>
+<div class="book" title="Global Variables Can Be Read from a Local Scope">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-2168" class="firstname"></a>Global Variables Can Be Read from a Local Scope</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Consider the following program:</p>
+<p><a id="calibre_link-2169" class="calibre1"></a>
+<pre class="programlisting">def spam():
+    print(eggs)
+eggs = 42
+spam()
+print(eggs)</pre>
+<p class="calibre4">Since there is no parameter named <code class="literal1">eggs</code> or any code that assigns <code class="literal1">eggs</code> a value in the <code class="literal1">spam()</code> function, when <code class="literal1">eggs</code> is used in <code class="literal1">spam()</code>, Python considers it a reference to the global variable <code class="literal1">eggs</code>. This is why <code class="literal1">42</code> is printed when the previous program is run.</p>
+</div>
+<div class="book" title="Local and Global Variables with the Same Name">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-2170" class="firstname"></a>Local and Global Variables with the Same Name</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">To simplify your life, avoid using local variables that have the same name as a global variable or another local variable. But technically, it’s perfectly legal to do so in Python. To see what happens, type the following code into the file editor and save it as <span class="calibre1"><em class="calibre5">sameName.py</em></span>:</p>
+<p><a id="calibre_link-2171" class="calibre1"></a>
+<pre class="programlisting">   def spam():
+➊     eggs = 'spam local'
+       print(eggs) # prints 'spam local'
+   def bacon():
+
+➋     eggs = 'bacon local'
+       print(eggs) # prints 'bacon local'
+       spam()
+       print(eggs) # prints 'bacon local'
+
+➌ eggs = 'global'
+   bacon()
+   print(eggs) # prints 'global'</pre>
+<p class="calibre4">When you run this program, it outputs the following:</p>
+<p><a id="calibre_link-2172" class="calibre1"></a>
+<pre class="programlisting">bacon local
+spam local
+bacon local
+global</pre>
+<p class="calibre4">There are actually three different variables in this program, but confusingly they are all named <code class="literal1">eggs</code>. The variables are as follows:</p>
+<p class="calibre4">➊ A variable named <code class="literal1">eggs</code> that exists in a local scope when <code class="literal1">spam()</code> is called.</p>
+<p class="calibre4">➋ A variable named <code class="literal1">eggs</code> that exists in a local scope when <code class="literal1">bacon()</code> is called.</p>
+<p class="calibre4">➌ A variable named <code class="literal1">eggs</code> that exists in the global scope.</p>
+<p class="calibre4"><a id="calibre_link-755" class="calibre1"></a><a id="calibre_link-1323" class="calibre1"></a><a id="calibre_link-1526" class="calibre1"></a><a id="calibre_link-1789" class="calibre1"></a>Since these three separate variables all have the same name, it can be confusing to keep track of which one is being used at any given time. This is why you should avoid using the same variable name in different scopes.</p>
+</div>
+</div>
+<div class="book" title="The global Statement">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-2173" class="firstname"></a>The global Statement</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">If you need to modify a global variable from within a function, use the <code class="literal1">global</code> statement. If you have a line such as <code class="literal1">global eggs</code> at the top of a function, it tells Python, “In this function, <code class="literal1">eggs</code> refers to the global variable, so don’t create a local variable with this name.” For example, type the following code into the file editor and save it as <span class="calibre1"><em class="calibre5">sameName2.py</em></span>:</p>
+<p><a id="calibre_link-2174" class="calibre1"></a>
+<pre class="programlisting">  def spam():
+➊    global eggs
+➋    eggs = 'spam'
+
+  eggs = 'global'
+  spam()
+  print(eggs)</pre>
+<p class="calibre4">When you run this program, the final <code class="literal1">print()</code> call will output this:</p>
+<p><a id="calibre_link-2175" class="calibre1"></a>
+<pre class="programlisting">spam</pre>
+<p class="calibre4">Because <code class="literal1">eggs</code> is declared <code class="literal1">global</code> at the top of <code class="literal1">spam()</code> ➊, when <code class="literal1">eggs</code> is set to <code class="literal1">'spam'</code> ➋, this assignment is done to the globally scoped <code class="literal1">eggs</code>. No local <code class="literal1">eggs</code> variable is created.</p>
+<p class="calibre4">There are four rules to tell whether a variable is in a local scope or global scope:</p>
+<div class="book">
+<ol class="orderedlist">
+<li class="listitem">
+<p class="calibre4">If a variable is being used in the global scope (that is, outside of all functions), then it is always a global variable.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">If there is a <code class="literal1">global</code> statement for that variable in a function, it is a global variable.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Otherwise, if the variable is used in an assignment statement in the function, it is a local variable.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">But if the variable is not used in an assignment statement, it is a global variable.</p>
+</li>
+</ol>
+</div>
+<p class="calibre4">To get a better feel for these rules, here’s an example program. Type the following code into the file editor and save it as <span class="calibre1"><em class="calibre5">sameName3.py</em></span>:</p>
+<p><a id="calibre_link-2176" class="calibre1"></a>
+<pre class="programlisting">  def spam():
+➊  global eggs
+    eggs = 'spam' # this is the global
+
+  def bacon():
+➋  eggs = 'bacon' # this is a local
+  def ham():
+➌  print(eggs) # this is the global
+
+  eggs = 42 # this is the global
+  spam()
+  print(eggs)</pre>
+<p class="calibre4">In the <code class="literal1">spam()</code> function, <code class="literal1">eggs</code> is the global <code class="literal1">eggs</code> variable, because there’s a <code class="literal1">global</code> statement for <code class="literal1">eggs</code> at the beginning of the function ➊. In <code class="literal1">bacon()</code>, <code class="literal1">eggs</code> is a local variable, because there’s an assignment statement for it in that function ➋. In <code class="literal1">ham()</code> ➌, <code class="literal1">eggs</code> is the global variable, because there is no assignment statement or <code class="literal1">global</code> statement for it in that function. If you run <span class="calibre1"><em class="calibre5">sameName3.py</em></span>, the output will look like this:</p>
+<p><a id="calibre_link-2177" class="calibre1"></a>
+<pre class="programlisting">spam</pre>
+<p class="calibre4">In a function, a variable will either always be global or always be local. There’s no way that the code in a function can use a local variable named <code class="literal1">eggs</code> and then later in that same function use the global <code class="literal1">eggs</code> variable.</p>
+<div class="note" title="Note">
+<h3 class="title5"><a id="calibre_link-2178" class="calibre1"></a>Note</h3>
+<p class="calibre4"><span class="calibre1"><em class="calibre5">If you ever want to modify the value stored in a global variable from in a function, you must use a <code class="literal3">global</code> statement on that variable.</em></span></p>
+</div>
+<p class="calibre4">If you try to use a local variable in a function before you assign a value to it, as in the following program, Python will give you an error. To see this, type the following into the file editor and save it as <span class="calibre1"><em class="calibre5">sameName4.py</em></span>:</p>
+<p><a id="calibre_link-2179" class="calibre1"></a>
+<pre class="programlisting">  def spam():
+      print(eggs) # ERROR!
+➊    eggs = 'spam local'
+
+➋ eggs = 'global'
+   spam()</pre>
+<p class="calibre4">If you run the previous program, it produces an error message.</p>
+<p><a id="calibre_link-2180" class="calibre1"></a>
+<pre class="programlisting">Traceback (most recent call last):
+  File "C:/test3784.py", line 6, in &lt;module&gt;
+    spam()
+  File "C:/test3784.py", line 2, in spam
+    print(eggs) # ERROR!
+UnboundLocalError: local variable 'eggs' referenced before assignment</pre>
+<p class="calibre4">This error happens because Python sees that there is an assignment statement for <code class="literal1">eggs</code> in the <code class="literal1">spam()</code> function ➊ and therefore considers <code class="literal1">eggs</code> to be local. But because <code class="literal1">print(eggs)</code> is executed before <code class="literal1">eggs</code> is assigned anything, the local variable <code class="literal1">eggs</code> doesn’t exist. Python will <span class="calibre1"><em class="calibre5">not</em></span> fall back to using the global <code class="literal1">eggs</code> variable ➋.</p>
+<div class="sidebar"><a id="calibre_link-2181" class="calibre1"></a>
+<p class="title6">Functions as “Black Boxes”</p>
+<p class="calibre4"><a id="calibre_link-598" class="calibre1"></a><a id="calibre_link-730" class="calibre1"></a><a id="calibre_link-731" class="calibre1"></a><a id="calibre_link-1324" class="calibre1"></a><a id="calibre_link-1325" class="calibre1"></a>Often, all you need to know about a function are its inputs (the parameters) and output value; you don’t always have to burden yourself with how the function’s code actually works. When you think about functions in this high-level way, it’s common to say that you’re treating the function as a “black box.”</p>
+<p class="calibre4">This idea is fundamental to modern programming. Later chapters in this book will show you several modules with functions that were written by other people. While you can take a peek at the source code if you’re curious, you don’t need to know how these functions work in order to use them. And because writing functions without global variables is encouraged, you usually don’t have to worry about the function’s code interacting with the rest of your program.</p>
+</div>
+</div>
+<div class="book" title="Exception Handling">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-2182" class="firstname"></a>Exception Handling</h1>
+</div>
+</div>
+</div>
+<p><a href="https://youtu.be/qS0UkqaYmfU" ><img src="/images/youtubelogo.png"> Error Handling</a></p>
+<p class="calibre4">Right now, getting an error, or <span class="calibre1"><em class="calibre5">exception</em></span>, in your Python program means the entire program will crash. You don’t want this to happen in real-world programs. Instead, you want the program to detect errors, handle them, and then continue to run.</p>
+<p class="calibre4">For example, consider the following program, which has a “divide-by-zero” error. Open a new file editor window and enter the following code, saving it as <span class="calibre1"><em class="calibre5">zeroDivide.py</em></span>:</p>
+<p><a id="calibre_link-2183" class="calibre1"></a>
+<pre class="programlisting">def spam(divideBy):
+    return 42 / divideBy
+
+print(spam(2))
+print(spam(12))
+print(spam(0))
+print(spam(1))</pre>
+<p class="calibre4">We’ve defined a function called <code class="literal1">spam</code>, given it a parameter, and then printed the value of that function with various parameters to see what happens. This is the output you get when you run the previous code:</p>
+<p><a id="calibre_link-2184" class="calibre1"></a>
+<pre class="programlisting">21.0
+3.5
+Traceback (most recent call last):
+  File "C:/zeroDivide.py", line 6, in &lt;module&gt;
+    print(spam(0))
+  File "C:/zeroDivide.py", line 2, in spam
+    return 42 / divideBy
+ZeroDivisionError: division by zero</pre>
+<p class="calibre4">A <code class="literal1">ZeroDivisionError</code> happens whenever you try to divide a number by zero. From the line number given in the error message, you know that the <code class="literal1">return</code> statement in <code class="literal1">spam()</code> is causing an error.</p>
+<p class="calibre4">Errors can be handled with <code class="literal1">try</code> and <code class="literal1">except</code> statements. The code that could potentially have an error is put in a <code class="literal1">try</code> clause. The program execution moves to the start of a following <code class="literal1">except</code> clause if an error happens.</p>
+<p class="calibre4">You can put the previous divide-by-zero code in a <code class="literal1">try</code> clause and have an <code class="literal1">except</code> clause contain code to handle what happens when this error occurs.</p>
+<p><a id="calibre_link-2185" class="calibre1"></a>
+<pre class="programlisting">def spam(divideBy):
+    try:
+        return 42 / divideBy
+    except ZeroDivisionError:
+        print('Error: Invalid argument.')
+
+print(spam(2))
+print(spam(12))
+print(spam(0))
+print(spam(1))</pre>
+<p class="calibre4">When code in a <code class="literal1">try</code> clause causes an error, the program execution immediately moves to the code in the <code class="literal1">except</code> clause. After running that code, the execution continues as normal. The output of the previous program is as follows:</p>
+<p><a id="calibre_link-2186" class="calibre1"></a>
+<pre class="programlisting">21.0
+3.5
+Error: Invalid argument.
+None
+42.0</pre>
+<p class="calibre4">Note that any errors that occur in function calls in a <code class="literal1">try</code> block will also be caught. Consider the following program, which instead has the <code class="literal1">spam()</code> calls in the <code class="literal1">try</code> block:</p>
+<p><a id="calibre_link-2187" class="calibre1"></a>
+<pre class="programlisting">def spam(divideBy):
+    return 42 / divideBy
+
+try:
+    print(spam(2))
+    print(spam(12))
+    print(spam(0))
+    print(spam(1))
+except ZeroDivisionError:
+    print('Error: Invalid argument.')</pre>
+<p class="calibre4">When this program is run, the output looks like this:</p>
+<p><a id="calibre_link-2188" class="calibre1"></a>
+<pre class="programlisting">21.0
+3.5
+Error: Invalid argument.</pre>
+<p class="calibre4"><a id="calibre_link-776" class="calibre1"></a>The reason <code class="literal1">print(spam(1))</code> is never executed is because once the execution jumps to the code in the <code class="literal1">except</code> clause, it does not return to the <code class="literal1">try</code> clause. Instead, it just continues moving down as normal.</p>
+</div>
+<div class="book" title="A Short Program: Guess the Number">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-2189" class="firstname"></a>A Short Program: Guess the Number</h1>
+</div>
+</div>
+</div>
+<p><a href="https://youtu.be/48WXHT0dfEY" ><img src="/images/youtubelogo.png"> Writing a Guess the Number Game</a></p>
+<p class="calibre4">The toy examples I’ve show you so far are useful for introducing basic concepts, but now let’s see how everything you’ve learned comes together in a more complete program. In this section, I’ll show you a simple “guess the number” game. When you run this program, the output will look something like this:</p>
+<p><a id="calibre_link-2190" class="calibre1"></a>
+<pre class="programlisting">I am thinking of a number between 1 and 20.
+Take a guess.
+<span class="calibre1"><strong class="literal">10</strong></span>
+Your guess is too low.
+Take a guess.
+<span class="calibre1"><strong class="literal">15</strong></span>
+Your guess is too low.
+Take a guess.
+<span class="calibre1"><strong class="literal">17</strong></span>
+Your guess is too high.
+Take a guess.
+<span class="calibre1"><strong class="literal">16</strong></span>
+Good job! You guessed my number in 4 guesses!</pre>
+<p class="calibre4">Type the following source code into the file editor, and save the file as <span class="calibre1"><em class="calibre5">guessTheNumber.py</em></span>:</p>
+<p><a id="calibre_link-2191" class="calibre1"></a>
+<pre class="programlisting"># This is a guess the number game.
+import random
+secretNumber = random.randint(1, 20)
+print('I am thinking of a number between 1 and 20.')
+
+# Ask the player to guess 6 times.
+for guessesTaken in range(1, 7):
+    print('Take a guess.')
+    guess = int(input())
+
+    if guess &lt; secretNumber:
+        print('Your guess is too low.')
+    elif guess &gt; secretNumber:
+        print('Your guess is too high.')
+    else:
+        break    # This condition is the correct guess!
+
+if guess == secretNumber:
+    print('Good job! You guessed my number in ' + str(guessesTaken) + ' guesses!')
+else:
+    print('Nope. The number I was thinking of was ' + str(secretNumber))</pre>
+<p class="calibre4">Let’s look at this code line by line, starting at the top.</p>
+<p><a id="calibre_link-2192" class="calibre1"></a>
+<pre class="programlisting"># This is a guess the number game.
+import random
+secretNumber = random.randint(1, 20)</pre>
+<p class="calibre4">First, a comment at the top of the code explains what the program does. Then, the program imports the <code class="literal1">random</code> module so that it can use the <code class="literal1">random.randint()</code> function to generate a number for the user to guess. The return value, a random integer between 1 and 20, is stored in the variable <code class="literal1">secretNumber</code>.</p>
+<p><a id="calibre_link-2193" class="calibre1"></a>
+<pre class="programlisting">print('I am thinking of a number between 1 and 20.')
+
+# Ask the player to guess 6 times.
+for guessesTaken in range(1, 7):
+    print('Take a guess.')
+    guess = int(input())</pre>
+<p class="calibre4">The program tells the player that it has come up with a secret number and will give the player six chances to guess it. The code that lets the player enter a guess and checks that guess is in a <code class="literal1">for</code> loop that will loop at most six times. The first thing that happens in the loop is that the player types in a guess. Since <code class="literal1">input()</code> returns a string, its return value is passed straight into <code class="literal1">int()</code>, which translates the string into an integer value. This gets stored in a variable named <code class="literal1">guess</code>.</p>
+<p><a id="calibre_link-2194" class="calibre1"></a>
+<pre class="programlisting">if guess &lt; secretNumber:
+    print('Your guess is too low.')
+elif guess &gt; secretNumber:
+    print('Your guess is too high.')</pre>
+<p class="calibre4">These few lines of code check to see whether the guess is less than or greater than the secret number. In either case, a hint is printed to the screen.</p>
+<p><a id="calibre_link-2195" class="calibre1"></a>
+<pre class="programlisting">else:
+    break    # This condition is the correct guess!</pre>
+<p class="calibre4">If the guess is neither higher nor lower than the secret number, then it must be equal to the secret number, in which case you want the program execution to break out of the <code class="literal1">for</code> loop.</p>
+<p><a id="calibre_link-2196" class="calibre1"></a>
+<pre class="programlisting">if guess == secretNumber:
+    print('Good job! You guessed my number in ' + str(guessesTaken) + ' guesses!')
+else:
+    print('Nope. The number I was thinking of was ' + str(secretNumber))</pre>
+<p class="calibre4">After the <code class="literal1">for</code> loop, the previous <code class="literal1">if...else</code> statement checks whether the player has correctly guessed the number and prints an appropriate message to the screen. In both cases, the program displays a variable that contains an integer value (<code class="literal1">guessesTaken</code> and <code class="literal1">secretNumber</code>). Since it must concatenate these integer values to strings, it passes these variables to the <code class="literal1">str()</code> function, which returns the string value form of these integers. Now these strings can be concatenated with the <code class="literal1">+</code> operators before finally being passed to the <code class="literal1">print()</code> function call.</p>
+</div>
+<div class="book" title="Summary">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-2197" class="firstname"></a>Summary</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">Functions are the primary way to compartmentalize your code into logical groups. Since the variables in functions exist in their own local scopes, the code in one function cannot directly affect the values of variables in other functions. This limits what code could be changing the values of your variables, which can be helpful when it comes to debugging your code.</p>
+<p class="calibre4">Functions are a great tool to help you organize your code. You can think of them as black boxes: They have inputs in the form of parameters and outputs in the form of return values, and the code in them doesn’t affect variables in other functions.</p>
+<p class="calibre4">In previous chapters, a single error could cause your programs to crash. In this chapter, you learned about <code class="literal1">try</code> and <code class="literal1">except</code> statements, which can run code when an error has been detected. This can make your programs more resilient to common error cases.</p>
+</div>
+<div class="book" title="Practice Questions">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-2198" class="firstname"></a>Practice Questions</h1>
+</div>
+</div>
+</div>
+<div class="book" title="Frequently Asked Questions"><a id="calibre_link-2199" class="calibre1"></a><br />
+<table border="0" width="100%" summary="Q and A Set" class="calibre22">
+<col width="1%" class="calibre23"></col>
+<col class="calibre11"></col>
+<tbody class="calibre16">
+<tr class="calibre13" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-2200" class="calibre1"></a><a id="calibre_link-2201" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">1. Why are functions advantageous to have in your programs?</p>
+</td>
+</tr>
+<tr class="calibre19" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-2202" class="calibre1"></a><a id="calibre_link-2203" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">2. When does the code in a function execute: when the function is defined or when the function is called?</p>
+</td>
+</tr>
+<tr class="calibre13" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-2204" class="calibre1"></a><a id="calibre_link-2205" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">3. What statement creates a function?</p>
+</td>
+</tr>
+<tr class="calibre19" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-2206" class="calibre1"></a><a id="calibre_link-2207" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">4. What is the difference between a function and a function call?</p>
+</td>
+</tr>
+<tr class="calibre13" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-2208" class="calibre1"></a><a id="calibre_link-2209" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">5. How many global scopes are there in a Python program? How many local scopes?</p>
+</td>
+</tr>
+<tr class="calibre19" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-2210" class="calibre1"></a><a id="calibre_link-2211" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">6. What happens to variables in a local scope when the function call returns?</p>
+</td>
+</tr>
+<tr class="calibre13" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-2212" class="calibre1"></a><a id="calibre_link-2213" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">7. What is a return value? Can a return value be part of an expression?</p>
+</td>
+</tr>
+<tr class="calibre19" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-2214" class="calibre1"></a><a id="calibre_link-2215" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">8. If a function does not have a return statement, what is the return value of a call to that function?</p>
+</td>
+</tr>
+<tr class="calibre13" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-2216" class="calibre1"></a><a id="calibre_link-2217" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">9. How can you force a variable in a function to refer to the global variable?</p>
+</td>
+</tr>
+<tr class="calibre19" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-2218" class="calibre1"></a><a id="calibre_link-2219" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">10. What is the data type of <code class="literal2">None</code>?</p>
+</td>
+</tr>
+<tr class="calibre13" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-2220" class="calibre1"></a><a id="calibre_link-2221" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">11. What does the <code class="literal2">import areallyourpetsnamederic</code> statement do?</p>
+</td>
+</tr>
+<tr class="calibre19" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-2222" class="calibre1"></a><a id="calibre_link-2223" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">12. If you had a function named <code class="literal2">bacon()</code> in a module named <code class="literal2">spam</code>, how would you call it after importing <code class="literal2">spam</code>?</p>
+</td>
+</tr>
+<tr class="calibre13" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-2224" class="calibre1"></a><a id="calibre_link-2225" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">13. How can you prevent a program from crashing when it gets an error?</p>
+</td>
+</tr>
+<tr class="calibre19" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-2226" class="calibre1"></a><a id="calibre_link-2227" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">14. What goes in the <code class="literal2">try</code> clause? What goes in the <code class="literal2">except</code> clause?</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="book" title="Practice Projects">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-2228" class="firstname"></a>Practice Projects</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">For practice, write programs to do the following tasks.</p>
+<div class="book" title="The Collatz Sequence">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-2229" class="firstname"></a>The Collatz Sequence</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Write a function named <code class="literal1">collatz()</code> that has one parameter named <code class="literal1">number</code>. If <code class="literal1">number</code> is even, then <code class="literal1">collatz()</code> should print <code class="literal1">number // 2</code> and return this value. If <code class="literal1">number</code> is odd, then <code class="literal1">collatz()</code> should print and return <code class="literal1">3 * number + 1</code>.</p>
+<p class="calibre4">Then write a program that lets the user type in an integer and that keeps calling <code class="literal1">collatz()</code> on that number until the function returns the value <code class="literal1">1</code>. (Amazingly enough, this sequence actually works for any integer&mdash;sooner or later, using this sequence, you’ll arrive at 1! Even mathematicians aren’t sure why. Your program is exploring what’s called the <span class="calibre1"><em class="calibre5">Collatz sequence</em></span>, sometimes called “the simplest impossible math problem.”)</p>
+<p class="calibre4">Remember to convert the return value from <code class="literal1">input()</code> to an integer with the <code class="literal1">int()</code> function; otherwise, it will be a string value.</p>
+<p class="calibre4">Hint: An integer <code class="literal1">number</code> is even if <code class="literal1">number % 2 == 0</code>, and it’s odd if <code class="literal1">number % 2 == 1</code>.</p>
+<p class="calibre4">The output of this program could look something like this:</p>
+<p><a id="calibre_link-2230" class="calibre1"></a>
+<pre class="programlisting">Enter number:
+3
+10
+5
+16
+8
+4
+2
+1</pre>
+</div>
+<div class="book" title="Input Validation">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-2231" class="firstname"></a>Input Validation</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Add <code class="literal1">try</code> and <code class="literal1">except</code> statements to the previous project to detect whether the user types in a noninteger string. Normally, the <code class="literal1">int()</code> function will raise a <code class="literal1">ValueError</code> error if it is passed a noninteger string, as in <code class="literal1">int('puppy')</code>. In the <code class="literal1">except</code> clause, print a message to the user saying they must enter an integer.</p>
+</div>
+</div>
+</div>
+</div>
+<p><center><a href="/chapter2"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="/chapter4"><img src="/images/next.png" /></a><br />Support the Author: Buy the book on <a href="http://www.amazon.com/gp/product/1593275994/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&amp;camp=1789&amp;creative=9325&amp;creativeASIN=1593275994&amp;linkCode=as2&amp;tag=playwithpyth-20&amp;linkId=2KIYOE7RFLG7D2RJ">Amazon</a> or<br/><a href="http://www.nostarch.com/automatestuff">the book/ebook bundle directly from No Starch Press</a>.<br /><a href="http://www.nostarch.com/automatestuff" ><img class=" size-full wp-image-49 aligncenter" src="/images/automate_small_cover.png" alt="small_cover" width="170" height="225" /></a><br /><a href="//inventwithpython.com">Read the author's other free Python books:</a><br /><a href="//inventwithpython.com/chapters"><img src="/images/smallcover_invent.png" width=120 /></a> <a href="//inventwithpython.com/pygame/chapters"><img src="/images/smallcover_makinggames.png" width=120 /></a> <a href="//inventwithpython.com/hacking/chapters"><img src="/images/smallcover_hacking.png" width=120 /></a></center></p>
+<p style="text-align: center;"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img class="alignnone size-full wp-image-54" src="/images/cc-by-nc-sa_small.png" alt="cc-by-nc-sa_small" width="100" height="35" /> Released under Creative Commons: BY-NC-SA 4.0</a></p>
+			</div><!-- .entry-content -->
+</article><!-- #post-## -->
+
+				
+			
+		</main><!-- #main -->
+	</div><!-- #primary -->
+
+</body>
+</html>
+
+<!-- Dynamic page generated in 0.245 seconds. -->
+<!-- Cached page generated by WP-Super-Cache on 2016-08-18 03:56:11 -->
+
+<!-- super cache -->

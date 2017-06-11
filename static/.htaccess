@@ -1,0 +1,24 @@
+#Options -ExecCGI
+AddHandler text/plain .py
+# Disable cgi here so users can download the python scripts, not run them.
+
+AddCharset UTF-8 .html
+
+RewriteEngine on
+
+#RewriteCond %{HTTPS} !=on
+#RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+RewriteRule ^https://automatetheboringstuff.com/schedulers https://automatetheboringstuff.com/schedulers.html [NE,R,L]
+
+RewriteRule ^https://automatetheboringstuff.com/how-to-do-pycon-or-any-tech-conference https://automatetheboringstuff.com/how-to-do-pycon.html [NE,R,L]
+
+RewriteRule ^https://automatetheboringstuff.com/list-of-css-selector-tutorials https://automatetheboringstuff.com/list-of-css-selector-tutorials.html [NE,R,L]
+
+RewriteRule ^https://automatetheboringstuff.com/list-of-json-apis https://automatetheboringstuff.com/list-of-json-apis.html [NE,R,L]
+
+RewriteRule ^https://automatetheboringstuff.com/list-of-programming-practice-sites https://automatetheboringstuff.com/list-of-programming-practice-sites.html [NE,R,L]
+
+RewriteRule ^https://automatetheboringstuff.com/list-of-web-comics https://automatetheboringstuff.com/list-of-web-comics.html [NE,R,L]
+
+RewriteRule ^https://automatetheboringstuff.com/schedulers https://automatetheboringstuff.com/schedulers.html [NE,R,L]

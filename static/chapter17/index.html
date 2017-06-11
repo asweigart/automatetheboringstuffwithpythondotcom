@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en-US" class="no-js">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Chapter 17 &#8211; Manipulating Images | Automate the Boring Stuff with Python</title>
+	<style>body { font-family: sans-serif; background: #fffce3; }</style>
+
+	</head>
+
+<body class="page page-id-131 page-template-default"><div>UNDER CONSTRUCTION: The site went down and backups failed, so this website will look messy for a while. Thanks for your patience! -Al</div>
+	<div id="page" class="hfeed site">
+		<div class="site-toggles">
+			<a href class="main-navigation-toggle"><i class="fa fa-bars"></i></a>
+							<a href class="widget-area-toggle"><i class="fa fa-align-right"></i></a>
+					</div>
+
+		<nav id="site-navigation" class="main-navigation" role="navigation">
+			<a href class="main-navigation-toggle"><i class="fa fa-times"></i></a>
+			<h4 class="main-navigation-title">Menu</h4>
+			<div class="menu"><ul><li ><a href="https://automatetheboringstuff.com/">Home</a></li><li class="page_item page-item-241"><a href="https://automatetheboringstuff.com/appendixa/">Appendix A &#8211; Installing Third-Party Modules</a></li><li class="page_item page-item-243"><a href="https://automatetheboringstuff.com/appendixb/">Appendix B &#8211; Running Programs</a></li><li class="page_item page-item-244"><a href="https://automatetheboringstuff.com/appendixc/">Appendix C &#8211; Answers to the Practice Questions</a></li><li class="page_item page-item-43"><a href="https://automatetheboringstuff.com/chapter0/">Chapter  0 &#8211; Introduction</a></li><li class="page_item page-item-60"><a href="https://automatetheboringstuff.com/chapter1/">Chapter  1 &#8211; Python Basics</a></li><li class="page_item page-item-70"><a href="https://automatetheboringstuff.com/chapter2/">Chapter  2 &#8211; Flow Control</a></li><li class="page_item page-item-112"><a href="https://automatetheboringstuff.com/chapter3/">Chapter  3 &#8211; Functions</a></li><li class="page_item page-item-113"><a href="https://automatetheboringstuff.com/chapter4/">Chapter  4 &#8211; Lists</a></li><li class="page_item page-item-114"><a href="https://automatetheboringstuff.com/chapter5/">Chapter  5 &#8211; Dictionaries and Structuring Data</a></li><li class="page_item page-item-115"><a href="https://automatetheboringstuff.com/chapter6/">Chapter  6 &#8211; Manipulating Strings</a></li><li class="page_item page-item-116"><a href="https://automatetheboringstuff.com/chapter7/">Chapter  7 &#8211; Pattern Matching with Regular Expressions</a></li><li class="page_item page-item-122"><a href="https://automatetheboringstuff.com/chapter8/">Chapter  8 &#8211; Reading and Writing Files</a></li><li class="page_item page-item-123"><a href="https://automatetheboringstuff.com/chapter9/">Chapter  9 &#8211; Organizing Files</a></li><li class="page_item page-item-124"><a href="https://automatetheboringstuff.com/chapter10/">Chapter 10 &#8211; Debugging</a></li><li class="page_item page-item-125"><a href="https://automatetheboringstuff.com/chapter11/">Chapter 11 &#8211; Web Scraping</a></li><li class="page_item page-item-126"><a href="https://automatetheboringstuff.com/chapter12/">Chapter 12 &#8211; Working with Excel Spreadsheets</a></li><li class="page_item page-item-127"><a href="https://automatetheboringstuff.com/chapter13/">Chapter 13 &#8211; Working with PDF and Word Documents</a></li><li class="page_item page-item-128"><a href="https://automatetheboringstuff.com/chapter14/">Chapter 14 &#8211; Working with CSV Files and JSON Data</a></li><li class="page_item page-item-129"><a href="https://automatetheboringstuff.com/chapter15/">Chapter 15 &#8211; Keeping Time, Scheduling Tasks, and Launching Programs</a></li><li class="page_item page-item-130"><a href="https://automatetheboringstuff.com/chapter16/">Chapter 16 &#8211; Sending Email and Text Messages</a></li><li class="page_item page-item-131 current_page_item"><a href="https://automatetheboringstuff.com/chapter17/">Chapter 17 &#8211; Manipulating Images</a></li><li class="page_item page-item-132"><a href="https://automatetheboringstuff.com/chapter18/">Chapter 18 &#8211; Controlling the Keyboard and Mouse with GUI Automation</a></li><li class="page_item page-item-472"><a href="https://automatetheboringstuff.com/how-to-do-pycon-or-any-tech-conference/">How to Do PyCon (or any tech conference)</a></li><li class="page_item page-item-355"><a href="https://automatetheboringstuff.com/list-of-css-selector-tutorials/">List of CSS Selector Tutorials</a></li><li class="page_item page-item-359"><a href="https://automatetheboringstuff.com/list-of-json-apis/">List of JSON APIs</a></li><li class="page_item page-item-363"><a href="https://automatetheboringstuff.com/list-of-programming-practice-sites/">List of Programming Practice Sites</a></li><li class="page_item page-item-30"><a href="https://automatetheboringstuff.com/list-of-web-comics/">List of Web Comics</a></li><li class="page_item page-item-32"><a href="https://automatetheboringstuff.com/schedulers/">Schedulers</a></li></ul></div>
+					</nav><!-- #site-navigation -->
+
+					<header id="masthead" class="site-header" role="banner">
+				<a class="skip-link screen-reader-text" href="#content" data-backstretch="https://automatetheboringstuff.com/wp-content/uploads/2014/12/cropped-automatecover2.jpg">Skip to content</a>
+				<div class="site-branding">
+					<h1 class="site-title"><a href="https://automatetheboringstuff.com/" rel="home">Automate the Boring Stuff with Python</a></h1>
+					<h2 class="site-description">Practical Programming for Total Beginners</h2>
+				</div>
+			</header><!-- #masthead -->
+		
+		<div id="content" class="site-content">
+	<div id="primary" class="content-area">
+		<main id="main" class="site-main" role="main">
+
+			
+				
+<article id="post-131" class="post-131 page type-page status-publish hentry">
+	<header class="entry-header">
+		<h1 class="entry-title">Chapter 17 &#8211; Manipulating Images</h1>	</header><!-- .entry-header -->
+
+	<div class="entry-content">
+		<p><center><a href="/chapter16"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="/chapter18"><img src="/images/next.png" /></a><br />Support the Author: Buy the book on <a href="http://www.amazon.com/gp/product/1593275994/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&amp;camp=1789&amp;creative=9325&amp;creativeASIN=1593275994&amp;linkCode=as2&amp;tag=playwithpyth-20&amp;linkId=2KIYOE7RFLG7D2RJ">Amazon</a> or<br/><a href="http://www.nostarch.com/automatestuff">the book/ebook bundle directly from No Starch Press</a>.<br /><a href="http://www.nostarch.com/automatestuff" ><img class=" size-full wp-image-49 aligncenter" src="/images/automate_small_cover.png" alt="small_cover" width="170" height="225" /></a><br /><a href="//inventwithpython.com">Read the author's other free Python books:</a><br /><a href="//inventwithpython.com/chapters"><img src="/images/smallcover_invent.png" width=120 /></a> <a href="//inventwithpython.com/pygame/chapters"><img src="/images/smallcover_makinggames.png" width=120 /></a> <a href="//inventwithpython.com/hacking/chapters"><img src="/images/smallcover_hacking.png" width=120 /></a></center></p>
+<div class="calibre" id="calibre_link-33">
+<div class="book" title="Chapter 17. Manipulating Images">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title1"><a id="calibre_link-3526" class="firstname"></a>Manipulating Images</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">If you have a digital camera or even if you just upload photos from your phone to Facebook, you probably cross paths with digital image files all the time. You may know how to use basic graphics software, such as Microsoft Paint or Paintbrush, or even more advanced applications such as Adobe Photoshop. But if you need to edit a massive number of images, editing them by hand can be a lengthy, boring job.</p>
+<p class="calibre4">Enter Python. Pillow is a third-party Python module for interacting with image files. The module has several functions that make it easy to crop, resize, and edit the content of an image. With the power to manipulate images the same way you would with software such as Microsoft Paint or Adobe Photoshop, Python can automatically edit hundreds or thousands of images with ease.</p>
+<div class="book" title="Computer Image Fundamentals">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-3527" class="firstname"></a>Computer Image Fundamentals</h1>
+</div>
+</div>
+</div>
+<p class="calibre4"><a id="calibre_link-234" class="calibre1"></a><a id="calibre_link-336" class="calibre1"></a><a id="calibre_link-736" class="calibre1"></a><a id="calibre_link-826" class="calibre1"></a><a id="calibre_link-827" class="calibre1"></a><a id="calibre_link-1257" class="calibre1"></a><a id="calibre_link-1280" class="calibre1"></a><a id="calibre_link-1497" class="calibre1"></a><a id="calibre_link-1734" class="calibre1"></a>In order to manipulate an image, you need to understand the basics of how computers deal with colors and coordinates in images and how you can work with colors and coordinates in Pillow. But before you continue, install the <code class="literal1">pillow</code> module. See Appendix A for help installing third-party modules.</p>
+<blockquote><p>Installing Pillow has had slight changes. StackOverflow has guides on installing on <a href="https://stackoverflow.com/questions/20596204/installing-pillow-for-python-on-windows">Windows</a> and <a href="https://stackoverflow.com/questions/21867277/installing-pillow-with-mac-os-x-mavericks-10-9-1">Mac</a>. For Linux, run sudo apt-get install python3-tk, sudo apt-get install python3-dev, then sudo pip3 install pillow.</p></blockquote>
+<div class="book" title="Colors and RGBA Values">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3528" class="firstname"></a>Colors and RGBA Values</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Computer programs often represent a color in an image as an <span class="calibre1"><em class="calibre5">RGBA value</em></span>. An RGBA value is a group of numbers that specify the amount of red, green, blue, and <span class="calibre1"><em class="calibre5">alpha</em></span> (or transparency) in a color. Each of these component values is an integer from <code class="literal1">0</code> (none at all) to <code class="literal1">255</code> (the maximum). These RGBA values are assigned to individual <span class="calibre1"><em class="calibre5">pixels</em></span>; a pixel is the smallest dot of a single color the computer screen can show (as you can imagine, there are millions of pixels on a screen). A pixel’s RGB setting tells it precisely what shade of color it should display. Images also have an alpha value to create RGBA values. If an image is displayed on the screen over a background image or desktop wallpaper, the alpha value determines how much of the background you can “see through” the image’s pixel.</p>
+<p class="calibre4">In Pillow, RGBA values are represented by a tuple of four integer values. For example, the color red is represented by <code class="literal1">(255, 0, 0, 255)</code>. This color has the maximum amount of red, no green or blue, and the maximum alpha value, meaning it is fully opaque. Green is represented by <code class="literal1">(0, 255, 0, 255)</code>, and blue is <code class="literal1">(0, 0, 255, 255)</code>. White, the combination of all colors, is <code class="literal1">(255, 255, 255, 255)</code>, while black, which has no color at all, is <code class="literal1">(0, 0, 0, 255)</code>.</p>
+<p class="calibre4">If a color has an alpha value of <code class="literal1">0</code>, it is invisible, and it doesn’t really matter what the RGB values are. After all, invisible red looks the same as invisible black.</p>
+<p class="calibre4">Pillow uses the standard color names that HTML uses. <a class="ulink" href="#calibre_link-133" title="Table 17-1. Standard Color Names and Their RGBA Values">Table&nbsp;17-1</a> lists a selection of standard color names and their values.</p>
+<div class="table"><a id="calibre_link-133" class="calibre1"></a>
+<p class="title7">Table&nbsp;17-1.&nbsp;Standard Color Names and Their RGBA Values</p>
+<div class="book">
+<table summary="Standard Color Names and Their RGBA Values" class="calibre9">
+<colgroup class="calibre10">
+<col class="calibre11"></col>
+<col class="calibre11"></col>
+<col class="calibre11"></col>
+<col class="calibre11"></col>
+</colgroup>
+<thead class="calibre12">
+<tr class="calibre13">
+<th valign="top" class="calibre14">
+<p class="calibre4">Name</p>
+</th>
+<th valign="top" class="calibre14">
+<p class="calibre4">RGBA Value</p>
+</th>
+<th valign="top" class="calibre14">
+<p class="calibre4">Name</p>
+</th>
+<th valign="top" class="calibre15">
+<p class="calibre4">RGBA Value</p>
+</th>
+</tr>
+</thead>
+<tbody class="calibre16">
+<tr class="calibre13">
+<td valign="top" class="calibre17">
+<p class="calibre4">White</p>
+</td>
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">(255, 255, 255, 255)</code></p>
+</td>
+<td valign="top" class="calibre17">
+<p class="calibre4">Red</p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4"><code class="literal2">(255, 0, 0, 255)</code></p>
+</td>
+</tr>
+<tr class="calibre19">
+<td valign="top" class="calibre17">
+<p class="calibre4">Green</p>
+</td>
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">(0, 128, 0, 255)</code></p>
+</td>
+<td valign="top" class="calibre17">
+<p class="calibre4">Blue</p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4"><code class="literal2">(0, 0, 255, 255)</code></p>
+</td>
+</tr>
+<tr class="calibre13">
+<td valign="top" class="calibre17">
+<p class="calibre4">Gray</p>
+</td>
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">(128, 128, 128, 255)</code></p>
+</td>
+<td valign="top" class="calibre17">
+<p class="calibre4">Yellow</p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4"><code class="literal2">(255, 255, 0, 255)</code></p>
+</td>
+</tr>
+<tr class="calibre19">
+<td valign="top" class="calibre20">
+<p class="calibre4">Black</p>
+</td>
+<td valign="top" class="calibre20">
+<p class="calibre4"><code class="literal2">(0, 0, 0, 255)</code></p>
+</td>
+<td valign="top" class="calibre20">
+<p class="calibre4">Purple</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4"><code class="literal2">(128, 0, 128, 255)</code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p class="calibre4">Pillow offers the <code class="literal1">ImageColor.getcolor()</code> function so you don’t have to memorize RGBA values for the colors you want to use. This function takes a color name string as its first argument, and the string <code class="literal1">'RGBA'</code> as its second argument, and it returns an RGBA tuple.</p>
+<div class="sidebar"><a id="calibre_link-3529" class="calibre1"></a>
+<p class="title6">CMYK and RGB Coloring</p>
+<p class="calibre4"><a id="calibre_link-225" class="calibre1"></a><a id="calibre_link-330" class="calibre1"></a><a id="calibre_link-337" class="calibre1"></a><a id="calibre_link-367" class="calibre1"></a><a id="calibre_link-828" class="calibre1"></a><a id="calibre_link-1498" class="calibre1"></a><a id="calibre_link-1690" class="calibre1"></a>In grade school you learned that mixing red, yellow, and blue paints can form other colors; for example, you can mix blue and yellow to make green paint. This is known as the <span class="calibre1"><em class="calibre5">subtractive color model</em></span>, and it applies to dyes, inks, and pigments. This is why color printers have <span class="calibre1"><em class="calibre5">CMYK</em></span> ink cartridges: the <span class="calibre1"><em class="calibre5">Cyan</em></span> (blue), <span class="calibre1"><em class="calibre5">Magenta</em></span> (red), <span class="calibre1"><em class="calibre5">Yellow</em></span>, and <span class="calibre1"><em class="calibre5">blacK</em></span> ink can be mixed together to form any color.</p>
+<p class="calibre4">However, the physics of light uses what’s called an <span class="calibre1"><em class="calibre5">additive color model</em></span>. When combining light (such as the light given off by your computer screen), red, green, and blue light can be combined to form any other color. This is why <span class="calibre1"><em class="calibre5">RGB</em></span> values represent color in computer programs.</p>
+</div>
+<p class="calibre4">To see how this function works, enter the following into the interactive shell:</p>
+<p><a id="calibre_link-3530" class="calibre1"></a>
+<pre class="programlisting">➊ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">from PIL import ImageColor</strong></span>
+➋ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">ImageColor.getcolor('red', 'RGBA')</strong></span>
+   (255, 0, 0, 255)
+➌ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">ImageColor.getcolor('RED', 'RGBA')</strong></span>
+   (255, 0, 0, 255)
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">ImageColor.getcolor('Black', 'RGBA')</strong></span>
+   (0, 0, 0, 255)
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">ImageColor.getcolor('chocolate', 'RGBA')</strong></span>
+   (210, 105, 30, 255)
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">ImageColor.getcolor('CornflowerBlue', 'RGBA')</strong></span>
+   (100, 149, 237, 255)</pre>
+<p class="calibre4">First, you need to import the <code class="literal1">ImageColor</code> module from PIL ➊ (not from Pillow; you’ll see why in a moment). The color name string you pass to <code class="literal1">ImageColor.getcolor()</code> is case insensitive, so passing <code class="literal1">'red'</code> ➋ and passing <code class="literal1">'RED'</code> ➌ give you the same RGBA tuple. You can also pass more unusual color names, like <code class="literal1">'chocolate'</code> and <code class="literal1">'Cornflower Blue'</code>.</p>
+<p class="calibre4">Pillow supports a huge number of color names, from <code class="literal1">'aliceblue'</code> to <code class="literal1">'whitesmoke'</code>. You can find the full list of more than 100 standard color names in the resources at <span class="calibre1"><em class="calibre5"><a class="ulink" href="http://nostarch.com/automatestuff/">http://nostarch.com/automatestuff/</a></em></span>.</p>
+</div>
+<div class="book" title="Coordinates and Box Tuples">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3531" class="firstname"></a>Coordinates and Box Tuples</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Image pixels are addressed with x- and y-coordinates, which respectively specify a pixel’s horizontal and vertical location in an image. The <span class="calibre1"><em class="calibre5">origin</em></span> is the pixel at the top-left corner of the image and is specified with the notation (0, 0). The first zero represents the x-coordinate, which starts at zero at the origin and increases going from left to right. The second zero represents the y-coordinate, which starts at zero at the origin and increases going <a id="calibre_link-283" class="calibre1"></a><a id="calibre_link-829" class="calibre1"></a><a id="calibre_link-830" class="calibre1"></a><a id="calibre_link-1258" class="calibre1"></a>down the image. This bears repeating: y-coordinates increase going downward, which is the opposite of how you may remember y-coordinates being used in math class. <a class="ulink" href="#calibre_link-134" title="Figure 17-1. The x- and y-coordinates of a 27×26 image of some sort of ancient data storage device">Figure&nbsp;17-1</a> demonstrates how this coordinate system works.</p>
+<p class="calibre4">Many of Pillow’s functions and methods take a <span class="calibre1"><em class="calibre5">box tuple</em></span> argument. This means Pillow is expecting a tuple of four integer coordinates that represent a rectangular region in an image. The four integers are, in order, as follows:</p>
+<div class="figure"><a id="calibre_link-134" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-3532" class="calibre1"></a><img src="/images/000004.jpg" alt="The x- and y-coordinates of a 27×26 image of some sort of ancient data storage device" class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;17-1.&nbsp;The x- and y-coordinates of a 27×26 image of some sort of ancient data storage device</p>
+</div>
+<div class="book">
+<ul class="itemizedlist">
+<li class="listitem">
+<p title="Left:" class="calibre4"><span class="calibre1"><strong class="calibre7"><span class="calibre1"><em class="calibre5">Left:</em></span></strong></span>&nbsp;The x-coordinate of the leftmost edge of the box.</p>
+</li>
+<li class="listitem">
+<p title="Top:" class="calibre4"><span class="calibre1"><strong class="calibre7"><span class="calibre1"><em class="calibre5">Top:</em></span></strong></span>&nbsp;The y-coordinate of the top edge of the box.</p>
+</li>
+<li class="listitem">
+<p title="Right:" class="calibre4"><span class="calibre1"><strong class="calibre7"><span class="calibre1"><em class="calibre5">Right:</em></span></strong></span>&nbsp;The x-coordinate of one pixel to the right of the rightmost edge of the box. This integer must be greater than the left integer.</p>
+</li>
+<li class="listitem">
+<p title="Bottom:" class="calibre4"><span class="calibre1"><strong class="calibre7"><span class="calibre1"><em class="calibre5">Bottom:</em></span></strong></span>&nbsp;The y-coordinate of one pixel lower than the bottom edge of the box. This integer must be greater than the top integer.</p>
+</li>
+</ul>
+</div>
+<div class="figure"><a id="calibre_link-135" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-3533" class="calibre1"></a><img src="/images/000096.jpg" alt="The area represented by the box tuple (3, 1, 9, 6)" class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;17-2.&nbsp;The area represented by the box tuple <code class="literal1">(3, 1, 9, 6)</code></p>
+</div>
+<p class="calibre4">Note that the box includes the left and top coordinates and goes up to but does not include the right and bottom coordinates. For example, the box tuple <code class="literal1">(3, 1, 9, 6)</code> represents all the pixels in the black box in <a class="ulink" href="#calibre_link-135" title="Figure 17-2. The area represented by the box tuple (3, 1, 9, 6)">Figure&nbsp;17-2</a>.</p>
+</div>
+</div>
+<div class="book" title="Manipulating Images with Pillow">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-3534" class="firstname"></a>Manipulating Images with Pillow</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">Now that you know how colors and coordinates work in Pillow, let’s use Pillow to manipulate an image. <a class="ulink" href="#calibre_link-136" title="Figure 17-3. My cat Zophie. The camera adds 10 pounds (which is a lot for a cat).">Figure&nbsp;17-3</a> is the image that will be used for all the interactive shell examples in this chapter. You can download it from <span class="calibre1"><em class="calibre5"><a class="ulink" href="http://nostarch.com/automatestuff/">http://nostarch.com/automatestuff/</a></em></span>.</p>
+<p class="calibre4">Once you have the image file <span class="calibre1"><em class="calibre5">Zophie.png</em></span> in your current working directory, you’ll be ready to load the image of Zophie into Python, like so:</p>
+<p><a id="calibre_link-3535" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">from PIL import Image</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">catIm = Image.open('zophie.png')</strong></span></pre>
+<div class="figure"><a id="calibre_link-136" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-3536" class="calibre1"></a><img src="/images/000039.jpg" alt="My cat Zophie. The camera adds 10 pounds (which is a lot for a cat)." class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;17-3.&nbsp;My cat Zophie. The camera adds 10 pounds (which is a lot for a cat).</p>
+</div>
+<p class="calibre4"><a id="calibre_link-825" class="calibre1"></a><a id="calibre_link-1171" class="calibre1"></a><a id="calibre_link-1524" class="calibre1"></a>To load the image, you import the <code class="literal1">Image</code> module from Pillow and call <code class="literal1">Image.open()</code>, passing it the image’s filename. You can then store the loaded image in a variable like <code class="literal1">CatIm</code>. The module name of Pillow is <code class="literal1">PIL</code> to make it backward compatible with an older module called Python Imaging Library, which is why you must run <code class="literal1">from PIL import Image</code> instead of <code class="literal1">from Pillow import Image</code>. Because of the way Pillow’s creators set up the <code class="literal1">pillow</code> module, you must use the <code class="literal1">from PIL import Image</code> form of <code class="literal1">import</code> statement, rather than simply <code class="literal1">import PIL</code>.</p>
+<p class="calibre4">If the image file isn’t in the current working directory, change the working directory to the folder that contains the image file by calling the <code class="literal1">os.chdir()</code> function.</p>
+<p><a id="calibre_link-3537" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">import os</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">os.chdir('C:\\folder_with_image_file')</strong></span></pre>
+<p class="calibre4">The <code class="literal1">Image.open()</code> function returns a value of the <code class="literal1">Image</code> object data type, which is how Pillow represents an image as a Python value. You can load an <code class="literal1">Image</code> object from an image file (of any format) by passing the <code class="literal1">Image.open()</code> function a string of the filename. Any changes you make to the <code class="literal1">Image</code> object can be saved to an image file (also of any format) with the <code class="literal1">save()</code> method. All the rotations, resizing, cropping, drawing, and other image manipulations will be done through method calls on this <code class="literal1">Image</code> object.</p>
+<p class="calibre4">To shorten the examples in this chapter, I’ll assume you’ve imported Pillow’s <code class="literal1">Image</code> module and that you have the Zophie image stored in a variable named <code class="literal1">catIm</code>. Be sure that the <span class="calibre1"><em class="calibre5">zophie.png</em></span> file is in the current working directory so that the <code class="literal1">Image.open()</code> function can find it. Otherwise, you will also have to specify the full absolute path in the string argument to <code class="literal1">Image.open()</code>.</p>
+<div class="book" title="Working with the Image Data Type">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3538" class="firstname"></a>Working with the Image Data Type</h2>
+</div>
+</div>
+</div>
+<p class="calibre4"><a id="calibre_link-704" class="calibre1"></a><a id="calibre_link-705" class="calibre1"></a><a id="calibre_link-754" class="calibre1"></a><a id="calibre_link-831" class="calibre1"></a><a id="calibre_link-918" class="calibre1"></a><a id="calibre_link-1259" class="calibre1"></a><a id="calibre_link-1285" class="calibre1"></a>An <code class="literal1">Image</code> object has several useful attributes that give you basic information about the image file it was loaded from: its width and height, the filename, and the graphics format (such as JPEG, GIF, or PNG).</p>
+<p class="calibre4">For example, enter the following into the interactive shell:</p>
+<p><a id="calibre_link-3539" class="calibre1"></a>
+<pre class="programlisting">   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">from PIL import Image</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">catIm = Image.open('zophie.png')</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">catIm.size</strong></span>
+➊ (816, 1088)
+➋ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">width, height = catIm.size</strong></span>
+➌ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">width</strong></span>
+   816
+➍ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">height</strong></span>
+   1088
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">catIm.filename</strong></span>
+   'zophie.png'
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">catIm.format</strong></span>
+   'PNG'
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">catIm.format_description</strong></span>
+   'Portable network graphics'
+➎ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">catIm.save('zophie.jpg')</strong></span></pre>
+<p class="calibre4">After making an <code class="literal1">Image</code> object from <span class="calibre1"><em class="calibre5">Zophie.png</em></span> and storing the <code class="literal1">Image</code> object in <code class="literal1">catIm</code>, we can see that the object’s <code class="literal1">size</code> attribute contains a tuple of the image’s width and height in pixels ➊. We can assign the values in the tuple to <code class="literal1">width</code> and <code class="literal1">height</code> variables ➋ in order to access with width ➌ and height ➍ individually. The <code class="literal1">filename</code> attribute describes the original file’s name. The <code class="literal1">format</code> and <code class="literal1">format_description</code> attributes are strings that describe the image format of the original file (with <code class="literal1">format_description</code> being a bit more verbose).</p>
+<p class="calibre4">Finally, calling the <code class="literal1">save()</code> method and passing it <code class="literal1">'zophie.jpg'</code> saves a new image with the filename <span class="calibre1"><em class="calibre5">zophie.jpg</em></span> to your hard drive ➎. Pillow sees that the file extension is <span class="calibre1"><em class="calibre5">.jpg</em></span> and automatically saves the image using the JPEG image format. Now you should have two images, <span class="calibre1"><em class="calibre5">zophie.png</em></span> and <span class="calibre1"><em class="calibre5">zophie.jpg</em></span>, on your hard drive. While these files are based on the same image, they are not identical because of their different formats.</p>
+<p class="calibre4">Pillow also provides the <code class="literal1">Image.new()</code> function, which returns an <code class="literal1">Image</code> object&mdash;much like <code class="literal1">Image.open()</code>, except the image represented by <code class="literal1">Image.new()</code>’s object will be blank. The arguments to <code class="literal1">Image.new()</code> are as follows:</p>
+<div class="book">
+<ul class="itemizedlist">
+<li class="listitem">
+<p class="calibre4">The string <code class="literal1">'RGBA'</code>, which sets the color mode to RGBA. (There are other modes that this book doesn’t go into.)</p>
+</li>
+<li class="listitem">
+<p class="calibre4">The size, as a two-integer tuple of the new image’s width and height.</p>
+</li>
+<li class="listitem">
+<p class="calibre4"><a id="calibre_link-383" class="calibre1"></a><a id="calibre_link-737" class="calibre1"></a><a id="calibre_link-832" class="calibre1"></a><a id="calibre_link-1260" class="calibre1"></a>The background color that the image should start with, as a four-integer tuple of an RGBA value. You can use the return value of the <code class="literal1">ImageColor.getcolor()</code> function for this argument. Alternatively, <code class="literal1">Image.new()</code> also supports just passing the string of the standard color name.</p>
+</li>
+</ul>
+</div>
+<p class="calibre4">For example, enter the following into the interactive shell:</p>
+<p><a id="calibre_link-3540" class="calibre1"></a>
+<pre class="programlisting">   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">from PIL import Image</strong></span>
+➊ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">im = Image.new('RGBA', (100, 200), 'purple')</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">im.save('purpleImage.png')</strong></span>
+➋ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">im2 = Image.new('RGBA', (20, 20))</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">im2.save('transparentImage.png')</strong></span></pre>
+<p class="calibre4">Here we create an <code class="literal1">Image</code> object for an image that’s 100 pixels wide and 200 pixels tall, with a purple background ➊. This image is then saved to the file <span class="calibre1"><em class="calibre5">purpleImage.png</em></span>. We call <code class="literal1">Image.new()</code> again to create another <code class="literal1">Image</code> object, this time passing (20, 20) for the dimensions and nothing for the background color ➋. Invisible black, <code class="literal1">(0, 0, 0, 0)</code>, is the default color used if no color argument is specified, so the second image has a transparent background; we save this 20×20 transparent square in <span class="calibre1"><em class="calibre5">transparentImage.png</em></span>.</p>
+</div>
+<div class="book" title="Cropping Images">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3541" class="firstname"></a>Cropping Images</h2>
+</div>
+</div>
+</div>
+<p class="calibre4"><span class="calibre1"><em class="calibre5">Cropping</em></span> an image means selecting a rectangular region inside an image and removing everything outside the rectangle. The <code class="literal1">crop()</code> method on <code class="literal1">Image</code> objects takes a box tuple and returns an <code class="literal1">Image</code> object representing the cropped image. The cropping does not happen in place&mdash;that is, the original <code class="literal1">Image</code> object is left untouched, and the <code class="literal1">crop()</code> method returns a new <code class="literal1">Image</code> object. Remeber that a boxed tuple&mdash;in this case, the cropped section&mdash;includes the left column and top row of pixels but only goes up to and does <span class="calibre1"><em class="calibre5">not</em></span> include the right column and bottom row of pixels.</p>
+<p class="calibre4">Enter the following into the interactive shell:</p>
+<p><a id="calibre_link-3542" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">croppedIm = catIm.crop((335, 345, 565, 560))</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">croppedIm.save('cropped.png')</strong></span></pre>
+<p class="calibre4">This makes a new <code class="literal1">Image</code> object for the cropped image, stores the object in <code class="literal1">croppedIm</code>, and then calls <code class="literal1">save()</code> on <code class="literal1">croppedIm</code> to save the cropped image in <span class="calibre1"><em class="calibre5">cropped.png</em></span>. The new file <span class="calibre1"><em class="calibre5">cropped.png</em></span> will be created from the original image, like in <a class="ulink" href="#calibre_link-137" title="Figure 17-4. The new image will be just the cropped section of the original image.">Figure&nbsp;17-4</a>.</p>
+<div class="figure"><a id="calibre_link-137" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-3543" class="calibre1"></a><img src="/images/000043.jpg" alt="The new image will be just the cropped section of the original image." class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;17-4.&nbsp;The new image will be just the cropped section of the original image.</p>
+</div>
+</div>
+<div class="book" title="Copying and Pasting Images onto Other Images">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3544" class="firstname"></a>Copying and Pasting Images onto Other Images</h2>
+</div>
+</div>
+</div>
+<p class="calibre4"><a id="calibre_link-372" class="calibre1"></a><a id="calibre_link-833" class="calibre1"></a><a id="calibre_link-1220" class="calibre1"></a><a id="calibre_link-1261" class="calibre1"></a>The <code class="literal1">copy()</code> method will return a new <code class="literal1">Image</code> object with the same image as the <code class="literal1">Image</code> object it was called on. This is useful if you need to make changes to an image but also want to keep an untouched version of the original. For example, enter the following into the interactive shell:</p>
+<p><a id="calibre_link-3545" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">catIm = Image.open('zophie.png')</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">catCopyIm = catIm.copy()</strong></span></pre>
+<p class="calibre4">The <code class="literal1">catIm</code> and <code class="literal1">catCopyIm</code> variables contain two separate <code class="literal1">Image</code> objects, which both have the same image on them. Now that you have an <code class="literal1">Image</code> object stored in <code class="literal1">catCopyIm</code>, you can modify <code class="literal1">catCopyIm</code> as you like and save it to a new filename, leaving <span class="calibre1"><em class="calibre5">zophie.png</em></span> untouched. For example, let’s try modifying <code class="literal1">catCopyIm</code> with the <code class="literal1">paste()</code> method.</p>
+<p class="calibre4">The <code class="literal1">paste()</code> method is called on an <code class="literal1">Image</code> object and pastes another image on top of it. Let’s continue the shell example by pasting a smaller image onto <code class="literal1">catCopyIm</code>.</p>
+<p><a id="calibre_link-3546" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">faceIm = catIm.crop((335, 345, 565, 560))</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">faceIm.size</strong></span>
+(230, 215)
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">catCopyIm.paste(faceIm, (0, 0))</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">catCopyIm.paste(faceIm, (400, 500))</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">catCopyIm.save('pasted.png')</strong></span></pre>
+<p class="calibre4"><a id="calibre_link-1221" class="calibre1"></a>First we pass <code class="literal1">crop()</code> a box tuple for the rectangular area in <span class="calibre1"><em class="calibre5">zophie.png</em></span> that contains Zophie’s face. This creates an <code class="literal1">Image</code> object representing a 230×215 crop, which we store in <code class="literal1">faceIm</code>. Now we can paste <code class="literal1">faceIm</code> onto <code class="literal1">catCopyIm</code>. The <code class="literal1">paste()</code> method takes two arguments: a “source” <code class="literal1">Image</code> object and a tuple of the x- and y-coordinates where you want to paste the top-left corner of the source <code class="literal1">Image</code> object onto the main <code class="literal1">Image</code> object. Here we call <code class="literal1">paste()</code> twice on <code class="literal1">catCopyIm</code>, passing (0, 0) the first time and (400, 500) the second time. This pastes <code class="literal1">faceIm</code> onto <code class="literal1">catCopyIm</code> twice: once with the top-left corner of <code class="literal1">faceIm</code> at (0, 0) on <code class="literal1">catCopyIm</code>, and once with the top-left corner of <code class="literal1">faceIm</code> at (400, 500). Finally, we save the modified <code class="literal1">catCopyIm</code> to <span class="calibre1"><em class="calibre5">pasted.png</em></span>. The <span class="calibre1"><em class="calibre5">pasted.png</em></span> image looks like <a class="ulink" href="#calibre_link-138" title="Figure 17-5. Zophie the cat, with her face pasted twice">Figure&nbsp;17-5</a>.</p>
+<div class="figure"><a id="calibre_link-138" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-3547" class="calibre1"></a><img src="/images/000031.jpg" alt="Zophie the cat, with her face pasted twice" class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;17-5.&nbsp;Zophie the cat, with her face pasted twice</p>
+</div>
+<div class="note" title="Note">
+<h3 class="title5"><a id="calibre_link-3548" class="calibre1"></a>Note</h3>
+<p class="calibre4"><span class="calibre1"><em class="calibre5">Despite their names, the <code class="literal3">copy()</code> and <code class="literal3">paste()</code> methods in Pillow do not use your computer’s clipboard.</em></span></p>
+</div>
+<p class="calibre4">Note that the <code class="literal1">paste()</code> method modifies its <code class="literal1">Image</code> object <span class="calibre1"><em class="calibre5">in place</em></span>; it does not return an <code class="literal1">Image</code> object with the pasted image. If you want to call <code class="literal1">paste()</code> but also keep an untouched version of the original image around, you’ll need to first copy the image and then call <code class="literal1">paste()</code> on that copy.</p>
+<p class="calibre4">Say you want to tile Zophie’s head across the entire image, as in <a class="ulink" href="#calibre_link-139" title="Figure 17-6. Nested for loops used with paste() to duplicate the cat’s face (a duplicat, if you will).">Figure&nbsp;17-6</a>. You can achieve this effect with just a couple <code class="literal1">for</code> loops. Continue the interactive shell example by entering the following:</p>
+<p><a id="calibre_link-3549" class="calibre1"></a>
+<pre class="programlisting">   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">catImWidth, catImHeight = catIm.size</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">faceImWidth, faceImHeight = faceIm.size</strong></span>
+➊  &gt;&gt;&gt; <span class="calibre1"><strong class="literal">catCopyTwo = catIm.copy()</strong></span>
+➋ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">for left in range(0, catImWidth, faceImWidth):</strong></span>
+➌         <span class="calibre1"><strong class="literal">for top in range(0, catImHeight, faceImHeight):</strong></span>
+               <span class="calibre1"><strong class="literal">print(left, top)</strong></span>
+               <span class="calibre1"><strong class="literal">catCopyTwo.paste(faceIm, (left, top))</strong></span>
+   0 0
+   0 215
+   0 430
+   0 645
+   0 860
+   0 1075
+   230 0
+   230 215
+   <span class="calibre1"><em class="literal3">--snip--</em></span>
+   690 860
+   690 1075
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">catCopyTwo.save('tiled.png')</strong></span></pre>
+<p class="calibre4">Here we store the width of height of <code class="literal1">catIm</code> in <code class="literal1">catImWidth</code> and <code class="literal1">catImHeight</code>. At ➊ we make a copy of <code class="literal1">catIm</code> and store it in <code class="literal1">catCopyTwo</code>. Now that we have a copy that we can paste onto, we start looping to paste <code class="literal1">faceIm</code> onto <code class="literal1">catCopyTwo</code>. The outer <code class="literal1">for</code> loop’s <code class="literal1">left</code> variable starts at 0 and increases by <code class="literal1">faceImWidth(230)</code> ➋. The inner <code class="literal1">for</code> loop’s <code class="literal1">top</code> variable start at 0 and increases by <code class="literal1">faceImHeight(215)</code> ➌. These nested <code class="literal1">for</code> loops produce values for <code class="literal1">left</code> and <code class="literal1">top</code> to paste a grid of <code class="literal1">faceIm</code> images over the <code class="literal1">catCopyTwo Image</code> object, as in <a class="ulink" href="#calibre_link-139" title="Figure 17-6. Nested for loops used with paste() to duplicate the cat’s face (a duplicat, if you will).">Figure&nbsp;17-6</a>. To see our nested loops working, we print <code class="literal1">left</code> and <code class="literal1">top</code>. After the pasting is complete, we save the modified <code class="literal1">catCopyTwo</code> to <span class="calibre1"><em class="calibre5">tiled.png</em></span>.</p>
+<div class="figure"><a id="calibre_link-139" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-3550" class="calibre1"></a><img src="/images/000049.jpg" alt="Nested for loops used with paste() to duplicate the cat’s face (a duplicat, if you will)." class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;17-6.&nbsp;Nested <code class="literal1">for</code> loops used with <code class="literal1">paste()</code> to duplicate the cat’s face (a duplicat, if you will).</p>
+</div>
+<div class="sidebar"><a id="calibre_link-3551" class="calibre1"></a>
+<p class="title6">Pasting Transparent Pixels</p>
+<p class="calibre4"><a id="calibre_link-834" class="calibre1"></a><a id="calibre_link-835" class="calibre1"></a><a id="calibre_link-1262" class="calibre1"></a><a id="calibre_link-1263" class="calibre1"></a><a id="calibre_link-1735" class="calibre1"></a>Normally transparent pixels are pasted as white pixels. If the image you want to paste has transparent pixels, pass the <code class="literal1">Image</code> object as the third argument so that a solid rectangle isn’t pasted. This third argument is the “mask” <code class="literal1">Image</code> object. A mask is an <code class="literal1">Image</code> object where the alpha value is significant, but the red, green, and blue values are ignored. The mask tells the <code class="literal1">paste()</code> function which pixels it should copy and which it should leave transparent. Advanced usage of masks is beyond this book, but if you want to paste an image that has transparent pixels, pass the <code class="literal1">Image</code> object again as the third argument.</p>
+</div>
+</div>
+<div class="book" title="Resizing an Image">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3552" class="firstname"></a>Resizing an Image</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">The <code class="literal1">resize()</code> method is called on an <code class="literal1">Image</code> object and returns a new <code class="literal1">Image</code> object of the specified width and height. It accepts a two-integer tuple argument, representing the new width and height of the returned image. Enter the following into the interactive shell:</p>
+<p><a id="calibre_link-3553" class="calibre1"></a>
+<pre class="programlisting">➊ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">width, height = catIm.size</strong></span>
+➋ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">quartersizedIm = catIm.resize((int(width / 2), int(height / 2)))</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">quartersizedIm.save('quartersized.png')</strong></span>
+➌ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">svelteIm = catIm.resize((width, height + 300))</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">svelteIm.save('svelte.png')</strong></span></pre>
+<p class="calibre4">Here we assign the two values in the <code class="literal1">catIm.size</code> tuple to the variables <code class="literal1">width</code> and <code class="literal1">height</code> ➊. Using <code class="literal1">width</code> and <code class="literal1">height</code> instead of <code class="literal1">catIm.size[0]</code> and <code class="literal1">catIm.size[1]</code> makes the rest of the code more readable.</p>
+<p class="calibre4">The first <code class="literal1">resize()</code> call passes <code class="literal1">int(width / 2)</code> for the new width and <code class="literal1">int(height / 2)</code> for the new height ➋, so the <code class="literal1">Image</code> object returned from <code class="literal1">resize()</code> will be half the length and width of the original image, or one-quarter of the original image size overall. The <code class="literal1">resize()</code> method accepts only integers in its tuple argument, which is why you needed to wrap both divisions by <code class="literal1">2</code> in an <code class="literal1">int()</code> call.</p>
+<p class="calibre4">This resizing keeps the same proportions for the width and height. But the new width and height passed to <code class="literal1">resize()</code> do not have to be proportional to the original image. The <code class="literal1">svelteIm</code> variable contains an <code class="literal1">Image</code> object that has the original width but a height that is 300 pixels taller ➌, giving Zophie a more slender look.</p>
+<p class="calibre4">Note that the <code class="literal1">resize()</code> method does not edit the <code class="literal1">Image</code> object in place but instead returns a new <code class="literal1">Image</code> object.</p>
+</div>
+<div class="book" title="Rotating and Flipping Images">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3554" class="firstname"></a>Rotating and Flipping Images</h2>
+</div>
+</div>
+</div>
+<p class="calibre4"><a id="calibre_link-316" class="calibre1"></a><a id="calibre_link-608" class="calibre1"></a><a id="calibre_link-660" class="calibre1"></a><a id="calibre_link-836" class="calibre1"></a><a id="calibre_link-837" class="calibre1"></a><a id="calibre_link-1091" class="calibre1"></a><a id="calibre_link-1264" class="calibre1"></a><a id="calibre_link-1265" class="calibre1"></a><a id="calibre_link-1507" class="calibre1"></a>Images can be rotated with the <code class="literal1">rotate()</code> method, which returns a new <code class="literal1">Image</code> object of the rotated image and leaves the original <code class="literal1">Image</code> object unchanged. The argument to <code class="literal1">rotate()</code> is a single integer or float representing the number of degrees to rotate the image counterclockwise. Enter the following into the interactive shell:</p>
+<p><a id="calibre_link-3555" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">catIm.rotate(90).save('rotated90.png')</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">catIm.rotate(180).save('rotated180.png')</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">catIm.rotate(270).save('rotated270.png')</strong></span></pre>
+<p class="calibre4">Note how you can <span class="calibre1"><em class="calibre5">chain</em></span> method calls by calling <code class="literal1">save()</code> directly on the <code class="literal1">Image</code> object returned from <code class="literal1">rotate()</code>. The first <code class="literal1">rotate()</code> and <code class="literal1">save()</code> call makes a new <code class="literal1">Image</code> object representing the image rotated counterclockwise by 90 degrees and saves the rotated image to <span class="calibre1"><em class="calibre5">rotated90.png</em></span>. The second and third calls do the same, but with 180 degress and 270 degress. The results look like <a class="ulink" href="#calibre_link-140" title="Figure 17-7. The original image (left) and the image rotated counterclockwise by 90, 180, and 270 degrees">Figure&nbsp;17-7</a>.</p>
+<div class="figure"><a id="calibre_link-140" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-3556" class="calibre1"></a><img src="/images/000051.jpg" alt="The original image (left) and the image rotated counterclockwise by 90, 180, and 270 degrees" class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;17-7.&nbsp;The original image (left) and the image rotated counterclockwise by 90, 180, and 270 degrees</p>
+</div>
+<p class="calibre4">Notice that the width and height of the image change when the image is rotated 90 or 270 degrees. If you rotate an image by some other amount, the original dimensions of the image are maintained. On Windows, a black background is used to fill in any gaps made by the rotation, like in <a class="ulink" href="#calibre_link-141" title="Figure 17-8. The image rotated 6 degrees normally (left) and with expand=True (right)">Figure&nbsp;17-8</a>. On OS X, transparent pixels are used for the gaps instead.</p>
+<p class="calibre4">The <code class="literal1">rotate()</code> method has an optional <code class="literal1">expand</code> keyword argument that can be set to <code class="literal1">True</code> to enlarge the dimensions of the image to fit the entire rotated new image. For example, enter the following into the interactive shell:</p>
+<p><a id="calibre_link-3557" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">catIm.rotate(6).save('rotated6.png')</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">catIm.rotate(6, expand=True).save('rotated6_expanded.png')</strong></span></pre>
+<p class="calibre4">The first call rotates the image 6 degrees and saves it to <span class="calibre1"><em class="calibre5">rotate6.png</em></span> (see the image on the left of <a class="ulink" href="#calibre_link-141" title="Figure 17-8. The image rotated 6 degrees normally (left) and with expand=True (right)">Figure&nbsp;17-8</a>). The second call rotates the image 6 degrees with <code class="literal1">expand</code> set to <code class="literal1">True</code> and saves it to <span class="calibre1"><em class="calibre5">rotate6_expanded.png</em></span> (see the image on the right of <a class="ulink" href="#calibre_link-141" title="Figure 17-8. The image rotated 6 degrees normally (left) and with expand=True (right)">Figure&nbsp;17-8</a>).</p>
+<div class="figure"><a id="calibre_link-141" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-3558" class="calibre1"></a><img src="/images/000093.jpg" alt="The image rotated 6 degrees normally (left) and with expand=True (right)" class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;17-8.&nbsp;The image rotated 6 degrees normally (left) and with <code class="literal1">expand=True</code> (right)</p>
+</div>
+<p class="calibre4"><a id="calibre_link-1736" class="calibre1"></a>You can also get a “mirror flip” of an image with the <code class="literal1">transpose()</code> method. You must pass either <code class="literal1">Image.FLIP_LEFT_RIGHT</code> or <code class="literal1">Image.FLIP_TOP_BOTTOM</code> to the <code class="literal1">transpose()</code> method. Enter the following into the interactive shell:</p>
+<p><a id="calibre_link-3559" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">catIm.transpose(Image.FLIP_LEFT_RIGHT).save('horizontal_flip.png')</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">catIm.transpose(Image.FLIP_TOP_BOTTOM).save('vertical_flip.png')</strong></span></pre>
+<p class="calibre4">Like <code class="literal1">rotate()</code>, <code class="literal1">transpose()</code> creates a new <code class="literal1">Image</code> object. Here was pass <code class="literal1">Image.FLIP_LEFT_RIGHT</code> to flip the image horizontally and then save the result to <span class="calibre1"><em class="calibre5">horizontal_flip.png</em></span>. To flip the image vertically, we pass <code class="literal1">Image.FLIP_TOP_BOTTOM</code> and save to <span class="calibre1"><em class="calibre5">vertical_flip.png</em></span>. The results look like <a class="ulink" href="#calibre_link-142" title="Figure 17-9. The original image (left), horizontal flip (center), and vertical flip (right)">Figure&nbsp;17-9</a>.</p>
+<div class="figure"><a id="calibre_link-142" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-3560" class="calibre1"></a><img src="/images/000058.jpg" alt="The original image (left), horizontal flip (center), and vertical flip (right)" class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;17-9.&nbsp;The original image (left), horizontal flip (center), and vertical flip (right)</p>
+</div>
+</div>
+<div class="book" title="Changing Individual Pixels">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3561" class="firstname"></a>Changing Individual Pixels</h2>
+</div>
+</div>
+</div>
+<p class="calibre4"><a id="calibre_link-746" class="calibre1"></a><a id="calibre_link-838" class="calibre1"></a><a id="calibre_link-1266" class="calibre1"></a><a id="calibre_link-1281" class="calibre1"></a><a id="calibre_link-1351" class="calibre1"></a>The color of an individual pixel can be retrieved or set with the <code class="literal1">getpixel()</code> and <code class="literal1">putpixel()</code> methods. These methods both take a tuple representing the x- and y-coordinates of the pixel. The <code class="literal1">putpixel()</code> method also takes an additional tuple argument for the color of the pixel. This color argument is a four-integer RGBA tuple or a three-integer RGB tuple. Enter the following into the interactive shell:</p>
+<p><a id="calibre_link-3562" class="calibre1"></a>
+<pre class="programlisting">➊ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">im = Image.new('RGBA', (100, 100))</strong></span>
+➋ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">im.getpixel((0, 0))</strong></span>
+   (0, 0, 0, 0)
+➌ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">for x in range(100):</strong></span>
+           <span class="calibre1"><strong class="literal">for y in range(50):</strong></span>
+➍             <span class="calibre1"><strong class="literal">im.putpixel((x, y), (210, 210, 210))</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">from PIL import ImageColor</strong></span>
+➎ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">for x in range(100):</strong></span>
+           <span class="calibre1"><strong class="literal">for y in range(50, 100):</strong></span>
+➏             <span class="calibre1"><strong class="literal">im.putpixel((x, y), ImageColor.getcolor('darkgray', 'RGBA'))</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">im.getpixel((0, 0))</strong></span>
+   (210, 210, 210, 255)
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">im.getpixel((0, 50))</strong></span>
+   (169, 169, 169, 255)
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">im.save('putPixel.png')</strong></span></pre>
+<p class="calibre4">At ➊ we make a new image that is a 100×100 transparent square. Calling <code class="literal1">getpixel()</code> on some coordinates in this image returns <code class="literal1">(0, 0, 0, 0)</code> because the image is transparent ➋. To color pixels in this image, we can use nested <code class="literal1">for</code> loops to go through all the pixels in the top half of the image ➌ and color each pixel using <code class="literal1">putpixel()</code> ➍. Here we pass <code class="literal1">putpixel()</code> the RGB tuple <code class="literal1">(210, 210, 210)</code>, a light gray.</p>
+<p class="calibre4">Say we want to color the bottom half of the image dark gray but don’t know the RGB tuple for dark gray. The <code class="literal1">putpixel()</code> method doesn’t accept a standard color name like <code class="literal1">'darkgray'</code>, so you have to use <code class="literal1">ImageColor.getcolor()</code> to get a color tuple from <code class="literal1">'darkgray'</code>. Loop through the pixels in the bottom half of the image ➎ and pass <code class="literal1">putpixel()</code> the return value of <code class="literal1">ImageColor.getcolor()</code> ➏, and you should now have an image that is light gray in its top half and dark gray in the bottom half, as shown in <a class="ulink" href="#calibre_link-143" title="Figure 17-10. The putPixel.png image">Figure&nbsp;17-10</a>. You can call <code class="literal1">getpixel()</code> on some coordinates to confirm that the color at any given pixel is what you expect. Finally, save the image to <span class="calibre1"><em class="calibre5">putPixel.png</em></span>.</p>
+<div class="figure"><a id="calibre_link-143" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-3563" class="calibre1"></a><img src="/images/000083.jpg" alt="The putPixel.png image" class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;17-10.&nbsp;The <span class="calibre1"><em class="calibre5">putPixel.png</em></span> image</p>
+</div>
+<p class="calibre4">Of course, drawing one pixel at a time onto an image isn’t very convenient. If you need to draw shapes, use the <code class="literal1">ImageDraw</code> functions explained later in this chapter.</p>
+</div>
+</div>
+<div class="book" title="Project: Adding a Logo">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-3564" class="firstname"></a>Project: Adding a Logo</h1>
+</div>
+</div>
+</div>
+<p class="calibre4"><a id="calibre_link-839" class="calibre1"></a><a id="calibre_link-1026" class="calibre1"></a><a id="calibre_link-1027" class="calibre1"></a><a id="calibre_link-1347" class="calibre1"></a>Say you have the boring job of resizing thousands of images and adding a small logo watermark to the corner of each. Doing this with a basic graphics program such as Paintbrush or Paint would take forever. A fancier graphics application such as Photoshop can do batch processing, but that software costs hundreds of dollars. Let’s write a script to do it instead.</p>
+<p class="calibre4">Say that <a class="ulink" href="#calibre_link-144" title="Figure 17-11. The logo to be added to the image.">Figure&nbsp;17-11</a> is the logo you want to add to the bottom-right corner of each image: a black cat icon with a white border, with the rest of the image transparent.</p>
+<div class="figure"><a id="calibre_link-144" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-3565" class="calibre1"></a><img src="/images/000029.jpg" alt="The logo to be added to the image." class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;17-11.&nbsp;The logo to be added to the image.</p>
+</div>
+<p class="calibre4">At a high level, here’s what the program should do:</p>
+<div class="book">
+<ul class="itemizedlist">
+<li class="listitem">
+<p class="calibre4">Load the logo image.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Loop over all <span class="calibre1"><em class="calibre5">.png</em></span> and<span class="calibre1"><em class="calibre5">.jpg</em></span> files in the working directory.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Check whether the image is wider or taller than 300 pixels.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">If so, reduce the width or height (whichever is larger) to 300 pixels and scale down the other dimension proportionally.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Paste the logo image into the corner.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Save the altered images to another folder.</p>
+</li>
+</ul>
+</div>
+<p class="calibre4">This means the code will need to do the following:</p>
+<div class="book">
+<ul class="itemizedlist">
+<li class="listitem">
+<p class="calibre4">Open the <span class="calibre1"><em class="calibre5">catlogo.png</em></span> file as an <code class="literal1">Image</code> object.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Loop over the strings returned from <code class="literal1">os.listdir('.')</code>.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Get the width and height of the image from the <code class="literal1">size</code> attribute.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Calculate the new width and height of the resized image.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Call the <code class="literal1">resize()</code> method to resize the image.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Call the <code class="literal1">paste()</code> method to paste the logo.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Call the <code class="literal1">save()</code> method to save the changes, using the original filename.</p>
+</li>
+</ul>
+</div>
+<div class="book" title="Step 1: Open the Logo Image">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3566" class="firstname"></a>Step 1: Open the Logo Image</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">For this project, open a new file editor window, enter the following code, and save it as <span class="calibre1"><em class="calibre5">resizeAndAddLogo.py</em></span>:</p>
+<p><a id="calibre_link-3567" class="calibre1"></a>
+<pre class="programlisting">   #! python3
+   # resizeAndAddLogo.py - Resizes all images in current working directory to fit
+   # in a 300x300 square, and adds catlogo.png to the lower-right corner.
+   import os
+   from PIL import Image
+
+➊ SQUARE_FIT_SIZE = 300
+➋ LOGO_FILENAME = 'catlogo.png'
+
+➌ logoIm = Image.open(LOGO_FILENAME)
+➍ logoWidth, logoHeight = logoIm.size
+
+   # TODO: Loop over all files in the working directory.
+
+   # TODO: Check if image needs to be resized.
+
+   # TODO: Calculate the new width and height to resize to.
+
+   # TODO: Resize the image.
+
+   # TODO: Add the logo.
+
+   # TODO: Save changes.</pre>
+<p class="calibre4"><a id="calibre_link-1028" class="calibre1"></a>By setting up the <code class="literal1">SQUARE_FIT_SIZE</code> ➊ and <code class="literal1">LOGO_FILENAME</code> ➋ constants at the start of the program, we’ve made it easy to change the program later. Say the logo that you’re adding isn’t the cat icon, or say you’re reducing the output images’ largest dimension to something other than 300 pixels. With these constants at the start of the program, you can just open the code, change those values once, and you’re done. (Or you can make it so that the values for these constants are taken from the command line arguments.) Without these constants, you’d instead have to search the code for all instances of <code class="literal1">300</code> and <code class="literal1">'catlogo.png'</code> and replace them with the values for your new project. In short, using constants makes your program more generalized.</p>
+<p class="calibre4">The logo <code class="literal1">Image</code> object is returned from <code class="literal1">Image.open()</code> ➌. For readability, <code class="literal1">logoWidth</code> and <code class="literal1">logoHeight</code> are assigned to the values from <code class="literal1">logoIm.size</code> ➍.</p>
+<p class="calibre4">The rest of the program is a skeleton of <code class="literal1">TODO</code> comments for now.</p>
+</div>
+<div class="book" title="Step 2: Loop Over All Files and Open Images">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3568" class="firstname"></a>Step 2: Loop Over All Files and Open Images</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Now you need to find every <span class="calibre1"><em class="calibre5">.png</em></span> file and <span class="calibre1"><em class="calibre5">.jpg</em></span> file in the current working directory. Note that you don’t want to add the logo image to the logo image itself, so the program should skip any image with a filename that’s the same as <code class="literal1">LOGO_FILENAME</code>. Add the following to your code:</p>
+<p><a id="calibre_link-3569" class="calibre1"></a>
+<pre class="programlisting">   #! python3
+   # resizeAndAddLogo.py - Resizes all images in current working directory to fit
+   # in a 300x300 square, and adds catlogo.png to the lower-right corner.
+
+   import os
+   from PIL import Image
+
+   <span class="calibre1"><em class="literal3">--snip--</em></span>
+
+   os.makedirs('withLogo', exist_ok=True)
+   <span class="calibre1"><strong class="literal"># Loop over all files in the working directory.</strong></span>
+➊ <span class="calibre1"><strong class="literal">for filename in os.listdir('.'):</strong></span>
+➋     <span class="calibre1"><strong class="literal">if not (filename.endswith('.png') or filename.endswith('.jpg')) \</strong></span>
+          <span class="calibre1"><strong class="literal">or filename == LOGO_FILENAME:</strong></span>
+➌         <span class="calibre1"><strong class="literal">continue # skip non-image files and the logo file itself</strong></span>
+
+➍     <span class="calibre1"><strong class="literal">im = Image.open(filename)</strong></span>
+       <span class="calibre1"><strong class="literal">width, height = im.size</strong></span>
+   <span class="calibre1"><em class="literal3">--snip--</em></span></pre>
+<p class="calibre4"><a id="calibre_link-1029" class="calibre1"></a><a id="calibre_link-1047" class="calibre1"></a>First, the <code class="literal1">os.makedirs()</code> call creates a <span class="calibre1"><em class="calibre5">withLogo</em></span> folder to store the finished images with logos, instead of overwriting the original image files. The <code class="literal1">exist_ok=True</code> keyword argument will keep <code class="literal1">os.makedirs()</code> from raising an exception if <span class="calibre1"><em class="calibre5">withLogo</em></span> already exists. While looping through all the files in the working directory with <code class="literal1">os.listdir('.')</code> ➊, the long <code class="literal1">if</code> statement ➋ checks whether each filename doesn’t end with <span class="calibre1"><em class="calibre5">.png</em></span> or <span class="calibre1"><em class="calibre5">.jpg</em></span>. If so&mdash;or if the file is the logo image itself&mdash;then the loop should skip it and use <code class="literal1">continue</code> ➌ to go to the next file. If <code class="literal1">filename</code> <span class="calibre1"><em class="calibre5">does</em></span> end with <code class="literal1">'.png'</code> or <code class="literal1">'.jpg'</code> (and isn’t the logo file), you can open it as an <code class="literal1">Image</code> object ➍ and set <code class="literal1">width</code> and <code class="literal1">height</code>.</p>
+</div>
+<div class="book" title="Step 3: Resize the Images">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3570" class="firstname"></a>Step 3: Resize the Images</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">The program should resize the image only if the width or height is larger than <code class="literal1">SQUARE_FIT_SIZE</code> (300 pixels, in this case), so put all of the resizing code inside an <code class="literal1">if</code> statement that checks the <code class="literal1">width</code> and <code class="literal1">height</code> variables. Add the following code to your program:</p>
+<p><a id="calibre_link-3571" class="calibre1"></a>
+<pre class="programlisting">   #! python3
+   # resizeAndAddLogo.py - Resizes all images in current working directory to fit
+   # in a 300x300 square, and adds catlogo.png to the lower-right corner.
+
+   import os
+   from PIL import Image
+
+   <span class="calibre1"><em class="literal3">--snip--</em></span>
+
+      <span class="calibre1"><strong class="literal"># Check if image needs to be resized.</strong></span>
+      <span class="calibre1"><strong class="literal">if width &gt; SQUARE_FIT_SIZE and height &gt; SQUARE_FIT_SIZE:</strong></span>
+          <span class="calibre1"><strong class="literal"># Calculate the new width and height to resize to.</strong></span>
+          <span class="calibre1"><strong class="literal">if width &gt; height:</strong></span>
+➊            <span class="calibre1"><strong class="literal">height = int((SQUARE_FIT_SIZE / width) * height)</strong></span>
+              <span class="calibre1"><strong class="literal">width = SQUARE_FIT_SIZE</strong></span>
+          <span class="calibre1"><strong class="literal">else:</strong></span>
+➋            <span class="calibre1"><strong class="literal">width = int((SQUARE_FIT_SIZE / height) * width)</strong></span>
+              <span class="calibre1"><strong class="literal">height = SQUARE_FIT_SIZE</strong></span>
+
+          <span class="calibre1"><strong class="literal"># Resize the image.</strong></span>
+          <span class="calibre1"><strong class="literal">print('Resizing %s...' % (filename))</strong></span>
+     ➌     <span class="calibre1"><strong class="literal">im = im.resize((width, height))</strong></span>
+
+<span class="calibre1"><em class="literal3">--snip--</em></span></pre>
+<p class="calibre4"><a id="calibre_link-1030" class="calibre1"></a>If the image does need to be resized, you need to find out whether it is a wide or tall image. If <code class="literal1">width</code> is greater than <code class="literal1">height</code>, then the height should be reduced by the same proportion that the width would be reduced ➊. This proportion is the <code class="literal1">SQUARE_FIT_SIZE</code> value divided by the current width. The new <code class="literal1">height</code> value is this proportion multiplied by the current <code class="literal1">height</code> value. Since the division operator returns a float value and <code class="literal1">resize()</code> requires the dimensions to be integers, remember to convert the result to an integer with the <code class="literal1">int()</code> function. Finally, the new <code class="literal1">width</code> value will simply be set to <code class="literal1">SQUARE_FIT_SIZE</code>.</p>
+<p class="calibre4">If the <code class="literal1">height</code> is greater than or equal to the <code class="literal1">width</code> (both cases are handled in the <code class="literal1">else</code> clause), then the same calculation is done, except with the <code class="literal1">height</code> and <code class="literal1">width</code> variables swapped ➋.</p>
+<p class="calibre4">Once <code class="literal1">width</code> and <code class="literal1">height</code> contain the new image dimensions, pass them to the <code class="literal1">resize()</code> method and store the returned <code class="literal1">Image</code> object in <code class="literal1">im</code> ➌.</p>
+</div>
+<div class="book" title="Step 4: Add the Logo and Save the Changes">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3572" class="firstname"></a>Step 4: Add the Logo and Save the Changes</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Whether or not the image was resized, the logo should still be pasted to the bottom-right corner. Where exactly the logo should be pasted depends on both the size of the image and the size of the logo. <a class="ulink" href="#calibre_link-145" title="Figure 17-12. The left and top coordinates for placing the logo in the bottom-right corner should be the image width/height minus the logo width/height.">Figure&nbsp;17-12</a> shows how to calculate the pasting position. The left coordinate for where to paste the logo will be the image width minus the logo width; the top coordinate for where to paste the logo will be the image height minus the logo height.</p>
+<div class="figure"><a id="calibre_link-145" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-3573" class="calibre1"></a><img src="/images/000061.jpg" alt="The left and top coordinates for placing the logo in the bottom-right corner should be the image width/height minus the logo width/height." class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;17-12.&nbsp;The left and top coordinates for placing the logo in the bottom-right corner should be the image width/height minus the logo width/height.</p>
+</div>
+<p class="calibre4">After your code pastes the logo into the image, it should save the modified <code class="literal1">Image</code> object. Add the following to your program:</p>
+<p><a id="calibre_link-3574" class="calibre1"></a>
+<pre class="programlisting">   #! python3
+   # resizeAndAddLogo.py - Resizes all images in current working directory to fit
+   # in a 300x300 square, and adds catlogo.png to the lower-right corner.
+
+   import os
+   from PIL import Image
+
+<span class="calibre1"><em class="literal3">--snip--</em></span>
+
+    # Check if image needs to be resized.
+    <span class="calibre1"><em class="literal3">--snip--</em></span>
+
+    <span class="calibre1"><strong class="literal"># Add the logo.</strong></span>
+➊  <span class="calibre1"><strong class="literal">print('Adding logo to %s...' % (filename))</strong></span>
+➋  <span class="calibre1"><strong class="literal">im.paste(logoIm, (width - logoWidth, height - logoHeight), logoIm)</strong></span>
+
+    <span class="calibre1"><strong class="literal"># Save changes.</strong></span>
+➌  <span class="calibre1"><strong class="literal">im.save(os.path.join('withLogo', filename))</strong></span></pre>
+<p class="calibre4">The new code prints a message telling the user that the logo is being added ➊, pastes <code class="literal1">logoIm</code> onto <code class="literal1">im</code> at the calculated coordinates ➋, and saves the changes to a filename in the <span class="calibre1"><em class="calibre5">withLogo</em></span> directory ➌. When you run this program with the <span class="calibre1"><em class="calibre5">zophie.png</em></span> file as the only image in the working directory, the output will look like this:</p>
+<p><a id="calibre_link-3575" class="calibre1"></a>
+<pre class="programlisting">Resizing zophie.png...
+Adding logo to zophie.png...</pre>
+<p class="calibre4">The image <span class="calibre1"><em class="calibre5">zophie.png</em></span> will be changed to a 225×300-pixel image that looks like <a class="ulink" href="#calibre_link-146" title="Figure 17-13. The image zophie.png resized and the logo added (left). If you forget the third argument, the transparent pixels in the logo will be copied as solid white pixels (right).">Figure&nbsp;17-13</a>. Remember that the <code class="literal1">paste()</code> method will not paste the transparency pixels if you do not pass the <code class="literal1">logoIm</code> for the third argument as well. This program can automatically resize and “logo-ify” hundreds of images in just a couple minutes.</p>
+<div class="figure"><a id="calibre_link-146" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-3576" class="calibre1"></a><img src="/images/000066.jpg" alt="The image zophie.png resized and the logo added (left). If you forget the third argument, the transparent pixels in the logo will be copied as solid white pixels (right)." class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;17-13.&nbsp;The image <span class="calibre1"><em class="calibre5">zophie.png</em></span> resized and the logo added (left). If you forget the third argument, the transparent pixels in the logo will be copied as solid white pixels (right).</p>
+</div>
+</div>
+<div class="book" title="Ideas for Similar Programs">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3577" class="firstname"></a>Ideas for Similar Programs</h2>
+</div>
+</div>
+</div>
+<p class="calibre4"><a id="calibre_link-514" class="calibre1"></a><a id="calibre_link-515" class="calibre1"></a><a id="calibre_link-516" class="calibre1"></a><a id="calibre_link-822" class="calibre1"></a><a id="calibre_link-823" class="calibre1"></a><a id="calibre_link-840" class="calibre1"></a><a id="calibre_link-841" class="calibre1"></a><a id="calibre_link-842" class="calibre1"></a><a id="calibre_link-964" class="calibre1"></a><a id="calibre_link-1267" class="calibre1"></a><a id="calibre_link-1268" class="calibre1"></a><a id="calibre_link-1269" class="calibre1"></a><a id="calibre_link-1286" class="calibre1"></a>Being able to composite images or modify image sizes in a batch can be useful in many applications. You could write similar programs to do the following:</p>
+<div class="book">
+<ul class="itemizedlist">
+<li class="listitem">
+<p class="calibre4">Add text or a website URL to images.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Add timestamps to images.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Copy or move images into different folders based on their sizes.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Add a mostly transparent watermark to an image to prevent others from copying it.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="book" title="Drawing on Images">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-3578" class="firstname"></a>Drawing on Images</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">If you need to draw lines, rectangles, circles, or other simple shapes on an image, use Pillow’s <code class="literal1">ImageDraw</code> module. Enter the following into the interactive shell:</p>
+<p><a id="calibre_link-3579" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">from PIL import Image, ImageDraw</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">im = Image.new('RGBA', (200, 200), 'white')</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">draw = ImageDraw.Draw(im)</strong></span></pre>
+<p class="calibre4">First, we import <code class="literal1">Image</code> and <code class="literal1">ImageDraw</code>. Then we create a new image, in this case, a 200×200 white image, and store the <code class="literal1">Image</code> object in <code class="literal1">im</code>. We pass the <code class="literal1">Image</code> object to the <code class="literal1">ImageDraw.Draw()</code> function to receive an <code class="literal1">ImageDraw</code> object. This object has several methods for drawing shapes and text onto an <code class="literal1">Image</code> object. Store the <code class="literal1">ImageDraw</code> object in a variable like <code class="literal1">draw</code> so you can use it easily in the following example.</p>
+<div class="book" title="Drawing Shapes">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3580" class="firstname"></a>Drawing Shapes</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">The following ImageDraw methods draw various kinds of shapes on the image. The <code class="literal1">fill</code> and <code class="literal1">outline</code> parameters for these methods are optional and will default to white if left unspecified.</p>
+<div class="book" title="Points">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h3 class="title8"><a id="calibre_link-3581" class="firstname"></a>Points</h3>
+</div>
+</div>
+</div>
+<p class="calibre4">The <code class="literal1">point(</code><span class="calibre1"><em class="calibre5"><code class="literal3">xy, fill</code></em></span><code class="literal1">)</code> method draws individual pixels. The <span class="calibre1"><em class="calibre5"><code class="literal3">xy</code></em></span> argument represents a list of the points you want to draw. The list can be a list of x- and y-coordinate tuples, such as <code class="literal1">[(x, y), (x, y), ...]</code>, or a list of x- and y-coordinates without tuples, such as <code class="literal1">[x1, y1, x2, y2, ...]</code>. The <span class="calibre1"><em class="calibre5"><code class="literal3">fill</code></em></span> argument is the color of the points and is either an RGBA tuple or a string of a color name, such as <code class="literal1">'red'</code>. The <span class="calibre1"><em class="calibre5"><code class="literal3">fill</code></em></span> argument is optional.</p>
+</div>
+<div class="book" title="Lines">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h3 class="title8"><a id="calibre_link-3582" class="firstname"></a>Lines</h3>
+</div>
+</div>
+</div>
+<p class="calibre4">The <code class="literal1">line(</code><span class="calibre1"><em class="calibre5"><code class="literal3">xy, fill, width</code></em></span><code class="literal1">)</code> method draws a line or series of lines. <span class="calibre1"><em class="calibre5"><code class="literal3">xy</code></em></span> is either a list of tuples, such as <code class="literal1">[(x, y), (x, y), ...]</code>, or a list of integers, such as <code class="literal1">[x1, y1, x2, y2, ...]</code>. Each point is one of the connecting points on the <a id="calibre_link-517" class="calibre1"></a><a id="calibre_link-518" class="calibre1"></a><a id="calibre_link-519" class="calibre1"></a><a id="calibre_link-520" class="calibre1"></a><a id="calibre_link-528" class="calibre1"></a><a id="calibre_link-843" class="calibre1"></a><a id="calibre_link-844" class="calibre1"></a><a id="calibre_link-845" class="calibre1"></a><a id="calibre_link-846" class="calibre1"></a><a id="calibre_link-1270" class="calibre1"></a><a id="calibre_link-1271" class="calibre1"></a><a id="calibre_link-1272" class="calibre1"></a><a id="calibre_link-1273" class="calibre1"></a><a id="calibre_link-1288" class="calibre1"></a><a id="calibre_link-1443" class="calibre1"></a>lines you’re drawing. The optional <span class="calibre1"><em class="calibre5"><code class="literal3">fill</code></em></span> argument is the color of the lines, as an RGBA tuple or color name. The optional <span class="calibre1"><em class="calibre5"><code class="literal3">width</code></em></span> argument is the width of the lines and defaults to 1 if left unspecified.</p>
+</div>
+<div class="book" title="Rectangles">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h3 class="title8"><a id="calibre_link-3583" class="firstname"></a>Rectangles</h3>
+</div>
+</div>
+</div>
+<p class="calibre4">The <code class="literal1">rectangle(</code><span class="calibre1"><em class="calibre5"><code class="literal3">xy, fill, outline</code></em></span><code class="literal1">)</code> method draws a rectangle. The <span class="calibre1"><em class="calibre5"><code class="literal3">xy</code></em></span> argument is a box tuple of the form <code class="literal1">(</code><span class="calibre1"><em class="calibre5"><code class="literal3">left, top, right, bottom</code></em></span><code class="literal1">)</code>. The <span class="calibre1"><em class="calibre5"><code class="literal3">left</code></em></span> and <span class="calibre1"><em class="calibre5"><code class="literal3">top</code></em></span> values specify the x- and y-coordinates of the upper-left corner of the rectangle, while <span class="calibre1"><em class="calibre5"><code class="literal3">right</code></em></span> and <span class="calibre1"><em class="calibre5"><code class="literal3">bottom</code></em></span> specify the lower-right corner. The optional <span class="calibre1"><em class="calibre5"><code class="literal3">fill</code></em></span> argument is the color that will fill the inside of the rectangle. The optional <span class="calibre1"><em class="calibre5"><code class="literal3">outline</code></em></span> argument is the color of the rectangle’s outline.</p>
+</div>
+<div class="book" title="Ellipses">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h3 class="title8"><a id="calibre_link-3584" class="firstname"></a>Ellipses</h3>
+</div>
+</div>
+</div>
+<p class="calibre4">The <code class="literal1">ellipse(</code><span class="calibre1"><em class="calibre5"><code class="literal3">xy, fill, outline</code></em></span><code class="literal1">)</code> method draws an ellipse. If the width and height of the ellipse are identical, this method will draw a circle. The <span class="calibre1"><em class="calibre5"><code class="literal3">xy</code></em></span> argument is a box tuple (<span class="calibre1"><em class="calibre5"><code class="literal3">left</code></em></span>, <span class="calibre1"><em class="calibre5"><code class="literal3">top</code></em></span>, <span class="calibre1"><em class="calibre5"><code class="literal3">right</code></em></span>, <span class="calibre1"><em class="calibre5"><code class="literal3">bottom</code></em></span>) that represents a box that precisely contains the ellipse. The optional <span class="calibre1"><em class="calibre5"><code class="literal3">fill</code></em></span> argument is the color of the inside of the ellipse, and the optional <span class="calibre1"><em class="calibre5"><code class="literal3">outline</code></em></span> argument is the color of the ellipse’s outline.</p>
+</div>
+<div class="book" title="Polygons">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h3 class="title8"><a id="calibre_link-3585" class="firstname"></a>Polygons</h3>
+</div>
+</div>
+</div>
+<p class="calibre4">The <code class="literal1">polygon(</code><span class="calibre1"><em class="calibre5"><code class="literal3">xy, fill, outline</code></em></span><code class="literal1">)</code> method draws an arbitrary polygon. The <span class="calibre1"><em class="calibre5"><code class="literal3">xy</code></em></span> argument is a list of tuples, such as <code class="literal1">[(x, y), (x, y), ...]</code>, or integers, such as <code class="literal1">[x1, y1, x2, y2, ...]</code>, representing the connecting points of the polygon’s sides. The last pair of coordinates will be automatically connected to the first pair. The optional <span class="calibre1"><em class="calibre5"><code class="literal3">fill</code></em></span> argument is the color of the inside of the polygon, and the optional <span class="calibre1"><em class="calibre5"><code class="literal3">outline</code></em></span> argument is the color of the polygon’s outline.</p>
+</div>
+<div class="book" title="Drawing Example">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h3 class="title8"><a id="calibre_link-3586" class="firstname"></a>Drawing Example</h3>
+</div>
+</div>
+</div>
+<p class="calibre4">Enter the following into the interactive shell:</p>
+<p><a id="calibre_link-3587" class="calibre1"></a>
+<pre class="programlisting">   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">from PIL import Image, ImageDraw</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">im = Image.new('RGBA', (200, 200), 'white')</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">draw = ImageDraw.Draw(im)</strong></span>
+➊ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">draw.line([(0, 0), (199, 0), (199, 199), (0, 199), (0, 0)], fill='black')</strong></span>
+➋ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">draw.rectangle((20, 30, 60, 60), fill='blue')</strong></span>
+➌ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">draw.ellipse((120, 30, 160, 60), fill='red')</strong></span>
+➍ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">draw.polygon(((57, 87), (79, 62), (94, 85), (120, 90), (103, 113)),</strong></span>
+   <span class="calibre1"><strong class="literal">fill='brown')</strong></span>
+➎ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">for i in range(100, 200, 10):</strong></span>
+           <span class="calibre1"><strong class="literal">draw.line([(i, 0), (200, i - 100)], fill='green')</strong></span>
+
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">im.save('drawing.png')</strong></span></pre>
+<p class="calibre4">After making an <code class="literal1">Image</code> object for a 200×200 white image, passing it to <code class="literal1">ImageDraw.Draw()</code> to get an <code class="literal1">ImageDraw</code> object, and storing the <code class="literal1">ImageDraw</code> object in <code class="literal1">draw</code>, you can call drawing methods on <code class="literal1">draw</code>. Here we make a thin, black <a id="calibre_link-521" class="calibre1"></a><a id="calibre_link-824" class="calibre1"></a><a id="calibre_link-847" class="calibre1"></a><a id="calibre_link-1274" class="calibre1"></a><a id="calibre_link-1704" class="calibre1"></a>outline at the edges of the image ➊, a blue rectangle with its top-left corner at (20, 30) and bottom-right corner at (60, 60) ➋, a red ellipse defined by a box from (120, 30) to (160, 60) ➌, a brown polygon with five points ➍, and a pattern of green lines drawn with a <code class="literal1">for</code> loop ➎. The resulting <span class="calibre1"><em class="calibre5">drawing.png</em></span> file will look like <a class="ulink" href="#calibre_link-147" title="Figure 17-14. The resulting drawing.png image">Figure&nbsp;17-14</a>.</p>
+<div class="figure"><a id="calibre_link-147" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-3588" class="calibre1"></a><img src="/images/000070.jpg" alt="The resulting drawing.png image" class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;17-14.&nbsp;The resulting <span class="calibre1"><em class="calibre5">drawing.png</em></span> image</p>
+</div>
+<p class="calibre4">There are several other shape-drawing methods for <code class="literal1">ImageDraw</code> objects. The full documentation is available at <span class="calibre1"><em class="calibre5"><a class="ulink" href="http://pillow.readthedocs.org/en/latest/reference/ImageDraw.html">http://pillow.readthedocs.org/en/latest/reference/ImageDraw.html</a></em></span>.</p>
+</div>
+</div>
+<div class="book" title="Drawing Text">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3589" class="firstname"></a>Drawing Text</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">The <code class="literal1">ImageDraw</code> object also has a <code class="literal1">text()</code> method for drawing text onto an image. The <code class="literal1">text()</code> method takes four arguments: <span class="calibre1"><em class="calibre5"><code class="literal3">xy</code></em></span>, <span class="calibre1"><em class="calibre5"><code class="literal3">text</code></em></span>, <span class="calibre1"><em class="calibre5"><code class="literal3">fill</code></em></span>, and <span class="calibre1"><em class="calibre5"><code class="literal3">font</code></em></span>.</p>
+<div class="book">
+<ul class="itemizedlist">
+<li class="listitem">
+<p class="calibre4">The <span class="calibre1"><em class="calibre5"><code class="literal3">xy</code></em></span> argument is a two-integer tuple specifying the upper-left corner of the text box.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">The <span class="calibre1"><em class="calibre5"><code class="literal3">text</code></em></span> argument is the string of text you want to write.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">The optional <span class="calibre1"><em class="calibre5"><code class="literal3">fill</code></em></span> argument is the color of the text.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">The optional <span class="calibre1"><em class="calibre5"><code class="literal3">font</code></em></span> argument is an <code class="literal1">ImageFont</code> object, used to set the type-face and size of the text. This is described in more detail in the next section.</p>
+</li>
+</ul>
+</div>
+<p class="calibre4">Since it’s often hard to know in advance what size a block of text will be in a given font, the <code class="literal1">ImageDraw</code> module also offers a <code class="literal1">textsize()</code> method. Its first argument is the string of text you want to measure, and its second argument is an optional <code class="literal1">ImageFont</code> object. The <code class="literal1">textsize()</code> method will then return a two-integer tuple of the width and height that the text in the given <a id="calibre_link-1706" class="calibre1"></a><a id="calibre_link-1739" class="calibre1"></a>font would be if it were written onto the image. You can use this width and height to help you calculate exactly where you want to put the text on your image.</p>
+<p class="calibre4">The first three arguments for <code class="literal1">text()</code> are straightforward. Before we use <code class="literal1">text()</code> to draw text onto an image, let’s look at the optional fourth argument, the <code class="literal1">ImageFont</code> object.</p>
+<p class="calibre4">Both <code class="literal1">text()</code> and <code class="literal1">textsize()</code> take an optional <code class="literal1">ImageFont</code> object as their final arguments. To create one of these objects, first run the following:</p>
+<p><a id="calibre_link-3590" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">from PIL import ImageFont</strong></span></pre>
+<p class="calibre4">Now that you’ve imported Pillow’s <code class="literal1">ImageFont</code> module, you can call the <code class="literal1">ImageFont.truetype()</code> function, which takes two arguments. The first argument is a string for the font’s <span class="calibre1"><em class="calibre5">TrueType file</em></span>&mdash;this is the actual font file that lives on your hard drive. A TrueType file has the <span class="calibre1"><em class="calibre5">.ttf</em></span> file extension and can usually be found in the following folders:</p>
+<div class="book">
+<ul class="itemizedlist">
+<li class="listitem">
+<p class="calibre4">On Windows: <span class="calibre1"><em class="calibre5">C:\Windows\Fonts</em></span></p>
+</li>
+<li class="listitem">
+<p class="calibre4">On OS X: <span class="calibre1"><em class="calibre5">/Library/Fonts</em></span> and <span class="calibre1"><em class="calibre5">/System/Library/Fonts</em></span></p>
+</li>
+<li class="listitem">
+<p class="calibre4">On Linux: <span class="calibre1"><em class="calibre5">/usr/share/fonts/truetype</em></span></p>
+</li>
+</ul>
+</div>
+<p class="calibre4">You don’t actually need to enter these paths as part of the TrueType file string because Python knows to automatically search for fonts in these directories. But Python will display an error if it is unable to find the font you specified.</p>
+<p class="calibre4">The second argument to <code class="literal1">ImageFont.truetype()</code> is an integer for the font size in <span class="calibre1"><em class="calibre5">points</em></span> (rather than, say, pixels). Keep in mind that Pillow creates PNG images that are 72 pixels per inch by default, and a point is 1/72 of an inch.</p>
+<p class="calibre4">Enter the following into the interactive shell, replacing <code class="literal1">FONT_FOLDER</code> with the actual folder name your operating system uses:</p>
+<p><a id="calibre_link-3591" class="calibre1"></a>
+<pre class="programlisting">   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">from PIL import Image, ImageDraw, ImageFont</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">import os</strong></span>
+➊ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">im = Image.new('RGBA', (200, 200), 'white')</strong></span>
+➋ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">draw = ImageDraw.Draw(im)</strong></span>
+➌ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">draw.text((20, 150), 'Hello', fill='purple')</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">fontsFolder = 'FONT_FOLDER' # e.g. 'Library/Fonts'</strong></span>
+➍ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">arialFont = ImageFont.truetype(os.path.join(fontsFolder, 'arial.ttf'), 32)</strong></span>
+➎ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">draw.text((100, 150), 'Howdy', fill='gray', font=arialFont)</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">im.save('text.png')</strong></span></pre>
+<p class="calibre4">After importing <code class="literal1">Image</code>, <code class="literal1">ImageDraw</code>, <code class="literal1">ImageFont</code>, and <code class="literal1">os</code>, we make an <code class="literal1">Image</code> object for a new 200×200 white image ➊ and make an <code class="literal1">ImageDraw</code> object from the <code class="literal1">Image</code> object ➋. We use <code class="literal1">text()</code> to draw <span class="calibre1"><em class="calibre5">Hello</em></span> at (20, 150) in purple ➌. We didn’t pass the optional fourth argument in this <code class="literal1">text()</code> call, so the typeface and size of this text aren’t customized.</p>
+<p class="calibre4">To set a typeface and size, we first store the folder name (like <span class="calibre1"><em class="calibre5">/Library/Fonts</em></span>) in <code class="literal1">fontsFolder</code>. Then we call <code class="literal1">ImageFont.truetype()</code>, passing it the <span class="calibre1"><em class="calibre5">.ttf</em></span> file for the font we want, followed by an integer font size ➍. Store the <code class="literal1">Font</code> object you get from <code class="literal1">ImageFont.truetype()</code> in a variable like <code class="literal1">arialFont</code>, and then pass the variable to <code class="literal1">text()</code> in the final keyword argument. The <code class="literal1">text()</code> call at ➎ draws <span class="calibre1"><em class="calibre5">Howdy</em></span> at (100, 150) in gray in 32-point Arial.</p>
+<p class="calibre4">The resulting <span class="calibre1"><em class="calibre5">text.png</em></span> file will look like <a class="ulink" href="#calibre_link-148" title="Figure 17-15. The resulting text.png image">Figure&nbsp;17-15</a>.</p>
+<div class="figure"><a id="calibre_link-148" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-3592" class="calibre1"></a><img src="/images/000073.jpg" alt="The resulting text.png image" class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;17-15.&nbsp;The resulting <span class="calibre1"><em class="calibre5">text.png</em></span> image</p>
+</div>
+</div>
+</div>
+<div class="book" title="Summary">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-3593" class="firstname"></a>Summary</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">Images consist of a collection of pixels, and each pixel has an RGBA value for its color and its addressable by x- and y-coordinates. Two common image formats are JPEG and PNG. The <code class="literal1">pillow</code> module can handle both of these image formats and others.</p>
+<p class="calibre4">When an image is loaded into an <code class="literal1">Image</code> object, its width and height dimensions are stored as a two-integer tuple in the <code class="literal1">size</code> attribute. Objects of the <code class="literal1">Image</code> data type also have methods for common image manipulations: <code class="literal1">crop()</code>, <code class="literal1">copy()</code>, <code class="literal1">paste()</code>, <code class="literal1">resize()</code>, <code class="literal1">rotate()</code>, and <code class="literal1">transpose()</code>. To save the <code class="literal1">Image</code> object to an image file, call the <code class="literal1">save()</code> method.</p>
+<p class="calibre4">If you want your program to draw shapes onto an image, use <code class="literal1">ImageDraw</code> methods to draw points, lines, rectangles, ellipses, and polygons. The module also provides methods for drawing text in a typeface and font size of your choosing.</p>
+<p class="calibre4">Although advanced (and expensive) applications such as Photoshop provide automatic batch processing features, you can use Python scripts to do many of the same modifications for free. In the previous chapters, you wrote Python programs to deal with plaintext files, spreadsheets, PDFs, and other formats. With the <code class="literal1">pillow</code> module, you’ve extended your programming powers to processing images as well!</p>
+</div>
+<div class="book" title="Practice Questions">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-3594" class="firstname"></a>Practice Questions</h1>
+</div>
+</div>
+</div>
+<div class="book" title="Frequently Asked Questions"><a id="calibre_link-3595" class="calibre1"></a><br />
+<table border="0" width="100%" summary="Q and A Set" class="calibre22">
+<col width="1%" class="calibre23"></col>
+<col class="calibre11"></col>
+<tbody class="calibre16">
+<tr class="calibre13" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3596" class="calibre1"></a><a id="calibre_link-3597" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">1. What is an RGBA value?</p>
+</td>
+</tr>
+<tr class="calibre19" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3598" class="calibre1"></a><a id="calibre_link-3599" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">2. How can you get the RGBA value of <code class="literal2">'CornflowerBlue'</code> from the <code class="literal2">Pillow</code> module?</p>
+</td>
+</tr>
+<tr class="calibre13" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3600" class="calibre1"></a><a id="calibre_link-3601" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">3. What is a box tuple?</p>
+</td>
+</tr>
+<tr class="calibre19" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3602" class="calibre1"></a><a id="calibre_link-3603" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">4. What function returns an <code class="literal2">Image</code> object for, say, an image file named <span class="calibre1"><em class="calibre5">zophie.png</em></span>?</p>
+</td>
+</tr>
+<tr class="calibre13" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3604" class="calibre1"></a><a id="calibre_link-3605" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">5. How can you find out the width and height of an <code class="literal2">Image</code> object’s image?</p>
+</td>
+</tr>
+<tr class="calibre19" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3606" class="calibre1"></a><a id="calibre_link-3607" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">6. What method would you call to get <code class="literal2">Image</code> object for a 100×100 image, excluding the lower left quarter of it?</p>
+</td>
+</tr>
+<tr class="calibre13" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3608" class="calibre1"></a><a id="calibre_link-3609" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">7. After making changes to an <code class="literal2">Image</code> object, how could you save it as an image file?</p>
+</td>
+</tr>
+<tr class="calibre19" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3610" class="calibre1"></a><a id="calibre_link-3611" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">8. What module contains Pillow’s shape-drawing code?</p>
+</td>
+</tr>
+<tr class="calibre13" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3612" class="calibre1"></a><a id="calibre_link-3613" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">9. <code class="literal2">Image</code> objects do not have drawing methods. What kind of object does? How do you get this kind of object?</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="book" title="Practice Projects">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-3614" class="firstname"></a>Practice Projects</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">For practice, write programs that do the following.</p>
+<div class="book" title="Extending and Fixing the Chapter Project Programs">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<div class="calibre6"></div>
+<h2 class="title3"><a id="calibre_link-3615" class="firstname"></a>Extending and Fixing the Chapter Project Programs</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">The <span class="calibre1"><em class="calibre5">resizeAndAddLogo.py</em></span> program in this chapter works with PNG and JPEG files, but Pillow supports many more formats than just these two. Extend <span class="calibre1"><em class="calibre5">resizeAndAddLogo.py</em></span> to process GIF and BMP images as well.</p>
+<p class="calibre4">Another small issue is that the program modifies PNG and JPEG files only if their file extensions are set in lowercase. For example, it will process <span class="calibre1"><em class="calibre5">zophie.png</em></span> but not <span class="calibre1"><em class="calibre5">zophie.PNG</em></span>. Change the code so that the file extension check is case insensitive.</p>
+<div class="figure"><a id="calibre_link-149" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-3616" class="calibre1"></a><img src="/images/000080.jpg" alt="When the image isn’t much larger than the logo, the results look ugly." class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;17-16.&nbsp;When the image isn’t much larger than the logo, the results look ugly.</p>
+</div>
+<p class="calibre4">Finally, the logo added to the bottom-right corner is meant to be just a small mark, but if the image is about the same size as the logo itself, the result will look like <a class="ulink" href="#calibre_link-149" title="Figure 17-16. When the image isn’t much larger than the logo, the results look ugly.">Figure&nbsp;17-16</a>. Modify <span class="calibre1"><em class="calibre5">resizeAndAddLogo.py</em></span> so that the image must be at least twice the width and height of the logo image before the logo is pasted. Other wise, it should skip adding the logo.</p>
+</div>
+<div class="book" title="Identifying Photo Folders on the Hard Drive">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3617" class="firstname"></a>Identifying Photo Folders on the Hard Drive</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">I have a bad habit of transferring files from my digital camera to temporary folders somewhere on the hard drive and then forgetting about these folders. It would be nice to write a program that could scan the entire hard drive and find these leftover “photo folders.”</p>
+<p class="calibre4">Write a program that goes through every folder on your hard drive and finds potential photo folders. Of course, first you’ll have to define what you consider a “photo folder” to be; let’s say that it’s any folder where more than half of the files are photos. And how do you define what files are photos?</p>
+<p class="calibre4">First, a photo file must have the file extension <span class="calibre1"><em class="calibre5">.png</em></span> or <span class="calibre1"><em class="calibre5">.jpg</em></span>. Also, photos are large images; a photo file’s width and height must both be larger than 500 pixels. This is a safe bet, since most digital camera photos are several thousand pixels in width and height.</p>
+<p class="calibre4">As a hint, here’s a rough skeleton of what this program might look like:</p>
+<p><a id="calibre_link-3618" class="calibre1"></a>
+<pre class="programlisting">#! python3 #
+Import modules and write comments to describe this program.
+
+for foldername, subfolders, filenames in os.walk('C:\\'):
+    numPhotoFiles = 0
+    numNonPhotoFiles = 0
+    for filename in filenames:
+        # Check if file extension isn't .png or .jpg.
+        if TODO:
+            numNonPhotoFiles += 1
+            continue    # skip to next filename
+
+        # Open image file using Pillow.
+
+        # Check if width &amp; height are larger than 500.
+        if TODO:
+            # Image is large enough to be considered a photo.
+            numPhotoFiles += 1
+        else:
+            # Image is too small to be a photo.
+            numNonPhotoFiles += 1
+
+    # If more than half of files were photos,
+    # print the absolute path of the folder.
+    if TODO:
+        print(TODO)</pre>
+<p class="calibre4">When the program runs, it should print the absolute path of any photo folders to the screen.</p>
+</div>
+<div class="book" title="Custom Seating Cards">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3619" class="firstname"></a>Custom Seating Cards</h2>
+</div>
+</div>
+</div>
+<p class="calibre4"><a class="ulink" href="/chapter13" title="Chapter 13. Working with PDF and word Documents">Chapter&nbsp;13</a> included a practice project to create custom invitations from a list of guests in a plaintext file. As an additional project, use the <code class="literal1">pillow</code> module to create images for custom seating cards for your guests. For each of the guests listed in the <span class="calibre1"><em class="calibre5">guests.txt</em></span> file from the resources at <span class="calibre1"><em class="calibre5"><a class="ulink" href="http://nostarch.com/automatestuff/">http://nostarch.com/automatestuff/</a></em></span>, generate an image file with the guest name and some flowery decoration. A public domain flower image is available in the resources at <span class="calibre1"><em class="calibre5"><a class="ulink" href="http://nostarch.com/automatestuff/">http://nostarch.com/automatestuff/</a></em></span>.</p>
+<p class="calibre4">To ensure that each seating card is the same size, add a black rectangle on the edges of the invitation image so that when the image is printed out, there will be a guideline for cutting. The PNG files that Pillow produces are set to 72 pixels per inch, so a 4×5-inch card would require a 288×360-pixel image.</p>
+</div>
+</div>
+</div>
+</div>
+<p><center><a href="/chapter16"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="/chapter18"><img src="/images/next.png" /></a><br />Support the Author: Buy the book on <a href="http://www.amazon.com/gp/product/1593275994/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&amp;camp=1789&amp;creative=9325&amp;creativeASIN=1593275994&amp;linkCode=as2&amp;tag=playwithpyth-20&amp;linkId=2KIYOE7RFLG7D2RJ">Amazon</a> or<br/><a href="http://www.nostarch.com/automatestuff">the book/ebook bundle directly from No Starch Press</a>.<br /><a href="http://www.nostarch.com/automatestuff" ><img class=" size-full wp-image-49 aligncenter" src="/images/automate_small_cover.png" alt="small_cover" width="170" height="225" /></a><br /><a href="//inventwithpython.com">Read the author's other free Python books:</a><br /><a href="//inventwithpython.com/chapters"><img src="/images/smallcover_invent.png" width=120 /></a> <a href="//inventwithpython.com/pygame/chapters"><img src="/images/smallcover_makinggames.png" width=120 /></a> <a href="//inventwithpython.com/hacking/chapters"><img src="/images/smallcover_hacking.png" width=120 /></a></center></p>
+<p style="text-align: center;"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img class="alignnone size-full wp-image-54" src="/images/cc-by-nc-sa_small.png" alt="cc-by-nc-sa_small" width="100" height="35" /> Released under Creative Commons: BY-NC-SA 4.0</a></p>
+			</div><!-- .entry-content -->
+</article><!-- #post-## -->
+
+				
+			
+		</main><!-- #main -->
+	</div><!-- #primary -->
+
+	
+</body>
+</html>
+
+<!-- Dynamic page generated in 0.270 seconds. -->
+<!-- Cached page generated by WP-Super-Cache on 2016-08-18 04:19:59 -->
+
+<!-- super cache -->

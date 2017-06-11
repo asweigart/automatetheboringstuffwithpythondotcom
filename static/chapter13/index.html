@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en-US" class="no-js">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Chapter 13 &#8211; Working with PDF and Word Documents | Automate the Boring Stuff with Python</title>
+	<style>body { font-family: sans-serif; background: #fffce3; }</style>
+
+	</head>
+
+<body class="page page-id-127 page-template-default"><div>UNDER CONSTRUCTION: The site went down and backups failed, so this website will look messy for a while. Thanks for your patience! -Al</div>
+	<div id="page" class="hfeed site">
+		<div class="site-toggles">
+			<a href class="main-navigation-toggle"><i class="fa fa-bars"></i></a>
+							<a href class="widget-area-toggle"><i class="fa fa-align-right"></i></a>
+					</div>
+
+		<nav id="site-navigation" class="main-navigation" role="navigation">
+			<a href class="main-navigation-toggle"><i class="fa fa-times"></i></a>
+			<h4 class="main-navigation-title">Menu</h4>
+			<div class="menu"><ul><li ><a href="https://automatetheboringstuff.com/">Home</a></li><li class="page_item page-item-241"><a href="https://automatetheboringstuff.com/appendixa/">Appendix A &#8211; Installing Third-Party Modules</a></li><li class="page_item page-item-243"><a href="https://automatetheboringstuff.com/appendixb/">Appendix B &#8211; Running Programs</a></li><li class="page_item page-item-244"><a href="https://automatetheboringstuff.com/appendixc/">Appendix C &#8211; Answers to the Practice Questions</a></li><li class="page_item page-item-43"><a href="https://automatetheboringstuff.com/chapter0/">Chapter  0 &#8211; Introduction</a></li><li class="page_item page-item-60"><a href="https://automatetheboringstuff.com/chapter1/">Chapter  1 &#8211; Python Basics</a></li><li class="page_item page-item-70"><a href="https://automatetheboringstuff.com/chapter2/">Chapter  2 &#8211; Flow Control</a></li><li class="page_item page-item-112"><a href="https://automatetheboringstuff.com/chapter3/">Chapter  3 &#8211; Functions</a></li><li class="page_item page-item-113"><a href="https://automatetheboringstuff.com/chapter4/">Chapter  4 &#8211; Lists</a></li><li class="page_item page-item-114"><a href="https://automatetheboringstuff.com/chapter5/">Chapter  5 &#8211; Dictionaries and Structuring Data</a></li><li class="page_item page-item-115"><a href="https://automatetheboringstuff.com/chapter6/">Chapter  6 &#8211; Manipulating Strings</a></li><li class="page_item page-item-116"><a href="https://automatetheboringstuff.com/chapter7/">Chapter  7 &#8211; Pattern Matching with Regular Expressions</a></li><li class="page_item page-item-122"><a href="https://automatetheboringstuff.com/chapter8/">Chapter  8 &#8211; Reading and Writing Files</a></li><li class="page_item page-item-123"><a href="https://automatetheboringstuff.com/chapter9/">Chapter  9 &#8211; Organizing Files</a></li><li class="page_item page-item-124"><a href="https://automatetheboringstuff.com/chapter10/">Chapter 10 &#8211; Debugging</a></li><li class="page_item page-item-125"><a href="https://automatetheboringstuff.com/chapter11/">Chapter 11 &#8211; Web Scraping</a></li><li class="page_item page-item-126"><a href="https://automatetheboringstuff.com/chapter12/">Chapter 12 &#8211; Working with Excel Spreadsheets</a></li><li class="page_item page-item-127 current_page_item"><a href="https://automatetheboringstuff.com/chapter13/">Chapter 13 &#8211; Working with PDF and Word Documents</a></li><li class="page_item page-item-128"><a href="https://automatetheboringstuff.com/chapter14/">Chapter 14 &#8211; Working with CSV Files and JSON Data</a></li><li class="page_item page-item-129"><a href="https://automatetheboringstuff.com/chapter15/">Chapter 15 &#8211; Keeping Time, Scheduling Tasks, and Launching Programs</a></li><li class="page_item page-item-130"><a href="https://automatetheboringstuff.com/chapter16/">Chapter 16 &#8211; Sending Email and Text Messages</a></li><li class="page_item page-item-131"><a href="https://automatetheboringstuff.com/chapter17/">Chapter 17 &#8211; Manipulating Images</a></li><li class="page_item page-item-132"><a href="https://automatetheboringstuff.com/chapter18/">Chapter 18 &#8211; Controlling the Keyboard and Mouse with GUI Automation</a></li><li class="page_item page-item-472"><a href="https://automatetheboringstuff.com/how-to-do-pycon-or-any-tech-conference/">How to Do PyCon (or any tech conference)</a></li><li class="page_item page-item-355"><a href="https://automatetheboringstuff.com/list-of-css-selector-tutorials/">List of CSS Selector Tutorials</a></li><li class="page_item page-item-359"><a href="https://automatetheboringstuff.com/list-of-json-apis/">List of JSON APIs</a></li><li class="page_item page-item-363"><a href="https://automatetheboringstuff.com/list-of-programming-practice-sites/">List of Programming Practice Sites</a></li><li class="page_item page-item-30"><a href="https://automatetheboringstuff.com/list-of-web-comics/">List of Web Comics</a></li><li class="page_item page-item-32"><a href="https://automatetheboringstuff.com/schedulers/">Schedulers</a></li></ul></div>
+					</nav><!-- #site-navigation -->
+
+					<header id="masthead" class="site-header" role="banner">
+				<a class="skip-link screen-reader-text" href="#content" data-backstretch="https://automatetheboringstuff.com/wp-content/uploads/2014/12/cropped-automatecover2.jpg">Skip to content</a>
+				<div class="site-branding">
+					<h1 class="site-title"><a href="https://automatetheboringstuff.com/" rel="home">Automate the Boring Stuff with Python</a></h1>
+					<h2 class="site-description">Practical Programming for Total Beginners</h2>
+				</div>
+			</header><!-- #masthead -->
+		
+		<div id="content" class="site-content">
+	<div id="primary" class="content-area">
+		<main id="main" class="site-main" role="main">
+
+			
+				
+<article id="post-127" class="post-127 page type-page status-publish hentry">
+	<header class="entry-header">
+		<h1 class="entry-title">Chapter 13 &#8211; Working with PDF and Word Documents</h1>	</header><!-- .entry-header -->
+
+	<div class="entry-content">
+		<p><center><a href="/chapter12"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="/chapter14"><img src="/images/next.png" /></a><br />Support the Author: Buy the book on <a href="http://www.amazon.com/gp/product/1593275994/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&amp;camp=1789&amp;creative=9325&amp;creativeASIN=1593275994&amp;linkCode=as2&amp;tag=playwithpyth-20&amp;linkId=2KIYOE7RFLG7D2RJ">Amazon</a> or<br/><a href="http://www.nostarch.com/automatestuff">the book/ebook bundle directly from No Starch Press</a>.<br /><a href="http://www.nostarch.com/automatestuff" ><img class=" size-full wp-image-49 aligncenter" src="/images/automate_small_cover.png" alt="small_cover" width="170" height="225" /></a><br /><a href="//inventwithpython.com">Read the author's other free Python books:</a><br /><a href="//inventwithpython.com/chapters"><img src="/images/smallcover_invent.png" width=120 /></a> <a href="//inventwithpython.com/pygame/chapters"><img src="/images/smallcover_makinggames.png" width=120 /></a> <a href="//inventwithpython.com/hacking/chapters"><img src="/images/smallcover_hacking.png" width=120 /></a></center></p>
+<div class="calibre" id="calibre_link-96">
+<div class="book" title="Chapter 13. Working with PDF and word Documents">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title1"><a id="calibre_link-3177" class="firstname"></a>Working with PDF and word Documents</h1>
+</div>
+</div>
+</div>
+<p class="calibre4"><a id="calibre_link-1235" class="calibre1"></a><a id="calibre_link-1395" class="calibre1"></a>PDF and Word documents are binary files, which makes them much more complex than plaintext files. In addition to text, they store lots of font, color, and layout information. If you want your programs to read or write to PDFs or Word documents, you’ll need to do more than simply pass their filenames to <code class="literal1">open()</code>.</p>
+<p class="calibre4">Fortunately, there are Python modules that make it easy for you to interact with PDFs and Word documents. This chapter will cover two such modules: PyPDF2 and Python-Docx.</p>
+<div class="book" title="PDF Documents">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-3178" class="firstname"></a>PDF Documents</h1>
+</div>
+</div>
+</div>
+<p class="calibre4"><span class="calibre1"><em class="calibre5">PDF</em></span> stands for <span class="calibre1"><em class="calibre5">Portable Document Format</em></span> and uses the <span class="calibre1"><em class="calibre5">.pdf</em></span> file extension. Although PDFs support many features, this chapter will focus on the two things you’ll be doing most often with them: reading text content from PDFs and crafting new PDFs from existing documents.</p>
+<p class="calibre4"><a id="calibre_link-1236" class="calibre1"></a><a id="calibre_link-1396" class="calibre1"></a><a id="calibre_link-1671" class="calibre1"></a>The module you’ll use to work with PDFs is PyPDF2. To install it, run <code class="literal1">pip install PyPDF2</code> from the command line. This module name is case sensitive, so make sure the <span class="calibre1"><em class="calibre5">y</em></span> is lowercase and everything else is uppercase. (Check out Appendix A for full details about installing third-party modules.) If the module was installed correctly, running <code class="literal1">import PyPDF2</code> in the interactive shell shouldn’t display any errors.</p>
+<div class="sidebar"><a id="calibre_link-3179" class="calibre1"></a>
+<p class="title6">The Problematic PDF Format</p>
+<p class="calibre4">While PDF files are great for laying out text in a way that’s easy for people to print and read, they’re not straightforward for software to parse into plaintext. As such, PyPDF2 might make mistakes when extracting text from a PDF and may even be unable to open some PDFs at all. There isn’t much you can do about this, unfortunately. PyPDF2 may simply be unable to work with some of your particular PDF files. That said, I haven’t found any PDF files so far that can’t be opened with PyPDF2.</p>
+</div>
+<div class="book" title="Extracting Text from PDFs">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3180" class="firstname"></a>Extracting Text from PDFs</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">PyPDF2 does not have a way to extract images, charts, or other media from PDF documents, but it can extract text and return it as a Python string. To start learning how PyPDF2 works, we’ll use it on the example PDF shown in <a class="ulink" href="#calibre_link-110" title="Figure 13-1. The PDF page that we will be extracting text from">Figure&nbsp;13-1</a>.</p>
+<div class="figure"><a id="calibre_link-110" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-3181" class="calibre1"></a><img src="/images/000065.jpg" alt="The PDF page that we will be extracting text from" class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;13-1.&nbsp;The PDF page that we will be extracting text from</p>
+</div>
+<p class="calibre4"><a id="calibre_link-449" class="calibre1"></a><a id="calibre_link-1203" class="calibre1"></a><a id="calibre_link-1234" class="calibre1"></a><a id="calibre_link-1237" class="calibre1"></a><a id="calibre_link-1397" class="calibre1"></a>Download this PDF from <span class="calibre1"><em class="calibre5"><a class="ulink" href="http://nostarch.com/automatestuff/">http://nostarch.com/automatestuff/</a></em></span>, and enter the following into the interactive shell:</p>
+<p><a id="calibre_link-3182" class="calibre1"></a>
+<pre class="programlisting">   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">import PyPDF2</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">pdfFileObj = open('meetingminutes.pdf', 'rb')</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">pdfReader = PyPDF2.PdfFileReader(pdfFileObj)</strong></span>
+➊ &gt;&gt;&gt; pdfReader.numPages
+   19
+➋ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">pageObj = pdfReader.getPage(0)</strong></span>
+➌ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">pageObj.extractText()</strong></span>
+   'OOFFFFIICCIIAALL BBOOAARRDD MMIINNUUTTEESS Meeting of March 7, 2015
+   \n     The Board of Elementary and Secondary Education shall provide leadership
+   and create policies for education that expand opportunities for children,
+   empower families and communities, and advance Louisiana in an increasingly
+   competitive global market. BOARD of ELEMENTARY and SECONDARY EDUCATION '</pre>
+<p class="calibre4">First, import the <code class="literal1">PyPDF2</code> module. Then open <span class="calibre1"><em class="calibre5">meetingminutes.pdf</em></span> in read binary mode and store it in <code class="literal1">pdfFileObj</code>. To get a <code class="literal1">PdfFileReader</code> object that represents this PDF, call <code class="literal1">PyPDF2.PdfFileReader()</code> and pass it <code class="literal1">pdfFileObj</code>. Store this <code class="literal1">PdfFileReader</code> object in <code class="literal1">pdfReader</code>.</p>
+<p class="calibre4">The total number of pages in the document is stored in the <code class="literal1">numPages</code> attribute of a <code class="literal1">PdfFileReader</code> object ➊. The example PDF has 19 pages, but let’s extract text from only the first page.</p>
+<p class="calibre4">To extract text from a page, you need to get a <code class="literal1">Page</code> object, which represents a single page of a PDF, from a <code class="literal1">PdfFileReader</code> object. You can get a <code class="literal1">Page</code> object by calling the <code class="literal1">getPage()</code> method ➋ on a <code class="literal1">PdfFileReader</code> object and passing it the page number of the page you’re interested in&mdash;in our case, 0.</p>
+<p class="calibre4">PyPDF2 uses a <span class="calibre1"><em class="calibre5">zero-based index</em></span> for getting pages: The first page is page 0, the second is <a class="ulink" href="#calibre_link-90" title="Introduction">Introduction</a>, and so on. This is always the case, even if pages are numbered differently within the document. For example, say your PDF is a three-page excerpt from a longer report, and its pages are numbered 42, 43, and 44. To get the first page of this document, you would want to call <code class="literal1">pdfReader.getPage(0)</code>, not <code class="literal1">getPage(42)</code> or <code class="literal1">getPage(1)</code>.</p>
+<p class="calibre4">Once you have your <code class="literal1">Page</code> object, call its <code class="literal1">extractText()</code> method to return a string of the page’s text ➌. The text extraction isn’t perfect: The text <span class="calibre1"><em class="calibre5">Charles E. “Chas” Roemer, President</em></span> from the PDF is absent from the string returned by <code class="literal1">extractText()</code>, and the spacing is sometimes off. Still, this approximation of the PDF text content may be good enough for your program.</p>
+</div>
+<div class="book" title="Decrypting PDFs">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3183" class="firstname"></a>Decrypting PDFs</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Some PDF documents have an encryption feature that will keep them from being read until whoever is opening the document provides a password. Enter the following into the interactive shell with the PDF you downloaded, which has been encrypted with the password <span class="calibre1"><em class="calibre5">rosebud</em></span>:</p>
+<p><a id="calibre_link-3184" class="calibre1"></a>
+<pre class="programlisting">   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">import PyPDF2</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">pdfReader = PyPDF2.PdfFileReader(open('encrypted.pdf', 'rb'))</strong></span>
+➊ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">pdfReader.isEncrypted</strong></span>
+   True
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">pdfReader.getPage(0)</strong></span>
+➋ Traceback (most recent call last):
+     File "&lt;pyshell#173&gt;", line 1, in &lt;module&gt;
+       pdfReader.getPage()
+     <span class="calibre1"><em class="literal3">--snip--</em></span>
+     File "C:\Python34\lib\site-packages\PyPDF2\pdf.py", line 1173, in getObject
+       raise utils.PdfReadError("file has not been decrypted")
+   PyPDF2.utils.PdfReadError: file has not been decrypted
+➌ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">pdfReader.decrypt('rosebud')</strong></span>
+   1
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">pageObj = pdfReader.getPage(0)</strong></span></pre>
+<p class="calibre4"><a id="calibre_link-1238" class="calibre1"></a><a id="calibre_link-1249" class="calibre1"></a><a id="calibre_link-1398" class="calibre1"></a>All <code class="literal1">PdfFileReader</code> objects have an <code class="literal1">isEncrypted</code> attribute that is <code class="literal1">True</code> if the PDF is encrypted and <code class="literal1">False</code> if it isn’t ➊. Any attempt to call a function that reads the file before it has been decrypted with the correct password will result in an error ➋.</p>
+<p class="calibre4">To read an encrypted PDF, call the <code class="literal1">decrypt()</code> function and pass the password as a string ➌. After you call <code class="literal1">decrypt()</code> with the correct password, you’ll see that calling <code class="literal1">getPage()</code> no longer causes an error. If given the wrong password, the <code class="literal1">decrypt()</code> function will return <code class="literal1">0</code> and <code class="literal1">getPage()</code> will continue to fail. Note that the <code class="literal1">decrypt()</code> method decrypts only the <code class="literal1">PdfFileReader</code> object, not the actual PDF file. After your program terminates, the file on your hard drive remains encrypted. Your program will have to call <code class="literal1">decrypt()</code> again the next time it is run.</p>
+</div>
+<div class="book" title="Creating PDFs">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3185" class="firstname"></a>Creating PDFs</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">PyPDF2’s counterpart to <code class="literal1">PdfFileReader</code> objects is <code class="literal1">PdfFileWriter</code> objects, which can create new PDF files. But PyPDF2 cannot write arbitrary text to a PDF like Python can do with plaintext files. Instead, PyPDF2’s PDF-writing capabilities are limited to copying pages from other PDFs, rotating pages, overlaying pages, and encrypting files.</p>
+<p class="calibre4">PyPDF2 doesn’t allow you to directly edit a PDF. Instead, you have to create a new PDF and then copy content over from an existing document. The examples in this section will follow this general approach:</p>
+<div class="book">
+<ol class="orderedlist">
+<li class="listitem">
+<p class="calibre4">Open one or more existing PDFs (the source PDFs) into <code class="literal1">PdfFileReader</code> objects.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Create a new <code class="literal1">PdfFileWriter</code> object.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Copy pages from the <code class="literal1">PdfFileReader</code> objects into the <code class="literal1">PdfFileWriter</code> object.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Finally, use the <code class="literal1">PdfFileWriter</code> object to write the output PDF.</p>
+</li>
+</ol>
+</div>
+<p class="calibre4">Creating a <code class="literal1">PdfFileWriter</code> object creates only a value that represents a PDF document in Python. It doesn’t create the actual PDF file. For that, you must call the PdfFileWriter’s <code class="literal1">write()</code> method.</p>
+<p class="calibre4"><a id="calibre_link-227" class="calibre1"></a><a id="calibre_link-1239" class="calibre1"></a><a id="calibre_link-1399" class="calibre1"></a>The <code class="literal1">write()</code> method takes a regular <code class="literal1">File</code> object that has been opened in <span class="calibre1"><em class="calibre5">write-binary</em></span> mode. You can get such a <code class="literal1">File</code> object by calling Python’s <code class="literal1">open()</code> function with two arguments: the string of what you want the PDF’s filename to be and <code class="literal1">'wb'</code> to indicate the file should be opened in write-binary mode.</p>
+<p class="calibre4">If this sounds a little confusing, don’t worry&mdash;you’ll see how this works in the following code examples.</p>
+<div class="book" title="Copying Pages">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h3 class="title8"><a id="calibre_link-3186" class="firstname"></a>Copying Pages</h3>
+</div>
+</div>
+</div>
+<p class="calibre4">You can use PyPDF2 to copy pages from one PDF document to another. This allows you to combine multiple PDF files, cut unwanted pages, or reorder pages.</p>
+<p class="calibre4">Download <span class="calibre1"><em class="calibre5">meetingminutes.pdf</em></span> and <span class="calibre1"><em class="calibre5">meetingminutes2.pdf</em></span> from <span class="calibre1"><em class="calibre5"><a class="ulink" href="http://nostarch.com/automatestuff/">http://nostarch.com/automatestuff/</a></em></span> and place the PDFs in the current working directory. Enter the following into the interactive shell:</p>
+<p><a id="calibre_link-3187" class="calibre1"></a>
+<pre class="programlisting">   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">import PyPDF2</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">pdf1File = open('meetingminutes.pdf', 'rb')</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">pdf2File = open('meetingminutes2.pdf', 'rb')</strong></span>
+➊ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">pdf1Reader = PyPDF2.PdfFileReader(pdf1File)</strong></span>
+➋ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">pdf2Reader = PyPDF2.PdfFileReader(pdf2File)</strong></span>
+➌ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">pdfWriter = PyPDF2.PdfFileWriter()</strong></span>
+
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">for pageNum in range(pdf1Reader.numPages):</strong></span>
+➍         <span class="calibre1"><strong class="literal">pageObj = pdf1Reader.getPage(pageNum)</strong></span>
+➎         <span class="calibre1"><strong class="literal">pdfWriter.addPage(pageObj)</strong></span>
+
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">for pageNum in range(pdf2Reader.numPages):</strong></span>
+➏         <span class="calibre1"><strong class="literal">pageObj = pdf2Reader.getPage(pageNum)</strong></span>
+➐         <span class="calibre1"><strong class="literal">pdfWriter.addPage(pageObj)</strong></span>
+
+➑ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">pdfOutputFile = open('combinedminutes.pdf', 'wb')</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">pdfWriter.write(pdfOutputFile)</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">pdfOutputFile.close()</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">pdf1File.close()</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">pdf2File.close()</strong></span></pre>
+<p class="calibre4">Open both PDF files in read binary mode and store the two resulting <code class="literal1">File</code> objects in <code class="literal1">pdf1File</code> and <code class="literal1">pdf2File</code>. Call <code class="literal1">PyPDF2.PdfFileReader()</code> and pass it <code class="literal1">pdf1File</code> to get a <code class="literal1">PdfFileReader</code> object for <span class="calibre1"><em class="calibre5">meetingminutes.pdf</em></span> ➊. Call it again and pass it <code class="literal1">pdf2File</code> to get a <code class="literal1">PdfFileReader</code> object for <span class="calibre1"><em class="calibre5">meetingminutes2.pdf</em></span> ➋. Then create a new <code class="literal1">PdfFileWriter</code> object, which represents a blank PDF document ➌.</p>
+<p class="calibre4">Next, copy all the pages from the two source PDFs and add them to the <code class="literal1">PdfFileWriter</code> object. Get the <code class="literal1">Page</code> object by calling <code class="literal1">getPage()</code> on a <code class="literal1">PdfFileReader</code> object ➍. Then pass that <code class="literal1">Page</code> object to your PdfFileWriter’s <code class="literal1">addPage()</code> method ➎. These steps are done first for <code class="literal1">pdf1Reader</code> and then <a id="calibre_link-1240" class="calibre1"></a><a id="calibre_link-1400" class="calibre1"></a><a id="calibre_link-1505" class="calibre1"></a><a id="calibre_link-1506" class="calibre1"></a>again for <code class="literal1">pdf2Reader</code>. When you’re done copying pages, write a new PDF called <span class="calibre1"><em class="calibre5">combinedminutes.pdf</em></span> by passing a <code class="literal1">File</code> object to the PdfFileWriter’s <code class="literal1">write()</code> method ➏.</p>
+<div class="note" title="Note">
+<h3 class="title5"><a id="calibre_link-3188" class="calibre1"></a>Note</h3>
+<p class="calibre4"><span class="calibre1"><em class="calibre5">PyPDF2 cannot insert pages in the middle of a</em></span> <span class="calibre1"><em class="calibre5"><code class="literal3">PdfFileWriter</code></em></span> <span class="calibre1"><em class="calibre5">object; the</em></span> <span class="calibre1"><em class="calibre5"><code class="literal3">addPage()</code></em></span> <span class="calibre1"><em class="calibre5">method will only add pages to the end.</em></span></p>
+</div>
+<p class="calibre4">You have now created a new PDF file that combines the pages from <span class="calibre1"><em class="calibre5">meetingminutes.pdf</em></span> and <span class="calibre1"><em class="calibre5">meetingminutes2.pdf</em></span> into a single document. Remember that the <code class="literal1">File</code> object passed to <code class="literal1">PyPDF2.PdfFileReader()</code> needs to be opened in read-binary mode by passing <code class="literal1">'rb'</code> as the second argument to <code class="literal1">open()</code>. Likewise, the <code class="literal1">File</code> object passed to <code class="literal1">PyPDF2.PdfFileWriter()</code> needs to be opened in write-binary mode with <code class="literal1">'wb'</code>.</p>
+</div>
+<div class="book" title="Rotating Pages">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h3 class="title8"><a id="calibre_link-3189" class="firstname"></a>Rotating Pages</h3>
+</div>
+</div>
+</div>
+<p class="calibre4">The pages of a PDF can also be rotated in 90-degree increments with the <code class="literal1">rotateClockwise()</code> and <code class="literal1">rotateCounterClockwise()</code> methods. Pass one of the integers <code class="literal1">90</code>, <code class="literal1">180</code>, or <code class="literal1">270</code> to these methods. Enter the following into the interactive shell, with the <span class="calibre1"><em class="calibre5">meetingminutes.pdf</em></span> file in the current working directory:</p>
+<p><a id="calibre_link-3190" class="calibre1"></a>
+<pre class="programlisting">   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">import PyPDF2</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">minutesFile = open('meetingminutes.pdf', 'rb')</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">pdfReader = PyPDF2.PdfFileReader(minutesFile)</strong></span>
+➊ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">page = pdfReader.getPage(0)</strong></span>
+➋ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">page.rotateClockwise(90)</strong></span>
+   {'/Contents': [IndirectObject(961, 0), IndirectObject(962, 0),
+   <span class="calibre1"><em class="literal3">--snip--</em></span>
+   }
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">pdfWriter = PyPDF2.PdfFileWriter()</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">pdfWriter.addPage(page)</strong></span>
+➌ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">resultPdfFile = open('rotatedPage.pdf', 'wb')</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">pdfWriter.write(resultPdfFile)</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">resultPdfFile.close()</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">minutesFile.close()</strong></span></pre>
+<p class="calibre4">Here we use <code class="literal1">getPage(0)</code> to select the first page of the PDF ➊, and then we call <code class="literal1">rotateClockwise(90)</code> on that page ➋. We write a new PDF with the rotated page and save it as <span class="calibre1"><em class="calibre5">rotatedPage.pdf</em></span> ➌.</p>
+<p class="calibre4">The resulting PDF will have one page, rotated 90 degrees clockwise, as in <a class="ulink" href="#calibre_link-111" title="Figure 13-2. The rotatedPage.pdf file with the page rotated 90 degrees clockwise">Figure&nbsp;13-2</a>. The return values from <code class="literal1">rotateClockwise()</code> and <code class="literal1">rotateCounterClockwise()</code> contain a lot of information that you can ignore.</p>
+<div class="figure"><a id="calibre_link-111" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-3191" class="calibre1"></a><img src="/images/000104.jpg" alt="The rotatedPage.pdf file with the page rotated 90 degrees clockwise" class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;13-2.&nbsp;The <span class="calibre1"><em class="calibre5">rotatedPage.pdf</em></span> file with the page rotated 90 degrees clockwise</p>
+</div>
+</div>
+<div class="book" title="Overlaying Pages">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h3 class="title8"><a id="calibre_link-3192" class="firstname"></a>Overlaying Pages</h3>
+</div>
+</div>
+</div>
+<p class="calibre4"><a id="calibre_link-1241" class="calibre1"></a><a id="calibre_link-1401" class="calibre1"></a>PyPDF2 can also overlay the contents of one page over another, which is useful for adding a logo, timestamp, or watermark to a page. With Python, it’s easy to add watermarks to multiple files and only to pages your program specifies.</p>
+<p class="calibre4">Download <span class="calibre1"><em class="calibre5">watermark.pdf</em></span> from <span class="calibre1"><em class="calibre5"><a class="ulink" href="http://nostarch.com/automatestuff/">http://nostarch.com/automatestuff/</a></em></span> and place the PDF in the current working directory along with <span class="calibre1"><em class="calibre5">meetingminutes.pdf</em></span>. Then enter the following into the interactive shell:</p>
+<p><a id="calibre_link-3193" class="calibre1"></a>
+<pre class="programlisting">   &gt;&gt;&gt; import PyPDF2
+   &gt;&gt;&gt; minutesFile = open('meetingminutes.pdf', 'rb')
+➋ &gt;&gt;&gt; pdfReader = PyPDF2.PdfFileReader(minutesFile)
+➋ &gt;&gt;&gt; minutesFirstPage = pdfReader.getPage(0)
+➌ &gt;&gt;&gt; pdfWatermarkReader = PyPDF2.PdfFileReader(open('watermark.pdf', 'rb'))
+➍ &gt;&gt;&gt; minutesFirstPage.mergePage(pdfWatermarkReader.getPage(0))
+➎ &gt;&gt;&gt; pdfWriter = PyPDF2.PdfFileWriter()
+➏ &gt;&gt;&gt; pdfWriter.addPage(minutesFirstPage)
+
+➐ &gt;&gt;&gt; for pageNum in range(1, pdfReader.numPages):
+           pageObj = pdfReader.getPage(pageNum)
+           pdfWriter.addPage(pageObj)
+   &gt;&gt;&gt; resultPdfFile = open('watermarkedCover.pdf', 'wb')
+   &gt;&gt;&gt; pdfWriter.write(resultPdfFile)
+   &gt;&gt;&gt; minutesFile.close()
+   &gt;&gt;&gt; resultPdfFile.close()</pre>
+<p class="calibre4"><a id="calibre_link-556" class="calibre1"></a><a id="calibre_link-1057" class="calibre1"></a><a id="calibre_link-1242" class="calibre1"></a><a id="calibre_link-1402" class="calibre1"></a>Here we make a <code class="literal1">PdfFileReader</code> object of <span class="calibre1"><em class="calibre5">meetingminutes.pdf</em></span> ➊. We call <code class="literal1">getPage(0)</code> to get a <code class="literal1">Page</code> object for the first page and store this object in <code class="literal1">minutesFirstPage</code> ➋. We then make a <code class="literal1">PdfFileReader</code> object for <span class="calibre1"><em class="calibre5">watermark.pdf</em></span> ➌ and call <code class="literal1">mergePage()</code> on <code class="literal1">minutesFirstPage</code> ➍. The argument we pass to <code class="literal1">mergePage()</code> is a <code class="literal1">Page</code> object for the first page of <span class="calibre1"><em class="calibre5">watermark.pdf</em></span>.</p>
+<p class="calibre4">Now that we’ve called <code class="literal1">mergePage()</code> on <code class="literal1">minutesFirstPage</code>, <code class="literal1">minutesFirstPage</code> represents the watermarked first page. We make a <code class="literal1">PdfFileWriter</code> object ➎ and add the watermarked first page ➏. Then we loop through the rest of the pages in <span class="calibre1"><em class="calibre5">meetingminutes.pdf</em></span> and add them to the <code class="literal1">PdfFileWriter</code> object ➐. Finally, we open a new PDF called <span class="calibre1"><em class="calibre5">watermarkedCover.pdf</em></span> and write the contents of the PdfFileWriter to the new PDF.</p>
+<p class="calibre4"><a class="ulink" href="#calibre_link-112" title="Figure 13-3. The original PDF (left), the watermark PDF (center), and the merged PDF (right)">Figure&nbsp;13-3</a> shows the results. Our new PDF, <span class="calibre1"><em class="calibre5">watermarkedCover.pdf</em></span>, has all the contents of the <span class="calibre1"><em class="calibre5">meetingminutes.pdf</em></span>, and the first page is watermarked.</p>
+<div class="figure"><a id="calibre_link-112" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-3194" class="calibre1"></a><img src="/images/000101.jpg" alt="The original PDF (left), the watermark PDF (center), and the merged PDF (right)" class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;13-3.&nbsp;The original PDF (left), the watermark PDF (center), and the merged PDF (right)</p>
+</div>
+</div>
+<div class="book" title="Encrypting PDFs">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h3 class="title8"><a id="calibre_link-3195" class="firstname"></a>Encrypting PDFs</h3>
+</div>
+</div>
+</div>
+<p class="calibre4">A <code class="literal1">PdfFileWriter</code> object can also add encryption to a PDF document. Enter the following into the interactive shell:</p>
+<p><a id="calibre_link-3196" class="calibre1"></a>
+<pre class="programlisting">   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">import PyPDF2</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">pdfFile = open('meetingminutes.pdf', 'rb')</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">pdfReader = PyPDF2.PdfFileReader(pdfFile)</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">pdfWriter = PyPDF2.PdfFileWriter()</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">for pageNum in range(pdfReader.numPages):</strong></span>
+           <span class="calibre1"><strong class="literal">pdfWriter.addPage(pdfReader.getPage(pageNum))</strong></span>
+
+➊ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">pdfWriter.encrypt('swordfish')</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">resultPdf = open('encryptedminutes.pdf', 'wb')</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">pdfWriter.write(resultPdf)</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">resultPdf.close()</strong></span></pre>
+<p class="calibre4"><a id="calibre_link-1243" class="calibre1"></a><a id="calibre_link-1244" class="calibre1"></a><a id="calibre_link-1245" class="calibre1"></a><a id="calibre_link-1339" class="calibre1"></a><a id="calibre_link-1403" class="calibre1"></a>Before calling the <code class="literal1">write()</code> method to save to a file, call the <code class="literal1">encrypt()</code> method and pass it a password string ➊. PDFs can have a <span class="calibre1"><em class="calibre5">user password</em></span> (allowing you to view the PDF) and an <span class="calibre1"><em class="calibre5">owner password</em></span> (allowing you to set permissions for printing, commenting, extracting text, and other features). The user password and owner password are the first and second arguments to <code class="literal1">encrypt()</code>, respectively. If only one string argument is passed to <code class="literal1">encrypt()</code>, it will be used for both passwords.</p>
+<p class="calibre4">In this example, we copied the pages of <span class="calibre1"><em class="calibre5">meetingminutes.pdf</em></span> to a <code class="literal1">PdfFileWriter</code> object. We encrypted the PdfFileWriter with the password <span class="calibre1"><em class="calibre5">swordfish</em></span>, opened a new PDF called <span class="calibre1"><em class="calibre5">encryptedminutes.pdf</em></span>, and wrote the contents of the PdfFileWriter to the new PDF. Before anyone can view <span class="calibre1"><em class="calibre5">encryptedminutes.pdf</em></span>, they’ll have to enter this password. You may want to delete the original, unencrypted <span class="calibre1"><em class="calibre5">meetingminutes.pdf</em></span> file after ensuring its copy was correctly encrypted.</p>
+</div>
+</div>
+</div>
+<div class="book" title="Project: Combining Select Pages from Many PDFs">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-3197" class="firstname"></a>Project: Combining Select Pages from Many PDFs</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">Say you have the boring job of merging several dozen PDF documents into a single PDF file. Each of them has a cover sheet as the first page, but you don’t want the cover sheet repeated in the final result. Even though there are lots of free programs for combining PDFs, many of them simply merge entire files together. Let’s write a Python program to customize which pages you want in the combined PDF.</p>
+<p class="calibre4">At a high level, here’s what the program will do:</p>
+<div class="book">
+<ul class="itemizedlist">
+<li class="listitem">
+<p class="calibre4">Find all PDF files in the current working directory.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Sort the filenames so the PDFs are added in order.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Write each page, excluding the first page, of each PDF to the output file.</p>
+<p class="calibre4">In terms of implementation, your code will need to do the following:</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Call <code class="literal1">os.listdir()</code> to find all the files in the working directory and remove any non-PDF files.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Call Python’s <code class="literal1">sort()</code> list method to alphabetize the filenames.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Create a <code class="literal1">PdfFileWriter</code> object for the output PDF.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Loop over each PDF file, creating a <code class="literal1">PdfFileReader</code> object for it.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Loop over each page (except the first) in each PDF file.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Add the pages to the output PDF.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Write the output PDF to a file named <span class="calibre1"><em class="calibre5">allminutes.pdf</em></span>.</p>
+</li>
+</ul>
+</div>
+<p class="calibre4">For this project, open a new file editor window and save it as <span class="calibre1"><em class="calibre5">combinePdfs.py</em></span>.</p>
+<div class="book" title="Step 1: Find All PDF Files">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3198" class="firstname"></a>Step 1: Find All PDF Files</h2>
+</div>
+</div>
+</div>
+<p class="calibre4"><a id="calibre_link-1246" class="calibre1"></a><a id="calibre_link-1247" class="calibre1"></a>First, your program needs to get a list of all files with the <span class="calibre1"><em class="calibre5">.pdf</em></span> extension in the current working directory and sort them. Make your code look like the following:</p>
+<p><a id="calibre_link-3199" class="calibre1"></a>
+<pre class="programlisting">   #! python3
+   # combinePdfs.py - Combines all the PDFs in the current working directory into
+   # into a single PDF.
+
+➊ import PyPDF2, os
+
+   # Get all the PDF filenames.
+   pdfFiles = []
+   for filename in os.listdir('.'):
+       if filename.endswith('.pdf'):
+➋         pdfFiles.append(filename)
+➌ pdfFiles.sort(key=str.lower)
+
+➍ pdfWriter = PyPDF2.PdfFileWriter()
+
+   # TODO: Loop through all the PDF files.
+
+   # TODO: Loop through all the pages (except the first) and add them.
+
+   # TODO: Save the resulting PDF to a file.</pre>
+<p class="calibre4">After the shebang line and the descriptive comment about what the program does, this code imports the <code class="literal1">os</code> and <code class="literal1">PyPDF2</code> modules ➊. The <code class="literal1">os.listdir('.')</code> call will return a list of every file in the current working directory. The code loops over this list and adds only those files with the <span class="calibre1"><em class="calibre5">.pdf</em></span> extension to <code class="literal1">pdfFiles</code> ➋. Afterward, this list is sorted in alphabetical order with the <code class="literal1">key=str.lower</code> keyword argument to <code class="literal1">sort()</code> ➌.</p>
+<p class="calibre4">A <code class="literal1">PdfFileWriter</code> object is created to hold the combined PDF pages ➍. Finally, a few comments outline the rest of the program.</p>
+</div>
+<div class="book" title="Step 2: Open Each PDF">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3200" class="firstname"></a>Step 2: Open Each PDF</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Now the program must read each PDF file in <code class="literal1">pdfFiles</code>. Add the following to your program:</p>
+<p><a id="calibre_link-3201" class="calibre1"></a>
+<pre class="programlisting">#! python3
+# combinePdfs.py - Combines all the PDFs in the current working directory into
+# a single PDF.
+
+import PyPDF2, os
+
+# Get all the PDF filenames.
+pdfFiles = []
+<span class="calibre1"><em class="literal3">--snip--</em></span>
+# <span class="calibre1"><strong class="literal">Loop through all the PDF files.</strong></span>
+<span class="calibre1"><strong class="literal">for filename in pdfFiles:</strong></span>
+    <span class="calibre1"><strong class="literal">pdfFileObj = open(filename, 'rb')</strong></span>
+    <span class="calibre1"><strong class="literal">pdfReader = PyPDF2.PdfFileReader(pdfFileObj)</strong></span>
+    # TODO: Loop through all the pages (except the first) and add them.
+
+# TODO: Save the resulting PDF to a file.</pre>
+<p class="calibre4"><a id="calibre_link-1248" class="calibre1"></a>For each PDF, the loop opens a filename in read-binary mode by calling <code class="literal1">open()</code> with <code class="literal1">'rb'</code> as the second argument. The <code class="literal1">open()</code> call returns a <code class="literal1">File</code> object, which gets passed to <code class="literal1">PyPDF2.PdfFileReader()</code> to create a <code class="literal1">PdfFileReader</code> object for that PDF file.</p>
+</div>
+<div class="book" title="Step 3: Add Each Page">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3202" class="firstname"></a>Step 3: Add Each Page</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">For each PDF, you’ll want to loop over every page except the first. Add this code to your program:</p>
+<p><a id="calibre_link-3203" class="calibre1"></a>
+<pre class="programlisting">   #! python3
+   # combinePdfs.py - Combines all the PDFs in the current working directory into
+   # a single PDF.
+
+   import PyPDF2, os
+
+   <span class="calibre1"><em class="literal3">--snip--</em></span>
+
+   # Loop through all the PDF files.
+   for filename in pdfFiles:
+   <span class="calibre1"><em class="literal3">--snip--</em></span>
+       <span class="calibre1"><strong class="literal"># Loop through all the pages (except the first) and add them.</strong></span>
+➊     <span class="calibre1"><strong class="literal">for pageNum in range(1, pdfReader.numPages):</strong></span>
+           <span class="calibre1"><strong class="literal">pageObj = pdfReader.getPage(pageNum)</strong></span>
+           <span class="calibre1"><strong class="literal">pdfWriter.addPage(pageObj)</strong></span>
+
+   # TODO: Save the resulting PDF to a file.</pre>
+<p class="calibre4">The code inside the <code class="literal1">for</code> loop copies each <code class="literal1">Page</code> object individually to the <code class="literal1">PdfFileWriter</code> object. Remember, you want to skip the first page. Since PyPDF2 considers <code class="literal1">0</code> to be the first page, your loop should start at <code class="literal1">1</code> ➊ and then go up to, but not include, the integer in <code class="literal1">pdfReader.numPages</code>.</p>
+</div>
+<div class="book" title="Step 4: Save the Results">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3204" class="firstname"></a>Step 4: Save the Results</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">After these nested <code class="literal1">for</code> loops are done looping, the <code class="literal1">pdfWriter</code> variable will contain a <code class="literal1">PdfFileWriter</code> object with the pages for all the PDFs combined. The last step is to write this content to a file on the hard drive. Add this code to your program:</p>
+<p><a id="calibre_link-3205" class="calibre1"></a>
+<pre class="programlisting">#! python3
+# combinePdfs.py - Combines all the PDFs in the current working directory into
+# a single PDF.
+import PyPDF2, os
+
+<span class="calibre1"><em class="literal3">--snip--</em></span>
+
+# Loop through all the PDF files.
+for filename in pdfFiles:
+<span class="calibre1"><em class="literal3">--snip--</em></span>
+    # Loop through all the pages (except the first) and add them.
+    for pageNum in range(1, pdfReader.numPages):
+    <span class="calibre1"><em class="literal3">--snip--</em></span>
+
+<span class="calibre1"><strong class="literal"># Save the resulting PDF to a file.</strong></span>
+<span class="calibre1"><strong class="literal">pdfOutput = open('allminutes.pdf', 'wb')</strong></span>
+<span class="calibre1"><strong class="literal">pdfWriter.write(pdfOutput)</strong></span>
+<span class="calibre1"><strong class="literal">pdfOutput.close()</strong></span></pre>
+<p class="calibre4"><a id="calibre_link-960" class="calibre1"></a><a id="calibre_link-1174" class="calibre1"></a><a id="calibre_link-1416" class="calibre1"></a><a id="calibre_link-1852" class="calibre1"></a><a id="calibre_link-1853" class="calibre1"></a>Passing <code class="literal1">'wb'</code> to <code class="literal1">open()</code> opens the output PDF file, <span class="calibre1"><em class="calibre5">allminutes.pdf</em></span>, in write-binary mode. Then, passing the resulting <code class="literal1">File</code> object to the <code class="literal1">write()</code> method creates the actual PDF file. A call to the <code class="literal1">close()</code> method finishes the program.</p>
+</div>
+<div class="book" title="Ideas for Similar Programs">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3206" class="firstname"></a>Ideas for Similar Programs</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Being able to create PDFs from the pages of other PDFs will let you make programs that can do the following:</p>
+<div class="book">
+<ul class="itemizedlist">
+<li class="listitem">
+<p class="calibre4">Cut out specific pages from PDFs.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Reorder pages in a PDF.</p>
+</li>
+<li class="listitem">
+<p class="calibre4">Create a PDF from only those pages that have some specific text, identified by <code class="literal1">extractText()</code>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="book" title="Word Documents">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-3207" class="firstname"></a>Word Documents</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">Python can create and modify Word documents, which have the <span class="calibre1"><em class="calibre5">.docx</em></span> file extension, with the <code class="literal1">python-docx</code> module. You can install the module by running <code class="literal1">pip install python-docx</code>. (Appendix A has full details on installing third-party modules.)</p>
+<div class="note" title="Note">
+<h3 class="title5"><a id="calibre_link-3208" class="calibre1"></a>Note</h3>
+<p class="calibre4"><span class="calibre1"><em class="calibre5">When using pip to first install Python-Docx, be sure to install <code class="literal3">python-docx</code>, not <code class="literal3">docx</code>. The installation name <code class="literal3">docx</code> is for a different module that this book does not cover. However, when you are going to import the <code class="literal3">python-docx</code> module, you’ll need to run <code class="literal3">import docx</code>, not <code class="literal3">import python-docx</code>.</em></span></p>
+</div>
+<p class="calibre4">If you don’t have Word, LibreOffice Writer and OpenOffice Writer are both free alternative applications for Windows, OS X, and Linux that can be used to open <span class="calibre1"><em class="calibre5">.docx</em></span> files. You can download them from <span class="calibre1"><em class="calibre5"><a class="ulink" href="https://www.libreoffice.org">https://www.libreoffice.org</a></em></span> and <span class="calibre1"><em class="calibre5"><a class="ulink" href="http://openoffice.org">http://openoffice.org</a></em></span>, respectively. The full documentation for Python-Docx is available at <span class="calibre1"><em class="calibre5"><a class="ulink" href="https://python-docx.readthedocs.org/">https://python-docx.readthedocs.org/</a></em></span>. Although there is a version of Word for OS X, this chapter will focus on Word for Windows.</p>
+<p class="calibre4"><a id="calibre_link-492" class="calibre1"></a><a id="calibre_link-956" class="calibre1"></a><a id="calibre_link-1204" class="calibre1"></a><a id="calibre_link-1854" class="calibre1"></a>Compared to plaintext, <span class="calibre1"><em class="calibre5">.docx</em></span> files have a lot of structure. This structure is represented by three different data types in Python-Docx. At the highest level, a <code class="literal1">Document</code> object represents the entire document. The <code class="literal1">Document</code> object contains a list of <code class="literal1">Paragraph</code> objects for the paragraphs in the document. (A new paragraph begins whenever the user presses <span class="smaller">ENTER</span> or <span class="smaller">RETURN</span> while typing in a Word document.) Each of these <code class="literal1">Paragraph</code> objects contains a list of one or more <code class="literal1">Run</code> objects. The single-sentence paragraph in <a class="ulink" href="#calibre_link-113" title="Figure 13-4. The Run objects identified in a Paragraph object">Figure&nbsp;13-4</a> has four runs.</p>
+<div class="figure"><a id="calibre_link-113" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-3209" class="calibre1"></a><img src="/images/000017.png" alt="The Run objects identified in a Paragraph object" class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;13-4.&nbsp;The <code class="literal1">Run</code> objects identified in a <code class="literal1">Paragraph</code> object</p>
+</div>
+<p class="calibre4">The text in a Word document is more than just a string. It has font, size, color, and other styling information associated with it. A <span class="calibre1"><em class="calibre5">style</em></span> in Word is a collection of these attributes. A <code class="literal1">Run</code> object is a contiguous run of text with the same style. A new <code class="literal1">Run</code> object is needed whenever the text style changes.</p>
+<div class="book" title="Reading Word Documents">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3210" class="firstname"></a>Reading Word Documents</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Let’s experiment with the <code class="literal1">python-docx</code> module. Download <span class="calibre1"><em class="calibre5">demo.docx</em></span> from <span class="calibre1"><em class="calibre5"><a class="ulink" href="http://nostarch.com/automatestuff/">http://nostarch.com/automatestuff/</a></em></span> and save the document to the working directory. Then enter the following into the interactive shell:</p>
+<p><a id="calibre_link-3211" class="calibre1"></a>
+<pre class="programlisting">   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">import docx</strong></span>
+➊ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc = docx.Document('demo.docx')</strong></span>
+➋ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">len(doc.paragraphs)</strong></span>
+   7
+➌ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc.paragraphs[0].text</strong></span>
+   'Document Title'
+➍ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc.paragraphs[1].text</strong></span>
+   'A plain paragraph with some bold and some italic'
+➎ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">len(doc.paragraphs[1].runs)</strong></span>
+   4
+➏ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc.paragraphs[1].runs[0].text</strong></span>
+   'A plain paragraph with some '
+➐ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc.paragraphs[1].runs[1].text</strong></span>
+   'bold'
+➑ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc.paragraphs[1].runs[2].text</strong></span>
+   ' and some '
+➒ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc.paragraphs[1].runs[3].text</strong></span>
+   'italic'</pre>
+<p class="calibre4">At ➊, we open a <span class="calibre1"><em class="calibre5">.docx</em></span> file in Python, call <code class="literal1">docx.Document()</code>, and pass the filename <span class="calibre1"><em class="calibre5">demo.docx</em></span>. This will return a <code class="literal1">Document</code> object, which has a <code class="literal1">paragraphs</code> attribute that is a list of <code class="literal1">Paragraph</code> objects. When we call <code class="literal1">len()</code> on <code class="literal1">doc.paragraphs</code>, it returns <code class="literal1">7</code>, which tells us that there are seven <code class="literal1">Paragraph</code> objects in this document ➋. Each of these <code class="literal1">Paragraph</code> objects has a <code class="literal1">text</code> <a id="calibre_link-753" class="calibre1"></a><a id="calibre_link-1699" class="calibre1"></a><a id="calibre_link-1855" class="calibre1"></a>attribute that contains a string of the text in that paragraph (without the style information). Here, the first <code class="literal1">text</code> attribute contains <code class="literal1">'DocumentTitle'</code> ➌, and the second contains <code class="literal1">'A plain paragraph with some bold and some italic'</code> ➍.</p>
+<p class="calibre4">Each <code class="literal1">Paragraph</code> object also has a <code class="literal1">runs</code> attribute that is a list of <code class="literal1">Run</code> objects. <code class="literal1">Run</code> objects also have a <code class="literal1">text</code> attribute, containing just the text in that particular run. Let’s look at the <code class="literal1">text</code> attributes in the second <code class="literal1">Paragraph</code> object, <code class="literal1">'A plain paragraph with some bold and some italic'</code>. Calling <code class="literal1">len()</code> on this <code class="literal1">Paragraph</code> object tells us that there are four <code class="literal1">Run</code> objects ➎. The first run object contains <code class="literal1">'A plain paragraph with some '</code> ➏. Then, the text change to a bold style, so <code class="literal1">'bold'</code> starts a new <code class="literal1">Run</code> object ➐. The text returns to an unbolded style after that, which results in a third <code class="literal1">Run</code> object, <code class="literal1">' and some '</code> ➑. Finally, the fourth and last <code class="literal1">Run</code> object contains <code class="literal1">'italic'</code> in an italic style ➒.</p>
+<p class="calibre4">With Python-Docx, your Python programs will now be able to read the text from a <span class="calibre1"><em class="calibre5">.docx</em></span> file and use it just like any other string value.</p>
+</div>
+<div class="book" title="Getting the Full Text from a .docx File">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3212" class="firstname"></a>Getting the Full Text from a .docx File</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">If you care only about the text, not the styling information, in the Word document, you can use the <code class="literal1">getText()</code> function. It accepts a filename of a <span class="calibre1"><em class="calibre5">.docx</em></span> file and returns a single string value of its text. Open a new file editor window and enter the following code, saving it as <span class="calibre1"><em class="calibre5">readDocx.py</em></span>:</p>
+<p><a id="calibre_link-3213" class="calibre1"></a>
+<pre class="programlisting">#! python3
+
+import docx
+
+def getText(filename):
+    doc = docx.Document(filename)
+    fullText = []
+    for para in doc.paragraphs:
+        fullText.append(para.text)
+    return '\n'.join(fullText)</pre>
+<p class="calibre4">The <code class="literal1">getText()</code> function opens the Word document, loops over all the <code class="literal1">Paragraph</code> objects in the <code class="literal1">paragraphs</code> list, and then appends their text to the list in <code class="literal1">fullText</code>. After the loop, the strings in <code class="literal1">fullText</code> are joined together with newline characters.</p>
+<p class="calibre4">The <span class="calibre1"><em class="calibre5">readDocx.py</em></span> program can be imported like any other module. Now if you just need the text from a Word document, you can enter the following:</p>
+<p><a id="calibre_link-3214" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">import readDocx</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">print(readDocx.getText('demo.docx'))</strong></span>
+Document Title
+A plain paragraph with some bold and some italic
+Heading, level 1
+Intense quote
+first item in unordered list
+first item in ordered list</pre>
+<p class="calibre4"><a id="calibre_link-1205" class="calibre1"></a><a id="calibre_link-1856" class="calibre1"></a>You can also adjust <code class="literal1">getText()</code> to modify the string before returning it. For example, to indent each paragraph, replace the <code class="literal1">append()</code> call in <span class="calibre1"><em class="calibre5">readDocx.py</em></span> with this:</p>
+<p><a id="calibre_link-3215" class="calibre1"></a>
+<pre class="programlisting">fullText.append(<span class="calibre1"><strong class="literal">' ' +</strong></span> para.text)</pre>
+<p class="calibre4">To add a double space in between paragraphs, change the <code class="literal1">join()</code> call code to this:</p>
+<p><a id="calibre_link-3216" class="calibre1"></a>
+<pre class="programlisting">return '\n<span class="calibre1"><strong class="literal">\n</strong></span>'.join(fullText)</pre>
+<p class="calibre4">As you can see, it takes only a few lines of code to write functions that will read a <span class="calibre1"><em class="calibre5">.docx</em></span> file and return a string of its content to your liking.</p>
+</div>
+<div class="book" title="Styling Paragraph and Run Objects">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3217" class="firstname"></a>Styling Paragraph and Run Objects</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">In Word for Windows, you can see the styles by pressing <span class="smaller">CTRL</span>-<span class="smaller">ALT</span>-<span class="smaller">SHIFT</span>-S to display the Styles pane, which looks like <a class="ulink" href="#calibre_link-114" title="Figure 13-5. Display the Styles pane by pressing CTRL-ALT-SHIFT-S on Windows.">Figure&nbsp;13-5</a>. On OS X, you can view the Styles pane by clicking the <span class="calibre1"><strong class="calibre7">View</strong></span>▸<span class="calibre1"><strong class="calibre7">Styles</strong></span> menu item.</p>
+<div class="figure"><a id="calibre_link-114" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-3218" class="calibre1"></a><img src="/images/000035.jpg" alt="Display the Styles pane by pressing CTRL-ALT-SHIFT-S on Windows." class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;13-5.&nbsp;Display the Styles pane by pressing <code class="literal1">CTRL-ALT-SHIFT</code>-S on Windows.</p>
+</div>
+<p class="calibre4">Word and other word processors use styles to keep the visual presentation of similar types of text consistent and easy to change. For example, perhaps you want to set body paragraphs in 11-point, Times New Roman, left-justified, ragged-right text. You can create a style with these settings and <a id="calibre_link-319" class="calibre1"></a><a id="calibre_link-965" class="calibre1"></a><a id="calibre_link-1513" class="calibre1"></a><a id="calibre_link-1857" class="calibre1"></a>assign it to all body paragraphs. Then, if you later want to change the presentation of all body paragraphs in the document, you can just change the style, and all those paragraphs will be automatically updated.</p>
+<p class="calibre4">For Word documents, there are three types of styles: <span class="calibre1"><em class="calibre5">Paragraph styles</em></span> can be applied to <code class="literal1">Paragraph</code> objects, <span class="calibre1"><em class="calibre5">character styles</em></span> can be applied to <code class="literal1">Run</code> objects, and <span class="calibre1"><em class="calibre5">linked styles</em></span> can be applied to both kinds of objects. You can give both <code class="literal1">Paragraph</code> and <code class="literal1">Run</code> objects styles by setting their <code class="literal1">style</code> attribute to a string. This string should be the name of a style. If <code class="literal1">style</code> is set to <code class="literal1">None</code>, then there will be no style associated with the <code class="literal1">Paragraph</code> or <code class="literal1">Run</code> object.</p>
+<p class="calibre4">The string values for the default Word styles are as follows:</p>
+<div class="titlepage">
+<table class="calibre9">
+<colgroup class="calibre10">
+<col class="calibre11"></col>
+<col class="calibre11"></col>
+<col class="calibre11"></col>
+<col class="calibre11"></col>
+</colgroup>
+<tbody class="calibre16">
+<tr class="calibre30">
+<td valign="top" class="calibre31">
+<p class="calibre4"><code class="literal2">'Normal'</code></p>
+</td>
+<td valign="top" class="calibre31">
+<p class="calibre4"><code class="literal2">'Heading5'</code></p>
+</td>
+<td valign="top" class="calibre31">
+<p class="calibre4"><code class="literal2">'ListBullet'</code></p>
+</td>
+<td valign="top" class="calibre32">
+<p class="calibre4"><code class="literal2">'ListParagraph'</code></p>
+</td>
+</tr>
+<tr class="calibre33">
+<td valign="top" class="calibre31">
+<p class="calibre4"><code class="literal2">'BodyText'</code></p>
+</td>
+<td valign="top" class="calibre31">
+<p class="calibre4"><code class="literal2">'Heading6'</code></p>
+</td>
+<td valign="top" class="calibre31">
+<p class="calibre4"><code class="literal2">'ListBullet2'</code></p>
+</td>
+<td valign="top" class="calibre32">
+<p class="calibre4"><code class="literal2">'MacroText'</code></p>
+</td>
+</tr>
+<tr class="calibre30">
+<td valign="top" class="calibre31">
+<p class="calibre4"><code class="literal2">'BodyText2'</code></p>
+</td>
+<td valign="top" class="calibre31">
+<p class="calibre4"><code class="literal2">'Heading7'</code></p>
+</td>
+<td valign="top" class="calibre31">
+<p class="calibre4"><code class="literal2">'ListBullet3'</code></p>
+</td>
+<td valign="top" class="calibre32">
+<p class="calibre4"><code class="literal2">'NoSpacing'</code></p>
+</td>
+</tr>
+<tr class="calibre33">
+<td valign="top" class="calibre31">
+<p class="calibre4"><code class="literal2">'BodyText3'</code></p>
+</td>
+<td valign="top" class="calibre31">
+<p class="calibre4"><code class="literal2">'Heading8'</code></p>
+</td>
+<td valign="top" class="calibre31">
+<p class="calibre4"><code class="literal2">'ListContinue'</code></p>
+</td>
+<td valign="top" class="calibre32">
+<p class="calibre4"><code class="literal2">'Quote'</code></p>
+</td>
+</tr>
+<tr class="calibre30">
+<td valign="top" class="calibre31">
+<p class="calibre4"><code class="literal2">'Caption'</code></p>
+</td>
+<td valign="top" class="calibre31">
+<p class="calibre4"><code class="literal2">'Heading9'</code></p>
+</td>
+<td valign="top" class="calibre31">
+<p class="calibre4"><code class="literal2">'ListContinue2'</code></p>
+</td>
+<td valign="top" class="calibre32">
+<p class="calibre4"><code class="literal2">'Subtitle'</code></p>
+</td>
+</tr>
+<tr class="calibre33">
+<td valign="top" class="calibre31">
+<p class="calibre4"><code class="literal2">'Heading1'</code></p>
+</td>
+<td valign="top" class="calibre31">
+<p class="calibre4"><code class="literal2">'IntenseQuote'</code></p>
+</td>
+<td valign="top" class="calibre31">
+<p class="calibre4"><code class="literal2">'ListContinue3'</code></p>
+</td>
+<td valign="top" class="calibre32">
+<p class="calibre4"><code class="literal2">'TOCHeading'</code></p>
+</td>
+</tr>
+<tr class="calibre30">
+<td valign="top" class="calibre31">
+<p class="calibre4"><code class="literal2">'Heading2'</code></p>
+</td>
+<td valign="top" class="calibre31">
+<p class="calibre4"><code class="literal2">'List'</code></p>
+</td>
+<td valign="top" class="calibre31">
+<p class="calibre4"><code class="literal2">'ListNumber'</code></p>
+</td>
+<td valign="top" class="calibre32">
+<p class="calibre4"><code class="literal2">'Title'</code></p>
+</td>
+</tr>
+<tr class="calibre33">
+<td valign="top" class="calibre31">
+<p class="calibre4"><code class="literal2">'Heading3'</code></p>
+</td>
+<td valign="top" class="calibre31">
+<p class="calibre4"><code class="literal2">'List2'</code></p>
+</td>
+<td valign="top" class="calibre31">
+<p class="calibre4"><code class="literal2">'ListNumber2'</code></p>
+</td>
+<td class="calibre32">&nbsp;</td>
+</tr>
+<tr class="calibre30">
+<td valign="top" class="calibre34">
+<p class="calibre4"><code class="literal2">'Heading4'</code></p>
+</td>
+<td valign="top" class="calibre34">
+<p class="calibre4"><code class="literal2">'List3'</code></p>
+</td>
+<td valign="top" class="calibre34">
+<p class="calibre4"><code class="literal2">'ListNumber3'</code></p>
+</td>
+<td class="calibre35">&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="calibre4">When setting the <code class="literal1">style</code> attribute, do not use spaces in the style name. For example, while the style name may be Subtle Emphasis, you should set the <code class="literal1">style</code> attribute to the string value <code class="literal1">'SubtleEmphasis'</code> instead of <code class="literal1">'Subtle Emphasis'</code>. Including spaces will cause Word to misread the style name and not apply it.</p>
+<p class="calibre4">When using a linked style for a <code class="literal1">Run</code> object, you will need to add <code class="literal1">'Char'</code> to the end of its name. For example, to set the Quote linked style for a <code class="literal1">Paragraph</code> object, you would use <code class="literal1">paragraphObj.style = 'Quote'</code>, but for a <code class="literal1">Run</code> object, you would use <code class="literal1">runObj.style = 'QuoteChar'</code>.</p>
+<p class="calibre4">In the current version of Python-Docx (0.7.4), the only styles that can be used are the default Word styles and the styles in the opened <span class="calibre1"><em class="calibre5">.docx</em></span>. New styles cannot be created&mdash;though this may change in future versions of Python-Docx.</p>
+</div>
+<div class="book" title="Creating Word Documents with Nondefault Styles">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3219" class="firstname"></a>Creating Word Documents with Nondefault Styles</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">If you want to create Word documents that use styles beyond the default ones, you will need to open Word to a blank Word document and create the styles yourself by clicking the <span class="calibre1"><strong class="calibre7">New Style</strong></span> button at the bottom of the Styles pane (<a class="ulink" href="#calibre_link-115" title="Figure 13-6. The New Style button (left) and the Create New Style from Formatting dialog (right)">Figure&nbsp;13-6</a> shows this on Windows).</p>
+<p class="calibre4">This will open the Create New Style from Formatting dialog, where you can enter the new style. Then, go back into the interactive shell and open this blank Word document with <code class="literal1">docx.Document()</code>, using it as the base for your Word document. The name you gave this style will now be available to use with Python-Docx.</p>
+<div class="figure"><a id="calibre_link-115" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-3220" class="calibre1"></a><img src="/images/000048.jpg" alt="The New Style button (left) and the Create New Style from Formatting dialog (right)" class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;13-6.&nbsp;The New Style button (left) and the Create New Style from Formatting dialog (right)</p>
+</div>
+</div>
+<div class="book" title="Run Attributes">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3221" class="firstname"></a>Run Attributes</h2>
+</div>
+</div>
+</div>
+<p class="calibre4"><a id="calibre_link-232" class="calibre1"></a><a id="calibre_link-276" class="calibre1"></a><a id="calibre_link-502" class="calibre1"></a><a id="calibre_link-555" class="calibre1"></a><a id="calibre_link-861" class="calibre1"></a><a id="calibre_link-910" class="calibre1"></a><a id="calibre_link-1198" class="calibre1"></a><a id="calibre_link-1512" class="calibre1"></a><a id="calibre_link-1514" class="calibre1"></a><a id="calibre_link-1571" class="calibre1"></a><a id="calibre_link-1591" class="calibre1"></a><a id="calibre_link-1634" class="calibre1"></a><a id="calibre_link-1700" class="calibre1"></a><a id="calibre_link-1764" class="calibre1"></a><a id="calibre_link-1858" class="calibre1"></a>Runs can be further styled using <code class="literal1">text</code> attributes. Each attribute can be set to one of three values: <code class="literal1">True</code> (the attribute is always enabled, no matter what other styles are applied to the run), <code class="literal1">False</code> (the attribute is always disabled), or <code class="literal1">None</code> (defaults to whatever the run’s style is set to).</p>
+<p class="calibre4"><a class="ulink" href="#calibre_link-116" title="Table 13-1. Run Object text Attributes">Table&nbsp;13-1</a> lists the <code class="literal1">text</code> attributes that can be set on <code class="literal1">Run</code> objects.</p>
+<div class="table"><a id="calibre_link-116" class="calibre1"></a>
+<p class="title7">Table&nbsp;13-1.&nbsp;<code class="literal1">Run</code> Object <code class="literal1">text</code> Attributes</p>
+<div class="book">
+<table summary="Run Object text Attributes" class="calibre9">
+<colgroup class="calibre10">
+<col class="calibre11"></col>
+<col class="calibre11"></col>
+</colgroup>
+<thead class="calibre12">
+<tr class="calibre13">
+<th valign="top" class="calibre14">
+<p class="calibre4">Attribute</p>
+</th>
+<th valign="top" class="calibre15">
+<p class="calibre4">Description</p>
+</th>
+</tr>
+</thead>
+<tbody class="calibre16">
+<tr class="calibre13">
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">bold</code></p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4">The text appears in bold.</p>
+</td>
+</tr>
+<tr class="calibre19">
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">italic</code></p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4">The text appears in italic.</p>
+</td>
+</tr>
+<tr class="calibre13">
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">underline</code></p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4">The text is underlined.</p>
+</td>
+</tr>
+<tr class="calibre19">
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">strike</code></p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4">The text appears with strikethrough.</p>
+</td>
+</tr>
+<tr class="calibre13">
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">double_strike</code></p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4">The text appears with double strikethrough.</p>
+</td>
+</tr>
+<tr class="calibre19">
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">all_caps</code></p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4">The text appears in capital letters.</p>
+</td>
+</tr>
+<tr class="calibre13">
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">small_caps</code></p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4">The text appears in capital letters, with lowercase letters two points smaller.</p>
+</td>
+</tr>
+<tr class="calibre19">
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">shadow</code></p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4">The text appears with a shadow.</p>
+</td>
+</tr>
+<tr class="calibre13">
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">outline</code></p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4">The text appears outlined rather than solid.</p>
+</td>
+</tr>
+<tr class="calibre19">
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">rtl</code></p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4">The text is written right-to-left.</p>
+</td>
+</tr>
+<tr class="calibre13">
+<td valign="top" class="calibre17">
+<p class="calibre4"><code class="literal2">imprint</code></p>
+</td>
+<td valign="top" class="calibre18">
+<p class="calibre4">The text appears pressed into the page.</p>
+</td>
+</tr>
+<tr class="calibre19">
+<td valign="top" class="calibre20">
+<p class="calibre4"><span class="calibre1"><strong class="calibre7"><code class="literal5">emboss</code></strong></span></p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">The text appears raised off the page in relief.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p class="calibre4"><a id="calibre_link-1859" class="calibre1"></a>For example, to change the styles of <span class="calibre1"><em class="calibre5">demo.docx</em></span>, enter the following into the interactive shell:</p>
+<p><a id="calibre_link-3222" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc = docx.Document('demo.docx')</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc.paragraphs[0].text</strong></span>
+'Document Title'
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc.paragraphs[0].style</strong></span>
+'Title'
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc.paragraphs[0].style = 'Normal'</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc.paragraphs[1].text</strong></span>
+'A plain paragraph with some bold and some italic'
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">(doc.paragraphs[1].runs[0].text, doc.paragraphs[1].runs[1].text, doc.</strong></span>
+<span class="calibre1"><strong class="literal">paragraphs[1].runs[2].text, doc.paragraphs[1].runs[3].text)</strong></span>
+('A plain paragraph with some ', 'bold', ' and some ', 'italic')
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc.paragraphs[1].runs[0].style = 'QuoteChar'</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc.paragraphs[1].runs[1].underline = True</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc.paragraphs[1].runs[3].underline = True</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc.save('restyled.docx')</strong></span></pre>
+<p class="calibre4">Here, we use the <code class="literal1">text</code> and <code class="literal1">style</code> attributes to easily see what’s in the paragraphs in our document. We can see that it’s simple to divide a paragraph into runs and access each run individiaully. So we get the first, second, and fourth runs in the second paragraph, style each run, and save the results to a new document.</p>
+<p class="calibre4">The words <span class="calibre1"><em class="calibre5">Document Title</em></span> at the top of <span class="calibre1"><em class="calibre5">restyled.docx</em></span> will have the Normal style instead of the Title style, the <code class="literal1">Run</code> object for the text <span class="calibre1"><em class="calibre5">A plain paragraph with some</em></span> will have the QuoteChar style, and the two <code class="literal1">Run</code> objects for the words <span class="calibre1"><em class="calibre5">bold</em></span> and <span class="calibre1"><em class="calibre5">italic</em></span> will have their <code class="literal1">underline</code> attributes set to <code class="literal1">True</code>. <a class="ulink" href="#calibre_link-117" title="Figure 13-7. The restyled.docx file">Figure&nbsp;13-7</a> shows how the styles of paragraphs and runs look in <span class="calibre1"><em class="calibre5">restyled.docx</em></span>.</p>
+<div class="figure"><a id="calibre_link-117" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-3223" class="calibre1"></a><img src="/images/000086.jpg" alt="The restyled.docx file" class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;13-7.&nbsp;The <span class="calibre1"><em class="calibre5">restyled.docx</em></span> file</p>
+</div>
+<p class="calibre4">You can find more complete documentation on Python-Docx’s use of styles at <span class="calibre1"><em class="calibre5"><a class="ulink" href="https://python-docx.readthedocs.org/en/latest/user/styles.html">https://python-docx.readthedocs.org/en/latest/user/styles.html</a></em></span>.</p>
+</div>
+<div class="book" title="Writing Word Documents">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3224" class="firstname"></a>Writing Word Documents</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Enter the following into the interactive shell:</p>
+<p><a id="calibre_link-3225" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">import docx</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc = docx.Document()</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc.add_paragraph('Hello world!')</strong></span>
+&lt;docx.text.Paragraph object at 0x0000000003B56F60&gt;
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc.save('helloworld.docx')</strong></span></pre>
+<p class="calibre4"><a id="calibre_link-228" class="calibre1"></a><a id="calibre_link-230" class="calibre1"></a>To create your own <span class="calibre1"><em class="calibre5">.docx</em></span> file, call <code class="literal1">docx.Document()</code> to return a new, blank Word <code class="literal1">Document</code> object. The <code class="literal1">add_paragraph()</code> document method adds a new paragraph of text to the document and returns a reference to the <code class="literal1">Paragraph</code> object that was added. When you’re done adding text, pass a filename string to the <code class="literal1">save()</code> document method to save the <code class="literal1">Document</code> object to a file.</p>
+<p class="calibre4">This will create a file named <span class="calibre1"><em class="calibre5">helloworld.docx</em></span> in the current working directory that, when opened, looks like <a class="ulink" href="#calibre_link-118" title="Figure 13-8. The Word document created using add_paragraph(&apos;Hello world!&apos;)">Figure&nbsp;13-8</a>.</p>
+<div class="figure"><a id="calibre_link-118" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-3226" class="calibre1"></a><img src="/images/000038.jpg" alt="The Word document created using add_paragraph(&apos;Hello world!&apos;)" class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;13-8.&nbsp;The Word document created using <code class="literal1">add_paragraph('Hello world!')</code></p>
+</div>
+<p class="calibre4">You can add paragraphs by calling the <code class="literal1">add_paragraph()</code> method again with the new paragraph’s text. Or to add text to the end of an existing paragraph, you can call the paragraph’s <code class="literal1">add_run()</code> method and pass it a string. Enter the following into the interactive shell:</p>
+<p><a id="calibre_link-3227" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">import docx</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc = docx.Document()</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc.add_paragraph('Hello world!')</strong></span>
+&lt;docx.text.Paragraph object at 0x000000000366AD30&gt;
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">paraObj1 = doc.add_paragraph('This is a second paragraph.')</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">paraObj2 = doc.add_paragraph('This is a yet another paragraph.')</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">paraObj1.add_run(' This text is being added to the second paragraph.')</strong></span>
+&lt;docx.text.Run object at 0x0000000003A2C860&gt;
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc.save('multipleParagraphs.docx')</strong></span></pre>
+<p class="calibre4">The resulting document will look like <a class="ulink" href="#calibre_link-119" title="Figure 13-9. The document with multiple Paragraph and Run objects added">Figure&nbsp;13-9</a>. Note that the text <span class="calibre1"><em class="calibre5">This text is being added to the second paragraph.</em></span> was added to the <code class="literal1">Paragraph</code> object in <code class="literal1">paraObj1</code>, which was the second paragraph added to <code class="literal1">doc</code>. The <code class="literal1">add_paragraph()</code> and <code class="literal1">add_run()</code> functions return paragraph and <code class="literal1">Run</code> objects, respectively, to save you the trouble of extracting them as a separate step.</p>
+<p class="calibre4">Keep in mind that as of Python-Docx version 0.5.3, new <code class="literal1">Paragraph</code> objects can be added only to the end of the document, and new <code class="literal1">Run</code> objects can be added only to the end of a <code class="literal1">Paragraph</code> object.</p>
+<p class="calibre4">The <code class="literal1">save()</code> method can be called again to save the additional changes you’ve made.</p>
+<div class="figure"><a id="calibre_link-119" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-3228" class="calibre1"></a><img src="/images/000045.jpg" alt="The document with multiple Paragraph and Run objects added" class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;13-9.&nbsp;The document with multiple <code class="literal1">Paragraph</code> and <code class="literal1">Run</code> objects added</p>
+</div>
+<p class="calibre4"><a id="calibre_link-226" class="calibre1"></a><a id="calibre_link-797" class="calibre1"></a><a id="calibre_link-1860" class="calibre1"></a>Both <code class="literal1">add_paragraph()</code> and <code class="literal1">add_run()</code> accept an optional second argument that is a string of the <code class="literal1">Paragraph</code> or <code class="literal1">Run</code> object’s style. For example:</p>
+<p><a id="calibre_link-3229" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc.add_paragraph('Hello world!', 'Title')</strong></span></pre>
+<p class="calibre4">This line adds a paragraph with the text <span class="calibre1"><em class="calibre5">Hello world!</em></span> in the Title style.</p>
+</div>
+<div class="book" title="Adding Headings">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3230" class="firstname"></a>Adding Headings</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Calling <code class="literal1">add_heading()</code> adds a paragraph with one of the heading styles. Enter the following into the interactive shell:</p>
+<p><a id="calibre_link-3231" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc = docx.Document()</strong></span>
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc.add_heading('Header 0', 0)</strong></span>
+&lt;docx.text.Paragraph object at 0x00000000036CB3C8&gt;
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc.add_heading('Header 1', 1)</strong></span>
+&lt;docx.text.Paragraph object at 0x00000000036CB630&gt;
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc.add_heading('Header 2', 2)</strong></span>
+&lt;docx.text.Paragraph object at 0x00000000036CB828&gt;
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc.add_heading('Header 3', 3)</strong></span>
+&lt;docx.text.Paragraph object at 0x00000000036CB2E8&gt;
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc.add_heading('Header 4', 4)</strong></span>
+&lt;docx.text.Paragraph object at 0x00000000036CB3C8&gt;
+&gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc.save('headings.docx')</strong></span></pre>
+<p class="calibre4">The arguments to <code class="literal1">add_heading()</code> are a string of the heading text and an integer from <code class="literal1">0</code> to <code class="literal1">4</code>. The integer <code class="literal1">0</code> makes the heading the Title style, which is used for the top of the document. Integers <code class="literal1">1</code> to <code class="literal1">4</code> are for various heading levels, with <code class="literal1">1</code> being the main heading and <code class="literal1">4</code> the lowest subheading. The <code class="literal1">add_heading()</code> function returns a <code class="literal1">Paragraph</code> object to save you the step of extracting it from the <code class="literal1">Document</code> object as a separate step.</p>
+<p class="calibre4"><a id="calibre_link-229" class="calibre1"></a><a id="calibre_link-961" class="calibre1"></a><a id="calibre_link-1202" class="calibre1"></a><a id="calibre_link-1861" class="calibre1"></a><a id="calibre_link-1862" class="calibre1"></a>The resulting <span class="calibre1"><em class="calibre5">headings.docx</em></span> file will look like <a class="ulink" href="#calibre_link-120" title="Figure 13-10. The headings.docx document with headings 0 to 4">Figure&nbsp;13-10</a>.</p>
+<div class="figure"><a id="calibre_link-120" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-3232" class="calibre1"></a><img src="/images/000050.jpg" alt="The headings.docx document with headings 0 to 4" class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;13-10.&nbsp;The <span class="calibre1"><em class="calibre5">headings.docx</em></span> document with headings 0 to 4</p>
+</div>
+</div>
+<div class="book" title="Adding Line and Page Breaks">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3233" class="firstname"></a>Adding Line and Page Breaks</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">To add a line break (rather than starting a whole new paragraph), you can call the <code class="literal1">add_break()</code> method on the <code class="literal1">Run</code> object you want to have the break appear after. If you want to add a page break instead, you need to pass the value <code class="literal1">docx.text.WD_BREAK.PAGE</code> as a lone argument to <code class="literal1">add_break()</code>, as is done in the middle of the following example:</p>
+<p><a id="calibre_link-3234" class="calibre1"></a>
+<pre class="programlisting">   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc = docx.Document()</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc.add_paragraph('This is on the first page!')</strong></span>
+   &lt;docx.text.Paragraph object at 0x0000000003785518&gt;
+➊ &gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc.paragraphs[0].runs[0].add_break(docx.text.WD_BREAK.PAGE)</strong></span>
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc.add_paragraph('This is on the second page!')</strong></span>
+   &lt;docx.text.Paragraph object at 0x00000000037855F8&gt;
+   &gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc.save('twoPage.docx')</strong></span></pre>
+<p class="calibre4">This creates a two-page Word document with <span class="calibre1"><em class="calibre5">This is on the first page!</em></span> on the first page and <span class="calibre1"><em class="calibre5">This is on the second page!</em></span> on the second. Even though there was still plenty of space on the first page after the text <span class="calibre1"><em class="calibre5">This is on the first page!</em></span>, we forced the next paragraph to begin on a new page by inserting a page break after the first run of the first paragraph ➊.</p>
+</div>
+<div class="book" title="Adding Pictures">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3235" class="firstname"></a>Adding Pictures</h2>
+</div>
+</div>
+</div>
+<p class="calibre4"><code class="literal1">Document</code> objects have an <code class="literal1">add_picture()</code> method that will let you add an image to the end of the document. Say you have a file <span class="calibre1"><em class="calibre5">zophie.png</em></span> in the current working directory. You can add <span class="calibre1"><em class="calibre5">zophie.png</em></span> to the end of your document with a width of 1 inch and height of 4 centimeters (Word can use both imperial and metric units) by entering the following:</p>
+<p><a id="calibre_link-3236" class="calibre1"></a>
+<pre class="programlisting">&gt;&gt;&gt; <span class="calibre1"><strong class="literal">doc.add_picture('zophie.png', width=docx.shared.Inches(1),</strong></span>
+<span class="calibre1"><strong class="literal">height=docx.shared.Cm(4))</strong></span>
+&lt;docx.shape.InlineShape object at 0x00000000036C7D30&gt;</pre>
+<p class="calibre4">The first argument is a string of the image’s filename. The optional <code class="literal1">width</code> and <code class="literal1">height</code> keyword arguments will set the width and height of the image in the document. If left out, the width and height will default to the normal size of the image.</p>
+<p class="calibre4">You’ll probably prefer to specify an image’s height and width in familiar units such as inches and centimeters, so you can use the <code class="literal1">docx.shared.Inches()</code> and <code class="literal1">docx.shared.Cm()</code> functions when you’re specifying the <code class="literal1">width</code> and <code class="literal1">height</code> keyword arguments.</p>
+</div>
+</div>
+<div class="book" title="Summary">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-3237" class="firstname"></a>Summary</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">Text information isn’t just for plaintext files; in fact, it’s pretty likely that you deal with PDFs and Word documents much more often. You can use the <code class="literal1">PyPDF2</code> module to read and write PDF documents. Unfortunately, reading text from PDF documents might not always result in a perfect translation to a string because of the complicated PDF file format, and some PDFs might not be readable at all. In these cases, you’re out of luck unless future updates to PyPDF2 support additional PDF features.</p>
+<p class="calibre4">Word documents are more reliable, and you can read them with the <code class="literal1">python-docx</code> module. You can manipulate text in Word documents via <code class="literal1">Paragraph</code> and <code class="literal1">Run</code> objects. These objects can also be given styles, though they must be from the default set of styles or styles already in the document. You can add new paragraphs, headings, breaks, and pictures to the document, though only to the end.</p>
+<p class="calibre4">Many of the limitations that come with working with PDFs and Word documents are because these formats are meant to be nicely displayed for human readers, rather than easy to parse by software. The next chapter takes a look at two other common formats for storing information: JSON and CSV files. These formats are designed to be used by computers, and you’ll see that Python can work with these formats much more easily.</p>
+</div>
+<div class="book" title="Practice Questions">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-3238" class="firstname"></a>Practice Questions</h1>
+</div>
+</div>
+</div>
+<div class="book" title="Frequently Asked Questions"><a id="calibre_link-3239" class="calibre1"></a><br />
+<table border="0" width="100%" summary="Q and A Set" class="calibre22">
+<col width="1%" class="calibre23"></col>
+<col class="calibre11"></col>
+<tbody class="calibre16">
+<tr class="calibre13" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3240" class="calibre1"></a><a id="calibre_link-3241" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">1. A string value of the PDF filename is <span class="calibre1"><em class="calibre5">not</em></span> passed to the <code class="literal2">PyPDF2.PdfFileReader()</code> function. What do you pass to the function instead?</p>
+</td>
+</tr>
+<tr class="calibre19" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3242" class="calibre1"></a><a id="calibre_link-3243" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">2. What modes do the <code class="literal2">File</code> objects for <code class="literal2">PdfFileReader()</code> and <code class="literal2">PdfFileWriter()</code> need to be opened in?</p>
+</td>
+</tr>
+<tr class="calibre13" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3244" class="calibre1"></a><a id="calibre_link-3245" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">3. How do you acquire a <code class="literal2">Page</code> object for <a class="ulink" href="#calibre_link-121" title="About This Book">About This Book</a> from a <code class="literal2">PdfFileReader</code> object?</p>
+</td>
+</tr>
+<tr class="calibre19" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3246" class="calibre1"></a><a id="calibre_link-3247" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">4. What <code class="literal2">PdfFileReader</code> variable stores the number of pages in the PDF document?</p>
+</td>
+</tr>
+<tr class="calibre13" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3248" class="calibre1"></a><a id="calibre_link-3249" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">5. If a <code class="literal2">PdfFileReader</code> object’s PDF is encrypted with the password <code class="literal2">swordfish</code>, what must you do before you can obtain <code class="literal2">Page</code> objects from it?</p>
+</td>
+</tr>
+<tr class="calibre19" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3250" class="calibre1"></a><a id="calibre_link-3251" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">6. What methods do you use to rotate a page?</p>
+</td>
+</tr>
+<tr class="calibre13" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3252" class="calibre1"></a><a id="calibre_link-3253" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">7. What method returns a <code class="literal2">Document</code> object for a file named <span class="calibre1"><em class="calibre5">demo.docx</em></span>?</p>
+</td>
+</tr>
+<tr class="calibre19" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3254" class="calibre1"></a><a id="calibre_link-3255" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">8. What is the difference between a <code class="literal2">Paragraph</code> object and a <code class="literal2">Run</code> object?</p>
+</td>
+</tr>
+<tr class="calibre13" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3256" class="calibre1"></a><a id="calibre_link-3257" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">9. How do you obtain a list of <code class="literal2">Paragraph</code> objects for a <code class="literal2">Document</code> object that’s stored in a variable named <code class="literal2">doc</code>?</p>
+</td>
+</tr>
+<tr class="calibre19" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3258" class="calibre1"></a><a id="calibre_link-3259" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">10. What type of object has <code class="literal2">bold</code>, <code class="literal2">underline</code>, <code class="literal2">italic</code>, <code class="literal2">strike</code>, and <code class="literal2">outline</code> variables?</p>
+</td>
+</tr>
+<tr class="calibre13" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3260" class="calibre1"></a><a id="calibre_link-3261" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">11. What is the difference between setting the <code class="literal2">bold</code> variable to <code class="literal2">True</code>, <code class="literal2">False</code>, or <code class="literal2">None</code>?</p>
+</td>
+</tr>
+<tr class="calibre19" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3262" class="calibre1"></a><a id="calibre_link-3263" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">12. How do you create a <code class="literal2">Document</code> object for a new Word document?</p>
+</td>
+</tr>
+<tr class="calibre13" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3264" class="calibre1"></a><a id="calibre_link-3265" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">13. How do you add a paragraph with the text <code class="literal2">'Hello there!'</code> to a <code class="literal2">Document</code> object stored in a variable named <code class="literal2">doc</code>?</p>
+</td>
+</tr>
+<tr class="calibre19" title="Q:">
+<td valign="top" class="calibre21"><a id="calibre_link-3266" class="calibre1"></a><a id="calibre_link-3267" class="calibre1"></a>
+<p class="calibre4">Q:</p>
+</td>
+<td valign="top" class="calibre21">
+<p class="calibre4">14. What integers represent the levels of headings available in Word documents?</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="book" title="Practice Projects">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h1 class="title2"><a id="calibre_link-3268" class="firstname"></a>Practice Projects</h1>
+</div>
+</div>
+</div>
+<p class="calibre4">For practice, write programs that do the following.</p>
+<div class="book" title="PDF Paranoia">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3269" class="firstname"></a>PDF Paranoia</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Using the <code class="literal1">os.walk()</code> function from <a class="ulink" href="/chapter9" title="Chapter 9. Organizing Files">Chapter&nbsp;9</a>, write a script that will go through every PDF in a folder (and its subfolders) and encrypt the PDFs using a password provided on the command line. Save each encrypted PDF with an <span class="calibre1"><em class="calibre5">_encrypted.pdf</em></span> suffix added to the original filename. Before deleting the original file, have the program attempt to read and decrypt the file to ensure that it was encrypted correctly.</p>
+<p class="calibre4">Then, write a program that finds all encrypted PDFs in a folder (and its subfolders) and creates a decrypted copy of the PDF using a provided password. If the password is incorrect, the program should print a message to the user and continue to the next PDF.</p>
+</div>
+<div class="book" title="Custom Invitations as Word Documents">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3270" class="firstname"></a>Custom Invitations as Word Documents</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Say you have a text file of guest names. This <span class="calibre1"><em class="calibre5">guests.txt</em></span> file has one name per line, as follows:</p>
+<p><a id="calibre_link-3271" class="calibre1"></a>
+<pre class="programlisting">Prof. Plum
+Miss Scarlet
+Col. Mustard
+Al Sweigart
+Robocop</pre>
+<p class="calibre4">Write a program that would generate a Word document with custom invitations that look like <a class="ulink" href="#calibre_link-122" title="Figure 13-11. The Word document generated by your custom invite script">Figure&nbsp;13-11</a>.</p>
+<p class="calibre4">Since Python-Docx can use only those styles that already exist in the Word document, you will have to first add these styles to a blank Word file and then open that file with Python-Docx. There should be one invitation per page in the resulting Word document, so call <code class="literal1">add_break()</code> to add a page break after the last paragraph of each invitation. This way, you will need to open only one Word document to print all of the invitations at once.</p>
+<div class="figure"><a id="calibre_link-122" class="calibre1"></a>
+<div class="book">
+<div class="book"><a id="calibre_link-3272" class="calibre1"></a><img src="/images/000053.jpg" alt="The Word document generated by your custom invite script" class="calibre8" /></div>
+</div>
+<p class="title4">Figure&nbsp;13-11.&nbsp;The Word document generated by your custom invite script</p>
+</div>
+<p class="calibre4">You can download a sample <span class="calibre1"><em class="calibre5">guests.txt</em></span> file from <span class="calibre1"><em class="calibre5"><a class="ulink" href="http://nostarch.com/automatestuff/">http://nostarch.com/automatestuff/</a></em></span>.</p>
+</div>
+<div class="book" title="Brute-Force PDF Password Breaker">
+<div class="titlepage">
+<div class="book">
+<div class="book">
+<h2 class="title3"><a id="calibre_link-3273" class="firstname"></a>Brute-Force PDF Password Breaker</h2>
+</div>
+</div>
+</div>
+<p class="calibre4">Say you have an encrypted PDF that you have forgotten the password to, but you remember it was a single English word. Trying to guess your forgotten password is quite a boring task. Instead you can write a program that will decrypt the PDF by trying every possible English word until it finds one that works. This is called a <span class="calibre1"><em class="calibre5">brute-force password attack.</em></span> Download the text file <span class="calibre1"><em class="calibre5">dictionary.txt</em></span> from <span class="calibre1"><em class="calibre5"><a class="ulink" href="http://nostarch.com/automatestuff/">http://nostarch.com/automatestuff/</a></em></span>. This <span class="calibre1"><em class="calibre5">dictionary file</em></span> contains over 44,000 English words with one word per line.</p>
+<p class="calibre4">Using the file-reading skills you learned in <a class="ulink" href="/chapter8" title="Chapter 8. Reading and Writing Files">Chapter&nbsp;8</a>, create a list of word strings by reading this file. Then loop over each word in this list, passing it to the <code class="literal1">decrypt()</code> method. If this method returns the integer <code class="literal1">0</code>, the password was wrong and your program should continue to the next password. If <code class="literal1">decrypt()</code> returns <code class="literal1">1</code>, then your program should break out of the loop and print the hacked password. You should try both the uppercase and lower-case form of each word. (On my laptop, going through all 88,000 uppercase and lowercase words from the dictionary file takes a couple of minutes. This is why you shouldn’t use a simple English word for your passwords.)</p>
+</div>
+</div>
+</div>
+</div>
+<p><center><a href="/chapter12"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="/chapter14"><img src="/images/next.png" /></a><br />Support the Author: Buy the book on <a href="http://www.amazon.com/gp/product/1593275994/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&amp;camp=1789&amp;creative=9325&amp;creativeASIN=1593275994&amp;linkCode=as2&amp;tag=playwithpyth-20&amp;linkId=2KIYOE7RFLG7D2RJ">Amazon</a> or<br/><a href="http://www.nostarch.com/automatestuff">the book/ebook bundle directly from No Starch Press</a>.<br /><a href="http://www.nostarch.com/automatestuff" ><img class=" size-full wp-image-49 aligncenter" src="/images/automate_small_cover.png" alt="small_cover" width="170" height="225" /></a><br /><a href="//inventwithpython.com">Read the author's other free Python books:</a><br /><a href="//inventwithpython.com/chapters"><img src="/images/smallcover_invent.png" width=120 /></a> <a href="//inventwithpython.com/pygame/chapters"><img src="/images/smallcover_makinggames.png" width=120 /></a> <a href="//inventwithpython.com/hacking/chapters"><img src="/images/smallcover_hacking.png" width=120 /></a></center></p>
+<p style="text-align: center;"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img class="alignnone size-full wp-image-54" src="/images/cc-by-nc-sa_small.png" alt="cc-by-nc-sa_small" width="100" height="35" /> Released under Creative Commons: BY-NC-SA 4.0</a></p>
+			</div><!-- .entry-content -->
+</article><!-- #post-## -->
+
+				
+			
+		</main><!-- #main -->
+	</div><!-- #primary -->
+
+</body>
+</html>
+
+<!-- Dynamic page generated in 0.299 seconds. -->
+<!-- Cached page generated by WP-Super-Cache on 2016-08-18 04:18:02 -->
+
+<!-- super cache -->
