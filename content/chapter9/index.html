@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% set title = 'Automate the Boring Stuff with Python' %}
 {% block content %}
-				
+
 <article id="post-123" class="post-123 page type-page status-publish hentry">
 	<header class="entry-header">
 		<h1 class="entry-title">Chapter  9 &#8211; Organizing Files</h1>	</header><!-- .entry-header -->
@@ -616,7 +616,7 @@ FILE INSIDE C:\delicious\walnut\waffles: butter.txt.</pre>
            <span class="calibre1"><strong class="literal"># Add all the files in this folder to the ZIP file.</strong></span>
 &#x2778;         <span class="calibre1"><strong class="literal">for filename in filenames:</strong></span>
                <span class="calibre1"><strong class="literal">newBase = os.path.basename(folder) + '_'</strong></span>
-               <span class="calibre1"><strong class="literal">if filename.startswith(newBase) and filename.endswith('.zip')</strong></span>
+               <span class="calibre1"><strong class="literal">if filename.startswith(newBase) and filename.endswith('.zip'):</strong></span>
                    <span class="calibre1"><strong class="literal">continue   # don't backup the backup ZIP files</strong></span>
                <span class="calibre1"><strong class="literal">backupZip.write(os.path.join(foldername, filename))</strong></span>
        <span class="calibre1"><strong class="literal">backupZip.close()</strong></span>
@@ -772,5 +772,5 @@ Done.</pre>
 			</div><!-- .entry-content -->
 </article><!-- #post-## -->
 
-				
+
 {% endblock %}
