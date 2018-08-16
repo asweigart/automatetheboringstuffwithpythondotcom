@@ -1,14 +1,15 @@
-body { 
-	font-family: Georgia, serif; 
+body {
+	font-family: Georgia, serif;
 	font-size: 1.2em;
 	line-height: 1.5em;
-	background: #fffeee; 
+	background: #fffeee;
 	margin: 0;
 }
 
 a {
-	color: #5b8354;
-	text-decoration: inherit;
+	color: #366130;
+	text-decoration:underline;
+	text-decoration-style: dotted;
 }
 
 h1 {
@@ -28,8 +29,8 @@ h3 {
 
 .main {
 	margin: 8px;
-	max-width: 700px; 
-	margin-left: auto; 
+	max-width: 700px;
+	margin-left: auto;
 	margin-right: auto;
 }
 
