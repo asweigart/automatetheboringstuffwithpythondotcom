@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% set title = 'Automate the Boring Stuff with Python' %}
 {% block content %}
-				
+
 <article id="post-124" class="post-124 page type-page status-publish hentry">
 	<header class="entry-header">
 		<h1 class="entry-title">Chapter 10 &#8211; Debugging</h1>	</header><!-- .entry-header -->
@@ -53,7 +53,7 @@ Traceback (most recent call last):
     raise Exception('This is the error message.')
 Exception: This is the error message.</pre>
 <p class="calibre4">If there are no <code class="literal1">try</code> and <code class="literal1">except</code> statements covering the <code class="literal1">raise</code> statement that raised the exception, the program simply crashes and displays the exception&rsquo;s error message.</p>
-<p class="calibre4">Often it&rsquo;s the code that calls the function, not the function itself, that knows how to handle an expection. So you will commonly see a <code class="literal1">raise</code> statement inside a function and the <code class="literal1">try</code> and <code class="literal1">except</code> statements in the code calling the function. For example, open a new file editor window, enter the following code, and save the program as <span class="calibre1"><em class="calibre5">boxPrint.py</em></span>:</p>
+<p class="calibre4">Often it&rsquo;s the code that calls the function, not the function itself, that knows how to handle an exception. So you will commonly see a <code class="literal1">raise</code> statement inside a function and the <code class="literal1">try</code> and <code class="literal1">except</code> statements in the code calling the function. For example, open a new file editor window, enter the following code, and save the program as <span class="calibre1"><em class="calibre5">boxPrint.py</em></span>:</p>
 <p><a id="calibre_link-2840" class="calibre1"></a>
 <pre class="programlisting">   def boxPrint(symbol, width, height):
        if len(symbol) != 1:
@@ -788,5 +788,5 @@ else:
 			</div><!-- .entry-content -->
 </article><!-- #post-## -->
 
-				
+
 {% endblock %}
