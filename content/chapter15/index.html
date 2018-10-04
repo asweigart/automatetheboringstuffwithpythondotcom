@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% set title = 'Automate the Boring Stuff with Python' %}
 {% block content %}
-				
+
 <article id="post-129" class="post-129 page type-page status-publish hentry">
 	<header class="entry-header">
 		<h1 class="entry-title">Chapter 15 &#8211; Keeping Time, Scheduling Tasks, and Launching Programs</h1>	</header><!-- .entry-header -->
@@ -710,7 +710,7 @@ Cats &amp; Dogs &amp; Frogs</pre>
 &#x2776; os.makedirs('xkcd', exist_ok=True) # store comics in ./xkcd
 
 &#x2777; def downloadXkcd(startComic, endComic):
-&#x2778;     for urlNumber in range(startComic, endComic):
+&#x2778;     for urlNumber in range(startComic, endComic + 1):
            # Download the page.
            print('Downloading page http://xkcd.com/%s...' % (urlNumber))
 &#x2779;         res = requests.get('http://xkcd.com/%s' % (urlNumber))
@@ -1155,5 +1155,5 @@ Lap # 4: 19.11 (  1.43)</pre>
 			</div><!-- .entry-content -->
 </article><!-- #post-## -->
 
-				
+
 {% endblock %}
