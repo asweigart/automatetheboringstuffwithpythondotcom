@@ -3,7 +3,7 @@
 
 import requests, os, bs4
 
-url = 'http://xkcd.com' # starting url
+url = 'https://xkcd.com' # starting url
 os.makedirs('xkcd', exist_ok=True) # store comics in ./xkcd
 while not url.endswith('#'):
     # Download the page.
@@ -11,7 +11,7 @@ while not url.endswith('#'):
     res = requests.get(url)
     res.raise_for_status()
 
-    soup = bs4.BeautifulSoup(res.text)
+    soup = bs4.BeautifulSoup(res.text, features='lxml')
 
     # Find the URL of the comic image.
     comicElem = soup.select('#comic img')
@@ -19,7 +19,7 @@ while not url.endswith('#'):
         print('Could not find comic image.')
     else:
         try:
-            comicUrl = 'http:' + comicElem[0].get('src')
+            comicUrl = 'https:' + comicElem[0].get('src')
             # Download the image.
             print('Downloading image %s...' % (comicUrl))
             res = requests.get(comicUrl)
@@ -27,7 +27,7 @@ while not url.endswith('#'):
         except requests.exceptions.MissingSchema:
             # skip this comic
             prevLink = soup.select('a[rel="prev"]')[0]
-            url = 'http://xkcd.com' + prevLink.get('href')
+            url = 'https://xkcd.com' + prevLink.get('href')
             continue
 
         # Save the image to ./xkcd
@@ -38,6 +38,6 @@ while not url.endswith('#'):
 
     # Get the "Prev" button's url.
     prevLink = soup.select('a[rel="prev"]')[0]
-    url = 'http://xkcd.com' + prevLink.get('href')
+    url = 'https://xkcd.com' + prevLink.get('href')
 
 print('Done.')
