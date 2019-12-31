@@ -1,0 +1,751 @@
+{% extends "secondeditionbase.html" %}
+{% set title = 'Automate the Boring Stuff with Python' %}
+{% block content %}
+
+
+<div><center><a href="../chapter5"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="../chapter7"><img src="/images/next.png" /></a></center></div>
+
+<div class="calibre" id="calibre_link-1614">
+<h2 class="h2b" id="calibre_link-207"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1750" class="calibre1"></span><strong class="calibre2"><span class="big">6</span><br class="calibre12" />MANIPULATING STRINGS</strong></h2>
+<div class="image"><img src="../images/000123.jpg" alt="Image" class="calibre3" /></div>
+<p class="noindent">Text is one of the most common forms of data your programs will handle. You already know how to concatenate two string values together with the <span class="literal">+</span> operator, but you can do much more than that. You can extract partial strings from string values, add or remove spacing, convert letters to lowercase or uppercase, and check that strings are formatted correctly. You can even write Python code to access the clipboard for copying and pasting text.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-742"></span>In this chapter, you’ll learn all this and more. Then you’ll work through two different programming projects: a simple clipboard that stores multiple strings of text and a program to automate the boring chore of formatting pieces of text.</p>
+<h3 class="h1" id="calibre_link-208"><strong class="calibre2">Working with Strings</strong></h3>
+<p class="noindent">Let’s look at some of the ways Python lets you write, print, and access strings in your code.</p>
+<h4 class="h2" id="calibre_link-209"><strong class="calibre2"><em class="calibre9">String Literals</em></strong></h4>
+<p class="noindent">Typing string values in Python code is fairly straightforward: they begin and end with a single quote. But then how can you use a quote inside a string? Typing <span class="codestrong">'That is Alice's cat.'</span> won’t work, because Python thinks the string ends after <span class="literal">Alice</span>, and the rest (<span class="literal">s cat.'</span>) is invalid Python code. Fortunately, there are multiple ways to type strings.</p>
+<h5 class="h2" id="calibre_link-1751"><strong class="calibre2">Double Quotes</strong></h5>
+<p class="noindent">Strings can begin and end with double quotes, just as they do with single quotes. One benefit of using double quotes is that the string can have a single quote character in it. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">spam = "That is Alice's cat."</span></p>
+<p class="indent">Since the string begins with a double quote, Python knows that the single quote is part of the string and not marking the end of the string. However, if you need to use both single quotes and double quotes in the string, you’ll need to use escape characters.</p>
+<h5 class="h2" id="calibre_link-1752"><strong class="calibre2">Escape Characters</strong></h5>
+<p class="noindent">An <em class="calibre7">escape character</em> lets you use characters that are otherwise impossible to put into a string. An escape character consists of a backslash (<span class="literal">\</span>) followed by the character you want to add to the string. (Despite consisting of two characters, it is commonly referred to as a singular escape character.) For example, the escape character for a single quote is <span class="literal">\'</span>. You can use this inside a string that begins and ends with single quotes. To see how escape characters work, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">spam = 'Say hi to Bob\'s mother.'</span></p>
+<p class="indent">Python knows that since the single quote in <span class="literal">Bob\'s</span> has a backslash, it is not a single quote meant to end the string value. The escape characters <span class="literal">\'</span> and <span class="literal">\"</span> let you put single quotes and double quotes inside your strings, respectively.</p>
+<p class="indent"><a href="#calibre_link-1615" class="calibre6">Table 6-1</a> lists the escape characters you can use.</p>
+<p class="tabcap" id="calibre_link-1615"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-743"></span><strong class="calibre4">Table 6-1:</strong> Escape Characters</p>
+<table class="topbot-d">
+<colgroup class="calibre13">
+<col class="calibre18"></col>
+<col class="calibre18"></col>
+</colgroup>
+<thead class="calibre15">
+<tr class="calibre16">
+<td class="table-h"><p class="tab_th"><strong class="calibre4">Escape character</strong></p></td>
+<td class="table-h"><p class="tab_th"><strong class="calibre4">Prints as</strong></p></td>
+</tr>
+</thead>
+<tbody class="calibre17">
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">\'</span></p></td>
+<td class="table-b"><p class="taba">Single quote</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">\"</span></p></td>
+<td class="table-v"><p class="taba">Double quote</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">\t</span></p></td>
+<td class="table-b"><p class="taba">Tab</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">\n</span></p></td>
+<td class="table-v"><p class="taba">Newline (line break)</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-ba"><p class="taba"><span class="literal">\\</span></p></td>
+<td class="table-ba"><p class="taba">Backslash</p></td>
+</tr>
+</tbody>
+</table>
+<p class="indent">Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">print("Hello there!\nHow are you?\nI\'m doing fine.")</span><br class="calibre5" />
+Hello there!<br class="calibre5" />
+How are you?<br class="calibre5" />
+I'm doing fine.</p>
+<h5 class="h2" id="calibre_link-1753"><strong class="calibre2">Raw Strings</strong></h5>
+<p class="noindent">You can place an <span class="literal">r</span> before the beginning quotation mark of a string to make it a raw string. A <em class="calibre7">raw string</em> completely ignores all escape characters and prints any backslash that appears in the string. For example, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">print(r'That is Carol\'s cat.')</span><br class="calibre5" />
+That is Carol\'s cat.</p>
+<p class="indent">Because this is a raw string, Python considers the backslash as part of the string and not as the start of an escape character. Raw strings are helpful if you are typing string values that contain many backslashes, such as the strings used for Windows file paths like <span class="literal">r'C:\Users\Al\Desktop'</span> or regular expressions described in the next chapter.</p>
+<h5 class="h2" id="calibre_link-1754"><strong class="calibre2">Multiline Strings with Triple Quotes</strong></h5>
+<p class="noindent">While you can use the <span class="literal">\n</span> escape character to put a newline into a string, it is often easier to use multiline strings. A multiline string in Python begins and ends with either three single quotes or three double quotes. Any quotes, tabs, or newlines in between the “triple quotes” are considered part of the string. Python’s indentation rules for blocks do not apply to lines inside a multiline string.</p>
+<p class="indent">Open the file editor and write the following:</p>
+<p class="programs">print('''Dear Alice,<br class="calibre5" /><br class="calibre5" />
+Eve's cat has been arrested for catnapping, cat burglary, and extortion.<br class="calibre5" /><br class="calibre5" />
+Sincerely,<br class="calibre5" />
+Bob''')</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-763"></span>Save this program as <em class="calibre7">catnapping.py</em> and run it. The output will look like this:</p>
+<p class="programs">Dear Alice,<br class="calibre5" /><br class="calibre5" />
+Eve's cat has been arrested for catnapping, cat burglary, and extortion.<br class="calibre5" /><br class="calibre5" />
+Sincerely,<br class="calibre5" />
+Bob</p>
+<p class="indent">Notice that the single quote character in <span class="literal">Eve's</span> does not need to be escaped. Escaping single and double quotes is optional in multiline strings. The following <span class="literal">print()</span> call would print identical text but doesn’t use a multiline string:</p>
+<p class="programs">print('Dear Alice,\n\nEve\'s cat has been arrested for catnapping, cat<br class="calibre5" />
+burglary, and extortion.\n\nSincerely,\nBob')</p>
+<h5 class="h2" id="calibre_link-1755"><strong class="calibre2">Multiline Comments</strong></h5>
+<p class="noindent">While the hash character (<span class="literal">#</span>) marks the beginning of a comment for the rest of the line, a multiline string is often used for comments that span multiple lines. The following is perfectly valid Python code:</p>
+<p class="programs">"""This is a test Python program.<br class="calibre5" />
+Written by Al Sweigart al@inventwithpython.com<br class="calibre5" /><br class="calibre5" />
+This program was designed for Python 3, not Python 2.<br class="calibre5" />
+"""<br class="calibre5" /><br class="calibre5" />
+def spam():<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;"""This is a multiline comment to help<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;explain what the spam() function does."""<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('Hello!')</p>
+<h4 class="h2" id="calibre_link-210"><strong class="calibre2"><em class="calibre9">Indexing and Slicing Strings</em></strong></h4>
+<p class="noindent">Strings use indexes and slices the same way lists do. You can think of the string <span class="literal">'Hello, world!'</span> as a list and each character in the string as an item with a corresponding index.</p>
+<p class="programsc">'&nbsp;&nbsp;&nbsp;H&nbsp;&nbsp;&nbsp;e&nbsp;&nbsp;&nbsp;l&nbsp;&nbsp;&nbsp;l&nbsp;&nbsp;&nbsp;o&nbsp;&nbsp;&nbsp;,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;w&nbsp;&nbsp;&nbsp;o&nbsp;&nbsp;&nbsp;r&nbsp;&nbsp;&nbsp;l&nbsp;&nbsp;&nbsp;&nbsp;d&nbsp;&nbsp;&nbsp;&nbsp;!&nbsp;&nbsp;&nbsp;'<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;6&nbsp;&nbsp;&nbsp;7&nbsp;&nbsp;&nbsp;8&nbsp;&nbsp;&nbsp;9&nbsp;&nbsp;&nbsp;10&nbsp;&nbsp;&nbsp;11&nbsp;&nbsp;&nbsp;12</p>
+<p class="indent">The space and exclamation point are included in the character count, so <span class="literal">'Hello, world!'</span> is 13 characters long, from <span class="literal">H</span> at index 0 to <span class="literal">!</span> at index 12.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1010"></span>Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">spam = 'Hello, world!'</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spam[0]</span><br class="calibre5" />
+'H'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spam[4]</span><br class="calibre5" />
+'o'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spam[-1]</span><br class="calibre5" />
+'!'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spam[0:5]</span><br class="calibre5" />
+'Hello'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spam[:5]</span><br class="calibre5" />
+'Hello'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spam[7:]</span><br class="calibre5" />
+'world!'</p>
+<p class="indent">If you specify an index, you’ll get the character at that position in the string. If you specify a range from one index to another, the starting index is included and the ending index is not. That’s why, if <span class="literal">spam</span> is <span class="literal">'Hello, world!'</span>, <span class="literal">spam[0:5]</span> is <span class="literal">'Hello'</span>. The substring you get from <span class="literal">spam[0:5]</span> will include everything from <span class="literal">spam[0]</span> to <span class="literal">spam[4]</span>, leaving out the comma at index 5 and the space at index 6. This is similar to how <span class="literal">range(5)</span> will cause a <span class="literal">for</span> loop to iterate up to, but not including, <span class="literal">5</span>.</p>
+<p class="indent">Note that slicing a string does not modify the original string. You can capture a slice from one variable in a separate variable. Try entering the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">spam = 'Hello, world!'</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">fizz = spam[0:5]</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">fizz</span><br class="calibre5" />
+'Hello'</p>
+<p class="indent">By slicing and storing the resulting substring in another variable, you can have both the whole string and the substring handy for quick, easy access.</p>
+<h4 class="h2" id="calibre_link-211"><strong class="calibre2"><em class="calibre9">The in and not in Operators with Strings</em></strong></h4>
+<p class="noindent">The <span class="literal">in</span> and <span class="literal">not in</span> operators can be used with strings just like with list values. An expression with two strings joined using <span class="literal">in</span> or <span class="literal">not in</span> will evaluate to a Boolean <span class="literal">True</span> or <span class="literal">False</span>. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">'Hello' in 'Hello, World'</span><br class="calibre5" />
+True<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'Hello' in 'Hello'</span><br class="calibre5" />
+True<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'HELLO' in 'Hello, World'</span><br class="calibre5" />
+False<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'' in 'spam'</span><br class="calibre5" />
+True<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'cats' not in 'cats and dogs'</span><br class="calibre5" />
+False</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1042"></span>These expressions test whether the first string (the exact string, case-sensitive) can be found within the second string.</p>
+<h3 class="h1" id="calibre_link-212"><strong class="calibre2">Putting Strings Inside Other Strings</strong></h3>
+<p class="noindent">Putting strings inside other strings is a common operation in programming. So far, we’ve been using the <span class="literal">+</span> operator and string concatenation to do this:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">name = 'Al'</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">age = 4000</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'Hello, my name is ' + name + '. I am ' + str(age) + ' years old.'</span><br class="calibre5" />
+'Hello, my name is Al. I am 4000 years old.'</p>
+<p class="indent">However, this requires a lot of tedious typing. A simpler approach is to use <em class="calibre7">string interpolation</em>, in which the <span class="literal">%s</span> operator inside the string acts as a marker to be replaced by values following the string. One benefit of string interpolation is that <span class="literal">str()</span> doesn’t have to be called to convert values to strings. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">name = 'Al'</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">age = 4000</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'My name is %s. I am %s years old.' % (name, age)</span><br class="calibre5" />
+'My name is Al. I am 4000 years old.'</p>
+<p class="indent">Python 3.6 introduced <em class="calibre7">f-strings</em>, which is similar to string interpolation except that braces are used instead of <span class="literal">%s</span>, with the expressions placed directly inside the braces. Like raw strings, f-strings have an <span class="literal">f</span> prefix before the starting quotation mark. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">name = 'Al'</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">age = 4000</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">f'My name is {name}. Next year I will be {age + 1}.'</span><br class="calibre5" />
+'My name is Al. Next year I will be 4001.'</p>
+<p class="indent">Remember to include the <span class="literal">f</span> prefix; otherwise, the braces and their contents will be a part of the string value:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">'My name is {name}. Next year I will be {age + 1}.'</span><br class="calibre5" />
+'My name is {name}. Next year I will be {age + 1}.'</p>
+<h3 class="h1" id="calibre_link-213"><strong class="calibre2">Useful String Methods</strong></h3>
+<p class="noindent">Several string methods analyze strings or create transformed string values. This section describes the methods you’ll be using most often.</p>
+<h4 class="h2" id="calibre_link-214"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-830" class="calibre1"></span><strong class="calibre2"><em class="calibre9">The upper(), lower(), isupper(), and islower() Methods</em></strong></h4>
+<p class="noindent">The <span class="literal">upper()</span> and <span class="literal">lower()</span> string methods return a new string where all the letters in the original string have been converted to uppercase or lowercase, respectively. Nonletter characters in the string remain unchanged. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">spam = 'Hello, world!'</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spam = spam.upper()</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spam</span><br class="calibre5" />
+'HELLO, WORLD!'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spam = spam.lower()</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spam</span><br class="calibre5" />
+'hello, world!'</p>
+<p class="indent">Note that these methods do not change the string itself but return new string values. If you want to change the original string, you have to call <span class="literal">upper()</span> or <span class="literal">lower()</span> on the string and then assign the new string to the variable where the original was stored. This is why you must use <span class="literal">spam = spam.upper()</span> to change the string in <span class="literal">spam</span> instead of simply <span class="literal">spam.upper()</span>. (This is just like if a variable <span class="literal">eggs</span> contains the value <span class="literal">10</span>. Writing <span class="literal">eggs + 3</span> does not change the value of <span class="literal">eggs</span>, but <span class="literal">eggs = eggs + 3</span> does.)</p>
+<p class="indent">The <span class="literal">upper()</span> and <span class="literal">lower()</span> methods are helpful if you need to make a case-insensitive comparison. For example, the strings <span class="literal">'great'</span> and <span class="literal">'GREat'</span> are not equal to each other. But in the following small program, it does not matter whether the user types <span class="literal">Great</span>, <span class="literal">GREAT</span>, or <span class="literal">grEAT</span>, because the string is first converted to lowercase.</p>
+<p class="programs">print('How are you?')<br class="calibre5" />
+feeling = input()<br class="calibre5" />
+if feeling.lower() == 'great':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('I feel great too.')<br class="calibre5" />
+else:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('I hope the rest of your day is good.')</p>
+<p class="indent">When you run this program, the question is displayed, and entering a variation on <span class="literal">great</span>, such as <span class="literal">GREat</span>, will still give the output <span class="literal">I feel great too</span>. Adding code to your program to handle variations or mistakes in user input, such as inconsistent capitalization, will make your programs easier to use and less likely to fail.</p>
+<p class="programs">How are you?<br class="calibre5" />
+<span class="codestrong1">GREat</span><br class="calibre5" />
+I feel great too.</p>
+<p class="indent">You can view the execution of this program at <em class="calibre7"><a href="https://autbor.com/convertlowercase/" class="calibre6">https://autbor.com/convertlowercase/</a></em>. The <span class="literal">isupper()</span> and <span class="literal">islower()</span> methods will return a Boolean <span class="literal">True</span> value if the string has at least one letter and all the letters <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1017"></span>are uppercase or lowercase, respectively. Otherwise, the method returns <span class="literal">False</span>. Enter the following into the interactive shell, and notice what each method call returns:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">spam = 'Hello, world!'</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spam.islower()</span><br class="calibre5" />
+False<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spam.isupper()</span><br class="calibre5" />
+False<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'HELLO'.isupper()</span><br class="calibre5" />
+True<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'abc12345'.islower()</span><br class="calibre5" />
+True<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'12345'.islower()</span><br class="calibre5" />
+False<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'12345'.isupper()</span><br class="calibre5" />
+False</p>
+<p class="indent">Since the <span class="literal">upper()</span> and <span class="literal">lower()</span> string methods themselves return strings, you can call string methods on <em class="calibre7">those</em> returned string values as well. Expressions that do this will look like a chain of method calls. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">'Hello'.upper()</span><br class="calibre5" />
+'HELLO'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'Hello'.upper().lower()</span><br class="calibre5" />
+'hello'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'Hello'.upper().lower().upper()</span><br class="calibre5" />
+'HELLO'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'HELLO'.lower()</span><br class="calibre5" />
+'hello'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'HELLO'.lower().islower()</span><br class="calibre5" />
+True</p>
+<h4 class="h2" id="calibre_link-215"><strong class="calibre2"><em class="calibre9">The isX() Methods</em></strong></h4>
+<p class="noindentb">Along with <span class="literal">islower()</span> and <span class="literal">isupper()</span>, there are several other string methods that have names beginning with the word <em class="calibre7">is</em>. These methods return a Boolean value that describes the nature of the string. Here are some common <span class="literal">is</span><span class="codeitalic">X</span> string methods:</p>
+<p class="hang"><span class="codestrong">isalpha()</span> Returns <span class="literal">True</span> if the string consists only of letters and isn’t blank</p>
+<p class="hang"><span class="codestrong">isalnum()</span> Returns <span class="literal">True</span> if the string consists only of letters and numbers and is not blank</p>
+<p class="hang"><span class="codestrong">isdecimal()</span> Returns <span class="literal">True</span> if the string consists only of numeric characters and is not blank</p>
+<p class="hang"><span class="codestrong">isspace()</span> Returns <span class="literal">True</span> if the string consists only of spaces, tabs, and newlines and is not blank</p>
+<p class="hang"><span class="codestrong">istitle()</span> Returns <span class="literal">True</span> if the string consists only of words that begin with an uppercase letter followed by only lowercase letters</p>
+<p class="indentt"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1014"></span>Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">'hello'.isalpha()</span><br class="calibre5" />
+True<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'hello123'.isalpha()</span><br class="calibre5" />
+False<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'hello123'.isalnum()</span><br class="calibre5" />
+True<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'hello'.isalnum()</span><br class="calibre5" />
+True<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'123'.isdecimal()</span><br class="calibre5" />
+True<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'&nbsp;&nbsp;&nbsp;&nbsp;'.isspace()</span><br class="calibre5" />
+True<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'This Is Title Case'.istitle()</span><br class="calibre5" />
+True<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'This Is Title Case 123'.istitle()</span><br class="calibre5" />
+True<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'This Is not Title Case'.istitle()</span><br class="calibre5" />
+False<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'This Is NOT Title Case Either'.istitle()</span><br class="calibre5" />
+False</p>
+<p class="indent">The <span class="literal">is</span><span class="codeitalic">X()</span> string methods are helpful when you need to validate user input. For example, the following program repeatedly asks users for their age and a password until they provide valid input. Open a new file editor window and enter this program, saving it as <em class="calibre7">validateInput.py</em>:</p>
+<p class="programs">while True:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('Enter your age:')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;age = input()<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;if age.isdecimal():<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('Please enter a number for your age.')<br class="calibre5" /><br class="calibre5" />
+while True:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('Select a new password (letters and numbers only):')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;password = input()<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;if password.isalnum():<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('Passwords can only have letters and numbers.')</p>
+<p class="indent">In the first <span class="literal">while</span> loop, we ask the user for their age and store their input in <span class="literal">age</span>. If <span class="literal">age</span> is a valid (decimal) value, we break out of this first <span class="literal">while</span> loop and move on to the second, which asks for a password. Otherwise, we inform the user that they need to enter a number and again ask them to enter their age. In the second <span class="literal">while</span> loop, we ask for a password, store the user’s input in <span class="literal">password</span>, and break out of the loop if the input was alpha&shy;numeric. If it wasn’t, we’re not satisfied, so we tell the user the password needs to be alphanumeric and again ask them to enter a password.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-934"></span>When run, the program’s output looks like this:</p>
+<p class="programs">Enter your age:<br class="calibre5" />
+<span class="codestrong1">forty two</span><br class="calibre5" />
+Please enter a number for your age.<br class="calibre5" />
+Enter your age:<br class="calibre5" />
+<span class="codestrong1">42</span><br class="calibre5" />
+Select a new password (letters and numbers only):<br class="calibre5" />
+<span class="codestrong1">secr3t!</span><br class="calibre5" />
+Passwords can only have letters and numbers.<br class="calibre5" />
+Select a new password (letters and numbers only):<br class="calibre5" />
+<span class="codestrong1">secr3t</span></p>
+<p class="indent">You can view the execution of this program at <em class="calibre7"><a href="https://autbor.com/validateinput/" class="calibre6">https://autbor.com/validateinput/</a></em>. Calling <span class="literal">isdecimal()</span> and <span class="literal">isalnum()</span> on variables, we’re able to test whether the values stored in those variables are decimal or not, alphanumeric or not. Here, these tests help us reject the input <span class="literal">forty two</span> but accept <span class="literal">42</span>, and reject <span class="literal">secr3t!</span> but accept <span class="literal">secr3t</span>.</p>
+<h4 class="h2" id="calibre_link-216"><strong class="calibre2"><em class="calibre9">The startswith() and endswith() Methods</em></strong></h4>
+<p class="noindent">The <span class="literal">startswith()</span> and <span class="literal">endswith()</span> methods return <span class="literal">True</span> if the string value they are called on begins or ends (respectively) with the string passed to the method; otherwise, they return <span class="literal">False</span>. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">'Hello, world!'.startswith('Hello')</span><br class="calibre5" />
+True<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'Hello, world!'.endswith('world!')</span><br class="calibre5" />
+True<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'abc123'.startswith('abcdef')</span><br class="calibre5" />
+False<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'abc123'.endswith('12')</span><br class="calibre5" />
+False<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'Hello, world!'.startswith('Hello, world!')</span><br class="calibre5" />
+True<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'Hello, world!'.endswith('Hello, world!')</span><br class="calibre5" />
+True</p>
+<p class="indent">These methods are useful alternatives to the <span class="literal">==</span> equals operator if you need to check only whether the first or last part of the string, rather than the whole thing, is equal to another string.</p>
+<h4 class="h2" id="calibre_link-217"><strong class="calibre2"><em class="calibre9">The join() and split() Methods</em></strong></h4>
+<p class="noindent">The <span class="literal">join()</span> method is useful when you have a list of strings that need to be joined together into a single string value. The <span class="literal">join()</span> method is called on a string, gets passed a list of strings, and returns a string. The returned string <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1082"></span>is the concatenation of each string in the passed-in list. For example, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">', '.join(['cats', 'rats', 'bats'])</span><br class="calibre5" />
+'cats, rats, bats'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">' '.join(['My', 'name', 'is', 'Simon'])</span><br class="calibre5" />
+'My name is Simon'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'ABC'.join(['My', 'name', 'is', 'Simon'])</span><br class="calibre5" />
+'MyABCnameABCisABCSimon'</p>
+<p class="indent">Notice that the string <span class="literal">join()</span> calls on is inserted between each string of the list argument. For example, when <span class="literal">join(['cats', 'rats', 'bats'])</span> is called on the <span class="literal">', '</span> string, the returned string is <span class="literal">'cats, rats, bats'</span>.</p>
+<p class="indent">Remember that <span class="literal">join()</span> is called on a string value and is passed a list value. (It’s easy to accidentally call it the other way around.) The <span class="literal">split()</span> method does the opposite: It’s called on a string value and returns a list of strings. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">'My name is Simon'.split()</span><br class="calibre5" />
+['My', 'name', 'is', 'Simon']</p>
+<p class="indent">By default, the string <span class="literal">'My name is Simon'</span> is split wherever whitespace characters such as the space, tab, or newline characters are found. These whitespace characters are not included in the strings in the returned list. You can pass a delimiter string to the <span class="literal">split()</span> method to specify a different string to split upon. For example, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">'MyABCnameABCisABCSimon'.split('ABC')</span><br class="calibre5" />
+['My', 'name', 'is', 'Simon']<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'My name is Simon'.split('m')</span><br class="calibre5" />
+['My na', 'e is Si', 'on']</p>
+<p class="indent">A common use of <span class="literal">split()</span> is to split a multiline string along the newline characters. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">spam = '''Dear Alice,</span><br class="calibre5" />
+<span class="codestrong1">How have you been? I am fine.</span><br class="calibre5" />
+<span class="codestrong1">There is a container in the fridge</span><br class="calibre5" />
+<span class="codestrong1">that is labeled "Milk Experiment."</span><br class="calibre5" /><br class="calibre5" />
+<span class="codestrong1">Please do not drink it.</span><br class="calibre5" />
+<span class="codestrong1">Sincerely,</span><br class="calibre5" />
+<span class="codestrong1">Bob'''</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spam.split('\n')</span><br class="calibre5" />
+['Dear Alice,', 'How have you been? I am fine.', 'There is a container in the <br class="calibre5" />
+fridge', 'that is labeled "Milk Experiment."', '', 'Please do not drink it.', <br class="calibre5" />
+'Sincerely,', 'Bob']</p>
+<p class="indent">Passing <span class="literal">split()</span> the argument <span class="literal">'\n'</span> lets us split the multiline string stored in <span class="literal">spam</span> along the newlines and return a list in which each item corresponds to one line of the string.</p>
+<h4 class="h2" id="calibre_link-218"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-833" class="calibre1"></span><strong class="calibre2"><em class="calibre9">Splitting Strings with the partition() Method</em></strong></h4>
+<p class="noindent">The <span class="literal">partition()</span> string method can split a string into the text before and after a separator string. This method searches the string it is called on for the separator string it is passed, and returns a tuple of three substrings for the “before,” “separator,” and “after” substrings. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">'Hello, world!'.partition('w')</span><br class="calibre5" />
+('Hello, ', 'w', 'orld!')<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'Hello, world!'.partition('world')</span><br class="calibre5" />
+('Hello, ', 'world', '!')</p>
+<p class="indent">If the separator string you pass to <span class="literal">partition()</span> occurs multiple times in the string that <span class="literal">partition()</span> calls on, the method splits the string only on the first occurrence:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">'Hello, world!'.partition('o')</span><br class="calibre5" />
+('Hell', 'o', ', world!')</p>
+<p class="indent">If the separator string can’t be found, the first string returned in the tuple will be the entire string, and the other two strings will be empty:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">'Hello, world!'.partition('XYZ')</span><br class="calibre5" />
+('Hello, world!', '', '')</p>
+<p class="indent">You can use the multiple assignment trick to assign the three returned strings to three variables:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">before, sep, after = 'Hello, world!'.partition(' ')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">before</span><br class="calibre5" />
+'Hello,'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">after</span><br class="calibre5" />
+'world!'</p>
+<p class="indent">The <span class="literal">partition()</span> method is useful for splitting a string whenever you need the parts before, including, and after a particular separator string.</p>
+<h4 class="h2" id="calibre_link-219"><strong class="calibre2"><em class="calibre9">Justifying Text with the rjust(), ljust(), and center() Methods</em></strong></h4>
+<p class="noindent">The <span class="literal">rjust()</span> and <span class="literal">ljust()</span> string methods return a padded version of the string they are called on, with spaces inserted to justify the text. The first argument to both methods is an integer length for the justified string. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">'Hello'.rjust(10)</span><br class="calibre5" />
+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hello'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'Hello'.rjust(20)</span><br class="calibre5" />
+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hello'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'Hello, World'.rjust(20)</span><br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1022"></span>'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hello, World'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'Hello'.ljust(10)</span><br class="calibre5" />
+'Hello&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'</p>
+<p class="indent"><span class="literal">'Hello'.rjust(10)</span> says that we want to right-justify <span class="literal">'Hello'</span> in a string of total length <span class="literal">10</span>. <span class="literal">'Hello'</span> is five characters, so five spaces will be added to its left, giving us a string of 10 characters with <span class="literal">'Hello'</span> justified right.</p>
+<p class="indent">An optional second argument to <span class="literal">rjust()</span> and <span class="literal">ljust()</span> will specify a fill character other than a space character. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">'Hello'.rjust(20, '*')</span><br class="calibre5" />
+'***************Hello'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'Hello'.ljust(20, '-')</span><br class="calibre5" />
+'Hello---------------'</p>
+<p class="indent">The <span class="literal">center()</span> string method works like <span class="literal">ljust()</span> and <span class="literal">rjust()</span> but centers the text rather than justifying it to the left or right. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">'Hello'.center(20)</span><br class="calibre5" />
+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hello&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'Hello'.center(20, '=')</span><br class="calibre5" />
+'=======Hello========'</p>
+<p class="indent">These methods are especially useful when you need to print tabular data that has correct spacing. Open a new file editor window and enter the following code, saving it as <em class="calibre7">picnicTable.py</em>:</p>
+<p class="programs">def printPicnic(itemsDict, leftWidth, rightWidth):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('PICNIC ITEMS'.center(leftWidth + rightWidth, '-'))<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;for k, v in itemsDict.items():<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(k.ljust(leftWidth, '.') + str(v).rjust(rightWidth))<br class="calibre5" /><br class="calibre5" />
+picnicItems = {'sandwiches': 4, 'apples': 12, 'cups': 4, 'cookies': 8000}<br class="calibre5" />
+printPicnic(picnicItems, 12, 5)<br class="calibre5" />
+printPicnic(picnicItems, 20, 6)</p>
+<p class="indent">You can view the execution of this program at <em class="calibre7"><a href="https://autbor.com/picnictable/" class="calibre6">https://autbor.com/picnictable/</a></em>. In this program, we define a <span class="literal">printPicnic()</span> method that will take in a dictionary of information and use <span class="literal">center()</span>, <span class="literal">ljust()</span>, and <span class="literal">rjust()</span> to display that information in a neatly aligned table-like format.</p>
+<p class="indent">The dictionary that we’ll pass to <span class="literal">printPicnic()</span> is <span class="literal">picnicItems</span>. In <span class="literal">picnicItems</span>, we have 4 sandwiches, 12 apples, 4 cups, and 8,000 cookies. We want to organize this information into two columns, with the name of the item on the left and the quantity on the right.</p>
+<p class="indent">To do this, we decide how wide we want the left and right columns to be. Along with our dictionary, we’ll pass these values to <span class="literal">printPicnic()</span>.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-834"></span>The <span class="literal">printPicnic()</span> function takes in a dictionary, a <span class="literal">leftWidth</span> for the left column of a table, and a <span class="literal">rightWidth</span> for the right column. It prints a title, <span class="literal">PICNIC ITEMS</span>, centered above the table. Then, it loops through the dictionary, printing each key-value pair on a line with the key justified left and padded by periods, and the value justified right and padded by spaces.</p>
+<p class="indent">After defining <span class="literal">printPicnic()</span>, we define the dictionary <span class="literal">picnicItems</span> and call <span class="literal">printPicnic()</span> twice, passing it different widths for the left and right table columns.</p>
+<p class="indent">When you run this program, the picnic items are displayed twice. The first time the left column is 12 characters wide, and the right column is 5 characters wide. The second time they are 20 and 6 characters wide, respectively.</p>
+<p class="programs">---PICNIC ITEMS--<br class="calibre5" />
+sandwiches..&nbsp;&nbsp;&nbsp;&nbsp;4<br class="calibre5" />
+apples......&nbsp;&nbsp;&nbsp;12<br class="calibre5" />
+cups........&nbsp;&nbsp;&nbsp;&nbsp;4<br class="calibre5" />
+cookies..... 8000<br class="calibre5" />
+-------PICNIC ITEMS-------<br class="calibre5" />
+sandwiches..........&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4<br class="calibre5" />
+apples..............&nbsp;&nbsp;&nbsp;&nbsp;12<br class="calibre5" />
+cups................&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4<br class="calibre5" />
+cookies.............&nbsp;&nbsp;8000</p>
+<p class="indent">Using <span class="literal">rjust()</span>, <span class="literal">ljust()</span>, and <span class="literal">center()</span> lets you ensure that strings are neatly aligned, even if you aren’t sure how many characters long your strings are.</p>
+<h4 class="h2" id="calibre_link-220"><strong class="calibre2"><em class="calibre9">Removing Whitespace with the strip(), rstrip(), and lstrip() Methods</em></strong></h4>
+<p class="noindent">Sometimes you may want to strip off whitespace characters (space, tab, and newline) from the left side, right side, or both sides of a string. The <span class="literal">strip()</span> string method will return a new string without any whitespace characters at the beginning or end. The <span class="literal">lstrip()</span> and <span class="literal">rstrip()</span> methods will remove whitespace characters from the left and right ends, respectively. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">spam = '&nbsp;&nbsp;&nbsp;&nbsp;Hello, World&nbsp;&nbsp;&nbsp;&nbsp;'</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spam.strip()</span><br class="calibre5" />
+'Hello, World'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spam.lstrip()</span><br class="calibre5" />
+'Hello, World&nbsp;&nbsp;&nbsp;&nbsp;'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spam.rstrip()</span><br class="calibre5" />
+'&nbsp;&nbsp;&nbsp;&nbsp;Hello, World'</p>
+<p class="indent">Optionally, a string argument will specify which characters on the ends should be stripped. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">spam = 'SpamSpamBaconSpamEggsSpamSpam'</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spam.strip('ampS')</span><br class="calibre5" />
+'BaconSpamEggs'</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-846"></span>Passing <span class="literal">strip()</span> the argument <span class="literal">'ampS'</span> will tell it to strip occurrences of <span class="literal">a</span>, <span class="literal">m</span>, <span class="literal">p</span>, and capital <span class="literal">S</span> from the ends of the string stored in <span class="literal">spam</span>. The order of the characters in the string passed to <span class="literal">strip()</span> does not matter: <span class="literal">strip('ampS')</span> will do the same thing as <span class="literal">strip('mapS')</span> or <span class="literal">strip('Spam')</span>.</p>
+<h3 class="h1" id="calibre_link-221"><strong class="calibre2">Numeric Values of Characters with the ord() and chr() Functions</strong></h3>
+<p class="noindent">Computers store information as bytes&mdash;strings of binary numbers, which means we need to be able to convert text to numbers. Because of this, every text character has a corresponding numeric value called a <em class="calibre7">Unicode code point</em>. For example, the numeric code point is <span class="literal">65</span> for <span class="literal">'A'</span>, <span class="literal">52</span> for <span class="literal">'4'</span>, and <span class="literal">33</span> for <span class="literal">'!'</span>. You can use the <span class="literal">ord()</span> function to get the code point of a one-character string, and the <span class="literal">chr()</span> function to get the one-character string of an integer code point. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; ord('A')<br class="calibre5" />
+65<br class="calibre5" />
+&gt;&gt;&gt; ord('4')<br class="calibre5" />
+52<br class="calibre5" />
+&gt;&gt;&gt; ord('!')<br class="calibre5" />
+33<br class="calibre5" />
+&gt;&gt;&gt; chr(65)<br class="calibre5" />
+'A'</p>
+<p class="indent">These functions are useful when you need to do an ordering or mathematical operation on characters:</p>
+<p class="programs">&gt;&gt;&gt; ord('B')<br class="calibre5" />
+66<br class="calibre5" />
+&gt;&gt;&gt; ord('A') &lt; ord('B')<br class="calibre5" />
+True<br class="calibre5" />
+&gt;&gt;&gt; chr(ord('A'))<br class="calibre5" />
+'A'<br class="calibre5" />
+&gt;&gt;&gt; chr(ord('A') + 1)<br class="calibre5" />
+'B'</p>
+<p class="indent">There is more to Unicode and code points, but those details are beyond the scope of this book. If you’d like to know more, I recommend watching Ned Batchelder’s 2012 PyCon talk, “Pragmatic Unicode, or, How Do I Stop the Pain?” at <em class="calibre7"><a href="https://youtu.be/sgHbC6udIqc" class="calibre6">https://youtu.be/sgHbC6udIqc</a></em>.</p>
+<h3 class="h1" id="calibre_link-222"><strong class="calibre2">Copying and Pasting Strings with the pyperclip Module</strong></h3>
+<p class="noindent">The <span class="literal">pyperclip</span> module has <span class="literal">copy()</span> and <span class="literal">paste()</span> functions that can send text to and receive text from your computer’s clipboard. Sending the output of your program to the clipboard will make it easy to paste it into an email, word processor, or some other software.</p>
+<div class="sidebar">
+<p class="sidebart"><strong class="calibre4">RUNNING PYTHON SCRIPTS OUTSIDE OF MU</strong></p>
+<p class="spara">So far, you’ve been running your Python scripts using the interactive shell and file editor in Mu. However, you won’t want to go through the inconvenience of opening Mu and the Python script each time you want to run a script. Fortunately, there are shortcuts you can set up to make running Python scripts easier. The steps are slightly different for Windows, macOS, and Linux, but each is described in <a href="#calibre_link-35" class="calibre6">Appendix B</a>. Turn to <a href="#calibre_link-35" class="calibre6">Appendix B</a> to learn how to run your Python scripts conveniently and be able to pass command line arguments to them. (You will not be able to pass command line arguments to your programs using Mu.)</p>
+</div>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-847"></span>The <span class="literal">pyperclip</span> module does not come with Python. To install it, follow the directions for installing third-party modules in <a href="#calibre_link-2" class="calibre6">Appendix A</a>. After installing <span class="literal">pyperclip</span>, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import pyperclip</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">pyperclip.copy('Hello, world!')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">pyperclip.paste()</span><br class="calibre5" />
+'Hello, world!'</p>
+<p class="indent">Of course, if something outside of your program changes the clipboard contents, the <span class="literal">paste()</span> function will return it. For example, if I copied this sentence to the clipboard and then called <span class="literal">paste()</span>, it would look like this:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">pyperclip.paste()</span><br class="calibre5" />
+'For example, if I copied this sentence to the clipboard and then called<br class="calibre5" />
+paste(), it would look like this:'</p>
+<h3 class="h1" id="calibre_link-223"><strong class="calibre2">Project: Multi-Clipboard Automatic Messages</strong></h3>
+<p class="noindent">If you’ve responded to a large number of emails with similar phrasing, you’ve probably had to do a lot of repetitive typing. Maybe you keep a text document with these phrases so you can easily copy and paste them using the clipboard. But your clipboard can only store one message at a time, which isn’t very convenient. Let’s make this process a bit easier with a program that stores multiple phrases.</p>
+<h4 class="h2" id="calibre_link-224"><strong class="calibre2"><em class="calibre9">Step 1: Program Design and Data Structures</em></strong></h4>
+<p class="noindent">You want to be able to run this program with a command line argument that is a short key phrase&mdash;for instance, <em class="calibre7">agree</em> or <em class="calibre7">busy</em>. The message associated with that key phrase will be copied to the clipboard so that the user can paste it into an email. This way, the user can have long, detailed messages without having to retype them.</p>
+<div class="sidebar">
+<p class="sidebart"><strong class="calibre4">THE CHAPTER PROJECTS</strong></p>
+<p class="spara">This is the first “chapter project” of the book. From here on, each chapter will have projects that demonstrate the concepts covered in the chapter. The projects are written in a style that takes you from a blank file editor window to a full, working program. Just like with the interactive shell examples, don’t only read the project sections&mdash;follow along on your computer!</p>
+</div>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-797"></span>Open a new file editor window and save the program as <em class="calibre7">mclip.py</em>. You need to start the program with a <span class="literal">#!</span> (<em class="calibre7">shebang</em>) line (see <a href="#calibre_link-35" class="calibre6">Appendix B</a>) and should also write a comment that briefly describes the program. Since you want to associate each piece of text with its key phrase, you can store these as strings in a dictionary. The dictionary will be the data structure that organizes your key phrases and text. Make your program look like the following:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# mclip.py - A multi-clipboard program.<br class="calibre5" /><br class="calibre5" />
+TEXT = {'agree': """Yes, I agree. That sounds fine to me.""",<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'busy': """Sorry, can we do this later this week or next week?""",<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'upsell': """Would you consider making this a monthly donation?"""}</p>
+<h4 class="h2" id="calibre_link-225"><strong class="calibre2"><em class="calibre9">Step 2: Handle Command Line Arguments</em></strong></h4>
+<p class="noindent">The command line arguments will be stored in the variable <span class="literal">sys.argv</span>. (See <a href="#calibre_link-35" class="calibre6">Appendix B</a> for more information on how to use command line arguments in your programs.) The first item in the <span class="literal">sys.argv</span> list should always be a string containing the program’s filename (<span class="literal">'mclip.py'</span>), and the second item should be the first command line argument. For this program, this argument is the key phrase of the message you want. Since the command line argument is mandatory, you display a usage message to the user if they forget to add it (that is, if the <span class="literal">sys.argv</span> list has fewer than two values in it). Make your program look like the following:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# mclip.py - A multi-clipboard program.<br class="calibre5" /><br class="calibre5" />
+TEXT = {'agree': """Yes, I agree. That sounds fine to me.""",<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'busy': """Sorry, can we do this later this week or next week?""",<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'upsell': """Would you consider making this a monthly donation?"""}<br class="calibre5" /><br class="calibre5" />
+<span class="codestrong1">i</span><span class="codestrong1">mport sys</span><br class="calibre5" />
+<span class="codestrong1">if len(sys.argv) &lt; 2:</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;print('Usage: python mclip.py [keyphrase] - copy phrase text')</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;sys.exit()</span><br class="calibre5" /><br class="calibre5" />
+<span class="codestrong1">keyphrase = sys.argv[1]&nbsp;&nbsp;&nbsp;&nbsp;# first command line arg is the keyphrase</span></p>
+<h4 class="h2" id="calibre_link-226"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1045" class="calibre1"></span><strong class="calibre2"><em class="calibre9">Step 3: Copy the Right Phrase</em></strong></h4>
+<p class="noindent">Now that the key phrase is stored as a string in the variable <span class="literal">keyphrase</span>, you need to see whether it exists in the <span class="literal">TEXT</span> dictionary as a key. If so, you want to copy the key’s value to the clipboard using <span class="literal">pyperclip.copy()</span>. (Since you’re using the <span class="literal">pyperclip</span> module, you need to import it.) Note that you don’t actually <em class="calibre7">need</em> the <span class="literal">keyphrase</span> variable; you could just use <span class="literal">sys.argv[1]</span> everywhere <span class="literal">keyphrase</span> is used in this program. But a variable named <span class="literal">keyphrase</span> is much more readable than something cryptic like <span class="literal">sys.argv[1]</span>.</p>
+<p class="indent">Make your program look like the following:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# mclip.py - A multi-clipboard program.<br class="calibre5" /><br class="calibre5" />
+TEXT = {'agree': """Yes, I agree. That sounds fine to me.""",<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'busy': """Sorry, can we do this later this week or next week?""",<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'upsell': """Would you consider making this a monthly donation?"""}<br class="calibre5" /><br class="calibre5" />
+import sys<span class="codestrong1">,</span> <span class="codestrong1">pyperclip</span><br class="calibre5" />
+if len(sys.argv) &lt; 2:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('Usage: py mclip.py [keyphrase] - copy phrase text')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;sys.exit()<br class="calibre5" /><br class="calibre5" />
+keyphrase = sys.argv[1]&nbsp;&nbsp;&nbsp;&nbsp;# first command line arg is the keyphrase<br class="calibre5" /><br class="calibre5" />
+<span class="codestrong1">if keyphrase in TEXT:</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;pyperclip.copy(TEXT[keyphrase])</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;print('Text for ' + keyphrase + ' copied to clipboard.')</span><br class="calibre5" />
+<span class="codestrong1">else:</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;print('There is no text for ' + keyphrase)</span></p>
+<p class="indent">This new code looks in the <span class="literal">TEXT</span> dictionary for the key phrase. If the key phrase is a key in the dictionary, we get the value corresponding to that key, copy it to the clipboard, and print a message saying that we copied the value. Otherwise, we print a message saying there’s no key phrase with that name.</p>
+<p class="indent">That’s the complete script. Using the instructions in <a href="#calibre_link-35" class="calibre6">Appendix B</a> for launching command line programs easily, you now have a fast way to copy messages to the clipboard. You will have to modify the <span class="literal">TEXT</span> dictionary value in the source whenever you want to update the program with a new message.</p>
+<p class="indent">On Windows, you can create a batch file to run this program with the <small class="calibre11">WIN-R</small> Run window. (For more about batch files, see <a href="#calibre_link-35" class="calibre6">Appendix B</a>.) Enter the following into the file editor and save the file as <em class="calibre7">mclip.bat</em> in the <em class="calibre7">C:\Windows</em> folder:</p>
+<p class="programs">@py.exe C:\<span class="codeitalic1">path_to_file</span>\mclip.py %*<br class="calibre5" />
+@pause</p>
+<p class="indent">With this batch file created, running the multi-clipboard program on Windows is just a matter of pressing <small class="calibre11">WIN-R</small> and typing <span class="literal">mclip</span> <span class="codeitalic">key phrase</span>.</p>
+<h3 class="h1" id="calibre_link-227"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-784" class="calibre1"></span><strong class="calibre2">Project: Adding Bullets to Wiki Markup</strong></h3>
+<p class="noindent">When editing a Wikipedia article, you can create a bulleted list by putting each list item on its own line and placing a star in front. But say you have a really large list that you want to add bullet points to. You could just type those stars at the beginning of each line, one by one. Or you could automate this task with a short Python script.</p>
+<p class="indent">The <em class="calibre7">bulletPointAdder.py</em> script will get the text from the clipboard, add a star and space to the beginning of each line, and then paste this new text to the clipboard. For example, if I copied the following text (for the Wikipedia article “List of Lists of Lists”) to the clipboard:</p>
+<p class="programs">Lists of animals<br class="calibre5" />
+Lists of aquarium life<br class="calibre5" />
+Lists of biologists by author abbreviation<br class="calibre5" />
+Lists of cultivars</p>
+<p class="noindent">and then ran the <em class="calibre7">bulletPointAdder.py</em> program, the clipboard would then contain the following:</p>
+<p class="programs">* Lists of animals<br class="calibre5" />
+* Lists of aquarium life<br class="calibre5" />
+* Lists of biologists by author abbreviation<br class="calibre5" />
+* Lists of cultivars</p>
+<p class="indent">This star-prefixed text is ready to be pasted into a Wikipedia article as a bulleted list.</p>
+<h4 class="h2" id="calibre_link-228"><strong class="calibre2"><em class="calibre9">Step 1: Copy and Paste from the Clipboard</em></strong></h4>
+<p class="noindent">You want the <em class="calibre7">bulletPointAdder.py</em> program to do the following:</p>
+<ol class="calibre10">
+<li class="noindent1">Paste text from the clipboard.</li>
+<li class="noindent1">Do something to it.</li>
+<li class="noindent1">Copy the new text to the clipboard.</li>
+</ol>
+<p class="indent">That second step is a little tricky, but steps 1 and 3 are pretty straightforward: they just involve the <span class="literal">pyperclip.copy()</span> and <span class="literal">pyperclip.paste()</span> functions. For now, let’s just write the part of the program that covers steps 1 and 3. Enter the following, saving the program as <em class="calibre7">bulletPointAdder.py</em>:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# bulletPointAdder.py - Adds Wikipedia bullet points to the start<br class="calibre5" />
+# of each line of text on the clipboard.<br class="calibre5" /><br class="calibre5" />
+import pyperclip<br class="calibre5" />
+text = pyperclip.paste()<br class="calibre5" /><br class="calibre5" />
+# TODO: Separate lines and add stars.<br class="calibre5" /><br class="calibre5" />
+pyperclip.copy(text)</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1756"></span>The <span class="literal">TODO</span> comment is a reminder that you should complete this part of the program eventually. The next step is to actually implement that piece of the program.</p>
+<h4 class="h2" id="calibre_link-229"><strong class="calibre2"><em class="calibre9">Step 2: Separate the Lines of Text and Add the Star</em></strong></h4>
+<p class="noindent">The call to <span class="literal">pyperclip.paste()</span> returns all the text on the clipboard as one big string. If we used the “List of Lists of Lists” example, the string stored in <span class="literal">text</span> would look like this:</p>
+<p class="programs">'Lists of animals\nLists of aquarium life\nLists of biologists by author<br class="calibre5" />
+abbreviation\nLists of cultivars'</p>
+<p class="indent">The <span class="literal">\n</span> newline characters in this string cause it to be displayed with multiple lines when it is printed or pasted from the clipboard. There are many “lines” in this one string value. You want to add a star to the start of each of these lines.</p>
+<p class="indent">You could write code that searches for each <span class="literal">\n</span> newline character in the string and then adds the star just after that. But it would be easier to use the <span class="literal">split()</span> method to return a list of strings, one for each line in the original string, and then add the star to the front of each string in the list.</p>
+<p class="indent">Make your program look like the following:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# bulletPointAdder.py - Adds Wikipedia bullet points to the start<br class="calibre5" />
+# of each line of text on the clipboard.<br class="calibre5" /><br class="calibre5" />
+import pyperclip<br class="calibre5" />
+text = pyperclip.paste()<br class="calibre5" /><br class="calibre5" />
+<span class="codestrong1"># Separate lines and add stars.</span><br class="calibre5" />
+<span class="codestrong1">lines = text.split('\n')</span><br class="calibre5" />
+<span class="codestrong1">for i in range(len(lines)):&nbsp;&nbsp;&nbsp;&nbsp;# loop through all indexes in the "lines" list</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;lines[i] = '* ' + lines[i] # add star to each string in "lines" list</span><br class="calibre5" /><br class="calibre5" />
+pyperclip.copy(text)</p>
+<p class="indent">We split the text along its newlines to get a list in which each item is one line of the text. We store the list in <span class="literal">lines</span> and then loop through the items in <span class="literal">lines</span>. For each line, we add a star and a space to the start of the line. Now each string in <span class="literal">lines</span> begins with a star.</p>
+<h4 class="h2" id="calibre_link-230"><strong class="calibre2"><em class="calibre9">Step 3: Join the Modified Lines</em></strong></h4>
+<p class="noindent">The <span class="literal">lines</span> list now contains modified lines that start with stars. But <span class="literal">pyperclip.copy()</span> is expecting a single string value, however, not a list of string values. To make this single string value, pass <span class="literal">lines</span> into the <span class="literal">join()</span> method to get a single string joined from the list’s strings. Make your program look like the following:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# bulletPointAdder.py - Adds Wikipedia bullet points to the start<br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-785"></span># of each line of text on the clipboard.<br class="calibre5" /><br class="calibre5" />
+import pyperclip<br class="calibre5" />
+text = pyperclip.paste()<br class="calibre5" /><br class="calibre5" />
+# Separate lines and add stars.<br class="calibre5" />
+lines = text.split('\n')<br class="calibre5" />
+for i in range(len(lines)):&nbsp;&nbsp;&nbsp;&nbsp;# loop through all indexes for "lines" list<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;lines[i] = '* ' + lines[i] # add star to each string in "lines" list<br class="calibre5" />
+<span class="codestrong1">text = '\n'.join(lines)</span><br class="calibre5" />
+pyperclip.copy(text)</p>
+<p class="indent">When this program is run, it replaces the text on the clipboard with text that has stars at the start of each line. Now the program is complete, and you can try running it with text copied to the clipboard.</p>
+<p class="indent">Even if you don’t need to automate this specific task, you might want to automate some other kind of text manipulation, such as removing trailing spaces from the end of lines or converting text to uppercase or lowercase. Whatever your needs, you can use the clipboard for input and output.</p>
+<h3 class="h1" id="calibre_link-231"><strong class="calibre2">A Short Progam: Pig Latin</strong></h3>
+<p class="noindent">Pig Latin is a silly made-up language that alters English words. If a word begins with a vowel, the word <em class="calibre7">yay</em> is added to the end of it. If a word begins with a consonant or consonant cluster (like <em class="calibre7">ch</em> or <em class="calibre7">gr</em>), that consonant or cluster is moved to the end of the word followed by <em class="calibre7">ay</em>.</p>
+<p class="indent">Let’s write a Pig Latin program that will output something like this:</p>
+<p class="programs">Enter the English message to translate into Pig Latin:<br class="calibre5" />
+<span class="codestrong1">My name is AL SWEIGART and I am 4,000 years old.</span><br class="calibre5" />
+Ymay amenay isyay ALYAY EIGARTSWAY andyay Iyay amyay 4,000 yearsyay oldyay.</p>
+<p class="indent">This program works by altering a string using the methods introduced in this chapter. Type the following source code into the file editor, and save the file as <em class="calibre7">pigLat.py</em>:</p>
+<p class="programs"># English to Pig Latin<br class="calibre5" />
+print('Enter the English message to translate into Pig Latin:')<br class="calibre5" />
+message = input()<br class="calibre5" /><br class="calibre5" />
+VOWELS = ('a', 'e', 'i', 'o', 'u', 'y')<br class="calibre5" /><br class="calibre5" />
+pigLatin = [] # A list of the words in Pig Latin.<br class="calibre5" />
+for word in message.split():<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;# Separate the non-letters at the start of this word:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;prefixNonLetters = ''<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;while len(word) &gt; 0 and not word[0].isalpha():<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefixNonLetters += word[0]<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;word = word[1:]<br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1757"></span>&nbsp;&nbsp;&nbsp;&nbsp;if len(word) == 0:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pigLatin.append(prefixNonLetters)<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;# Separate the non-letters at the end of this word:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;suffixNonLetters = ''<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;while not word[-1].isalpha():<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;suffixNonLetters += word[-1]<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;word = word[:-1]<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;# Remember if the word was in uppercase or title case.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;wasUpper = word.isupper()<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;wasTitle = word.istitle()<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;word = word.lower() # Make the word lowercase for translation.<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;# Separate the consonants at the start of this word:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;prefixConsonants = ''<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;while len(word) &gt; 0 and not word[0] in VOWELS:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefixConsonants += word[0]<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;word = word[1:]<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;# Add the Pig Latin ending to the word:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;if prefixConsonants != '':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;word += prefixConsonants + 'ay'<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;else:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;word += 'yay'<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;# Set the word back to uppercase or title case:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;if wasUpper:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;word = word.upper()<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;if wasTitle:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;word = word.title()<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;# Add the non-letters back to the start or end of the word.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;pigLatin.append(prefixNonLetters + word + suffixNonLetters)<br class="calibre5" /><br class="calibre5" />
+# Join all the words back together into a single string:<br class="calibre5" />
+print(' '.join(pigLatin))</p>
+<p class="indent">Let’s look at this code line by line, starting at the top:</p>
+<p class="programs"># English to Pig Latin<br class="calibre5" />
+print('Enter the English message to translate into Pig Latin:')<br class="calibre5" />
+message = input()<br class="calibre5" /><br class="calibre5" />
+VOWELS = ('a', 'e', 'i', 'o', 'u', 'y')</p>
+<p class="indent">First, we ask the user to enter the English text to translate into Pig Latin. Also, we create a constant that holds every lowercase vowel letter (and <em class="calibre7">y</em>) as a tuple of strings. This will be used later in our program.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1758"></span>Next, we’re going to create the <span class="literal">pigLatin</span> variable to store the words as we translate them into Pig Latin:</p>
+<p class="programs">pigLatin = [] # A list of the words in Pig Latin.<br class="calibre5" />
+for word in message.split():<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;# Separate the non-letters at the start of this word:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;prefixNonLetters = ''<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;while len(word) &gt; 0 and not word[0].isalpha():<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefixNonLetters += word[0]<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;word = word[1:]<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;if len(word) == 0:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pigLatin.append(prefixNonLetters)<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue</p>
+<p class="indent">We need each word to be its own string, so we call <span class="literal">message.split()</span> to get a list of the words as separate strings. The string <span class="literal">'My name is AL SWEIGART and I am 4,000 years old.'</span> would cause <span class="literal">split()</span> to return <span class="literal">['My', 'name', 'is', 'AL', 'SWEIGART', 'and', 'I', 'am', '4,000', 'years', 'old.']</span>.</p>
+<p class="indent">We need to remove any non-letters from the start and end of each word so that strings like <span class="literal">'old.'</span> translate to <span class="literal">'oldyay.'</span> instead of <span class="literal">'old.yay'</span>. We’ll save these non-letters to a variable named <span class="literal">prefixNonLetters</span>.</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;&nbsp;# Separate the non-letters at the end of this word:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;suffixNonLetters = ''<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;while not word[-1].isalpha():<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;suffixNonLetters += word[-1]<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;word = word[:-1]</p>
+<p class="indent">A loop that calls <span class="literal">isalpha()</span> on the first character in the word will determine if we should remove a character from a word and concatenate it to the end of <span class="literal">prefixNonLetters</span>. If the entire word is made of non-letter characters, like <span class="literal">'4,000'</span>, we can simply append it to the <span class="literal">pigLatin</span> list and continue to the next word to translate. We also need to save the non-letters at the end of the <span class="literal">word</span> string. This code is similar to the previous loop.</p>
+<p class="indent">Next, we’ll make sure the program remembers if the word was in uppercase or title case so we can restore it after translating the word to Pig Latin:</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;&nbsp;# Remember if the word was in uppercase or title case.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;wasUpper = word.isupper()<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;wasTitle = word.istitle()<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;word = word.lower() # Make the word lowercase for translation.</p>
+<p class="indent">For the rest of the code in the <span class="literal">for</span> loop, we’ll work on a lowercase version of <span class="literal">word</span>.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1060"></span>To convert a word like <em class="calibre7">sweigart</em> to <em class="calibre7">eigart-sway</em>, we need to remove all of the consonants from the beginning of <span class="literal">word</span>:</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;&nbsp;# Separate the consonants at the start of this word:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;prefixConsonants = ''<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;while len(word) &gt; 0 and not word[0] in VOWELS:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefixConsonants += word[0]<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;word = word[1:]</p>
+<p class="indent">We use a loop similar to the loop that removed the non-letters from the start of <span class="literal">word</span>, except now we are pulling off consonants and storing them to a variable named <span class="literal">prefixConsonants</span>.</p>
+<p class="indent">If there were any consonants at the start of the word, they are now in <span class="literal">prefixConsonants</span> and we should concatenate that variable and the string <span class="literal">'ay'</span> to the end of <span class="literal">word</span>. Otherwise, we can assume <span class="literal">word</span> begins with a vowel and we only need to concatenate <span class="literal">'yay'</span>:</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;&nbsp;# Add the Pig Latin ending to the word:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;if prefixConsonants != '':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;word += prefixConsonants + 'ay'<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;else:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;word += 'yay'</p>
+<p class="indent">Recall that we set word to its lowercase version with <span class="literal">word = word.lower()</span>. If <span class="literal">word</span> was originally in uppercase or title case, this code will convert <span class="literal">word</span> back to its original case:</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;&nbsp;# Set the word back to uppercase or title case:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;if wasUpper:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;word = word.upper()<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;if wasTitle:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;word = word.title()</p>
+<p class="indent">At the end of the <span class="literal">for</span> loop, we append the word, along with any non-letter prefix or suffix it originally had, to the <span class="literal">pigLatin</span> list:</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;&nbsp;# Add the non-letters back to the start or end of the word.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;pigLatin.append(prefixNonLetters + word + suffixNonLetters)<br class="calibre5" /><br class="calibre5" />
+# Join all the words back together into a single string:<br class="calibre5" />
+print(' '.join(pigLatin))</p>
+<p class="indent">After this loop finishes, we combine the list of strings into a single string by calling the <span class="literal">join()</span> method. This single string is passed to <span class="literal">print()</span> to display our Pig Latin on the screen.</p>
+<p class="indent">You can find other short, text-based Python programs like this one at <em class="calibre7"><a href="https://github.com/asweigart/pythonstdiogames/" class="calibre6">https://github.com/asweigart/pythonstdiogames/</a></em>.</p>
+<h3 class="h1" id="calibre_link-232"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1759" class="calibre1"></span><strong class="calibre2">Summary</strong></h3>
+<p class="noindent">Text is a common form of data, and Python comes with many helpful string methods to process the text stored in string values. You will make use of indexing, slicing, and string methods in almost every Python program you write.</p>
+<p class="indent">The programs you are writing now don’t seem too sophisticated&mdash;they don’t have graphical user interfaces with images and colorful text. So far, you’re displaying text with <span class="literal">print()</span> and letting the user enter text with <span class="literal">input()</span>. However, the user can quickly enter large amounts of text through the clipboard. This ability provides a useful avenue for writing programs that manipulate massive amounts of text. These text-based programs might not have flashy windows or graphics, but they can get a lot of useful work done quickly.</p>
+<p class="indent">Another way to manipulate large amounts of text is reading and writing files directly off the hard drive. You’ll learn how to do this with Python in <a href="#calibre_link-32" class="calibre6">Chapter 9</a>.</p>
+<p class="indent">That just about covers all the basic concepts of Python programming! You’ll continue to learn new concepts throughout the rest of this book, but you now know enough to start writing some useful programs that can automate tasks. If you’d like to see a collection of short, simple Python programs built from the basic concepts you’ve learned so far, check out <em class="calibre7"><a href="https://github.com/asweigart/pythonstdiogames/" class="calibre6">https://github.com/asweigart/pythonstdiogames/</a></em>. Try copying the source code for each program by hand, and then make modifications to see how they affect the behavior of the program. Once you have an understanding of how the program works, try re-creating the program yourself from scratch. You don’t need to re-create the source code exactly; just focus on what the program does rather than how it does it.</p>
+<p class="indent">You might not think you have enough Python knowledge to do things such as download web pages, update spreadsheets, or send text messages, but that’s where Python modules come in! These modules, written by other programmers, provide functions that make it easy for you to do all these things. So let’s learn how to write real programs to do useful automated tasks.</p>
+<h3 class="h1" id="calibre_link-233"><strong class="calibre2">Practice Questions</strong></h3>
+<p class="question"><a id="calibre_link-1313" href="#calibre_link-1616" class="calibre6">1</a>. What are escape characters?</p>
+<p class="question"><a id="calibre_link-1314" href="#calibre_link-1617" class="calibre6">2</a>. What do the <span class="literal">\n</span> and <span class="literal">\t</span> escape characters represent?</p>
+<p class="question"><a id="calibre_link-1315" href="#calibre_link-1618" class="calibre6">3</a>. How can you put a <span class="literal">\</span> backslash character in a string?</p>
+<p class="question"><a id="calibre_link-1316" href="#calibre_link-1619" class="calibre6">4</a>. The string value <span class="literal">"Howl's Moving Castle"</span> is a valid string. Why isn’t it a problem that the single quote character in the word <span class="literal">Howl's</span> isn’t escaped?</p>
+<p class="question"><a id="calibre_link-1317" href="#calibre_link-1620" class="calibre6">5</a>. If you don’t want to put <span class="literal">\n</span> in your string, how can you write a string with newlines in it?</p>
+<p class="question"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1760"></span><a id="calibre_link-1318" href="#calibre_link-1621" class="calibre6">6</a>. What do the following expressions evaluate to?</p>
+<ul class="calibre8">
+<li class="noindent1"><span class="literal">'Hello, world!'[1]</span></li>
+<li class="noindent1"><span class="literal">'Hello, world!'[0:5]</span></li>
+<li class="noindent1"><span class="literal">'Hello, world!'[:5]</span></li>
+<li class="noindent1"><span class="literal">'Hello, world!'[3:]</span></li>
+</ul>
+<p class="question"><a id="calibre_link-1319" href="#calibre_link-1622" class="calibre6">7</a>. What do the following expressions evaluate to?</p>
+<ul class="calibre8">
+<li class="noindent1"><span class="literal">'Hello'.upper()</span></li>
+<li class="noindent1"><span class="literal">'Hello'.upper().isupper()</span></li>
+<li class="noindent1"><span class="literal">'Hello'.upper().lower()</span></li>
+</ul>
+<p class="question"><a id="calibre_link-1320" href="#calibre_link-1623" class="calibre6">8</a>. What do the following expressions evaluate to?</p>
+<ul class="calibre8">
+<li class="noindent1"><span class="literal">'Remember, remember, the fifth of November.'.split()</span></li>
+<li class="noindent1"><span class="literal">'-'.join('There can be only one.'.split())</span></li>
+</ul>
+<p class="question"><a id="calibre_link-1321" href="#calibre_link-1624" class="calibre6">9</a>. What string methods can you use to right-justify, left-justify, and center a string?</p>
+<p class="question1"><a id="calibre_link-1322" href="#calibre_link-1625" class="calibre6">10</a>. How can you trim whitespace characters from the beginning or end of a string?</p>
+<h3 class="h1" id="calibre_link-234"><strong class="calibre2">Practice Projects</strong></h3>
+<p class="noindent">For practice, write programs that do the following.</p>
+<h4 class="h2" id="calibre_link-235"><strong class="calibre2"><em class="calibre9">Table Printer</em></strong></h4>
+<p class="noindent">Write a function named <span class="literal">printTable()</span> that takes a list of lists of strings and displays it in a well-organized table with each column right-justified. Assume that all the inner lists will contain the same number of strings. For example, the value could look like this:</p>
+<p class="programs">tableData = [['apples', 'oranges', 'cherries', 'banana'],<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;['Alice', 'Bob', 'Carol', 'David'],<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;['dogs', 'cats', 'moose', 'goose']]</p>
+<p class="indent">Your <span class="literal">printTable()</span> function would print the following:</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;apples Alice&nbsp;&nbsp;dogs<br class="calibre5" />
+&nbsp;&nbsp;oranges&nbsp;&nbsp;&nbsp;Bob&nbsp;&nbsp;cats<br class="calibre5" />
+&nbsp;cherries Carol moose<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;banana David goose</p>
+<p class="indent">Hint: your code will first have to find the longest string in each of the inner lists so that the whole column can be wide enough to fit all the strings. You can store the maximum width of each column as a list of integers. The <span class="literal">printTable()</span> function can begin with <span class="literal">colWidths = [0] * len(tableData)</span>, which will create a list containing the same number of <span class="literal">0</span> values as the number of inner lists in <span class="literal">tableData</span>. That way, <span class="literal">colWidths[0]</span> can store the width of the <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1761"></span>longest string in <span class="literal">tableData[0]</span>, <span class="literal">colWidths[1]</span> can store the width of the longest string in <span class="literal">tableData[1]</span>, and so on. You can then find the largest value in the <span class="literal">colWidths</span> list to find out what integer width to pass to the <span class="literal">rjust()</span> string method.</p>
+<h4 class="h2" id="calibre_link-236"><strong class="calibre2"><em class="calibre9">Zombie Dice Bots</em></strong></h4>
+<p class="noindent"><em class="calibre7">Programming games</em> are a game genre where instead of playing a game directly, players write bot programs to play the game autonomously. I’ve created a Zombie Dice simulator, which allows programmers to practice their skills while making game-playing AIs. Zombie Dice bots can be simple or incredibly complex, and are great for a class exercise or an individual programming challenge.</p>
+<p class="indent">Zombie Dice is a quick, fun dice game from Steve Jackson Games. The players are zombies trying to eat as many human brains as possible without getting shot three times. There is a cup of 13 dice with brains, footsteps, and shotgun icons on their faces. The dice icons are colored, and each color has a different likelihood of each event occurring. Every die has two sides with footsteps, but dice with green icons have more sides with brains, red-icon dice have more shotguns, and yellow-icon dice have an even split of brains and shotguns. Do the following on each player’s turn:</p>
+<ol class="calibre10">
+<li class="noindent1">Place all 13 dice in the cup. The player randomly draws three dice from the cup and then rolls them. Players always roll exactly three dice.</li>
+<li class="noindent1">They set aside and count up any brains (humans whose brains were eaten) and shotguns (humans who fought back). Accumulating three shotguns automatically ends a player’s turn with zero points (regardless of how many brains they had). If they have between zero and two shotguns, they may continue rolling if they want. They may also choose to end their turn and collect one point per brain.</li>
+<li class="noindent1">If the player decides to keep rolling, they must reroll all dice with footsteps. Remember that the player must always roll three dice; they must draw more dice out of the cup if they have fewer than three footsteps to roll. A player may keep rolling dice until either they get three shotguns&mdash;losing everything&mdash;or all 13 dice have been rolled. A player may not reroll only one or two dice, and may not stop mid-reroll.</li>
+<li class="noindent1">When someone reaches 13 brains, the rest of the players finish out the round. The person with the most brains wins. If there’s a tie, the tied players play one last tiebreaker round.</li>
+</ol>
+<p class="indent">Zombie Dice has a push-your-luck game mechanic: the more you reroll the dice, the more brains you can get, but the more likely you’ll eventually accrue three shotguns and lose everything. Once a player reaches 13 points, the rest of the players get one more turn (to potentially catch up) and the game ends. The player with the most points wins. You can find the complete rules at <em class="calibre7"><a href="https://github.com/asweigart/zombiedice/" class="calibre6">https://github.com/asweigart/zombiedice/</a></em>.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1762"></span>Install the <span class="literal">zombiedice</span> module with pip by following the instructions in <a href="#calibre_link-2" class="calibre6">Appendix A</a>. You can run a demo of the simulator with some pre-made bots by running the following in the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import zombiedice</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">zombiedice.demo()</span><br class="calibre5" />
+Zombie Dice Visualization is running. Open your browser to http://<br class="calibre5" />
+localhost:51810 to view it.<br class="calibre5" />
+Press Ctrl-C to quit.</p>
+<p class="indent">The program launches your web browser, which will look like <a href="#calibre_link-1626" class="calibre6">Figure 6-1</a>.</p>
+<div class="image1"><a id="calibre_link-1626" class="calibre6"></a><img src="../images/000068.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 6-1: The web GUI for the Zombie Dice simulator</em></p>
+<p class="indent">You’ll create bots by writing a class with a <span class="literal">turn()</span> method, which is called by the simulator when it’s your bot’s turn to roll the dice. Classes are beyond the scope of this book, so the class code is already set up for you in the <em class="calibre7">myzombie.py</em> program, which is in the downloadable ZIP file for this book at <em class="calibre7"><a href="https://nostarch.com/automatestuff2/" class="calibre6">https://nostarch.com/automatestuff2/</a></em>. Writing a method is essentially the same as writing a function, and you can use the <span class="literal">turn()</span> code in the <em class="calibre7">myZombie.py</em> program as a template. Inside this <span class="literal">turn()</span> method, you’ll call the <span class="literal">zombiedice.roll()</span> function as often as you want your bot to roll the dice.</p>
+<p class="programs">import zombiedice<br class="calibre5" /><br class="calibre5" />
+class MyZombie:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;def __init__(self, name):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# All zombies must have a name:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.name = name<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;def turn(self, gameState):<br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1763"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# gameState is a dict with info about the current state of the game.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# You can choose to ignore it in your code.<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;diceRollResults = zombiedice.roll() # first roll<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# roll() returns a dictionary with keys 'brains', 'shotgun', and<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 'footsteps' with how many rolls of each type there were.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# The 'rolls' key is a list of (color, icon) tuples with the<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# exact roll result information.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Example of a roll() return value:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# {'brains': 1, 'footsteps': 1, 'shotgun': 1,<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;&nbsp;'rolls': [('yellow', 'brains'), ('red', 'footsteps'),<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;('green', 'shotgun')]}<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# REPLACE THIS ZOMBIE CODE WITH YOUR OWN:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;brains = 0<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;while diceRollResults is not None:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;brains += diceRollResults['brains']<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if brains &lt; 2:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;diceRollResults = zombiedice.roll() # roll again<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br class="calibre5" /><br class="calibre5" />
+zombies = (<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;zombiedice.examples.RandomCoinFlipZombie(name='Random'),<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;zombiedice.examples.RollsUntilInTheLeadZombie(name='Until Leading'),<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;zombiedice.examples.MinNumShotgunsThenStopsZombie(name='Stop at 2<br class="calibre5" />
+Shotguns', minShotguns=2),<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;zombiedice.examples.MinNumShotgunsThenStopsZombie(name='Stop at 1<br class="calibre5" />
+Shotgun', minShotguns=1),<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;MyZombie(name='My Zombie Bot'),<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;# Add any other zombie players here.<br class="calibre5" />
+)<br class="calibre5" /><br class="calibre5" />
+# Uncomment one of the following lines to run in CLI or Web GUI mode:<br class="calibre5" />
+#zombiedice.runTournament(zombies=zombies, numGames=1000)<br class="calibre5" />
+zombiedice.runWebGui(zombies=zombies, numGames=1000)</p>
+<p class="indent">The <span class="literal">turn()</span> method takes two parameters: <span class="literal">self</span> and <span class="literal">gameState</span>. You can ignore these in your first few zombie bots and consult the online documentation for details later if you want to learn more. The <span class="literal">turn()</span> method should call <span class="literal">zombiedice.roll()</span> at least once for the initial roll. Then, depending on the strategy the bot uses, it can call <span class="literal">zombiedice.roll()</span> again as many times as it wants. In <em class="calibre7">myZombie.py</em>, the <span class="literal">turn()</span> method calls <span class="literal">zombiedice.roll()</span> twice, which means the zombie bot will always roll its dice two times per turn regardless of the results of the roll.</p>
+<p class="indent">The return value of <span class="literal">zombiedice.roll()</span> tells your code the results of the dice roll. It is a dictionary with four keys. Three of the keys, <span class="literal">'shotgun'</span>, <span class="literal">'brains'</span>, and <span class="literal">'footsteps'</span>, have integer values of how many dice came up with those icons. The fourth <span class="literal">'rolls'</span> key has a value that is a list of tuples for each die roll. The tuples contain two strings: the color of the die at index <span class="literal">0</span> and the icon rolled at index <span class="literal">1</span>. Look at the code comments in the <span class="literal">turn()</span> <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1764"></span>method’s definition for an example. If the bot has already rolled three shotguns, then <span class="literal">zombiedice.roll()</span> will return <span class="literal">None</span>.</p>
+<p class="indent">Try writing some of your own bots to play Zombie Dice and see how they compare against the other bots. Specifically, try to create the following bots:</p>
+<ul class="calibre8">
+<li class="noindent1">A bot that, after the first roll, randomly decides if it will continue or stop</li>
+<li class="noindent1">A bot that stops rolling after it has rolled two brains</li>
+<li class="noindent1">A bot that stops rolling after it has rolled two shotguns</li>
+<li class="noindent1">A bot that initially decides it’ll roll the dice one to four times, but will stop early if it rolls two shotguns</li>
+<li class="noindent1">A bot that stops rolling after it has rolled more shotguns than brains</li>
+</ul>
+<p class="indent">Run these bots through the simulator and see how they compare to each other. You can also examine the code of some premade bots at <em class="calibre7"><a href="https://github.com/asweigart/zombiedice/" class="calibre6">https://github.com/asweigart/zombiedice/</a></em>. If you find yourself playing this game in the real world, you’ll have the benefit of thousands of simulated games telling you that one of the best strategies is to simply stop once you’ve rolled two shotguns. But you could always try pressing your luck . . .</p>
+</div>
+
+<div><center><a href="../chapter5"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="../chapter7"><img src="/images/next.png" /></a></center></div>
+
+{% endblock %}

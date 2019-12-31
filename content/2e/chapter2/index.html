@@ -1,0 +1,820 @@
+{% extends "secondeditionbase.html" %}
+{% set title = 'Automate the Boring Stuff with Python' %}
+{% block content %}
+
+
+<div><center><a href="../chapter1"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="../chapter3"><img src="/images/next.png" /></a></center></div>
+
+<div class="calibre" id="calibre_link-1532">
+<h2 class="h2b" id="calibre_link-106"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1711" class="calibre1"></span><strong class="calibre2"><span class="big">2</span><br class="calibre12" />FLOW CONTROL</strong></h2>
+<div class="image"><img src="../images/000137.jpg" alt="Image" class="calibre3" /></div>
+<p class="noindent">So, you know the basics of individual instructions and that a program is just a series of instructions. But programming’s real strength isn’t just running one instruction after another like a weekend errand list. Based on how expressions evaluate, a program can decide to skip instructions, repeat them, or choose one of several instructions to run. In fact, you almost never want your programs to start from the first line of code and simply execute every line, straight to the end. <em class="calibre7">Flow control statements</em> can decide which Python instructions to execute under which conditions.</p>
+<p class="indent">These flow control statements directly correspond to the symbols in a flowchart, so I’ll provide flowchart versions of the code discussed in this chapter. <a href="#calibre_link-1533" class="calibre6">Figure 2-1</a> shows a flowchart for what to do if it’s raining. Follow the path made by the arrows from Start to End.</p>
+<div class="image1"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-819"></span><a id="calibre_link-1533" class="calibre6"></a><img src="../images/000039.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 2-1: A flowchart to tell you what to do if it is raining</em></p>
+<p class="indent">In a flowchart, there is usually more than one way to go from the start to the end. The same is true for lines of code in a computer program. Flowcharts represent these branching points with diamonds, while the other steps are represented with rectangles. The starting and ending steps are represented with rounded rectangles.</p>
+<p class="indent">But before you learn about flow control statements, you first need to learn how to represent those <em class="calibre7">yes</em> and <em class="calibre7">no</em> options, and you need to understand how to write those branching points as Python code. To that end, let’s explore Boolean values, comparison operators, and Boolean operators.</p>
+<h3 class="h1" id="calibre_link-107"><strong class="calibre2">Boolean Values</strong></h3>
+<p class="noindent">While the integer, floating-point, and string data types have an unlimited number of possible values, the <em class="calibre7">Boolean</em> data type has only two values: <span class="literal">True</span> and <span class="literal">False</span>. (Boolean is capitalized because the data type is named after mathematician George Boole.) When entered as Python code, the Boolean values <span class="literal">True</span> and <span class="literal">False</span> lack the quotes you place around strings, and they always start with a capital <em class="calibre7">T</em> or <em class="calibre7">F</em>, with the rest of the word in lowercase. Enter the following into the interactive shell. (Some of these instructions are intentionally incorrect, and they’ll cause error messages to appear.)</p>
+<p class="programs"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-758"></span><span class="ent">➊</span> &gt;&gt;&gt; <span class="codestrong1">spam = True</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">spam</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;True<br class="calibre5" />
+<span class="ent">➋</span> &gt;&gt;&gt; <span class="codestrong1">true</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;Traceback (most recent call last):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File "&lt;pyshell#2&gt;", line 1, in &lt;module&gt;<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;true<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;NameError: name 'true' is not defined<br class="calibre5" />
+<span class="ent">➌</span> &gt;&gt;&gt; <span class="codestrong1">True = 2 + 2</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;SyntaxError: can't assign to keyword</p>
+<p class="indent">Like any other value, Boolean values are used in expressions and can be stored in variables <span class="ent">➊</span>. If you don’t use the proper case <span class="ent">➋</span> or you try to use <span class="literal">True</span> and <span class="literal">False</span> for variable names <span class="ent">➌</span>, Python will give you an error message.</p>
+<h3 class="h1" id="calibre_link-108"><strong class="calibre2">Comparison Operators</strong></h3>
+<p class="noindent"><em class="calibre7">Comparison operators</em>, also called <em class="calibre7">relational operators</em>, compare two values and evaluate down to a single Boolean value. <a href="#calibre_link-1534" class="calibre6">Table 2-1</a> lists the comparison operators.</p>
+<p class="tabcap" id="calibre_link-1534"><strong class="calibre4">Table 2-1:</strong> Comparison Operators</p>
+<table class="topbot-d">
+<colgroup class="calibre13">
+<col class="calibre18"></col>
+<col class="calibre18"></col>
+</colgroup>
+<thead class="calibre15">
+<tr class="calibre16">
+<td class="table-h"><p class="tab_th"><strong class="calibre4">Operator</strong></p></td>
+<td class="table-h"><p class="tab_th"><strong class="calibre4">Meaning</strong></p></td>
+</tr>
+</thead>
+<tbody class="calibre17">
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">==</span></p></td>
+<td class="table-b"><p class="taba">Equal to</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">!=</span></p></td>
+<td class="table-v"><p class="taba">Not equal to</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">&lt;</span></p></td>
+<td class="table-b"><p class="taba">Less than</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">&gt;</span></p></td>
+<td class="table-v"><p class="taba">Greater than</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">&lt;=</span></p></td>
+<td class="table-b"><p class="taba">Less than or equal to</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-va"><p class="taba"><span class="literal">&gt;=</span></p></td>
+<td class="table-va"><p class="taba">Greater than or equal to</p></td>
+</tr>
+</tbody>
+</table>
+<p class="indent">These operators evaluate to <span class="literal">True</span> or <span class="literal">False</span> depending on the values you give them. Let’s try some operators now, starting with <span class="literal">==</span> and <span class="literal">!=</span>.</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">42 == 42</span><br class="calibre5" />
+True<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">42 == 99</span><br class="calibre5" />
+False<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">2 != 3</span><br class="calibre5" />
+True<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">2 != 2</span><br class="calibre5" />
+False</p>
+<p class="indent">As you might expect, <span class="literal">==</span> (equal to) evaluates to <span class="literal">True</span> when the values on both sides are the same, and <span class="literal">!=</span> (not equal to) evaluates to <span class="literal">True</span> when the two values are different. The <span class="literal">==</span> and <span class="literal">!=</span> operators can actually work with values of any data type.</p>
+<p class="programs"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-759"></span>&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">'hello' == 'hello'</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;True<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">'hello' == 'Hello'</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;False<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">'dog' != 'cat'</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;True<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">True == True</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;True<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">True != False</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;True<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">42 == 42.0</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;True<br class="calibre5" />
+<span class="ent">➊</span> &gt;&gt;&gt; <span class="codestrong1">42 == '42'</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;False</p>
+<p class="indent">Note that an integer or floating-point value will always be unequal to a string value. The expression <span class="literal">42 == '42'</span> <span class="ent">➊</span> evaluates to <span class="literal">False</span> because Python considers the integer <span class="literal">42</span> to be different from the string <span class="literal">'42'</span>.</p>
+<p class="indent">The <span class="literal">&lt;</span>, <span class="literal">&gt;</span>, <span class="literal">&lt;=</span>, and <span class="literal">&gt;=</span> operators, on the other hand, work properly only with integer and floating-point values.</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">42 &lt; 100</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;True<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">42 &gt; 100</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;False<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">42 &lt; 42</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;False<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">eggCount = 42</span><br class="calibre5" />
+<span class="ent">➊</span> &gt;&gt;&gt; <span class="codestrong1">eggCount &lt;= 42</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;True<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">myAge = 29</span><br class="calibre5" />
+<span class="ent">➋</span> &gt;&gt;&gt; <span class="codestrong1">myAge &gt;= 10</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;True</p>
+<div class="sidebar">
+<p class="sidebart"><strong class="calibre4">THE DIFFERENCE BETWEEN THE == AND = OPERATORS</strong></p>
+<p class="spara">You might have noticed that the <span class="literal1">==</span> operator (equal to) has two equal signs, while the <span class="literal1">=</span> operator (assignment) has just one equal sign. It’s easy to confuse these two operators with each other. Just remember these points:</p>
+<ul class="calibre8">
+<li class="noindent1">The <span class="literal">==</span> operator (equal to) asks whether two values are the same as each other.</li>
+<li class="noindent1">The <span class="literal">=</span> operator (assignment) puts the value on the right into the variable on the left.</li>
+</ul>
+<p class="sparai">To help remember which is which, notice that the <span class="literal1">==</span> operator (equal to) consists of two characters, just like the <span class="literal1">!=</span> operator (not equal to) consists of two characters.</p>
+</div>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-790"></span>You’ll often use comparison operators to compare a variable’s value to some other value, like in the <span class="literal">eggCount &lt;= 42</span> <span class="ent">➊</span> and <span class="literal">myAge &gt;= 10</span> <span class="ent">➋</span> examples. (After all, instead of entering <span class="literal">'dog' != 'cat'</span> in your code, you could have just entered <span class="literal">True</span>.) You’ll see more examples of this later when you learn about flow control statements.</p>
+<h3 class="h1" id="calibre_link-109"><strong class="calibre2">Boolean Operators</strong></h3>
+<p class="noindent">The three Boolean operators (<span class="literal">and</span>, <span class="literal">or</span>, and <span class="literal">not</span>) are used to compare Boolean values. Like comparison operators, they evaluate these expressions down to a Boolean value. Let’s explore these operators in detail, starting with the <span class="literal">and</span> operator.</p>
+<h4 class="h2" id="calibre_link-110"><strong class="calibre2"><em class="calibre9">Binary Boolean Operators</em></strong></h4>
+<p class="noindent">The <span class="literal">and</span> and <span class="literal">or</span> operators always take two Boolean values (or expressions), so they’re considered <em class="calibre7">binary</em> operators. The <span class="literal">and</span> operator evaluates an expression to <span class="literal">True</span> if <em class="calibre7">both</em> Boolean values are <span class="literal">True</span>; otherwise, it evaluates to <span class="literal">False</span>. Enter some expressions using <span class="literal">and</span> into the interactive shell to see it in action.</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">True and True</span><br class="calibre5" />
+True<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">True and False</span><br class="calibre5" />
+False</p>
+<p class="indent">A <em class="calibre7">truth table</em> shows every possible result of a Boolean operator. <a href="#calibre_link-1535" class="calibre6">Table 2-2</a> is the truth table for the <span class="literal">and</span> operator.</p>
+<p class="tabcap" id="calibre_link-1535"><strong class="calibre4">Table 2-2:</strong> The <span class="literal1">and</span> Operator’s Truth Table</p>
+<table class="topbot-d">
+<colgroup class="calibre13">
+<col class="calibre18"></col>
+<col class="calibre18"></col>
+</colgroup>
+<thead class="calibre15">
+<tr class="calibre16">
+<td class="table-h"><p class="tab_th"><strong class="calibre4">Expression</strong></p></td>
+<td class="table-h"><p class="tab_th"><strong class="calibre4">Evaluates to . . .</strong></p></td>
+</tr>
+</thead>
+<tbody class="calibre17">
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">True and True</span></p></td>
+<td class="table-b"><p class="taba"><span class="literal">True</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">True and False</span></p></td>
+<td class="table-b"><p class="taba"><span class="literal">False</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">False and True</span></p></td>
+<td class="table-b"><p class="taba"><span class="literal">False</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-ba"><p class="taba"><span class="literal">False and False</span></p></td>
+<td class="table-ba"><p class="taba"><span class="literal">False</span></p></td>
+</tr>
+</tbody>
+</table>
+<p class="indent">On the other hand, the <span class="literal">or</span> operator evaluates an expression to <span class="literal">True</span> if <em class="calibre7">either</em> of the two Boolean values is <span class="literal">True</span>. If both are <span class="literal">False</span>, it evaluates to <span class="literal">False</span>.</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">False or True</span><br class="calibre5" />
+True<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">False or False</span><br class="calibre5" />
+False</p>
+<p class="indent">You can see every possible outcome of the <span class="literal">or</span> operator in its truth table, shown in <a href="#calibre_link-1536" class="calibre6">Table 2-3</a>.</p>
+<p class="tabcap" id="calibre_link-1536"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-815"></span><strong class="calibre4">Table 2-3:</strong> The <span class="literal1">or</span> Operator’s Truth Table</p>
+<table class="topbot-d">
+<colgroup class="calibre13">
+<col class="calibre18"></col>
+<col class="calibre18"></col>
+</colgroup>
+<thead class="calibre15">
+<tr class="calibre16">
+<td class="table-h"><p class="tab_th"><strong class="calibre4">Expression</strong></p></td>
+<td class="table-h"><p class="tab_th"><strong class="calibre4">Evaluates to . . .</strong></p></td>
+</tr>
+</thead>
+<tbody class="calibre17">
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">True or True</span></p></td>
+<td class="table-b"><p class="taba"><span class="literal">True</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">True or False</span></p></td>
+<td class="table-b"><p class="taba"><span class="literal">True</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">False or True</span></p></td>
+<td class="table-b"><p class="taba"><span class="literal">True</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-ba"><p class="taba"><span class="literal">False or False</span></p></td>
+<td class="table-ba"><p class="taba"><span class="literal">False</span></p></td>
+</tr>
+</tbody>
+</table>
+<h4 class="h2" id="calibre_link-111"><strong class="calibre2"><em class="calibre9">The not Operator</em></strong></h4>
+<p class="noindent">Unlike <span class="literal">and</span> and <span class="literal">or</span>, the <span class="literal">not</span> operator operates on only one Boolean value (or expression). This makes it a <em class="calibre7">unary</em> operator. The <span class="literal">not</span> operator simply evaluates to the opposite Boolean value.</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">not True</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;False<br class="calibre5" />
+<span class="ent">➊</span> &gt;&gt;&gt; <span class="codestrong1">not not not not True</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;True</p>
+<p class="indent">Much like using double negatives in speech and writing, you can nest <span class="literal">not</span> operators <span class="ent">➊</span>, though there’s never not no reason to do this in real programs. <a href="#calibre_link-1537" class="calibre6">Table 2-4</a> shows the truth table for <span class="literal">not</span>.</p>
+<p class="tabcap" id="calibre_link-1537"><strong class="calibre4">Table 2-4:</strong> The <span class="literal1">not</span> Operator’s Truth Table</p>
+<table class="topbot-d">
+<colgroup class="calibre13">
+<col class="calibre18"></col>
+<col class="calibre18"></col>
+</colgroup>
+<thead class="calibre15">
+<tr class="calibre16">
+<td class="table-h"><p class="tab_th"><strong class="calibre4">Expression</strong></p></td>
+<td class="table-h"><p class="tab_th"><strong class="calibre4">Evaluates to . . .</strong></p></td>
+</tr>
+</thead>
+<tbody class="calibre17">
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">not True</span></p></td>
+<td class="table-b"><p class="taba"><span class="literal">False</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-ba"><p class="taba"><span class="literal">not False</span></p></td>
+<td class="table-ba"><p class="taba"><span class="literal">True</span></p></td>
+</tr>
+</tbody>
+</table>
+<h3 class="h1" id="calibre_link-112"><strong class="calibre2">Mixing Boolean and Comparison Operators</strong></h3>
+<p class="noindent">Since the comparison operators evaluate to Boolean values, you can use them in expressions with the Boolean operators.</p>
+<p class="indent">Recall that the <span class="literal">and</span>, <span class="literal">or</span>, and <span class="literal">not</span> operators are called Boolean operators because they always operate on the Boolean values <span class="literal">True</span> and <span class="literal">False</span>. While expressions like <span class="literal">4 &lt; 5</span> aren’t Boolean values, they are expressions that evaluate down to Boolean values. Try entering some Boolean expressions that use comparison operators into the interactive shell.</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">(</span><span class="codestrong1">4 &lt; 5) and (5 &lt; 6)</span><br class="calibre5" />
+True<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">(</span><span class="codestrong1">4 &lt; 5) and (9 &lt; 6)</span><br class="calibre5" />
+False<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">(</span><span class="codestrong1">1 == 2) or (2 == 2)</span><br class="calibre5" />
+True</p>
+<p class="indent">The computer will evaluate the left expression first, and then it will evaluate the right expression. When it knows the Boolean value for each, <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-816"></span>it will then evaluate the whole expression down to one Boolean value. You can think of the computer’s evaluation process for <span class="literal">(4 &lt; 5) and (5 &lt; 6)</span> as the following:</p>
+<div class="imagec"><img src="../images/000095.jpg" alt="image" class="calibre3" /></div>
+<p class="indent">You can also use multiple Boolean operators in an expression, along with the comparison operators:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">2 + 2 == 4 and not 2 + 2 == 5 and 2 * 2 == 2 + 2</span><br class="calibre5" />
+True</p>
+<p class="indent">The Boolean operators have an order of operations just like the math operators do. After any math and comparison operators evaluate, Python evaluates the <span class="literal">not</span> operators first, then the <span class="literal">and</span> operators, and then the <span class="literal">or</span> operators.</p>
+<h3 class="h1" id="calibre_link-113"><strong class="calibre2">Elements of Flow Control</strong></h3>
+<p class="noindent">Flow control statements often start with a part called the <em class="calibre7">condition</em> and are always followed by a block of code called the <em class="calibre7">clause</em>. Before you learn about Python’s specific flow control statements, I’ll cover what a condition and a block are.</p>
+<h4 class="h2" id="calibre_link-114"><strong class="calibre2"><em class="calibre9">Conditions</em></strong></h4>
+<p class="noindent">The Boolean expressions you’ve seen so far could all be considered conditions, which are the same thing as expressions; <em class="calibre7">condition</em> is just a more specific name in the context of flow control statements. Conditions always evaluate down to a Boolean value, <span class="literal">True</span> or <span class="literal">False</span>. A flow control statement decides what to do based on whether its condition is <span class="literal">True</span> or <span class="literal">False</span>, and almost every flow control statement uses a condition.</p>
+<h4 class="h2" id="calibre_link-115"><strong class="calibre2"><em class="calibre9">Blocks of Code</em></strong></h4>
+<p class="noindent">Lines of Python code can be grouped together in <em class="calibre7">blocks</em>. You can tell when a block begins and ends from the indentation of the lines of code. There are three rules for blocks.</p>
+<ul class="calibre8">
+<li class="noindent1">Blocks begin when the indentation increases.</li>
+<li class="noindent1">Blocks can contain other blocks.</li>
+<li class="noindent1">Blocks end when the indentation decreases to zero or to a containing block’s indentation.</li>
+</ul>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-947"></span>Blocks are easier to understand by looking at some indented code, so let’s find the blocks in part of a small game program, shown here:</p>
+<p class="programs">&nbsp;&nbsp;name = 'Mary'<br class="calibre5" />
+&nbsp;&nbsp;password = 'swordfish'<br class="calibre5" />
+&nbsp;&nbsp;if name == 'Mary':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➊</span> print('Hello, Mary')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if password == 'swordfish':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➋</span> print('Access granted.')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➌</span> print('Wrong password.')</p>
+<p class="indent">You can view the execution of this program at <em class="calibre7"><a href="https://autbor.com/blocks/" class="calibre6">https://autbor.com/blocks/</a></em>. The first block of code <span class="ent">➊</span> starts at the line <span class="literal">print('Hello, Mary')</span> and contains all the lines after it. Inside this block is another block <span class="ent">➋</span>, which has only a single line in it: <span class="literal">print('Access Granted.')</span>. The third block <span class="ent">➌</span> is also one line long: <span class="literal">print('Wrong password.')</span>.</p>
+<h3 class="h1" id="calibre_link-116"><strong class="calibre2">Program Execution</strong></h3>
+<p class="noindent">In the previous chapter’s <em class="calibre7">hello.py</em> program, Python started executing instructions at the top of the program going down, one after another. The <em class="calibre7">program execution</em> (or simply, <em class="calibre7">execution</em>) is a term for the current instruction being executed. If you print the source code on paper and put your finger on each line as it is executed, you can think of your finger as the program execution.</p>
+<p class="indent">Not all programs execute by simply going straight down, however. If you use your finger to trace through a program with flow control statements, you’ll likely find yourself jumping around the source code based on conditions, and you’ll probably skip entire clauses.</p>
+<h3 class="h1" id="calibre_link-117"><strong class="calibre2">Flow Control Statements</strong></h3>
+<p class="noindent">Now, let’s explore the most important piece of flow control: the statements themselves. The statements represent the diamonds you saw in the flowchart in <a href="#calibre_link-1533" class="calibre6">Figure 2-1</a>, and they are the actual decisions your programs will make.</p>
+<h4 class="h2" id="calibre_link-118"><strong class="calibre2"><em class="calibre9">if Statements</em></strong></h4>
+<p class="noindent">The most common type of flow control statement is the <span class="literal">if</span> statement. An <span class="literal">if</span> statement’s clause (that is, the block following the <span class="literal">if</span> statement) will execute if the statement’s condition is <span class="literal">True</span>. The clause is skipped if the condition is <span class="literal">False</span>.</p>
+<p class="indent">In plain English, an <span class="literal">if</span> statement could be read as, “If this condition is true, execute the code in the clause.” In Python, an <span class="literal">if</span> statement consists of the following:</p>
+<ul class="calibre8">
+<li class="noindent1">The <span class="literal">if</span> keyword</li>
+<li class="noindent1">A condition (that is, an expression that evaluates to <span class="literal">True</span> or <span class="literal">False</span>)</li>
+<li class="noindent1"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-750"></span>A colon</li>
+<li class="noindent1">Starting on the next line, an indented block of code (called the <span class="literal">if</span> clause)</li>
+</ul>
+<p class="indent">For example, let’s say you have some code that checks to see whether someone’s name is Alice. (Pretend <span class="literal">name</span> was assigned some value earlier.)</p>
+<p class="programs">if name == 'Alice':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('Hi, Alice.')</p>
+<p class="indent">All flow control statements end with a colon and are followed by a new block of code (the clause). This <span class="literal">if</span> statement’s clause is the block with <span class="literal">print('Hi, Alice.')</span>. <a href="#calibre_link-1538" class="calibre6">Figure 2-2</a> shows what a flowchart of this code would look like.</p>
+<div class="image1"><a id="calibre_link-1538" class="calibre6"></a><img src="../images/000147.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 2-2: The flowchart for an <span class="literal1">if</span> statement</em></p>
+<h4 class="h2" id="calibre_link-119"><strong class="calibre2"><em class="calibre9">else Statements</em></strong></h4>
+<p class="noindent">An <span class="literal">if</span> clause can optionally be followed by an <span class="literal">else</span> statement. The <span class="literal">else</span> clause is executed only when the <span class="literal">if</span> statement’s condition is <span class="literal">False</span>. In plain English, an <span class="literal">else</span> statement could be read as, “If this condition is true, execute this code. Or else, execute that code.” An <span class="literal">else</span> statement doesn’t have a condition, and in code, an <span class="literal">else</span> statement always consists of the following:</p>
+<ul class="calibre8">
+<li class="noindent1">The <span class="literal">else</span> keyword</li>
+<li class="noindent1">A colon</li>
+<li class="noindent1">Starting on the next line, an indented block of code (called the <span class="literal">else</span> clause)</li>
+</ul>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-751"></span>Returning to the Alice example, let’s look at some code that uses an <span class="literal">else</span> statement to offer a different greeting if the person’s name isn’t Alice.</p>
+<p class="programs">if name == 'Alice':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('Hi, Alice.')<br class="calibre5" />
+else:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('Hello, stranger.')</p>
+<p class="indent"><a href="#calibre_link-1539" class="calibre6">Figure 2-3</a> shows what a flowchart of this code would look like.</p>
+<div class="image1"><a id="calibre_link-1539" class="calibre6"></a><img src="../images/000118.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 2-3: The flowchart for an <span class="literal1">else</span> statement</em></p>
+<h4 class="h2" id="calibre_link-120"><strong class="calibre2"><em class="calibre9">elif Statements</em></strong></h4>
+<p class="noindent">While only one of the <span class="literal">if</span> or <span class="literal">else</span> clauses will execute, you may have a case where you want one of <em class="calibre7">many</em> possible clauses to execute. The <span class="literal">elif</span> statement is an “else if” statement that always follows an <span class="literal">if</span> or another <span class="literal">elif</span> statement. It provides another condition that is checked only if all of the previous conditions were <span class="literal">False</span>. In code, an <span class="literal">elif</span> statement always consists of the following:</p>
+<ul class="calibre8">
+<li class="noindent1">The <span class="literal">elif</span> keyword</li>
+<li class="noindent1">A condition (that is, an expression that evaluates to <span class="literal">True</span> or <span class="literal">False</span>)</li>
+<li class="noindent1">A colon</li>
+<li class="noindent1">Starting on the next line, an indented block of code (called the <span class="literal">elif</span> clause)</li>
+</ul>
+<p class="indent">Let’s add an <span class="literal">elif</span> to the name checker to see this statement in action.</p>
+<p class="programs">if name == 'Alice':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('Hi, Alice.')<br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1712"></span>elif age &lt; 12:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('You are not Alice, kiddo.')</p>
+<p class="indent">This time, you check the person’s age, and the program will tell them something different if they’re younger than 12. You can see the flowchart for this in <a href="#calibre_link-1540" class="calibre6">Figure 2-4</a>.</p>
+<div class="image1"><a id="calibre_link-1540" class="calibre6"></a><img src="../images/000145.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 2-4: The flowchart for an <span class="literal1">elif</span> statement</em></p>
+<p class="indent">The <span class="literal">elif</span> clause executes if <span class="literal">age &lt; 12</span> is <span class="literal">True</span> and <span class="literal">name == 'Alice'</span> is <span class="literal">False</span>. However, if both of the conditions are <span class="literal">False</span>, then both of the clauses are skipped. It is <em class="calibre7">not</em> guaranteed that at least one of the clauses will be executed. When there is a chain of <span class="literal">elif</span> statements, only one or none of the clauses will be executed. Once one of the statements’ conditions is found to be <span class="literal">True</span>, the rest of the <span class="literal">elif</span> clauses are automatically skipped. For example, open a new file editor window and enter the following code, saving it as <em class="calibre7">vampire.py</em>:</p>
+<p class="programs">name = 'Carol'<br class="calibre5" />
+age = 3000<br class="calibre5" />
+if name == 'Alice':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('Hi, Alice.')<br class="calibre5" />
+elif age &lt; 12:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('You are not Alice, kiddo.')<br class="calibre5" />
+elif age &gt; 2000:<br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1713"></span>&nbsp;&nbsp;&nbsp;&nbsp;print('Unlike you, Alice is not an undead, immortal vampire.')<br class="calibre5" />
+elif age &gt; 100:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('You are not Alice, grannie.')</p>
+<p class="indent">You can view the execution of this program at <em class="calibre7"><a href="https://autbor.com/vampire/" class="calibre6">https://autbor.com/vampire/</a></em>. Here, I’ve added two more <span class="literal">elif</span> statements to make the name checker greet a person with different answers based on <span class="literal">age</span>. <a href="#calibre_link-1541" class="calibre6">Figure 2-5</a> shows the flowchart for this.</p>
+<div class="image1"><a id="calibre_link-1541" class="calibre6"></a><img src="../images/000080.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 2-5: The flowchart for multiple <span class="literal1">elif</span> statements in the</em> vampire.py <em class="calibre7">program</em></p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1714"></span>The order of the <span class="literal">elif</span> statements does matter, however. Let’s rearrange them to introduce a bug. Remember that the rest of the <span class="literal">elif</span> clauses are automatically skipped once a <span class="literal">True</span> condition has been found, so if you swap around some of the clauses in <em class="calibre7">vampire.py</em>, you run into a problem. Change the code to look like the following, and save it as <em class="calibre7">vampire2.py</em>:</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;name = 'Carol'<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;age = 3000<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;if name == 'Alice':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('Hi, Alice.')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;elif age &lt; 12:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('You are not Alice, kiddo.')<br class="calibre5" />
+<span class="ent">➊</span> elif age &gt; 100:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('You are not Alice, grannie.')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;elif age &gt; 2000:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('Unlike you, Alice is not an undead, immortal vampire.')</p>
+<p class="indent">You can view the execution of this program at <em class="calibre7"><a href="https://autbor.com/vampire2/" class="calibre6">https://autbor.com/vampire2/</a></em>. Say the <span class="literal">age</span> variable contains the value <span class="literal">3000</span> before this code is executed. You might expect the code to print the string <span class="literal">'Unlike you, Alice is not an undead, immortal vampire.'</span>. However, because the <span class="literal">age &gt; 100</span> condition is <span class="literal">True</span> (after all, 3,000 <em class="calibre7">is</em> greater than 100) <span class="ent">➊</span>, the string <span class="literal">'You are not Alice, grannie.'</span> is printed, and the rest of the <span class="literal">elif</span> statements are automatically skipped. Remember that at most only one of the clauses will be executed, and for <span class="literal">elif</span> statements, the order matters!</p>
+<p class="indent"><a href="#calibre_link-1542" class="calibre6">Figure 2-6</a> shows the flowchart for the previous code. Notice how the diamonds for <span class="literal">age &gt; 100</span> and <span class="literal">age &gt; 2000</span> are swapped.</p>
+<p class="indent">Optionally, you can have an <span class="literal">else</span> statement after the last <span class="literal">elif</span> statement. In that case, it <em class="calibre7">is</em> guaranteed that at least one (and only one) of the clauses will be executed. If the conditions in every <span class="literal">if</span> and <span class="literal">elif</span> statement are <span class="literal">False</span>, then the <span class="literal">else</span> clause is executed. For example, let’s re-create the Alice program to use <span class="literal">if</span>, <span class="literal">elif</span>, and <span class="literal">else</span> clauses.</p>
+<p class="programs">name = 'Carol'<br class="calibre5" />
+age = 3000<br class="calibre5" />
+if name == 'Alice':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('Hi, Alice.')<br class="calibre5" />
+elif age &lt; 12:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('You are not Alice, kiddo.')<br class="calibre5" />
+else:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('You are neither Alice nor a little kid.')</p>
+<p class="indent">You can view the execution of this program at <em class="calibre7"><a href="https://autbor.com/littlekid/" class="calibre6">https://autbor.com/littlekid/</a></em>. <a href="#calibre_link-1543" class="calibre6">Figure 2-7</a> shows the flowchart for this new code, which we’ll save as <em class="calibre7">littleKid.py</em>.</p>
+<p class="indent">In plain English, this type of flow control structure would be “If the first condition is true, do this. Else, if the second condition is true, do that. Otherwise, do something else.” When you use <span class="literal">if</span>, <span class="literal">elif</span>, and <span class="literal">else</span> statements together, remember these rules about how to order them to avoid bugs like the one in <a href="#calibre_link-1542" class="calibre6">Figure 2-6</a>. First, there is always exactly one <span class="literal">if</span> statement. Any <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1715"></span><span class="literal">elif</span> statements you need should follow the <span class="literal">if</span> statement. Second, if you want to be sure that at least one clause is executed, close the structure with an <span class="literal">else</span> statement.</p>
+<div class="image1"><a id="calibre_link-1542" class="calibre6"></a><img src="../images/000136.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 2-6: The flowchart for the</em> vampire2.py <em class="calibre7">program. The X path will logically never happen, because if <span class="literal1">age</span> were greater than <span class="literal1">2000</span>, it would have already been greater than <span class="literal1">100</span>.</em></p>
+<div class="image1"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-752"></span><a id="calibre_link-1543" class="calibre6"></a><img src="../images/000032.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 2-7: Flowchart for the previous</em> littleKid.py <em class="calibre7">program</em></p>
+<h4 class="h2" id="calibre_link-121"><strong class="calibre2"><em class="calibre9">while Loop Statements</em></strong></h4>
+<p class="noindent">You can make a block of code execute over and over again using a <span class="literal">while</span> statement. The code in a <span class="literal">while</span> clause will be executed as long as the <span class="literal">while</span> statement’s condition is <span class="literal">True</span>. In code, a <span class="literal">while</span> statement always consists of the following:</p>
+<ul class="calibre8">
+<li class="noindent1">The <span class="literal">while</span> keyword</li>
+<li class="noindent1">A condition (that is, an expression that evaluates to <span class="literal">True</span> or <span class="literal">False</span>)</li>
+<li class="noindent1">A colon</li>
+<li class="noindent1">Starting on the next line, an indented block of code (called the <span class="literal">while</span> clause)</li>
+</ul>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1716"></span>You can see that a <span class="literal">while</span> statement looks similar to an <span class="literal">if</span> statement. The difference is in how they behave. At the end of an <span class="literal">if</span> clause, the program execution continues after the <span class="literal">if</span> statement. But at the end of a <span class="literal">while</span> clause, the program execution jumps back to the start of the <span class="literal">while</span> statement. The <span class="literal">while</span> clause is often called the <em class="calibre7">while loop</em> or just the <em class="calibre7">loop</em>.</p>
+<p class="indent">Let’s look at an <span class="literal">if</span> statement and a <span class="literal">while</span> loop that use the same condition and take the same actions based on that condition. Here is the code with an <span class="literal">if</span> statement:</p>
+<p class="programs">spam = 0<br class="calibre5" />
+if spam &lt; 5:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('Hello, world.')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;spam = spam + 1</p>
+<p class="indent">Here is the code with a <span class="literal">while</span> statement:</p>
+<p class="programs">spam = 0<br class="calibre5" />
+while spam &lt; 5:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('Hello, world.')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;spam = spam + 1</p>
+<p class="indent">These statements are similar&mdash;both <span class="literal">if</span> and <span class="literal">while</span> check the value of <span class="literal">spam</span>, and if it’s less than 5, they print a message. But when you run these two code snippets, something very different happens for each one. For the <span class="literal">if</span> statement, the output is simply <span class="literal">"Hello, world."</span>. But for the <span class="literal">while</span> statement, it’s <span class="literal">"Hello, world."</span> repeated five times! Take a look at the flowcharts for these two pieces of code, <a href="#calibre_link-1544" class="calibre6">Figures 2-8</a> and <a href="#calibre_link-1545" class="calibre6">2-9</a>, to see why this happens.</p>
+<div class="image1"><a id="calibre_link-1544" class="calibre6"></a><img src="../images/000072.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 2-8: The flowchart for the <span class="literal1">if</span> statement code</em></p>
+<div class="image1"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1018"></span><a id="calibre_link-1545" class="calibre6"></a><img src="../images/000112.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 2-9: The flowchart for the <span class="literal1">while</span> statement code</em></p>
+<p class="indent">The code with the <span class="literal">if</span> statement checks the condition, and it prints <span class="literal">Hello, world.</span> only once if that condition is true. The code with the <span class="literal">while</span> loop, on the other hand, will print it five times. The loop stops after five prints because the integer in <span class="literal">spam</span> increases by one at the end of each loop iteration, which means that the loop will execute five times before <span class="literal">spam &lt; 5</span> is <span class="literal">False</span>.</p>
+<p class="indent">In the <span class="literal">while</span> loop, the condition is always checked at the start of each <em class="calibre7">iteration</em> (that is, each time the loop is executed). If the condition is <span class="literal">True</span>, then the clause is executed, and afterward, the condition is checked again. The first time the condition is found to be <span class="literal">False</span>, the <span class="literal">while</span> clause is skipped.</p>
+<h5 class="h2" id="calibre_link-1717"><strong class="calibre2">An Annoying while Loop</strong></h5>
+<p class="noindent">Here’s a small example program that will keep asking you to type, literally, <span class="literal">your name</span>. Select <strong class="calibre4">File</strong> ▸ <strong class="calibre4">New</strong> to open a new file editor window, enter the following code, and save the file as <em class="calibre7">yourName.py</em>:</p>
+<p class="programs"><span class="ent">➊</span> name = ''<br class="calibre5" />
+<span class="ent">➋</span> while name != 'your name':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('Please type your name.')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➌</span> name = input()<br class="calibre5" />
+<span class="ent">➍</span> print('Thank you!')</p>
+<p class="indent">You can view the execution of this program at <em class="calibre7"><a href="https://autbor.com/yourname/" class="calibre6">https://autbor.com/yourname/</a></em>. First, the program sets the <span class="literal">name</span> variable <span class="ent">➊</span> to an empty string. This is so <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1718"></span>that the <span class="literal">name != 'your name'</span> condition will evaluate to <span class="literal">True</span> and the program execution will enter the <span class="literal">while</span> loop’s clause <span class="ent">➋</span>.</p>
+<p class="indent">The code inside this clause asks the user to type their name, which is assigned to the <span class="literal">name</span> variable <span class="ent">➌</span>. Since this is the last line of the block, the execution moves back to the start of the <span class="literal">while</span> loop and reevaluates the condition. If the value in <span class="literal">name</span> is <em class="calibre7">not equal</em> to the string <span class="literal">'your name'</span>, then the condition is <span class="literal">True</span>, and the execution enters the <span class="literal">while</span> clause again.</p>
+<p class="indent">But once the user types <span class="literal">your name</span>, the condition of the <span class="literal">while</span> loop will be <span class="literal">'your name' != 'your name'</span>, which evaluates to <span class="literal">False</span>. The condition is now <span class="literal">False</span>, and instead of the program execution reentering the <span class="literal">while</span> loop’s clause, Python skips past it and continues running the rest of the program <span class="ent">➍</span>. <a href="#calibre_link-1546" class="calibre6">Figure 2-10</a> shows a flowchart for the <em class="calibre7">yourName.py</em> program.</p>
+<div class="image1"><a id="calibre_link-1546" class="calibre6"></a><img src="../images/000042.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 2-10: A flowchart of the</em> yourName.py <em class="calibre7">program</em></p>
+<p class="indent">Now, let’s see <em class="calibre7">yourName.py</em> in action. Press <strong class="calibre4">F5</strong> to run it, and enter something other than <span class="literal">your name</span> a few times before you give the program what it wants.</p>
+<p class="programs">Please type your name.<br class="calibre5" />
+<span class="codestrong1">Al</span><br class="calibre5" />
+Please type your name.<br class="calibre5" />
+<span class="codestrong1">Albert</span><br class="calibre5" />
+Please type your name.<br class="calibre5" />
+<span class="codestrong1">%#@#%*(^&amp;!!!</span><br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-823"></span>Please type your name.<br class="calibre5" />
+<span class="codestrong1">your name</span><br class="calibre5" />
+Thank you!</p>
+<p class="indent">If you never enter <span class="literal">your name</span>, then the <span class="literal">while</span> loop’s condition will never be <span class="literal">False</span>, and the program will just keep asking forever. Here, the <span class="literal">input()</span> call lets the user enter the right string to make the program move on. In other programs, the condition might never actually change, and that can be a problem. Let’s look at how you can break out of a <span class="literal">while</span> loop.</p>
+<h4 class="h2" id="calibre_link-122"><strong class="calibre2"><em class="calibre9">break Statements</em></strong></h4>
+<p class="noindent">There is a shortcut to getting the program execution to break out of a <span class="literal">while</span> loop’s clause early. If the execution reaches a <span class="literal">break</span> statement, it immediately exits the <span class="literal">while</span> loop’s clause. In code, a <span class="literal">break</span> statement simply contains the <span class="literal">break</span> keyword.</p>
+<p class="indent">Pretty simple, right? Here’s a program that does the same thing as the previous program, but it uses a <span class="literal">break</span> statement to escape the loop. Enter the following code, and save the file as <em class="calibre7">yourName2.py</em>:</p>
+<p class="programs"><span class="ent">➊</span> while True:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('Please type your name.')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➋</span> name = input()<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➌</span> if name == 'your name':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➍</span> break<br class="calibre5" />
+<span class="ent">➎</span> print('Thank you!')</p>
+<p class="indent">You can view the execution of this program at <em class="calibre7"><a href="https://autbor.com/yourname2/" class="calibre6">https://autbor.com/yourname2/</a></em>. The first line <span class="ent">➊</span> creates an <em class="calibre7">infinite loop</em>; it is a <span class="literal">while</span> loop whose condition is always <span class="literal">True</span>. (The expression <span class="literal">True</span>, after all, always evaluates down to the value <span class="literal">True</span>.) After the program execution enters this loop, it will exit the loop only when a <span class="literal">break</span> statement is executed. (An infinite loop that <em class="calibre7">never</em> exits is a common programming bug.)</p>
+<p class="indent">Just like before, this program asks the user to enter <span class="literal">your name</span> <span class="ent">➋</span>. Now, however, while the execution is still inside the <span class="literal">while</span> loop, an <span class="literal">if</span> statement checks <span class="ent">➌</span> whether <span class="literal">name</span> is equal to <span class="literal">'your name'</span>. If this condition is <span class="literal">True</span>, the <span class="literal">break</span> statement is run <span class="ent">➍</span>, and the execution moves out of the loop to <span class="literal">print('Thank you!')</span> <span class="ent">➎</span>. Otherwise, the <span class="literal">if</span> statement’s clause that contains the <span class="literal">break</span> statement is skipped, which puts the execution at the end of the <span class="literal">while</span> loop. At this point, the program execution jumps back to the start of the <span class="literal">while</span> statement <span class="ent">➊</span> to recheck the condition. Since this condition is merely the <span class="literal">True</span> Boolean value, the execution enters the loop to ask the user to type <span class="literal">your name</span> again. See <a href="#calibre_link-1547" class="calibre6">Figure 2-11</a> for this program’s flowchart.</p>
+<p class="indent">Run <em class="calibre7">yourName2.py</em>, and enter the same text you entered for <em class="calibre7">yourName.py</em>. The rewritten program should respond in the same way as the original.</p>
+<div class="image1"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-863"></span><a id="calibre_link-1547" class="calibre6"></a><img src="../images/000134.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 2-11: The flowchart for the</em> yourName2.py <em class="calibre7">program with an infinite loop. Note that the X path will logically never happen, because the loop condition is always <span class="literal1">True</span>.</em></p>
+<h4 class="h2" id="calibre_link-123"><strong class="calibre2"><em class="calibre9">continue Statements</em></strong></h4>
+<p class="noindent">Like <span class="literal">break</span> statements, <span class="literal">continue</span> statements are used inside loops. When the program execution reaches a <span class="literal">continue</span> statement, the program execution immediately jumps back to the start of the loop and reevaluates the loop’s condition. (This is also what happens when the execution reaches the end of the loop.)</p>
+<p class="indent">Let’s use <span class="literal">continue</span> to write a program that asks for a name and password. Enter the following code into a new file editor window and save the program as <em class="calibre7">swordfish.py</em>.</p>
+<div class="sidebar">
+<p class="sidebart"><strong class="calibre4">TRAPPED IN AN INFINITE LOOP?</strong></p>
+<p class="spara">If you ever run a program that has a bug causing it to get stuck in an infinite loop, press <small class="calibre19">CTRL</small>-C or select <strong class="calibre4">Shell</strong> ▸ <strong class="calibre4">Restart Shell</strong> from IDLE’s menu. This will send a <span class="literal1">KeyboardInterrupt</span> error to your program and cause it to stop immediately. Try stopping a program by creating a simple infinite loop in the file editor, and save the program as <em class="calibre7">infiniteLoop.py</em>.</p>
+<p class="programs">while True:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('Hello, world!')</p>
+<p class="sparai">When you run this program, it will print <span class="literal1">Hello, world!</span> to the screen forever because the <span class="literal1">while</span> statement’s condition is always <span class="literal1">True</span>. <small class="calibre19">CTRL</small>-C is also handy if you want to simply terminate your program immediately, even if it’s not stuck in an infinite loop.</p>
+</div>
+<p class="programs"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1025"></span>&nbsp;&nbsp;while True:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('Who are you?')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name = input()<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➊</span> if name != 'Joe':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➋</span> continue<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('Hello, Joe. What is the password? (It is a fish.)')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➌</span> password = input()<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if password == 'swordfish':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➍</span> break<br class="calibre5" />
+<span class="ent">➎</span> print('Access granted.')&nbsp;&nbsp;&nbsp;&nbsp;</p>
+<p class="indent">If the user enters any name besides <span class="literal">Joe</span> <span class="ent">➊</span>, the <span class="literal">continue</span> statement <span class="ent">➋</span> causes the program execution to jump back to the start of the loop. When the program reevaluates the condition, the execution will always enter the loop, since the condition is simply the value <span class="literal">True</span>. Once the user makes it past that <span class="literal">if</span> statement, they are asked for a password <span class="ent">➌</span>. If the password entered is <span class="literal">swordfish</span>, then the <span class="literal">break</span> statement <span class="ent">➍</span> is run, and the execution jumps out of the <span class="literal">while</span> loop to print <span class="literal">Access granted</span> <span class="ent">➎</span>. Otherwise, the execution continues to the end of the <span class="literal">while</span> loop, where it then jumps back to the start of the loop. See <a href="#calibre_link-1548" class="calibre6">Figure 2-12</a> for this program’s flowchart.</p>
+<div class="image1"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1719"></span><a id="calibre_link-1548" class="calibre6"></a><img src="../images/000078.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 2-12: A flowchart for</em> swordfish.py. <em class="calibre7">The X path will logically never happen, because the loop condition is always <span class="literal1">True</span>.</em></p>
+<div class="sidebar">
+<p class="sidebart"><strong class="calibre4">“TRUTHY” AND “FALSEY” VALUES</strong></p>
+<p class="spara">Conditions will consider some values in other data types equivalent to <span class="literal1">True</span> and <span class="literal1">False</span>. When used in conditions, <span class="literal1">0</span>, <span class="literal1">0.0</span>, and <span class="literal1">''</span> (the empty string) are considered <span class="literal1">False</span>, while all other values are considered <span class="literal1">True</span>. For example, look at the following program:</p>
+<p class="programs">name = ''<br class="calibre5" />
+<span class="ent">➊</span> while not name:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('Enter your name:')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;name = input()<br class="calibre5" />
+print('How many guests will you have?')<br class="calibre5" />
+numOfGuests = int(input())<br class="calibre5" />
+<span class="ent">➋</span> if numOfGuests:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➌</span> print('Be sure to have enough room for all your guests.')<br class="calibre5" />
+print('Done')</p>
+<p class="sparai">You can view the execution of this program at <em class="calibre7"><a href="https://autbor.com/howmanyguests/" class="calibre6">https://autbor.com/howmanyguests/</a></em>. If the user enters a blank string for <span class="literal1">name</span>, then the <span class="literal1">while</span> statement’s condition will be <span class="literal1">True</span> <span class="ent">➊</span>, and the program continues to ask for a name. If the value for <span class="literal1">numOfGuests</span> is not <span class="literal1">0</span> <span class="ent">➋</span>, then the condition is considered to be <span class="literal1">True</span>, and the program will print a reminder for the user <span class="ent">➌</span>.</p>
+<p class="sparai">You could have entered <span class="literal1">not name != ''</span> instead of <span class="literal1">not name</span>, and <span class="literal1">numOfGuests != 0</span> instead of <span class="literal1">numOfGuests</span>, but using the truthy and falsey values can make your code easier to read.</p>
+</div>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-821"></span>Run this program and give it some input. Until you claim to be Joe, the program shouldn’t ask for a password, and once you enter the correct password, it should exit.</p>
+<p class="programs">Who are you?<br class="calibre5" />
+<span class="codestrong1">I'm fine, thanks. Who are you?</span><br class="calibre5" />
+Who are you?<br class="calibre5" />
+<span class="codestrong1">Joe</span><br class="calibre5" />
+Hello, Joe. What is the password? (It is a fish.)<br class="calibre5" />
+<span class="codestrong1">Mary</span><br class="calibre5" />
+Who are you?<br class="calibre5" />
+<span class="codestrong1">Joe</span><br class="calibre5" />
+Hello, Joe. What is the password? (It is a fish.)<br class="calibre5" />
+<span class="codestrong1">swordfish</span><br class="calibre5" />
+Access granted.</p>
+<p class="indent">You can view the execution of this program at <em class="calibre7"><a href="https://autbor.com/hellojoe/" class="calibre6">https://autbor.com/hellojoe/</a></em>.</p>
+<h4 class="h2" id="calibre_link-124"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-753" class="calibre1"></span><strong class="calibre2"><em class="calibre9">for Loops and the range() Function</em></strong></h4>
+<p class="noindent">The <span class="literal">while</span> loop keeps looping while its condition is <span class="literal">True</span> (which is the reason for its name), but what if you want to execute a block of code only a certain number of times? You can do this with a <span class="literal">for</span> loop statement and the <span class="literal">range()</span> function.</p>
+<p class="indent">In code, a <span class="literal">for</span> statement looks something like <span class="literal">for i in range(5):</span> and includes the following:</p>
+<ul class="calibre8">
+<li class="noindent1">The <span class="literal">for</span> keyword</li>
+<li class="noindent1">A variable name</li>
+<li class="noindent1">The <span class="literal">in</span> keyword</li>
+<li class="noindent1">A call to the <span class="literal">range()</span> method with up to three integers passed to it</li>
+<li class="noindent1">A colon</li>
+<li class="noindent1">Starting on the next line, an indented block of code (called the <span class="literal">for</span> clause)</li>
+</ul>
+<p class="indent">Let’s create a new program called <em class="calibre7">fiveTimes.py</em> to help you see a <span class="literal">for</span> loop in action.</p>
+<p class="programs">print('My name is')<br class="calibre5" />
+for i in range(5):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('Jimmy Five Times (' + str(i) + ')')</p>
+<p class="indent">You can view the execution of this program at <em class="calibre7"><a href="https://autbor.com/fivetimesfor/" class="calibre6">https://autbor.com/fivetimesfor/</a></em>. The code in the <span class="literal">for</span> loop’s clause is run five times. The first time it is run, the variable <span class="literal">i</span> is set to <span class="literal">0</span>. The <span class="literal">print()</span> call in the clause will print <span class="literal">Jimmy Five Times (0)</span>. After Python finishes an iteration through all the code inside the <span class="literal">for</span> loop’s clause, the execution goes back to the top of the loop, and the <span class="literal">for</span> statement increments <span class="literal">i</span> by one. This is why <span class="literal">range(5)</span> results in five iterations through the clause, with <span class="literal">i</span> being set to <span class="literal">0</span>, then <span class="literal">1</span>, then <span class="literal">2</span>, then <span class="literal">3</span>, and then <span class="literal">4</span>. The variable <span class="literal">i</span> will go up to, but will not include, the integer passed to <span class="literal">range()</span>. <a href="#calibre_link-1549" class="calibre6">Figure 2-13</a> shows a flowchart for the <em class="calibre7">fiveTimes.py</em> program.</p>
+<p class="indent">When you run this program, it should print <span class="literal">Jimmy Five Times</span> followed by the value of <span class="literal">i</span> five times before leaving the <span class="literal">for</span> loop.</p>
+<p class="programs">My name is<br class="calibre5" />
+Jimmy Five Times (0)<br class="calibre5" />
+Jimmy Five Times (1)<br class="calibre5" />
+Jimmy Five Times (2)<br class="calibre5" />
+Jimmy Five Times (3)<br class="calibre5" />
+Jimmy Five Times (4)</p>
+<div class="note">
+<p class="notet"><strong class="calibre2"><span class="notes">NOTE</span></strong></p>
+<p class="notep"><em class="calibre7">You can use <span class="codeitalic">break</span> and <span class="codeitalic">continue</span> statements inside <span class="codeitalic">for</span> loops as well. The <span class="codeitalic">continue</span> statement will continue to the next value of the <span class="codeitalic">for</span> loop’s counter, as if the program execution had reached the end of the loop and returned to the start. In fact, you can use <span class="codeitalic">continue</span> and <span class="codeitalic">break</span> statements only inside <span class="codeitalic">while</span> and <span class="codeitalic">for</span> loops. If you try to use these statements elsewhere, Python will give you an error.</em></p>
+</div>
+<div class="image1"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-978"></span><a id="calibre_link-1549" class="calibre6"></a><img src="../images/000027.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 2-13: The flowchart for</em> fiveTimes.py</p>
+<p class="indent">As another <span class="literal">for</span> loop example, consider this story about the mathematician Carl Friedrich Gauss. When Gauss was a boy, a teacher wanted to give the class some busywork. The teacher told them to add up all the numbers from 0 to 100. Young Gauss came up with a clever trick to figure out the answer in a few seconds, but you can write a Python program with a <span class="literal">for</span> loop to do this calculation for you.</p>
+<p class="programs"><span class="ent">➊</span> total = 0<br class="calibre5" />
+<span class="ent">➋</span> for num in range(101):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➌</span> total = total + num<br class="calibre5" />
+<span class="ent">➍</span> print(total)&nbsp;&nbsp;</p>
+<p class="indent">The result should be 5,050. When the program first starts, the <span class="literal">total</span> variable is set to <span class="literal">0</span> <span class="ent">➊</span>. The <span class="literal">for</span> loop <span class="ent">➋</span> then executes <span class="literal">total = total + num</span> <span class="ent">➌</span> 100 times. By the time the loop has finished all of its 100 iterations, every integer from <span class="literal">0</span> to <span class="literal">100</span> will have been added to <span class="literal">total</span>. At this point, <span class="literal">total</span> is printed to the screen <span class="ent">➍</span>. Even on the slowest computers, this program takes less than a second to complete.</p>
+<p class="indent">(Young Gauss figured out a way to solve the problem in seconds. There are 50 pairs of numbers that add up to 101: 1 + 100, 2 + 99, 3 + 98, and so on, until 50 + 51. Since 50 × 101 is 5,050, the sum of all the numbers from 0 to 100 is 5,050. Clever kid!)</p>
+<h5 class="h2" id="calibre_link-1720"><strong class="calibre2"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-975" class="calibre1"></span>An Equivalent while Loop</strong></h5>
+<p class="noindent">You can actually use a <span class="literal">while</span> loop to do the same thing as a <span class="literal">for</span> loop; <span class="literal">for</span> loops are just more concise. Let’s rewrite <em class="calibre7">fiveTimes.py</em> to use a <span class="literal">while</span> loop equivalent of a <span class="literal">for</span> loop.</p>
+<p class="programs">print('My name is')<br class="calibre5" />
+i = 0<br class="calibre5" />
+while i &lt; 5:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('Jimmy Five Times (' + str(i) + ')')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;i = i + 1</p>
+<p class="indent">You can view the execution of this program at <em class="calibre7"><a href="https://autbor.com/fivetimeswhile/" class="calibre6">https://autbor.com/fivetimeswhile/</a></em>. If you run this program, the output should look the same as the <em class="calibre7">fiveTimes.py</em> program, which uses a <span class="literal">for</span> loop.</p>
+<h5 class="h2" id="calibre_link-1721"><strong class="calibre2">The Starting, Stopping, and Stepping Arguments to range()</strong></h5>
+<p class="noindent">Some functions can be called with multiple arguments separated by a comma, and <span class="literal">range()</span> is one of them. This lets you change the integer passed to <span class="literal">range()</span> to follow any sequence of integers, including starting at a number other than zero.</p>
+<p class="programs">for i in range(12, 16):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print(i)</p>
+<p class="indent">The first argument will be where the <span class="literal">for</span> loop’s variable starts, and the second argument will be up to, but not including, the number to stop at.</p>
+<p class="programs">12<br class="calibre5" />
+13<br class="calibre5" />
+14<br class="calibre5" />
+15</p>
+<p class="indent">The <span class="literal">range()</span> function can also be called with three arguments. The first two arguments will be the start and stop values, and the third will be the <em class="calibre7">step argument</em>. The step is the amount that the variable is increased by after each iteration.</p>
+<p class="programs">for i in range(0, 10, 2):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print(i)</p>
+<p class="indent">So calling <span class="literal">range(0, 10, 2)</span> will count from zero to eight by intervals of two.</p>
+<p class="programs">0<br class="calibre5" />
+2<br class="calibre5" />
+4<br class="calibre5" />
+6<br class="calibre5" />
+8</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-827"></span>The <span class="literal">range()</span> function is flexible in the sequence of numbers it produces for <span class="literal">for</span> loops. <em class="calibre7">For</em> example (I never apologize for my puns), you can even use a negative number for the step argument to make the <span class="literal">for</span> loop count down instead of up.</p>
+<p class="programs">for i in range(5, -1, -1):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print(i)</p>
+<p class="indent">This <span class="literal">for</span> loop would have the following output:</p>
+<p class="programs">5<br class="calibre5" />
+4<br class="calibre5" />
+3<br class="calibre5" />
+2<br class="calibre5" />
+1<br class="calibre5" />
+0</p>
+<p class="indent">Running a <span class="literal">for</span> loop to print <span class="literal">i</span> with <span class="literal">range(5, -1, -1)</span> should print from five down to zero.</p>
+<h3 class="h1" id="calibre_link-125"><strong class="calibre2">Importing Modules</strong></h3>
+<p class="noindent">All Python programs can call a basic set of functions called <em class="calibre7">built-in functions</em>, including the <span class="literal">print()</span>, <span class="literal">input()</span>, and <span class="literal">len()</span> functions you’ve seen before. Python also comes with a set of modules called the <em class="calibre7">standard library</em>. Each module is a Python program that contains a related group of functions that can be embedded in your programs. For example, the <span class="literal">math</span> module has mathematics-related functions, the <span class="literal">random</span> module has random number-related functions, and so on.</p>
+<p class="indent">Before you can use the functions in a module, you must import the module with an <span class="literal">import</span> statement. In code, an <span class="literal">import</span> statement consists of the following:</p>
+<ul class="calibre8">
+<li class="noindent1">The <span class="literal">import</span> keyword</li>
+<li class="noindent1">The name of the module</li>
+<li class="noindent1">Optionally, more module names, as long as they are separated by commas</li>
+</ul>
+<p class="indent">Once you import a module, you can use all the cool functions of that module. Let’s give it a try with the <span class="literal">random</span> module, which will give us access to the <span class="literal">random.randint()</span> function.</p>
+<p class="indent">Enter this code into the file editor, and save it as <em class="calibre7">printRandom.py</em>:</p>
+<p class="programs">import random<br class="calibre5" />
+for i in range(5):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print(random.randint(1, 10))</p>
+<div class="sidebar">
+<p class="sidebart"><strong class="calibre4">DON’T OVERWRITE MODULE NAMES</strong></p>
+<p class="spara">When you save your Python scripts, take care not to give them a name that is used by one of Python’s modules, such as <em class="calibre7">random.py</em>, <em class="calibre7">sys.py</em>, <em class="calibre7">os.py</em>, or <em class="calibre7">math.py</em>. If you accidentally name one of your programs, say, <em class="calibre7">random.py</em>, and use an <span class="literal1">import random</span> statement in another program, your program would import your <em class="calibre7">random.py</em> file instead of Python’s <span class="literal1">random</span> module. This can lead to errors such as <span class="literal1">AttributeError: module 'random' has no attribute 'randint'</span>, since your <em class="calibre7">random.py</em> doesn’t have the functions that the real <span class="literal1">random</span> module has. Don’t use the names of any built-in Python functions either, such as <span class="literal1">print()</span> or <span class="literal1">input()</span>.</p>
+<p class="sparai">Problems like these are uncommon, but can be tricky to solve. As you gain more programming experience, you’ll become more aware of the standard names used by Python’s modules and functions, and will run into these problems less frequently.</p>
+</div>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-802"></span>When you run this program, the output will look something like this:</p>
+<p class="programs">4<br class="calibre5" />
+1<br class="calibre5" />
+8<br class="calibre5" />
+4<br class="calibre5" />
+1</p>
+<p class="indent">You can view the execution of this program at <em class="calibre7"><a href="https://autbor.com/printrandom/" class="calibre6">https://autbor.com/printrandom/</a></em>. The <span class="literal">random.randint()</span> function call evaluates to a random integer value between the two integers that you pass it. Since <span class="literal">randint()</span> is in the <span class="literal">random</span> module, you must first type <strong class="calibre4">random.</strong> in front of the function name to tell Python to look for this function inside the <span class="literal">random</span> module.</p>
+<p class="indent">Here’s an example of an <span class="literal">import</span> statement that imports four different modules:</p>
+<p class="programs">import random, sys, os, math</p>
+<p class="indent">Now we can use any of the functions in these four modules. We’ll learn more about them later in the book.</p>
+<h4 class="h2" id="calibre_link-126"><strong class="calibre2"><em class="calibre9">from import Statements</em></strong></h4>
+<p class="noindent">An alternative form of the <span class="literal">import</span> statement is composed of the <span class="literal">from</span> keyword, followed by the module name, the <span class="literal">import</span> keyword, and a star; for example, <span class="literal">from random import *</span>.</p>
+<p class="indent">With this form of <span class="literal">import</span> statement, calls to functions in <span class="literal">random</span> will not need the <span class="literal">random.</span> prefix. However, using the full name makes for more readable code, so it is better to use the <span class="literal">import random</span> form of the statement.</p>
+<h3 class="h1" id="calibre_link-127"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-948" class="calibre1"></span><strong class="calibre2">Ending a Program Early with the sys.exit() Function</strong></h3>
+<p class="noindent">The last flow control concept to cover is how to terminate the program. Programs always terminate if the program execution reaches the bottom of the instructions. However, you can cause the program to terminate, or exit, before the last instruction by calling the <span class="literal">sys.exit()</span> function. Since this function is in the <span class="literal">sys</span> module, you have to import <span class="literal">sys</span> before your program can use it.</p>
+<p class="indent">Open a file editor window and enter the following code, saving it as <em class="calibre7">exitExample.py</em>:</p>
+<p class="programs">import sys<br class="calibre5" /><br class="calibre5" />
+while True:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('Type exit to exit.')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;response = input()<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;if response == 'exit':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sys.exit()<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('You typed ' + response + '.')</p>
+<p class="indent">Run this program in IDLE. This program has an infinite loop with no <span class="literal">break</span> statement inside. The only way this program will end is if the execution reaches the <span class="literal">sys.exit()</span> call. When <span class="literal">response</span> is equal to <span class="literal">exit</span>, the line containing the <span class="literal">sys.exit()</span> call is executed. Since the <span class="literal">response</span> variable is set by the <span class="literal">input()</span> function, the user must enter <span class="literal">exit</span> in order to stop the program.</p>
+<h3 class="h1" id="calibre_link-128"><strong class="calibre2">A Short Program: Guess the Number</strong></h3>
+<p class="noindent">The examples I’ve shown you so far are useful for introducing basic concepts, but now let’s see how everything you’ve learned comes together in a more complete program. In this section, I’ll show you a simple “guess the number” game. When you run this program, the output will look something like this:</p>
+<p class="programs">I am thinking of a number between 1 and 20.<br class="calibre5" />
+Take a guess.<br class="calibre5" />
+<span class="codestrong1">10</span><br class="calibre5" />
+Your guess is too low.<br class="calibre5" />
+Take a guess.<br class="calibre5" />
+<span class="codestrong1">15</span><br class="calibre5" />
+Your guess is too low.<br class="calibre5" />
+Take a guess.<br class="calibre5" />
+<span class="codestrong1">17</span><br class="calibre5" />
+Your guess is too high.<br class="calibre5" />
+Take a guess.<br class="calibre5" />
+<span class="codestrong1">16</span><br class="calibre5" />
+Good job! You guessed my number in 4 guesses!</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1074"></span>Enter the following source code into the file editor, and save the file as <em class="calibre7">guessTheNumber.py</em>:</p>
+<p class="programs"># This is a guess the number game.<br class="calibre5" />
+import random<br class="calibre5" />
+secretNumber = random.randint(1, 20)<br class="calibre5" />
+print('I am thinking of a number between 1 and 20.')<br class="calibre5" /><br class="calibre5" />
+# Ask the player to guess 6 times.<br class="calibre5" />
+for guessesTaken in range(1, 7):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('Take a guess.')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;guess = int(input())<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;if guess &lt; secretNumber:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('Your guess is too low.')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;elif guess &gt; secretNumber:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('Your guess is too high.')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;else:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break&nbsp;&nbsp;&nbsp;&nbsp;# This condition is the correct guess!<br class="calibre5" /><br class="calibre5" />
+if guess == secretNumber:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('Good job! You guessed my number in ' + str(guessesTaken) + '<br class="calibre5" />
+guesses!')<br class="calibre5" />
+else:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('Nope. The number I was thinking of was ' + str(secretNumber))</p>
+<p class="indent">You can view the execution of this program at <em class="calibre7"><a href="https://autbor.com/guessthenumber/" class="calibre6">https://autbor.com/guessthenumber/</a></em>. Let’s look at this code line by line, starting at the top.</p>
+<p class="programs"># This is a guess the number game.<br class="calibre5" />
+import random<br class="calibre5" />
+secretNumber = random.randint(1, 20)</p>
+<p class="indent">First, a comment at the top of the code explains what the program does. Then, the program imports the <span class="literal">random</span> module so that it can use the <span class="literal">random.randint()</span> function to generate a number for the user to guess. The return value, a random integer between 1 and 20, is stored in the variable <span class="literal">secretNumber</span>.</p>
+<p class="programs">print('I am thinking of a number between 1 and 20.')<br class="calibre5" /><br class="calibre5" />
+# Ask the player to guess 6 times.<br class="calibre5" />
+for guessesTaken in range(1, 7):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('Take a guess.')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;guess = int(input())</p>
+<p class="indent">The program tells the player that it has come up with a secret number and will give the player six chances to guess it. The code that lets the player enter a guess and checks that guess is in a <span class="literal">for</span> loop that will loop at most six times. The first thing that happens in the loop is that the player types in a guess. Since <span class="literal">input()</span> returns a string, its return value is passed straight into <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-928"></span><span class="literal">int()</span>, which translates the string into an integer value. This gets stored in a variable named <span class="literal">guess</span>.</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;&nbsp;if guess &lt; secretNumber:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('Your guess is too low.')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;elif guess &gt; secretNumber:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('Your guess is too high.')</p>
+<p class="indent">These few lines of code check to see whether the guess is less than or greater than the secret number. In either case, a hint is printed to the screen.</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;&nbsp;else:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break&nbsp;&nbsp;&nbsp;&nbsp;# This condition is the correct guess!</p>
+<p class="indent">If the guess is neither higher nor lower than the secret number, then it must be equal to the secret number&mdash;in which case, you want the program execution to break out of the <span class="literal">for</span> loop.</p>
+<p class="programs">if guess == secretNumber:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('Good job! You guessed my number in ' + str(guessesTaken) + ' guesses!')<br class="calibre5" />
+else:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('Nope. The number I was thinking of was ' + str(secretNumber))</p>
+<p class="indent">After the <span class="literal">for</span> loop, the previous <span class="literal">if...else</span> statement checks whether the player has correctly guessed the number and then prints an appropriate message to the screen. In both cases, the program displays a variable that contains an integer value (<span class="literal">guessesTaken</span> and <span class="literal">secretNumber</span>). Since it must concatenate these integer values to strings, it passes these variables to the <span class="literal">str()</span> function, which returns the string value form of these integers. Now these strings can be concatenated with the <span class="literal">+</span> operators before finally being passed to the <span class="literal">print()</span> function call.</p>
+<h3 class="h1" id="calibre_link-129"><strong class="calibre2">A Short Program: Rock, Paper, Scissors</strong></h3>
+<p class="noindent">Let’s use the programming concepts we’ve learned so far to create a simple rock, paper, scissors game. The output will look like this:</p>
+<p class="programs">ROCK, PAPER, SCISSORS<br class="calibre5" />
+0 Wins, 0 Losses, 0 Ties<br class="calibre5" />
+Enter your move: (r)ock (p)aper (s)cissors or (q)uit<br class="calibre5" />
+<span class="codestrong1">p</span><br class="calibre5" />
+PAPER versus...<br class="calibre5" />
+PAPER<br class="calibre5" />
+It is a tie!<br class="calibre5" />
+0 Wins, 1 Losses, 1 Ties<br class="calibre5" />
+Enter your move: (r)ock (p)aper (s)cissors or (q)uit<br class="calibre5" />
+<span class="codestrong1">s</span><br class="calibre5" />
+SCISSORS versus...<br class="calibre5" />
+PAPER<br class="calibre5" />
+You win!<br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1722"></span>1 Wins, 1 Losses, 1 Ties<br class="calibre5" />
+Enter your move: (r)ock (p)aper (s)cissors or (q)uit<br class="calibre5" />
+<span class="codestrong1">q</span></p>
+<p class="indent">Type the following source code into the file editor, and save the file as <em class="calibre7">rpsGame.py</em>:</p>
+<p class="programs">import random, sys<br class="calibre5" /><br class="calibre5" />
+print('ROCK, PAPER, SCISSORS')<br class="calibre5" /><br class="calibre5" />
+# These variables keep track of the number of wins, losses, and ties.<br class="calibre5" />
+wins = 0<br class="calibre5" />
+losses = 0<br class="calibre5" />
+ties = 0<br class="calibre5" /><br class="calibre5" />
+while True: # The main game loop.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('%s Wins, %s Losses, %s Ties' % (wins, losses, ties))<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;while True: # The player input loop.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('Enter your move: (r)ock (p)aper (s)cissors or (q)uit')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;playerMove = input()<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if playerMove == 'q':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sys.exit() # Quit the program.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if playerMove == 'r' or playerMove == 'p' or playerMove == 's':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break # Break out of the player input loop.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('Type one of r, p, s, or q.')<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;# Display what the player chose:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;if playerMove == 'r':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('ROCK versus...')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;elif playerMove == 'p':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('PAPER versus...')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;elif playerMove == 's':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('SCISSORS versus...')<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;# Display what the computer chose:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;randomNumber = random.randint(1, 3)<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;if randomNumber == 1:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;computerMove = 'r'<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('ROCK')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;elif randomNumber == 2:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;computerMove = 'p'<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('PAPER')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;elif randomNumber == 3:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;computerMove = 's'<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('SCISSORS')<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;# Display and record the win/loss/tie:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;if playerMove == computerMove:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('It is a tie!')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ties = ties + 1<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;elif playerMove == 'r' and computerMove == 's':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('You win!')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wins = wins + 1<br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1723"></span>&nbsp;&nbsp;&nbsp;&nbsp;elif playerMove == 'p' and computerMove == 'r':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('You win!')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wins = wins + 1<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;elif playerMove == 's' and computerMove == 'p':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('You win!')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wins = wins + 1<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;elif playerMove == 'r' and computerMove == 'p':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('You lose!')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;losses = losses + 1<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;elif playerMove == 'p' and computerMove == 's':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('You lose!')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;losses = losses + 1<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;elif playerMove == 's' and computerMove == 'r':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('You lose!')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;losses = losses + 1</p>
+<p class="indent">Let’s look at this code line by line, starting at the top.</p>
+<p class="programs">import random, sys<br class="calibre5" />
+<br class="calibre5" />
+print('ROCK, PAPER, SCISSORS')<br class="calibre5" />
+<br class="calibre5" />
+# These variables keep track of the number of wins, losses, and ties.<br class="calibre5" />
+wins = 0<br class="calibre5" />
+losses = 0<br class="calibre5" />
+ties = 0</p>
+<p class="indent">First, we import the <span class="literal">random</span> and <span class="literal">sys</span> module so that our program can call the <span class="literal">random.randint()</span> and <span class="literal">sys.exit()</span> functions. We also set up three variables to keep track of how many wins, losses, and ties the player has had.</p>
+<p class="programs">while True: # The main game loop.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('%s Wins, %s Losses, %s Ties' % (wins, losses, ties))<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;while True: # The player input loop.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('Enter your move: (r)ock (p)aper (s)cissors or (q)uit')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;playerMove = input()<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if playerMove == 'q':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sys.exit() # Quit the program.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if playerMove == 'r' or playerMove == 'p' or playerMove == 's':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break # Break out of the player input loop.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('Type one of r, p, s, or q.')</p>
+<p class="indent">This program uses a <span class="literal">while</span> loop inside of another <span class="literal">while</span> loop. The first loop is the main game loop, and a single game of rock, paper, scissors is player on each iteration through this loop. The second loop asks for input from the player, and keeps looping until the player has entered an <span class="literal">r</span>, <span class="literal">p</span>, <span class="literal">s</span>, or <span class="literal">q</span> for their move. The <span class="literal">r</span>, <span class="literal">p</span>, and <span class="literal">s</span> correspond to rock, paper, and scissors, respectively, while the <span class="literal">q</span> means the player intends to quit. In that case, <span class="literal">sys.exit()</span> is called and the program exits. If the player has entered <span class="literal">r</span>, <span class="literal">p</span>, or <span class="literal">s</span>, the execution breaks out of the loop. Otherwise, the program reminds the player to enter <span class="literal">r</span>, <span class="literal">p</span>, <span class="literal">s</span>, or <span class="literal">q</span> and goes back to the start of the loop.</p>
+<p class="programs"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1724"></span>&nbsp;&nbsp;&nbsp;&nbsp;# Display what the player chose:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;if playerMove == 'r':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('ROCK versus...')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;elif playerMove == 'p':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('PAPER versus...')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;elif playerMove == 's':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('SCISSORS versus...')</p>
+<p class="indent">The player’s move is displayed on the screen.</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;&nbsp;# Display what the computer chose:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;randomNumber = random.randint(1, 3)<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;if randomNumber == 1:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;computerMove = 'r'<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('ROCK')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;elif randomNumber == 2:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;computerMove = 'p'<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('PAPER')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;elif randomNumber == 3:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;computerMove = 's'<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('SCISSORS')</p>
+<p class="indent">Next, the computer’s move is randomly selected. Since <span class="literal">random.randint()</span> can only return a random number, the <span class="literal">1</span>, <span class="literal">2</span>, or <span class="literal">3</span> integer value it returns is stored in a variable named <span class="literal">randomNumber</span>. The program stores a <span class="literal">'r'</span>, <span class="literal">'p'</span>, or <span class="literal">'s'</span> string in <span class="literal">computerMove</span> based on the integer in <span class="literal">randomNumber</span>, as well as displays the computer’s move.</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;&nbsp;# Display and record the win/loss/tie:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;if playerMove == computerMove:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('It is a tie!')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ties = ties + 1<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;elif playerMove == 'r' and computerMove == 's':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('You win!')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wins = wins + 1<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;elif playerMove == 'p' and computerMove == 'r':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('You win!')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wins = wins + 1<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;elif playerMove == 's' and computerMove == 'p':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('You win!')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wins = wins + 1<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;elif playerMove == 'r' and computerMove == 'p':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('You lose!')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;losses = losses + 1<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;elif playerMove == 'p' and computerMove == 's':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('You lose!')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;losses = losses + 1<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;elif playerMove == 's' and computerMove == 'r':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('You lose!')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;losses = losses + 1</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1065"></span>Finally, the program compares the strings in <span class="literal">playerMove</span> and <span class="literal">computerMove</span>, and displays the results on the screen. It also increments the <span class="literal">wins</span>, <span class="literal">losses</span>, or <span class="literal">ties</span> variable appropriately. Once the execution reaches the end, it jumps back to the start of the main program loop to begin another game.</p>
+<h3 class="h1" id="calibre_link-130"><strong class="calibre2">Summary</strong></h3>
+<p class="noindent">By using expressions that evaluate to <span class="literal">True</span> or <span class="literal">False</span> (also called conditions), you can write programs that make decisions on what code to execute and what code to skip. You can also execute code over and over again in a loop while a certain condition evaluates to <span class="literal">True</span>. The <span class="literal">break</span> and <span class="literal">continue</span> statements are useful if you need to exit a loop or jump back to the loop’s start.</p>
+<p class="indent">These flow control statements will let you write more intelligent programs. You can also use another type of flow control by writing your own functions, which is the topic of the next chapter.</p>
+<h3 class="h1" id="calibre_link-131"><strong class="calibre2">Practice Questions</strong></h3>
+<p class="question"><a id="calibre_link-1260" href="#calibre_link-1550" class="calibre6">1</a>. What are the two values of the Boolean data type? How do you write them?</p>
+<p class="question"><a id="calibre_link-1261" href="#calibre_link-1551" class="calibre6">2</a>. What are the three Boolean operators?</p>
+<p class="question"><a id="calibre_link-1262" href="#calibre_link-1552" class="calibre6">3</a>. Write out the truth tables of each Boolean operator (that is, every possible combination of Boolean values for the operator and what they evaluate to).</p>
+<p class="question"><a id="calibre_link-1263" href="#calibre_link-1553" class="calibre6">4</a>. What do the following expressions evaluate to?</p>
+<p class="programs1">(5 &gt; 4) and (3 == 5)<br class="calibre5" />
+not (5 &gt; 4) <br class="calibre5" />
+(5 &gt; 4) or (3 == 5)<br class="calibre5" />
+not ((5 &gt; 4) or (3 == 5))<br class="calibre5" />
+(True and True) and (True == False)<br class="calibre5" />
+(not False) or (not True)</p>
+<p class="question"><a id="calibre_link-1264" href="#calibre_link-1554" class="calibre6">5</a>. What are the six comparison operators?</p>
+<p class="question"><a id="calibre_link-1265" href="#calibre_link-1555" class="calibre6">6</a>. What is the difference between the equal to operator and the assignment operator?</p>
+<p class="question"><a id="calibre_link-1266" href="#calibre_link-1556" class="calibre6">7</a>. Explain what a condition is and where you would use one.</p>
+<p class="question"><a id="calibre_link-1267" href="#calibre_link-1557" class="calibre6">8</a>. Identify the three blocks in this code:</p>
+<p class="programs1">spam = 0<br class="calibre5" />
+if spam == 10:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('eggs')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;if spam &gt; 5:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('bacon')<br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1725"></span>&nbsp;&nbsp;&nbsp;&nbsp;else:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('ham')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('spam')<br class="calibre5" />
+print('spam')</p>
+<p class="question"><a id="calibre_link-1268" href="#calibre_link-1558" class="calibre6">9</a>. Write code that prints <span class="literal">Hello</span> if <span class="literal">1</span> is stored in <span class="literal">spam</span>, prints <span class="literal">Howdy</span> if <span class="literal">2</span> is stored in <span class="literal">spam</span>, and prints <span class="literal">Greetings!</span> if anything else is stored in <span class="literal">spam</span>.</p>
+<p class="question1"><a id="calibre_link-1269" href="#calibre_link-1559" class="calibre6">10</a>. What keys can you press if your program is stuck in an infinite loop?</p>
+<p class="question1"><a id="calibre_link-1270" href="#calibre_link-1560" class="calibre6">11</a>. What is the difference between <span class="literal">break</span> and <span class="literal">continue</span>?</p>
+<p class="question1"><a id="calibre_link-1271" href="#calibre_link-1561" class="calibre6">12</a>. What is the difference between <span class="literal">range(10)</span>, <span class="literal">range(0, 10)</span>, and <span class="literal">range(0, 10, 1)</span> in a <span class="literal">for</span> loop?</p>
+<p class="question1"><a id="calibre_link-1272" href="#calibre_link-1562" class="calibre6">13</a>. Write a short program that prints the numbers <span class="literal">1</span> to <span class="literal">10</span> using a <span class="literal">for</span> loop. Then write an equivalent program that prints the numbers <span class="literal">1</span> to <span class="literal">10</span> using a <span class="literal">while</span> loop.</p>
+<p class="question1"><a id="calibre_link-1273" href="#calibre_link-1563" class="calibre6">14</a>. If you had a function named <span class="literal">bacon()</span> inside a module named <span class="literal">spam</span>, how would you call it after importing <span class="literal">spam</span>?</p>
+<p class="question-para"><strong class="calibre4">Extra credit:</strong> Look up the <span class="literal">round()</span> and <span class="literal">abs()</span> functions on the internet, and find out what they do. Experiment with them in the interactive shell.</p>
+</div>
+
+<div><center><a href="../chapter1"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="../chapter3"><img src="/images/next.png" /></a></center></div>
+
+{% endblock %}

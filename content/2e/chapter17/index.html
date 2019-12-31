@@ -1,0 +1,615 @@
+{% extends "secondeditionbase.html" %}
+{% set title = 'Automate the Boring Stuff with Python' %}
+{% block content %}
+
+
+
+<div><center><a href="../chapter16"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="../chapter18"><img src="/images/next.png" /></a></center></div>
+
+<div class="calibre" id="calibre_link-1521">
+<h2 class="h2b" id="calibre_link-530"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1844" class="calibre1"></span><strong class="calibre2"><span class="big">17</span><br class="calibre12" />KEEPING TIME, SCHEDULING TASKS, AND LAUNCHING PROGRAMS</strong></h2>
+<div class="image"><img src="../images/000055.jpg" alt="Image" class="calibre3" /></div>
+<p class="noindent">Running programs while you’re sitting at your computer is fine, but it’s also useful to have programs run without your direct supervision. Your computer’s clock can schedule programs to run code at some specified time and date or at regular intervals. For example, your program could scrape a website every hour to check for changes or do a CPU-intensive task at 4 <small class="calibre11">AM</small> while you sleep. Python’s <span class="literal">time</span> and <span class="literal">datetime</span> modules provide these functions.</p>
+<p class="indent">You can also write programs that launch other programs on a schedule by using the <span class="literal">subprocess</span> and <span class="literal">threading</span> modules. Often, the fastest way to program is to take advantage of applications that other people have already written.</p>
+<h3 class="h1" id="calibre_link-531"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-867" class="calibre1"></span><strong class="calibre2">The time Module</strong></h3>
+<p class="noindent">Your computer’s system clock is set to a specific date, time, and time zone. The built-in <span class="literal">time</span> module allows your Python programs to read the system clock for the current time. The <span class="literal">time.time()</span> and <span class="literal">time.sleep()</span> functions are the most useful in the <span class="literal">time</span> module.</p>
+<h4 class="h2" id="calibre_link-532"><strong class="calibre2"><em class="calibre9">The time.time() Function</em></strong></h4>
+<p class="noindent">The <em class="calibre7">Unix epoch</em> is a time reference commonly used in programming: 12 <small class="calibre11">AM</small> on January 1, 1970, Coordinated Universal Time (UTC). The <span class="literal">time.time()</span> function returns the number of seconds since that moment as a float value. (Recall that a float is just a number with a decimal point.) This number is called an <em class="calibre7">epoch timestamp</em>. For example, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import time</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">time.time()</span><br class="calibre5" />
+1543813875.3518236</p>
+<p class="indent">Here I’m calling <span class="literal">time.time()</span> on December 2, 2018, at 9:11 <small class="calibre11">PM</small> Pacific Standard Time. The return value is how many seconds have passed between the Unix epoch and the moment <span class="literal">time.time()</span> was called.</p>
+<p class="indent">Epoch timestamps can be used to <em class="calibre7">profile</em> code, that is, measure how long a piece of code takes to run. If you call <span class="literal">time.time()</span> at the beginning of the code block you want to measure and again at the end, you can subtract the first timestamp from the second to find the elapsed time between those two calls. For example, open a new file editor tab and enter the following program:</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;&nbsp;import time<br class="calibre5" />
+<span class="ent">➊</span> def calcProd():<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Calculate the product of the first 100,000 numbers.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;product = 1<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for i in range(1, 100000):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;product = product * i<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return product<br class="calibre5" />
+<br class="calibre5" />
+<span class="ent">➋</span> startTime = time.time()<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;prod = calcProd()<br class="calibre5" />
+<span class="ent">➌</span> endTime = time.time()<br class="calibre5" />
+<span class="ent">➍</span> print('The result is %s digits long.' % (len(str(prod))))<br class="calibre5" />
+<span class="ent">➎</span> print('Took %s seconds to calculate.' % (endTime - startTime))</p>
+<p class="indent">At <span class="ent">➊</span>, we define a function <span class="literal">calcProd()</span> to loop through the integers from 1 to 99,999 and return their product. At <span class="ent">➋</span>, we call <span class="literal">time.time()</span> and store it in <span class="literal">startTime</span>. Right after calling <span class="literal">calcProd()</span>, we call <span class="literal">time.time()</span> again and store it in <span class="literal">endTime</span> <span class="ent">➌</span>. We end by printing the length of the product returned by <span class="literal">calcProd()</span> <span class="ent">➍</span> and how long it took to run <span class="literal">calcProd()</span> <span class="ent">➎</span>.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-874"></span>Save this program as <em class="calibre7">calcProd.py</em> and run it. The output will look something like this:</p>
+<p class="programs">The result is 456569 digits long.<br class="calibre5" />
+Took 2.844162940979004 seconds to calculate.</p>
+<div class="note">
+<p class="notet"><strong class="calibre2"><span class="notes">NOTE</span></strong></p>
+<p class="notep"><em class="calibre7">Another way to profile your code is to use the <span class="codeitalic">cProfile.run()</span> function, which provides a much more informative level of detail than the simple <span class="codeitalic">time.time()</span> technique. The <span class="codeitalic">cProfile.run()</span> function is explained at</em> <a href="https://docs.python.org/3/library/profile.html" class="calibre6">https://docs.python.org/3/library/profile.html</a>.</p>
+</div>
+<p class="indent">The return value from <span class="literal">time.time()</span> is useful, but not human-readable. The <span class="literal">time.ctime()</span> function returns a string description of the current time. You can also optionally pass the number of seconds since the Unix epoch, as returned by <span class="literal">time.time()</span>, to get a string value of that time. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; import time<br class="calibre5" />
+&gt;&gt;&gt; time.ctime()<br class="calibre5" />
+'Mon Jun 15 14:00:38 2020'<br class="calibre5" />
+&gt;&gt;&gt; thisMoment = time.time()<br class="calibre5" />
+&gt;&gt;&gt; time.ctime(thisMoment)<br class="calibre5" />
+'Mon Jun 15 14:00:45 2020'</p>
+<h4 class="h2" id="calibre_link-533"><strong class="calibre2"><em class="calibre9">The time.sleep() Function</em></strong></h4>
+<p class="noindent">If you need to pause your program for a while, call the <span class="literal">time.sleep()</span> function and pass it the number of seconds you want your program to stay paused. Enter the following into the interactive shell:</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">import time</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">for i in range(3):</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➊</span> <span class="codestrong1">print('Tick')</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➋</span> <span class="codestrong1">time.sleep(1)</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➌</span> <span class="codestrong1">print('Tock')</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➍</span> <span class="codestrong1">time.sleep(1)</span><br class="calibre5" />
+<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;Tick<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;Tock<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;Tick<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;Tock<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;Tick<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;Tock<br class="calibre5" />
+<span class="ent">➎</span> &gt;&gt;&gt; <span class="codestrong1">time.sleep(5)</span></p>
+<p class="indent">The <span class="literal">for</span> loop will print <span class="literal">Tick</span> <span class="ent">➊</span>, pause for 1 second <span class="ent">➋</span>, print <span class="literal">Tock</span> <span class="ent">➌</span>, pause for 1 second <span class="ent">➍</span>, print <span class="literal">Tick</span>, pause, and so on until <span class="literal">Tick</span> and <span class="literal">Tock</span> have each been printed three times.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-818"></span>The <span class="literal">time.sleep()</span> function will <em class="calibre7">block</em>&mdash;that is, it will not return and release your program to execute other code&mdash;until after the number of seconds you passed to <span class="literal">time.sleep()</span> has elapsed. For example, if you enter <span class="literal">time.sleep(5)</span> <span class="ent">➎</span>, you’ll see that the next prompt (<span class="literal">&gt;&gt;&gt;</span>) doesn’t appear until 5 seconds have passed.</p>
+<h3 class="h1" id="calibre_link-534"><strong class="calibre2">Rounding Numbers</strong></h3>
+<p class="noindent">When working with times, you’ll often encounter float values with many digits after the decimal. To make these values easier to work with, you can shorten them with Python’s built-in <span class="literal">round()</span> function, which rounds a float to the precision you specify. Just pass in the number you want to round, plus an optional second argument representing how many digits after the decimal point you want to round it to. If you omit the second argument, <span class="literal">round()</span> rounds your number to the nearest whole integer. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import time</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">now = time.time()</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">now</span><br class="calibre5" />
+1543814036.6147408<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">round(now, 2)</span><br class="calibre5" />
+1543814036.61<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">round(now, 4)</span><br class="calibre5" />
+1543814036.6147<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">round(now)</span><br class="calibre5" />
+1543814037</p>
+<p class="indent">After importing <span class="literal">time</span> and storing <span class="literal">time.time()</span> in <span class="literal">now</span>, we call <span class="literal">round(now, 2)</span> to round <span class="literal">now</span> to two digits after the decimal, <span class="literal">round(now, 4)</span> to round to four digits after the decimal, and <span class="literal">round(now)</span> to round to the nearest integer.</p>
+<h3 class="h1" id="calibre_link-535"><strong class="calibre2">Project: Super Stopwatch</strong></h3>
+<p class="noindent">Say you want to track how much time you spend on boring tasks you haven’t automated yet. You don’t have a physical stopwatch, and it’s surprisingly difficult to find a free stopwatch app for your laptop or smartphone that isn’t covered in ads and doesn’t send a copy of your browser history to marketers. (It says it can do this in the license agreement you agreed to. You did read the license agreement, didn’t you?) You can write a simple stopwatch program yourself in Python.</p>
+<p class="indent">At a high level, here’s what your program will do:</p>
+<ol class="calibre10">
+<li class="noindent1">Track the amount of time elapsed between presses of the <small class="calibre11">ENTER</small> key, with each key press starting a new “lap” on the timer.</li>
+<li class="noindent1">Print the lap number, total time, and lap time.</li>
+</ol>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1845"></span>This means your code will need to do the following:</p>
+<ol class="calibre10">
+<li class="noindent1">Find the current time by calling <span class="literal">time.time()</span> and store it as a timestamp at the start of the program, as well as at the start of each lap.</li>
+<li class="noindent1">Keep a lap counter and increment it every time the user presses <small class="calibre11">ENTER</small>.</li>
+<li class="noindent1">Calculate the elapsed time by subtracting timestamps.</li>
+<li class="noindent1">Handle the <span class="literal">KeyboardInterrupt</span> exception so the user can press <small class="calibre11">CTRL</small>-C to quit.</li>
+</ol>
+<p class="indent">Open a new file editor tab and save it as <em class="calibre7">stopwatch.py</em>.</p>
+<h4 class="h2" id="calibre_link-536"><strong class="calibre2"><em class="calibre9">Step 1: Set Up the Program to Track Times</em></strong></h4>
+<p class="noindent">The stopwatch program will need to use the current time, so you’ll want to import the <span class="literal">time</span> module. Your program should also print some brief instructions to the user before calling <span class="literal">input()</span>, so the timer can begin after the user presses <small class="calibre11">ENTER</small>. Then the code will start tracking lap times.</p>
+<p class="indent">Enter the following code into the file editor, writing a <span class="literal">TODO</span> comment as a placeholder for the rest of the code:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# stopwatch.py - A simple stopwatch program.<br class="calibre5" />
+<br class="calibre5" />
+import time<br class="calibre5" />
+<br class="calibre5" />
+# Display the program's instructions.<br class="calibre5" />
+print('Press ENTER to begin. Afterward, press ENTER to "click" the stopwatch.<br class="calibre5" />
+Press Ctrl-C to quit.')<br class="calibre5" />
+input()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# press Enter to begin<br class="calibre5" />
+print('Started.')<br class="calibre5" />
+startTime = time.time()&nbsp;&nbsp;&nbsp;&nbsp;# get the first lap's start time<br class="calibre5" />
+lastTime = startTime<br class="calibre5" />
+lapNum = 1<br class="calibre5" />
+<br class="calibre5" />
+# TODO: Start tracking the lap times.</p>
+<p class="indent">Now that we’ve written the code to display the instructions, start the first lap, note the time, and set our lap count to 1.</p>
+<h4 class="h2" id="calibre_link-537"><strong class="calibre2"><em class="calibre9">Step 2: Track and Print Lap Times</em></strong></h4>
+<p class="noindent">Now let’s write the code to start each new lap, calculate how long the previous lap took, and calculate the total time elapsed since starting the stopwatch. We’ll display the lap time and total time and increase the lap count for each new lap. Add the following code to your program:</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;#! python3<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;# stopwatch.py - A simple stopwatch program.<br class="calibre5" />
+<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;import time<br class="calibre5" />
+<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;--<span class="codeitalic1">snip</span>--<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1068"></span><span class="codestrong1"># Start tracking the lap times.</span><br class="calibre5" />
+<span class="ent">➊</span> <span class="codestrong1">try:</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➋</span> <span class="codestrong1">while True:</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="codestrong1">input()</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➌</span> <span class="codestrong1">lapTime = round(time.time() - lastTime, 2)</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➍</span> <span class="codestrong1">totalTime = round(time.time() - startTime, 2)</span><br class="calibre5" />
+&nbsp;&nbsp;<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="ent">➎</span> <span class="codestrong1">print('Lap #%s: %s (%s)' % (lapNum, totalTime, lapTime), end='')</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lapNum += 1</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lastTime = time.time() # reset the last lap time</span><br class="calibre5" />
+<span class="ent">➏</span> <span class="codestrong1">except KeyboardInterrupt:</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;# Handle the Ctrl-C exception to keep its error message from displaying.</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;print('\nDone.')</span></p>
+<p class="indent">If the user presses <small class="calibre11">CTRL</small>-C to stop the stopwatch, the <span class="literal">KeyboardInterrupt</span> exception will be raised, and the program will crash if its execution is not a <span class="literal">try</span> statement. To prevent crashing, we wrap this part of the program in a <span class="literal">try</span> statement <span class="ent">➊</span>. We’ll handle the exception in the <span class="literal">except</span> clause <span class="ent">➏</span>, so when <small class="calibre11">CTRL</small>-C is pressed and the exception is raised, the program execution moves to the except clause to print <span class="literal">Done</span>, instead of the <span class="literal">KeyboardInterrupt</span> error message. Until this happens, the execution is inside an infinite loop <span class="ent">➋</span> that calls <span class="literal">input()</span> and waits until the user presses <small class="calibre11">ENTER</small> to end a lap. When a lap ends, we calculate how long the lap took by subtracting the start time of the lap, <span class="literal">lastTime</span>, from the current time, <span class="literal">time.time()</span> <span class="ent">➌</span>. We calculate the total time elapsed by subtracting the overall start time of the stopwatch, <span class="literal">startTime</span>, from the current time <span class="ent">➍</span>.</p>
+<p class="indent">Since the results of these time calculations will have many digits after the decimal point (such as <span class="literal">4.766272783279419</span>), we use the <span class="literal">round()</span> function to round the float value to two digits at <span class="ent">➌</span> and <span class="ent">➍</span>.</p>
+<p class="indent">At <span class="ent">➎</span>, we print the lap number, total time elapsed, and the lap time. Since the user pressing <small class="calibre11">ENTER</small> for the <span class="literal">input()</span> call will print a newline to the screen, pass <span class="literal">end=''</span> to the <span class="literal">print()</span> function to avoid double-spacing the output. After printing the lap information, we get ready for the next lap by adding 1 to the count <span class="literal">lapNum</span> and setting <span class="literal">lastTime</span> to the current time, which is the start time of the next lap.</p>
+<h4 class="h2" id="calibre_link-538"><strong class="calibre2"><em class="calibre9">Ideas for Similar Programs</em></strong></h4>
+<p class="noindent">Time tracking opens up several possibilities for your programs. Although you can download apps to do some of these things, the benefit of writing programs yourself is that they will be free and not bloated with ads and useless features. You could write similar programs to do the following:</p>
+<ul class="calibre8">
+<li class="noindent1">Create a simple timesheet app that records when you type a person’s name and uses the current time to clock them in or out.</li>
+<li class="noindent1">Add a feature to your program to display the elapsed time since a process started, such as a download that uses the <span class="literal">requests</span> module. (See <a href="#calibre_link-372" class="calibre6">Chapter 12</a>.)</li>
+<li class="noindent1">Intermittently check how long a program has been running and offer the user a chance to cancel tasks that are taking too long.</li>
+</ul>
+<h3 class="h1" id="calibre_link-539"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-889" class="calibre1"></span><strong class="calibre2">The datetime Module</strong></h3>
+<p class="noindent">The <span class="literal">time</span> module is useful for getting a Unix epoch timestamp to work with. But if you want to display a date in a more convenient format, or do arithmetic with dates (for example, figuring out what date was 205 days ago or what date is 123 days from now), you should use the <span class="literal">datetime</span> module.</p>
+<p class="indent">The <span class="literal">datetime</span> module has its own <span class="literal">datetime</span> data type. <span class="literal">datetime</span> values represent a specific moment in time. Enter the following into the interactive shell:</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">import datetime</span><br class="calibre5" />
+<span class="ent">➊</span> &gt;&gt;&gt; <span class="codestrong1">datetime.datetime.now()</span><br class="calibre5" />
+<span class="ent">➋</span> datetime.datetime(2019, 2, 27, 11, 10, 49, 55, 53)<br class="calibre5" />
+<span class="ent">➌</span> &gt;&gt;&gt; <span class="codestrong1">dt = datetime.datetime(2019, 10, 21, 16, 29, 0)</span><br class="calibre5" />
+<span class="ent">➍</span> &gt;&gt;&gt; <span class="codestrong1">dt.year, dt.month, dt.day</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;(2019, 10, 21)<br class="calibre5" />
+<span class="ent">➎</span> &gt;&gt;&gt; <span class="codestrong1">dt.hour, dt.minute, dt.second</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;(16, 29, 0)</p>
+<p class="indent">Calling <span class="literal">datetime.datetime.now()</span> <span class="ent">➊</span> returns a <span class="literal">datetime</span> object <span class="ent">➋</span> for the current date and time, according to your computer’s clock. This object includes the year, month, day, hour, minute, second, and microsecond of the current moment. You can also retrieve a <span class="literal">datetime</span> object for a specific moment by using the <span class="literal">datetime.datetime()</span> function <span class="ent">➌</span>, passing it integers representing the year, month, day, hour, and second of the moment you want. These integers will be stored in the <span class="literal">datetime</span> object’s <span class="literal">year</span>, <span class="literal">month</span>, <span class="literal">day</span> <span class="ent">➍</span>, <span class="literal">hour</span>, <span class="literal">minute</span>, and <span class="literal">second</span> <span class="ent">➎</span> attributes.</p>
+<p class="indent">A Unix epoch timestamp can be converted to a <span class="literal">datetime</span> object with the <span class="literal">datetime.datetime.fromtimestamp()</span> function. The date and time of the <span class="literal">datetime</span> object will be converted for the local time zone. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import datetime, time</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">datetime.datetime.fromtimestamp(1000000)</span><br class="calibre5" />
+datetime.datetime(1970, 1, 12, 5, 46, 40)<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">datetime.datetime.fromtimestamp(time.time())</span><br class="calibre5" />
+datetime.datetime(2019, 10, 21, 16, 30, 0, 604980)</p>
+<p class="indent">Calling <span class="literal">datetime.datetime.fromtimestamp()</span> and passing it <span class="literal">1000000</span> returns a <span class="literal">datetime</span> object for the moment 1,000,000 seconds after the Unix epoch. Passing <span class="literal">time.time()</span>, the Unix epoch timestamp for the current moment, returns a <span class="literal">datetime</span> object for the current moment. So the expressions <span class="literal">datetime.datetime.now()</span> and <span class="literal">datetime.datetime.fromtimestamp(time.time())</span> do the same thing; they both give you a <span class="literal">datetime</span> object for the present moment.</p>
+<p class="indent">You can compare <span class="literal">datetime</span> objects with each other using comparison operators to find out which one precedes the other. The later <span class="literal">datetime</span> object is the “greater” value. Enter the following into the interactive shell:</p>
+<p class="programs"><span class="ent">➊</span> &gt;&gt;&gt; <span class="codestrong1">halloween2019 = datetime.datetime(2019, 10, 31, 0, 0, 0)</span><br class="calibre5" />
+<span class="ent">➋</span> &gt;&gt;&gt; <span class="codestrong1">newyears2020 = datetime.datetime(2020, 1, 1, 0, 0, 0)</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">oct31_2019 = datetime.datetime(2019, 10, 31, 0, 0, 0)</span><br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-894"></span><span class="ent">➌</span> &gt;&gt;&gt; <span class="codestrong1">halloween2019 == oct31_2019</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;True<br class="calibre5" />
+<span class="ent">➍</span> &gt;&gt;&gt; <span class="codestrong1">halloween2019 &gt; newyears2020</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;False<br class="calibre5" />
+<span class="ent">➎</span> &gt;&gt;&gt; <span class="codestrong1">newyears2020 &gt; halloween2019</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;True<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">newyears2020 != oct31_2019</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;True</p>
+<p class="indent">Make a <span class="literal">datetime</span> object for the first moment (midnight) of October 31, 2019, and store it in <span class="literal">halloween2019</span> <span class="ent">➊</span>. Make a <span class="literal">datetime</span> object for the first moment of January 1, 2020, and store it in <span class="literal">newyears2020</span> <span class="ent">➋</span>. Then make another object for midnight on October 31, 2019, and store it in <span class="literal">oct31_2019</span>. Comparing <span class="literal">halloween2019</span> and <span class="literal">oct31_2019</span> shows that they’re equal <span class="ent">➌</span>. Comparing <span class="literal">newyears2020</span> and <span class="literal">halloween2019</span> shows that <span class="literal">newyears2020</span> is greater (later) than <span class="literal">halloween2019</span> <span class="ent">➍</span> <span class="ent">➎</span>.</p>
+<h4 class="h2" id="calibre_link-540"><strong class="calibre2"><em class="calibre9">The timedelta Data Type</em></strong></h4>
+<p class="noindent">The <span class="literal">datetime</span> module also provides a <span class="literal">timedelta</span> data type, which represents a <em class="calibre7">duration</em> of time rather than a <em class="calibre7">moment</em> in time. Enter the following into the interactive shell:</p>
+<p class="programs"><span class="ent">➊</span> &gt;&gt;&gt; <span class="codestrong1">delta = datetime.timedelta(days=11, hours=10, minutes=9, seconds=8)</span><br class="calibre5" />
+<span class="ent">➋</span> &gt;&gt;&gt; <span class="codestrong1">delta.days, delta.seconds, delta.microseconds</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;(11, 36548, 0)<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">delta.total_seconds()</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;986948.0<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; str(delta)<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;'11 days, 10:09:08'</p>
+<p class="indent">To create a <span class="literal">timedelta</span> object, use the <span class="literal">datetime.timedelta()</span> function. The <span class="literal">datetime.timedelta()</span> function takes keyword arguments <span class="literal">weeks</span>, <span class="literal">days</span>, <span class="literal">hours</span>, <span class="literal">minutes</span>, <span class="literal">seconds</span>, <span class="literal">milliseconds</span>, and <span class="literal">microseconds</span>. There is no <span class="literal">month</span> or <span class="literal">year</span> keyword argument, because “a month” or “a year” is a variable amount of time depending on the particular month or year. A <span class="literal">timedelta</span> object has the total duration represented in days, seconds, and microseconds. These numbers are stored in the <span class="literal">days</span>, <span class="literal">seconds</span>, and <span class="literal">microseconds</span> attributes, respectively. The <span class="literal">total_seconds()</span> method will return the duration in number of seconds alone. Passing a <span class="literal">timedelta</span> object to <span class="literal">str()</span> will return a nicely formatted, human-readable string representation of the object.</p>
+<p class="indent">In this example, we pass keyword arguments to <span class="literal">datetime.delta()</span> to specify a duration of 11 days, 10 hours, 9 minutes, and 8 seconds, and store the returned <span class="literal">timedelta</span> object in <span class="literal">delta</span> <span class="ent">➊</span>. This <span class="literal">timedelta</span> object’s <span class="literal">days</span> attributes stores <span class="literal">11</span>, and its <span class="literal">seconds</span> attribute stores <span class="literal">36548</span> (10 hours, 9 minutes, and 8 seconds, expressed in seconds) <span class="ent">➋</span>. Calling <span class="literal">total_seconds()</span> tells us that 11 days, 10 hours, 9 minutes, and 8 seconds is 986,948 seconds. Finally, passing the <span class="literal">timedelta</span> object to <span class="literal">str()</span> returns a string that plainly describes the duration.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-888"></span>The arithmetic operators can be used to perform <em class="calibre7">date arithmetic</em> on <span class="literal">datetime</span> values. For example, to calculate the date 1,000 days from now, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">dt = datetime.datetime.now()</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">dt</span><br class="calibre5" />
+datetime.datetime(2018, 12, 2, 18, 38, 50, 636181)<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">thousandDays = datetime.timedelta(days=1000)</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">dt + thousandDays</span><br class="calibre5" />
+datetime.datetime(2021, 8, 28, 18, 38, 50, 636181)</p>
+<p class="indent">First, make a <span class="literal">datetime</span> object for the current moment and store it in <span class="literal">dt</span>. Then make a <span class="literal">timedelta</span> object for a duration of 1,000 days and store it in <span class="literal">thousandDays</span>. Add <span class="literal">dt</span> and <span class="literal">thousandDays</span> together to get a <span class="literal">datetime</span> object for the date 1,000 days from now. Python will do the date arithmetic to figure out that 1,000 days after December 2, 2018, will be August 18, 2021. This is useful because when you calculate 1,000 days from a given date, you have to remember how many days are in each month and factor in leap years and other tricky details. The <span class="literal">datetime</span> module handles all of this for you.</p>
+<p class="indent"><span class="literal">timedelta</span> objects can be added or subtracted with <span class="literal">datetime</span> objects or other <span class="literal">timedelta</span> objects using the <span class="literal">+</span> and <span class="literal">-</span> operators. A <span class="literal">timedelta</span> object can be multiplied or divided by integer or float values with the <span class="literal">*</span> and <span class="literal">/</span> operators. Enter the following into the interactive shell:</p>
+<p class="programs"><span class="ent">➊</span> &gt;&gt;&gt; <span class="codestrong1">oct21st = datetime.datetime(2019, 10, 21, 16, 29, 0)</span><br class="calibre5" />
+<span class="ent">➋</span> &gt;&gt;&gt; <span class="codestrong1">aboutThirtyYears = datetime.timedelta(days=365 * 30)</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">oct21st</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;datetime.datetime(2019, 10, 21, 16, 29)<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">oct21st - aboutThirtyYears</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;datetime.datetime(1989, 10, 28, 16, 29)<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">oct21st - (2 * aboutThirtyYears)</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;datetime.datetime(1959, 11, 5, 16, 29)</p>
+<p class="indent">Here we make a <span class="literal">datetime</span> object for October 21, 2019, <span class="ent">➊</span> and a <span class="literal">timedelta</span> object for a duration of about 30 years (we’re assuming 365 days for each of those years) <span class="ent">➋</span>. Subtracting <span class="literal">aboutThirtyYears</span> from <span class="literal">oct21st</span> gives us a <span class="literal">datetime</span> object for the date 30 years before October 21, 2019. Subtracting <span class="literal">2 * aboutThirtyYears</span> from <span class="literal">oct21st</span> returns a <span class="literal">datetime</span> object for the date 60 years before October 21, 2019.</p>
+<h4 class="h2" id="calibre_link-541"><strong class="calibre2"><em class="calibre9">Pausing Until a Specific Date</em></strong></h4>
+<p class="noindent">The <span class="literal">time.sleep()</span> method lets you pause a program for a certain number of seconds. By using a <span class="literal">while</span> loop, you can pause your programs until a specific date. For example, the following code will continue to loop until Halloween 2016:</p>
+<p class="programs">import datetime<br class="calibre5" />
+import time<br class="calibre5" />
+halloween2016 = datetime.datetime(2016, 10, 31, 0, 0, 0)<br class="calibre5" />
+while datetime.datetime.now() &lt; halloween2016:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;time.sleep(1)</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-892"></span>The <span class="literal">time.sleep(1)</span> call will pause your Python program so that the computer doesn’t waste CPU processing cycles simply checking the time over and over. Rather, the <span class="literal">while</span> loop will just check the condition once per second and continue with the rest of the program after Halloween 2016 (or whenever you program it to stop).</p>
+<h4 class="h2" id="calibre_link-542"><strong class="calibre2"><em class="calibre9">Converting datetime Objects into Strings</em></strong></h4>
+<p class="noindent">Epoch timestamps and <span class="literal">datetime</span> objects aren’t very friendly to the human eye. Use the <span class="literal">strftime()</span> method to display a <span class="literal">datetime</span> object as a string. (The <em class="calibre7">f</em> in the name of the <span class="literal">strftime()</span> function stands for <em class="calibre7">format</em>.)</p>
+<p class="indent">The <span class="literal">strftime()</span> method uses directives similar to Python’s string formatting. <a href="#calibre_link-1522" class="calibre6">Table 17-1</a> has a full list of <span class="literal">strftime()</span> directives.</p>
+<p class="tabcap" id="calibre_link-1522"><strong class="calibre4">Table 17-1:</strong> <span class="literal1">strftime()</span> Directives</p>
+<table class="topbot-d">
+<colgroup class="calibre13">
+<col class="calibre18"></col>
+<col class="calibre18"></col>
+</colgroup>
+<thead class="calibre15">
+<tr class="calibre16">
+<td class="table-h"><p class="tab_th"><span class="codestrong">strftime()</span> <strong class="calibre4">directive</strong></p></td>
+<td class="table-h"><p class="tab_th"><strong class="calibre4">Meaning</strong></p></td>
+</tr>
+</thead>
+<tbody class="calibre17">
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">%Y</span></p></td>
+<td class="table-b"><p class="taba">Year with century, as in <span class="literal">'2014'</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">%y</span></p></td>
+<td class="table-v"><p class="taba">Year without century, <span class="literal">'00'</span> to <span class="literal">'99'</span> (1970 to 2069)</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">%m</span></p></td>
+<td class="table-b"><p class="taba">Month as a decimal number, <span class="literal">'01'</span> to <span class="literal">'12'</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">%B</span></p></td>
+<td class="table-v"><p class="taba">Full month name, as in <span class="literal">'November'</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">%b</span></p></td>
+<td class="table-b"><p class="taba">Abbreviated month name, as in <span class="literal">'Nov'</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">%d</span></p></td>
+<td class="table-v"><p class="taba">Day of the month, <span class="literal">'01'</span> to <span class="literal">'31'</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">%j</span></p></td>
+<td class="table-b"><p class="taba">Day of the year, <span class="literal">'001'</span> to <span class="literal">'366'</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">%w</span></p></td>
+<td class="table-v"><p class="taba">Day of the week, <span class="literal">'0'</span> (Sunday) to <span class="literal">'6'</span> (Saturday)</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">%A</span></p></td>
+<td class="table-b"><p class="taba">Full weekday name, as in <span class="literal">'Monday'</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">%a</span></p></td>
+<td class="table-v"><p class="taba">Abbreviated weekday name, as in <span class="literal">'Mon'</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">%H</span></p></td>
+<td class="table-b"><p class="taba">Hour (24-hour clock), <span class="literal">'00'</span> to <span class="literal">'23'</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">%I</span></p></td>
+<td class="table-v"><p class="taba">Hour (12-hour clock), <span class="literal">'01'</span> to <span class="literal">'12'</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">%M</span></p></td>
+<td class="table-b"><p class="taba">Minute, <span class="literal">'00'</span> to <span class="literal">'59'</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">%S</span></p></td>
+<td class="table-v"><p class="taba">Second, <span class="literal">'00'</span> to <span class="literal">'59'</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">%p</span></p></td>
+<td class="table-b"><p class="taba"><span class="literal">'AM'</span> or <span class="literal">'PM'</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-va"><p class="taba"><span class="literal">%%</span></p></td>
+<td class="table-va"><p class="taba">Literal <span class="literal">'%'</span> character</p></td>
+</tr>
+</tbody>
+</table>
+<p class="indent">Pass <span class="literal">strftime()</span> a custom format string containing formatting directives (along with any desired slashes, colons, and so on), and <span class="literal">strftime()</span> will return the <span class="literal">datetime</span> object’s information as a formatted string. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">oct21st = datetime.datetime(2019, 10, 21, 16, 29, 0)</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">oct21st.strftime('%Y/%m/%d %H:%M:%S')</span><br class="calibre5" />
+'2019/10/21 16:29:00'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">oct21st.strftime('%I:%M %p')</span><br class="calibre5" />
+'04:29 PM'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">oct21st.strftime("%B of '%y")</span><br class="calibre5" />
+"October of '19"</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-893"></span>Here we have a <span class="literal">datetime</span> object for October 21, 2019, at 4:29 <small class="calibre11">PM</small>, stored in <span class="literal">oct21st</span>. Passing <span class="literal">strftime()</span> the custom format string <span class="literal">'%Y/%m/%d %H:%M:%S'</span> returns a string containing 2019, 10, and 21 separated by slashes and 16, 29, and 00 separated by colons. Passing <span class="literal">'%I:%M% p'</span> returns <span class="literal">'04:29 PM'</span>, and passing <span class="literal">"%B of '%y"</span> returns <span class="literal">"October of '19"</span>. Note that <span class="literal">strftime()</span> doesn’t begin with <span class="literal">datetime.datetime</span>.</p>
+<h4 class="h2" id="calibre_link-543"><strong class="calibre2"><em class="calibre9">Converting Strings into datetime Objects</em></strong></h4>
+<p class="noindent">If you have a string of date information, such as <span class="literal">'2019/10/21 16:29:00'</span> or <span class="literal">'October 21, 2019'</span>, and need to convert it to a <span class="literal">datetime</span> object, use the <span class="literal">datetime.datetime.strptime()</span> function. The <span class="literal">strptime()</span> function is the inverse of the <span class="literal">strftime()</span> method. A custom format string using the same directives as <span class="literal">strftime()</span> must be passed so that <span class="literal">strptime()</span> knows how to parse and understand the string. (The <em class="calibre7">p</em> in the name of the <span class="literal">strptime()</span> function stands for <em class="calibre7">parse</em>.)</p>
+<p class="indent">Enter the following into the interactive shell:</p>
+<p class="programs"><span class="ent">➊</span> &gt;&gt;&gt; <span class="codestrong1">datetime.datetime.strptime('October 21, 2019', '%B %d, %Y')</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;datetime.datetime(2019, 10, 21, 0, 0)<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">datetime.datetime.strptime('2019/10/21 16:29:00', '%Y/%m/%d %H:%M:%S')</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;datetime.datetime(2019, 10, 21, 16, 29)<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">datetime.datetime.strptime("October of '19", "%B of '%y")</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;datetime.datetime(2019, 10, 1, 0, 0)<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">datetime.datetime.strptime("November of '63", "%B of '%y")</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;datetime.datetime(2063, 11, 1, 0, 0)</p>
+<p class="indent">To get a <span class="literal">datetime</span> object from the string <span class="literal">'October 21, 2019'</span>, pass that string as the first argument to <span class="literal">strptime()</span> and the custom format string that corresponds to <span class="literal">'October 21, 2019'</span> as the second argument <span class="ent">➊</span>. The string with the date information must match the custom format string exactly, or Python will raise a <span class="literal">ValueError</span> exception.</p>
+<h3 class="h1" id="calibre_link-544"><strong class="calibre2">Review of Python’s Time Functions</strong></h3>
+<p class="noindent">Dates and times in Python can involve quite a few different data types and functions. Here’s a review of the three different types of values used to represent time:</p>
+<ul class="calibre8">
+<li class="noindent1">A Unix epoch timestamp (used by the <span class="literal">time</span> module) is a float or integer value of the number of seconds since 12 <small class="calibre11">AM</small> on January 1, 1970, UTC.</li>
+<li class="noindent1">A <span class="literal">datetime</span> object (of the <span class="literal">datetime</span> module) has integers stored in the attributes <span class="literal">year</span>, <span class="literal">month</span>, <span class="literal">day</span>, <span class="literal">hour</span>, <span class="literal">minute</span>, and <span class="literal">second</span>.</li>
+<li class="noindent1">A <span class="literal">timedelta</span> object (of the <span class="literal">datetime</span> module) represents a time duration, rather than a specific moment.</li>
+</ul>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-890"></span>Here’s a review of time functions and their parameters and return values:</p>
+<p class="hang"><span class="codestrong">time.time()</span> This function returns an epoch timestamp float value of the current moment.</p>
+<p class="hang"><span class="codestrong">time.sleep(</span><span class="codestrongitalic">seconds</span><span class="codestrong">)</span> This function stops the program for the number of seconds specified by the <span class="codeitalic">seconds</span> argument.</p>
+<p class="hang"><span class="codestrong">datetime.datetime(</span><span class="codestrongitalic">year</span><span class="codestrong">,</span> <span class="codestrongitalic">month</span><span class="codestrong">,</span> <span class="codestrongitalic">day</span><span class="codestrong">,</span> <span class="codestrongitalic">hour</span><span class="codestrong">,</span> <span class="codestrongitalic">minute</span><span class="codestrong">,</span> <span class="codestrongitalic">second</span><span class="codestrong">)</span> This function returns a <span class="literal">datetime</span> object of the moment specified by the arguments. If <span class="codeitalic">hour</span>, <span class="codeitalic">minute</span>, or <span class="codeitalic">second</span> arguments are not provided, they default to <span class="literal">0</span>.</p>
+<p class="hang"><span class="codestrong">datetime.datetime.now()</span> This function returns a <span class="literal">datetime</span> object of the current moment.</p>
+<p class="hang"><span class="codestrong">datetime.datetime.fromtimestamp(</span><span class="codestrongitalic">epoch</span><span class="codestrong">)</span> This function returns a <span class="literal">datetime</span> object of the moment represented by the <span class="codeitalic">epoch</span> timestamp argument.</p>
+<p class="hang"><span class="codestrong">datetime.timedelta(</span><span class="codestrongitalic">weeks</span><span class="codestrong">,</span> <span class="codestrongitalic">days</span><span class="codestrong">,</span> <span class="codestrongitalic">hours</span><span class="codestrong">,</span> <span class="codestrongitalic">minutes</span><span class="codestrong">,</span> <span class="codestrongitalic">seconds</span><span class="codestrong">,</span> <span class="codestrongitalic">milliseconds</span><span class="codestrong">,</span> <span class="codestrongitalic">microseconds</span><span class="codestrong">)</span> This function returns a <span class="literal">timedelta</span> object representing a duration of time. The function’s keyword arguments are all optional and do not include <span class="codeitalic">month</span> or <span class="codeitalic">year</span>.</p>
+<p class="hang"><span class="codestrong">total_seconds()</span> This method for <span class="literal">timedelta</span> objects returns the number of seconds the <span class="literal">timedelta</span> object represents.</p>
+<p class="hang"><span class="codestrong">strftime(</span><span class="codestrongitalic">format</span><span class="codestrong">)</span> This method returns a string of the time represented by the <span class="literal">datetime</span> object in a custom format that’s based on the <span class="codeitalic">format</span> string. See <a href="#calibre_link-1522" class="calibre6">Table 17-1</a> for the format details.</p>
+<p class="hang"><span class="codestrong">datetime.datetime.strptime(</span><span class="codestrongitalic">time_string</span><span class="codestrong">,</span> <span class="codestrongitalic">format</span><span class="codestrong">)</span> This function returns a <span class="literal">datetime</span> object of the moment specified by <span class="codeitalic">time_string</span>, parsed using the <span class="codeitalic">format</span> string argument. See <a href="#calibre_link-1522" class="calibre6">Table 17-1</a> for the format details.</p>
+<h3 class="h1" id="calibre_link-545"><strong class="calibre2">Multithreading</strong></h3>
+<p class="noindent">To introduce the concept of multithreading, let’s look at an example situation. Say you want to schedule some code to run after a delay or at a specific time. You could add code like the following at the start of your program:</p>
+<p class="programs">import time, datetime<br class="calibre5" />
+<br class="calibre5" />
+startTime = datetime.datetime(2029, 10, 31, 0, 0, 0)<br class="calibre5" />
+while datetime.datetime.now() &lt; startTime:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;time.sleep(1)<br class="calibre5" />
+<br class="calibre5" />
+print('Program now starting on Halloween 2029')<br class="calibre5" />
+--<span class="codeitalic1">snip</span>--</p>
+<p class="indent">This code designates a start time of October 31, 2029, and keeps calling <span class="literal">time.sleep(1)</span> until the start time arrives. Your program cannot do anything while waiting for the loop of <span class="literal">time.sleep()</span> calls to finish; it just sits around <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1049"></span>until Halloween 2029. This is because Python programs by default have a single <em class="calibre7">thread</em> of execution.</p>
+<p class="indent">To understand what a thread of execution is, remember the <a href="#calibre_link-106" class="calibre6">Chapter 2</a> discussion of flow control, when you imagined the execution of a program as placing your finger on a line of code in your program and moving to the next line or wherever it was sent by a flow control statement. A <em class="calibre7">single-threaded</em> program has only one finger. But a <em class="calibre7">multithreaded</em> program has multiple fingers. Each finger still moves to the next line of code as defined by the flow control statements, but the fingers can be at different places in the program, executing different lines of code at the same time. (All of the programs in this book so far have been single threaded.)</p>
+<p class="indent">Rather than having all of your code wait until the <span class="literal">time.sleep()</span> function finishes, you can execute the delayed or scheduled code in a separate thread using Python’s <span class="literal">threading</span> module. The separate thread will pause for the <span class="literal">time.sleep</span> calls. Meanwhile, your program can do other work in the original thread.</p>
+<p class="indent">To make a separate thread, you first need to make a <span class="literal">Thread</span> object by calling the <span class="literal">threading.Thread()</span> function. Enter the following code in a new file and save it as <em class="calibre7">threadDemo.py</em>:</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;import threading, time<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;print('Start of program.')<br class="calibre5" />
+<br class="calibre5" />
+<span class="ent">➊</span> def takeANap():<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time.sleep(5)<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('Wake up!')<br class="calibre5" />
+<br class="calibre5" />
+<span class="ent">➋</span> threadObj = threading.Thread(target=takeANap)<br class="calibre5" />
+<span class="ent">➌</span> threadObj.start()<br class="calibre5" />
+<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;print('End of program.')</p>
+<p class="indent">At <span class="ent">➊</span>, we define a function that we want to use in a new thread. To create a <span class="literal">Thread</span> object, we call <span class="literal">threading.Thread()</span> and pass it the keyword argument <span class="literal">target=takeANap</span> <span class="ent">➋</span>. This means the function we want to call in the new thread is <span class="literal">takeANap()</span>. Notice that the keyword argument is <span class="literal">target=takeANap</span>, not <span class="literal">target=takeANap()</span>. This is because you want to pass the <span class="literal">takeANap()</span> function itself as the argument, not call <span class="literal">takeANap()</span> and pass its return value.</p>
+<p class="indent">After we store the <span class="literal">Thread</span> object created by <span class="literal">threading.Thread()</span> in <span class="literal">threadObj</span>, we call <span class="literal">threadObj.start()</span> <span class="ent">➌</span> to create the new thread and start executing the target function in the new thread. When this program is run, the output will look like this:</p>
+<p class="programs">Start of program.<br class="calibre5" />
+End of program.<br class="calibre5" />
+Wake up!</p>
+<p class="indent">This can be a bit confusing. If <span class="literal">print('End of program.')</span> is the last line of the program, you might think that it should be the last thing printed. The reason <span class="literal">Wake up!</span> comes after it is that when <span class="literal">threadObj.start()</span> is called, the <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-951"></span>target function for <span class="literal">threadObj</span> is run in a new thread of execution. Think of it as a second finger appearing at the start of the <span class="literal">takeANap()</span> function. The main thread continues to <span class="literal">print('End of program.')</span>. Meanwhile, the new thread that has been executing the <span class="literal">time.sleep(5)</span> call, pauses for 5 seconds. After it wakes from its 5-second nap, it prints <span class="literal">'Wake up!'</span> and then returns from the <span class="literal">takeANap()</span> function. Chronologically, <span class="literal">'Wake up!'</span> is the last thing printed by the program.</p>
+<p class="indent">Normally a program terminates when the last line of code in the file has run (or the <span class="literal">sys.exit()</span> function is called). But <em class="calibre7">threadDemo.py</em> has two threads. The first is the original thread that began at the start of the program and ends after <span class="literal">print('End of program.')</span>. The second thread is created when <span class="literal">threadObj.start()</span> is called, begins at the start of the <span class="literal">takeANap()</span> function, and ends after <span class="literal">takeANap()</span> returns.</p>
+<p class="indent">A Python program will not terminate until all its threads have terminated. When you ran <em class="calibre7">threadDemo.py</em>, even though the original thread had terminated, the second thread was still executing the <span class="literal">time.sleep(5)</span> call.</p>
+<h4 class="h2" id="calibre_link-546"><strong class="calibre2"><em class="calibre9">Passing Arguments to the Thread’s Target Function</em></strong></h4>
+<p class="noindent">If the target function you want to run in the new thread takes arguments, you can pass the target function’s arguments to <span class="literal">threading.Thread()</span>. For example, say you wanted to run this <span class="literal">print()</span> call in its own thread:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">print('Cats', 'Dogs', 'Frogs', sep=' &amp; ')</span><br class="calibre5" />
+Cats &amp; Dogs &amp; Frogs</p>
+<p class="indent">This <span class="literal">print()</span> call has three regular arguments, <span class="literal">'Cats'</span>, <span class="literal">'Dogs'</span>, and <span class="literal">'Frogs'</span>, and one keyword argument, <span class="literal">sep=' &amp; '</span>. The regular arguments can be passed as a list to the <span class="literal">args</span> keyword argument in <span class="literal">threading.Thread()</span>. The keyword argument can be specified as a dictionary to the <span class="literal">kwargs</span> keyword argument in <span class="literal">threading.Thread()</span>.</p>
+<p class="indent">Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import threading</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">threadObj = threading.Thread(target=print, args=['Cats', 'Dogs', 'Frogs'],</span><br class="calibre5" />
+<span class="codestrong1">kwargs={'sep': ' &amp; '})</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">threadObj.start()</span><br class="calibre5" />
+Cats &amp; Dogs &amp; Frogs</p>
+<p class="indent">To make sure the arguments <span class="literal">'Cats'</span>, <span class="literal">'Dogs'</span>, and <span class="literal">'Frogs'</span> get passed to <span class="literal">print()</span> in the new thread, we pass <span class="literal">args=['Cats', 'Dogs', 'Frogs']</span> to <span class="literal">threading.Thread()</span>. To make sure the keyword argument <span class="literal">sep=' &amp; '</span> gets passed to <span class="literal">print()</span> in the new thread, we pass <span class="literal">kwargs={'sep': '&amp; '}</span> to <span class="literal">threading.Thread()</span>.</p>
+<p class="indent">The <span class="literal">threadObj.start()</span> call will create a new thread to call the <span class="literal">print()</span> function, and it will pass <span class="literal">'Cats'</span>, <span class="literal">'Dogs'</span>, and <span class="literal">'Frogs'</span> as arguments and <span class="literal">' &amp; '</span> for the <span class="literal">sep</span> keyword argument.</p>
+<p class="indent">This is an incorrect way to create the new thread that calls <span class="literal">print()</span>:</p>
+<p class="programs">threadObj = threading.Thread(target=print('Cats', 'Dogs', 'Frogs', sep=' &amp; '))</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-862"></span>What this ends up doing is calling the <span class="literal">print()</span> function and passing its return value (<span class="literal">print()</span>’s return value is always <span class="literal">None</span>) as the <span class="literal">target</span> keyword argument. It <em class="calibre7">doesn’t</em> pass the <span class="literal">print()</span> function itself. When passing arguments to a function in a new thread, use the <span class="literal">threading.Thread()</span> function’s <span class="literal">args</span> and <span class="literal">kwargs</span> keyword arguments.</p>
+<h4 class="h2" id="calibre_link-547"><strong class="calibre2"><em class="calibre9">Concurrency Issues</em></strong></h4>
+<p class="noindent">You can easily create several new threads and have them all running at the same time. But multiple threads can also cause problems called <em class="calibre7">concurrency issues</em>. These issues happen when threads read and write variables at the same time, causing the threads to trip over each other. Concurrency issues can be hard to reproduce consistently, making them hard to debug.</p>
+<p class="indent">Multithreaded programming is its own wide subject and beyond the scope of this book. What you have to keep in mind is this: to avoid concurrency issues, never let multiple threads read or write the same variables. When you create a new <span class="literal">Thread</span> object, make sure its target function uses only local variables in that function. This will avoid hard-to-debug concurrency issues in your programs.</p>
+<div class="note">
+<p class="notet"><strong class="calibre2"><span class="notes">NOTE</span></strong></p>
+<p class="notep"><em class="calibre7">A beginner’s tutorial on multithreaded programming is available at</em> <a href="https://nostarch.com/automatestuff2/" class="calibre6">https://nostarch.com/automatestuff2/</a>.</p>
+</div>
+<h3 class="h1" id="calibre_link-548"><strong class="calibre2">Project: Multithreaded XKCD Downloader</strong></h3>
+<p class="noindent">In <a href="#calibre_link-372" class="calibre6">Chapter 12</a>, you wrote a program that downloaded all of the XKCD comic strips from the XKCD website. This was a single-threaded program: it downloaded one comic at a time. Much of the program’s running time was spent establishing the network connection to begin the download and writing the downloaded images to the hard drive. If you have a broadband internet connection, your single-threaded program wasn’t fully utilizing the available bandwidth.</p>
+<p class="indent">A multithreaded program that has some threads downloading comics while others are establishing connections and writing the comic image files to disk uses your internet connection more efficiently and downloads the collection of comics more quickly. Open a new file editor tab and save it as <em class="calibre7">threadedDownloadXkcd.py</em>. You will modify this program to add multithreading. The completely modified source code is available to download from <em class="calibre7"><a href="https://nostarch.com/automatestuff2/" class="calibre6">https://nostarch.com/automatestuff2/</a></em>.</p>
+<h4 class="h2" id="calibre_link-549"><strong class="calibre2"><em class="calibre9">Step 1: Modify the Program to Use a Function</em></strong></h4>
+<p class="noindent">This program will mostly be the same downloading code from <a href="#calibre_link-372" class="calibre6">Chapter 12</a>, so I’ll skip the explanation for the <span class="literal">requests</span> and Beautiful Soup code. The main changes you need to make are importing the <span class="literal">threading</span> module and making a <span class="literal">downloadXkcd()</span> function, which takes starting and ending comic numbers as parameters.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1085"></span>For example, calling <span class="literal">downloadXkcd(140, 280)</span> would loop over the downloading code to download the comics at <em class="calibre7"><a href="https://xkcd.com/140/" class="calibre6">https://xkcd.com/140/</a></em>, <em class="calibre7"><a href="https://xkcd.com/141/" class="calibre6">https://xkcd.com/141/</a></em>, <em class="calibre7"><a href="https://xkcd.com/142/" class="calibre6">https://xkcd.com/142/</a></em>, and so on, up to <em class="calibre7"><a href="https://xkcd.com/279/" class="calibre6">https://xkcd.com/279/</a></em>. Each thread that you create will call <span class="literal">downloadXkcd()</span> and pass a different range of comics to download.</p>
+<p class="indent">Add the following code to your <em class="calibre7">threadedDownloadXkcd.py</em> program:</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;#! python3<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;# threadedDownloadXkcd.py - Downloads XKCD comics using multiple threads.<br class="calibre5" />
+<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;import requests, os, bs4, threading<br class="calibre5" />
+<span class="ent">➊</span> os.makedirs('xkcd', exist_ok=True)&nbsp;&nbsp;&nbsp;&nbsp;# store comics in ./xkcd<br class="calibre5" />
+<br class="calibre5" />
+<span class="ent">➋</span> def downloadXkcd(startComic, endComic):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➌</span> for urlNumber in range(startComic, endComic):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Download the page.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('Downloading page https://xkcd.com/%s...' % (urlNumber))<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➍</span> res = requests.get('https://xkcd.com/%s' % (urlNumber))<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;res.raise_for_status()<br class="calibre5" />
+<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➎</span> soup = bs4.BeautifulSoup(res.text, 'html.parser')<br class="calibre5" />
+<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Find the URL of the comic image.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➏</span> comicElem = soup.select('#comic img')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if comicElem == []:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('Could not find comic image.')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➐</span> comicUrl = comicElem[0].get('src')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Download the image.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('Downloading image %s...' % (comicUrl))<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➑</span> res = requests.get('https:' + comicUrl)<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;res.raise_for_status()<br class="calibre5" />
+<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Save the image to ./xkcd.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;imageFile = open(os.path.join('xkcd', os.path.basename(comicUrl)),<br class="calibre5" />
+'wb')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for chunk in res.iter_content(100000):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;imageFile.write(chunk)<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;imageFile.close()<br class="calibre5" />
+<br class="calibre5" />
+# TODO: Create and start the Thread objects.<br class="calibre5" />
+# TODO: Wait for all threads to end.</p>
+<p class="indent">After importing the modules we need, we make a directory to store comics in <span class="ent">➊</span> and start defining <span class="literal">downloadxkcd()</span> <span class="ent">➋</span>. We loop through all the numbers in the specified range <span class="ent">➌</span> and download each page <span class="ent">➍</span>. We use Beautiful Soup to look through the HTML of each page <span class="ent">➎</span> and find the comic image <span class="ent">➏</span>. If no comic image is found on a page, we print a message. Otherwise, we get the URL of the image <span class="ent">➐</span> and download the image <span class="ent">➑</span>. Finally, we save the image to the directory we created.</p>
+<h4 class="h2" id="calibre_link-550"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1019" class="calibre1"></span><strong class="calibre2"><em class="calibre9">Step 2: Create and Start Threads</em></strong></h4>
+<p class="noindent">Now that we’ve defined <span class="literal">downloadXkcd()</span>, we’ll create the multiple threads that each call <span class="literal">downloadXkcd()</span> to download different ranges of comics from the XKCD website. Add the following code to <em class="calibre7">threadedDownloadXkcd.py</em> after the <span class="literal">downloadXkcd()</span> function definition:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# threadedDownloadXkcd.py - Downloads XKCD comics using multiple threads.<br class="calibre5" />
+<br class="calibre5" />
+--<span class="codeitalic1">snip</span>--<br class="calibre5" />
+<br class="calibre5" />
+<span class="codestrong1"># Create and start the Thread objects.</span><br class="calibre5" />
+<span class="codestrong1">downloadThreads = []&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# a list of all the Thread objects</span><br class="calibre5" />
+<span class="codestrong1">for i in range(0, 140, 10):&nbsp;&nbsp;&nbsp;&nbsp;# loops 14 times, creates 14 threads</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;start = i</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;end = i + 9</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;if start == 0:</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start = 1 # There is no comic 0, so set it to 1.</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;downloadThread = threading.Thread(target=downloadXkcd, args=(start, end))</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;downloadThreads.append(downloadThread)</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;downloadThread.start()</span></p>
+<p class="indent">First we make an empy list <span class="literal">downloadThreads</span>; the list will help us keep track of the many <span class="literal">Thread</span> objects we’ll create. Then we start our <span class="literal">for</span> loop. Each time through the loop, we create a <span class="literal">Thread</span> object with <span class="literal">threading.Thread()</span>, append the <span class="literal">Thread</span> object to the list, and call <span class="literal">start()</span> to start running <span class="literal">downloadXkcd()</span> in the new thread. Since the <span class="literal">for</span> loop sets the <span class="literal">i</span> variable from <span class="literal">0</span> to <span class="literal">140</span> at steps of <span class="literal">10</span>, <span class="literal">i</span> will be set to <span class="literal">0</span> on the first iteration, <span class="literal">10</span> on the second iteration, <span class="literal">20</span> on the third, and so on. Since we pass <span class="literal">args=(start, end)</span> to <span class="literal">threading.Thread()</span>, the two arguments passed to <span class="literal">downloadXkcd()</span> will be <span class="literal">1</span> and <span class="literal">9</span> on the first iteration, <span class="literal">10</span> and <span class="literal">19</span> on the second iteration, <span class="literal">20</span> and <span class="literal">29</span> on the third, and so on.</p>
+<p class="indent">As the <span class="literal">Thread</span> object’s <span class="literal">start()</span> method is called and the new thread begins to run the code inside <span class="literal">downloadXkcd()</span>, the main thread will continue to the next iteration of the <span class="literal">for</span> loop and create the next thread.</p>
+<h4 class="h2" id="calibre_link-551"><strong class="calibre2"><em class="calibre9">Step 3: Wait for All Threads to End</em></strong></h4>
+<p class="noindent">The main thread moves on as normal while the other threads we create download comics. But say there’s some code you don’t want to run in the main thread until all the threads have completed. Calling a <span class="literal">Thread</span> object’s <span class="literal">join()</span> method will block until that thread has finished. By using a <span class="literal">for</span> loop to iterate over all the <span class="literal">Thread</span> objects in the <span class="literal">downloadThreads</span> list, the main thread can call the <span class="literal">join()</span> method on each of the other threads. Add the following to the bottom of your program:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# threadedDownloadXkcd.py - Downloads XKCD comics using multiple threads.<br class="calibre5" />
+<br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1027"></span>--<span class="codeitalic1">snip</span>--<br class="calibre5" />
+<br class="calibre5" />
+<span class="codestrong1"># Wait for all threads to end.</span><br class="calibre5" />
+<span class="codestrong1">for downloadThread in downloadThreads:</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;downloadThread.join()</span><br class="calibre5" />
+<span class="codestrong1">print('Done.')</span></p>
+<p class="indent">The <span class="literal">'Done.'</span> string will not be printed until all of the <span class="literal">join()</span> calls have returned. If a <span class="literal">Thread</span> object has already completed when its <span class="literal">join()</span> method is called, then the method will simply return immediately. If you wanted to extend this program with code that runs only after all of the comics downloaded, you could replace the <span class="literal">print('Done.')</span> line with your new code.</p>
+<h3 class="h1" id="calibre_link-552"><strong class="calibre2">Launching Other Programs from Python</strong></h3>
+<p class="noindent">Your Python program can start other programs on your computer with the <span class="literal">Popen()</span> function in the built-in <span class="literal">subprocess</span> module. (The <em class="calibre7">P</em> in the name of the <span class="literal">Popen()</span> function stands for <em class="calibre7">process</em>.) If you have multiple instances of an application open, each of those instances is a separate process of the same program. For example, if you open multiple windows of your web browser at the same time, each of those windows is a different process of the web browser program. See <a href="#calibre_link-1523" class="calibre6">Figure 17-1</a> for an example of multiple calculator processes open at once.</p>
+<div class="image1"><a id="calibre_link-1523" class="calibre6"></a><img src="../images/000087.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 17-1: Six running processes of the same calculator program</em></p>
+<p class="indent">Every process can have multiple threads. Unlike threads, a process cannot directly read and write another process’s variables. If you think of a multithreaded program as having multiple fingers following source code, then having multiple processes of the same program open is like having a friend with a separate copy of the program’s source code. You are both independently executing the same program.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-950"></span>If you want to start an external program from your Python script, pass the program’s filename to <span class="literal">subprocess.Popen()</span>. (On Windows, right-click the application’s <strong class="calibre4">Start</strong> menu item and select <strong class="calibre4">Properties</strong> to view the application’s filename. On macOS, <small class="calibre11">CTRL</small>-click the application and select <strong class="calibre4">Show Package Contents</strong> to find the path to the executable file.) The <span class="literal">Popen()</span> function will then immediately return. Keep in mind that the launched program is not run in the same thread as your Python program.</p>
+<p class="indent">On a Windows computer, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import subprocess</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">subprocess.Popen('C:\\Windows\\System32\\calc.exe')</span><br class="calibre5" />
+&lt;subprocess.Popen object at 0x0000000003055A58&gt;</p>
+<p class="indent">On Ubuntu Linux, you would enter the following:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import subprocess</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">subprocess.Popen('/snap/bin/gnome-calculator')</span><br class="calibre5" />
+&lt;subprocess.Popen object at 0x7f2bcf93b20&gt;</p>
+<p class="indent">On macOS, the process is slightly different. See “<a href="#calibre_link-557" class="calibre6">Opening Files with Default Applications</a>” on <a href="#calibre_link-1026" class="calibre6">page 409</a>.</p>
+<p class="indent">The return value is a <span class="literal">Popen</span> object, which has two useful methods: <span class="literal">poll()</span> and <span class="literal">wait()</span>.</p>
+<p class="indent">You can think of the <span class="literal">poll()</span> method as asking your driver “Are we there yet?” over and over until you arrive. The <span class="literal">poll()</span> method will return <span class="literal">None</span> if the process is still running at the time <span class="literal">poll()</span> is called. If the program has terminated, it will return the process’s integer <em class="calibre7">exit code</em>. An exit code is used to indicate whether the process terminated without errors (an exit code of <span class="literal">0</span>) or whether an error caused the process to terminate (a nonzero exit code&mdash;generally <span class="literal">1</span>, but it may vary depending on the program).</p>
+<p class="indent">The <span class="literal">wait()</span> method is like waiting until the driver has arrived at your destination. The <span class="literal">wait()</span> method will block until the launched process has terminated. This is helpful if you want your program to pause until the user finishes with the other program. The return value of <span class="literal">wait()</span> is the process’s integer exit code.</p>
+<p class="indent">On Windows, enter the following into the interactive shell. Note that the <span class="literal">wait()</span> call will block until you quit the launched MS Paint program.</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">import subprocess</span><br class="calibre5" />
+<span class="ent">➊</span> &gt;&gt;&gt; <span class="codestrong1">paintProc = subprocess.Popen('c:\\Windows\\System32\\mspaint.exe')</span><br class="calibre5" />
+<span class="ent">➋</span> &gt;&gt;&gt; <span class="codestrong1">paintProc.poll() == None</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;True<br class="calibre5" />
+<span class="ent">➌</span> &gt;&gt;&gt; <span class="codestrong1">paintProc.wait() # Doesn't return until MS Paint closes.</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;0<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">paintProc.poll()</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;0</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-856"></span>Here we open an MS Paint process <span class="ent">➊</span>. While it’s still running, we check whether <span class="literal">poll()</span> returns <span class="literal">None</span> <span class="ent">➋</span>. It should, as the process is still running. Then we close the MS Paint program and call <span class="literal">wait()</span> on the terminated process <span class="ent">➌</span>. Now <span class="literal">wait()</span> and <span class="literal">poll()</span>return <span class="literal">0</span>, indicating that the process terminated without errors.</p>
+<div class="note">
+<p class="notet"><strong class="calibre2"><span class="notes">NOTE</span></strong></p>
+<p class="notep"><em class="calibre7">Unlike</em> mspaint.exe, <em class="calibre7">if you run</em> calc.exe <em class="calibre7">on Windows 10 using</em> <span class="codeitalic">subprocess.Popen()</span>, <em class="calibre7">you’ll notice that</em> <span class="codeitalic">wait()</span> <em class="calibre7">instantly returns even though the calculator app is still running. This is because</em> calc.exe <em class="calibre7">launches the calculator app and then instantly closes itself. Windows’ calculator program is a “Trusted Microsoft Store app,” and its specifics are beyond the scope of this book. Suffice it to say, programs can run in many application- and operating system&ndash;specific ways.</em></p>
+</div>
+<h4 class="h2" id="calibre_link-553"><strong class="calibre2"><em class="calibre9">Passing Command Line Arguments to the Popen() Function</em></strong></h4>
+<p class="noindent">You can pass command line arguments to processes you create with <span class="literal">Popen()</span>. To do so, you pass a list as the sole argument to <span class="literal">Popen()</span>. The first string in this list will be the executable filename of the program you want to launch; all the subsequent strings will be the command line arguments to pass to the program when it starts. In effect, this list will be the value of <span class="literal">sys.argv</span> for the launched program.</p>
+<p class="indent">Most applications with a graphical user interface (GUI) don’t use command line arguments as extensively as command line&ndash;based or terminal-based programs do. But most GUI applications will accept a single argument for a file that the applications will immediately open when they start. For example, if you’re using Windows, create a simple text file called <em class="calibre7">C:\Users\Al\hello.txt</em> and then enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">subprocess.Popen(['C:\\Windows\\notepad.exe', 'C:\\Users\Al\\hello.txt'])</span><br class="calibre5" />
+&lt;subprocess.Popen object at 0x00000000032DCEB8&gt;</p>
+<p class="indent">This will not only launch the Notepad application but also have it immediately open the <em class="calibre7">C:\Users\Al\hello.txt</em> file.</p>
+<h4 class="h2" id="calibre_link-554"><strong class="calibre2"><em class="calibre9">Task Scheduler, launchd, and cron</em></strong></h4>
+<p class="noindent">If you are computer savvy, you may know about Task Scheduler on Windows, launchd on macOS, or the cron scheduler on Linux. These well-documented and reliable tools all allow you to schedule applications to launch at specific times. If you’d like to learn more about them, you can find links to tutorials at <em class="calibre7"><a href="https://nostarch.com/automatestuff2/" class="calibre6">https://nostarch.com/automatestuff2/</a></em>.</p>
+<p class="indent">Using your operating system’s built-in scheduler saves you from writing your own clock-checking code to schedule your programs. However, use the <span class="literal">time.sleep()</span> function if you just need your program to pause briefly. Or instead of using the operating system’s scheduler, your code can loop until a certain date and time, calling <span class="literal">time.sleep(1)</span> each time through the loop.</p>
+<h4 class="h2" id="calibre_link-555"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1026" class="calibre1"></span><strong class="calibre2"><em class="calibre9">Opening Websites with Python</em></strong></h4>
+<p class="noindent">The <span class="literal">webbrowser.open()</span> function can launch a web browser from your program to a specific website, rather than opening the browser application with <span class="literal">subprocess.Popen()</span>. See “<a href="#calibre_link-373" class="calibre6">Project: <em class="calibre7">mapIt.py</em> with the <span class="literal">webbrowser</span> Module</a>” on <a href="#calibre_link-824" class="calibre6">page 268</a> for more details.</p>
+<h4 class="h2" id="calibre_link-556"><strong class="calibre2"><em class="calibre9">Running Other Python Scripts</em></strong></h4>
+<p class="noindent">You can launch a Python script from Python just like any other application. Simply pass the <em class="calibre7">python.exe</em> executable to <span class="literal">Popen()</span> and the filename of the <em class="calibre7">.py</em> script you want to run as its argument. For example, the following would run the <em class="calibre7">hello.py</em> script from <a href="#calibre_link-89" class="calibre6">Chapter 1</a>:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">subprocess.Popen(['C:\\Users\\&lt;YOUR USERNAME&gt;\\AppData\\Local\\Programs\\</span><br class="calibre5" />
+<span class="codestrong1">Python\\Python38\\python.exe', 'hello.py'])</span><br class="calibre5" />
+&lt;subprocess.Popen object at 0x000000000331CF28&gt;</p>
+<p class="indent">Pass <span class="literal">Popen()</span> a list containing a string of the Python executable’s path and a string of the script’s filename. If the script you’re launching needs command line arguments, add them to the list after the script’s filename. The location of the Python executable on Windows is <em class="calibre7">C:\Users\&lt;YOUR USERNAME&gt;\AppData\Local\Programs\Python\Python38\python.exe</em>. On macOS, it is <em class="calibre7">/Library/Frameworks/Python.framework/Versions/3.8/bin/python3</em>. On Linux, it is <em class="calibre7">/usr/bin/python3.8</em>.</p>
+<p class="indent">Unlike importing the Python program as a module, when your Python program launches another Python program, the two are run in separate processes and will not be able to share each other’s variables.</p>
+<h4 class="h2" id="calibre_link-557"><strong class="calibre2"><em class="calibre9">Opening Files with Default Applications</em></strong></h4>
+<p class="noindent">Double-clicking a <em class="calibre7">.txt</em> file on your computer will automatically launch the application associated with the <em class="calibre7">.txt</em> file extension. Your computer will have several of these file extension associations set up already. Python can also open files this way with <span class="literal">Popen()</span>.</p>
+<p class="indent">Each operating system has a program that performs the equivalent of double-clicking a document file to open it. On Windows, this is the <span class="literal">start</span> program. On macOS, this is the <span class="literal">open</span> program. On Ubuntu Linux, this is the <span class="literal">see</span> program. Enter the following into the interactive shell, passing <span class="literal">'start'</span>, <span class="literal">'open'</span>, or <span class="literal">'see'</span> to <span class="literal">Popen()</span> depending on your system:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">fileObj = open('hello.txt', 'w')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">fileObj.write('Hello, world!')</span><br class="calibre5" />
+12<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">fileObj.close()</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">import subprocess</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">subprocess.Popen(['</span><span class="codeitalic1"><span class="codestrong1">start</span></span><span class="codestrong1">', 'hello.txt'], shell=True)</span></p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-873"></span>Here we write <span class="literal">Hello, world!</span> to a new <em class="calibre7">hello.txt</em> file. Then we call <span class="literal">Popen()</span>, passing it a list containing the program name (in this example, <span class="literal">'start'</span> for Windows) and the filename. We also pass the <span class="literal">shell=True</span> keyword argument, which is needed only on Windows. The operating system knows all of the file associations and can figure out that it should launch, say, <em class="calibre7">Notepad.exe</em> to handle the <em class="calibre7">hello.txt</em> file.</p>
+<p class="indent">On macOS, the <span class="literal">open</span> program is used for opening both document files and programs. Enter the following into the interactive shell if you have a Mac:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">subprocess.Popen(['open', '/Applications/Calculator.app/'])</span><br class="calibre5" />
+&lt;subprocess.Popen object at 0x10202ff98&gt;</p>
+<p class="indent">The Calculator app should open.</p>
+<h3 class="h1" id="calibre_link-558"><strong class="calibre2">Project: Simple Countdown Program</strong></h3>
+<p class="noindent">Just like it’s hard to find a simple stopwatch application, it can be hard to find a simple countdown application. Let’s write a countdown program that plays an alarm at the end of the countdown.</p>
+<p class="indent">At a high level, here’s what your program will do:</p>
+<ol class="calibre10">
+<li class="noindent1">Count down from 60.</li>
+<li class="noindent1">Play a sound file (<em class="calibre7">alarm.wav</em>) when the countdown reaches zero.</li>
+</ol>
+<p class="indent">This means your code will need to do the following:</p>
+<ol class="calibre10">
+<li class="noindent1">Pause for 1 second in between displaying each number in the countdown by calling <span class="literal">time.sleep()</span>.</li>
+<li class="noindent1">Call <span class="literal">subprocess.Popen()</span> to open the sound file with the default application.</li>
+</ol>
+<p class="indent">Open a new file editor tab and save it as <em class="calibre7">countdown.py</em>.</p>
+<h4 class="h2" id="calibre_link-559"><strong class="calibre2"><em class="calibre9">Step 1: Count Down</em></strong></h4>
+<p class="noindent">This program will require the <span class="literal">time</span> module for the <span class="literal">time.sleep()</span> function and the <span class="literal">subprocess</span> module for the <span class="literal">subprocess.Popen()</span> function. Enter the following code and save the file as <em class="calibre7">countdown.py</em>:</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;#! python3<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;# countdown.py - A simple countdown script.<br class="calibre5" />
+<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;import time, subprocess<br class="calibre5" />
+<br class="calibre5" />
+<span class="ent">➊</span> timeLeft = 60<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;while timeLeft &gt; 0:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➋</span> print(timeLeft, end='')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➌</span> time.sleep(1)<br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1081"></span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➍</span> timeLeft = timeLeft - 1<br class="calibre5" />
+<br class="calibre5" />
+&nbsp;&nbsp;# TODO: At the end of the countdown, play a sound file.</p>
+<p class="indent">After importing <span class="literal">time</span> and <span class="literal">subprocess</span>, make a variable called <span class="literal">timeLeft</span> to hold the number of seconds left in the countdown <span class="ent">➊</span>. It can start at 60&mdash;or you can change the value here to whatever you need, or even have it get set from a command line argument.</p>
+<p class="indent">In a <span class="literal">while</span> loop, you display the remaining count <span class="ent">➋</span>, pause for 1 second <span class="ent">➌</span>, and then decrement the <span class="literal">timeLeft</span> variable <span class="ent">➍</span> before the loop starts over again. The loop will keep looping as long as <span class="literal">timeLeft</span> is greater than <span class="literal">0</span>. After that, the countdown will be over.</p>
+<h4 class="h2" id="calibre_link-560"><strong class="calibre2"><em class="calibre9">Step 2: Play the Sound File</em></strong></h4>
+<p class="noindent">While there are third-party modules to play sound files of various formats, the quick and easy way is to just launch whatever application the user already uses to play sound files. The operating system will figure out from the <em class="calibre7">.wav</em> file extension which application it should launch to play the file. This <em class="calibre7">.wav</em> file could easily be some other sound file format, such as <em class="calibre7">.mp3</em> or <em class="calibre7">.ogg</em>.</p>
+<p class="indent">You can use any sound file that is on your computer to play at the end of the countdown, or you can download <em class="calibre7">alarm.wav</em> from <em class="calibre7"><a href="https://nostarch.com/automatestuff2/" class="calibre6">https://nostarch.com/automatestuff2/</a></em>.</p>
+<p class="indent">Add the following to your code:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# countdown.py - A simple countdown script.<br class="calibre5" />
+<br class="calibre5" />
+import time, subprocess<br class="calibre5" />
+<br class="calibre5" />
+--<span class="codeitalic1">snip</span>--<br class="calibre5" />
+<br class="calibre5" />
+<span class="codestrong1"># At the end of the countdown, play a sound file.</span><br class="calibre5" />
+<span class="codestrong1">subprocess.Popen(['start', 'alarm.wav'], shell=True)</span></p>
+<p class="indent">After the <span class="literal">while</span> loop finishes, <em class="calibre7">alarm.wav</em> (or the sound file you choose) will play to notify the user that the countdown is over. On Windows, be sure to include <span class="literal">'start'</span> in the list you pass to <span class="literal">Popen()</span> and pass the keyword argument <span class="literal">shell=True</span>. On macOS, pass <span class="literal">'open'</span> instead of <span class="literal">'start'</span> and remove <span class="literal">shell=True</span>.</p>
+<p class="indent">Instead of playing a sound file, you could save a text file somewhere with a message like <em class="calibre7">Break time is over!</em> and use <span class="literal">Popen()</span> to open it at the end of the countdown. This will effectively create a pop-up window with a message. Or you could use the <span class="literal">webbrowser.open()</span> function to open a specific website at the end of the countdown. Unlike some free countdown application you’d find online, your own countdown program’s alarm can be anything you want!</p>
+<h4 class="h2" id="calibre_link-561"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1067" class="calibre1"></span><strong class="calibre2"><em class="calibre9">Ideas for Similar Programs</em></strong></h4>
+<p class="noindent">A countdown is a simple delay before continuing the program’s execution. This can also be used for other applications and features, such as the following:</p>
+<ul class="calibre8">
+<li class="noindent1">Use <span class="literal">time.sleep()</span> to give the user a chance to press <small class="calibre11">CTRL</small>-C to cancel an action, such as deleting files. Your program can print a “Press <small class="calibre11">CTRL</small>-C to cancel” message and then handle any <span class="literal">KeyboardInterrupt</span> exceptions with <span class="literal">try</span> and <span class="literal">except</span> statements.</li>
+<li class="noindent1">For a long-term countdown, you can use <span class="literal">timedelta</span> objects to measure the number of days, hours, minutes, and seconds until some point (a birthday? an anniversary?) in the future.</li>
+</ul>
+<h3 class="h1" id="calibre_link-562"><strong class="calibre2">Summary</strong></h3>
+<p class="noindent">The Unix epoch (January 1, 1970, at midnight, UTC) is a standard reference time for many programming languages, including Python. While the <span class="literal">time.time()</span> function module returns an epoch timestamp (that is, a float value of the number of seconds since the Unix epoch), the <span class="literal">datetime</span> module is better for performing date arithmetic and formatting or parsing strings with date information.</p>
+<p class="indent">The <span class="literal">time.sleep()</span> function will block (that is, not return) for a certain number of seconds. It can be used to add pauses to your program. But if you want to schedule your programs to start at a certain time, the instructions at <em class="calibre7"><a href="https://nostarch.com/automatestuff2/" class="calibre6">https://nostarch.com/automatestuff2/</a></em> can tell you how to use the scheduler already provided by your operating system.</p>
+<p class="indent">The <span class="literal">threading</span> module is used to create multiple threads, which is useful when you need to download multiple files or do other tasks simultaneously. But make sure the thread reads and writes only local variables, or you might run into concurrency issues.</p>
+<p class="indent">Finally, your Python programs can launch other applications with the <span class="literal">subprocess.Popen()</span> function. Command line arguments can be passed to the <span class="literal">Popen()</span> call to open specific documents with the application. Alternatively, you can use the <span class="literal">start</span>, <span class="literal">open</span>, or <span class="literal">see</span> program with <span class="literal">Popen()</span> to use your computer’s file associations to automatically figure out which application to use to open a document. By using the other applications on your computer, your Python programs can leverage their capabilities for your automation needs.</p>
+<h3 class="h1" id="calibre_link-563"><strong class="calibre2">Practice Questions</strong></h3>
+<p class="question"><a id="calibre_link-1446" href="#calibre_link-1524" class="calibre6">1</a>. What is the Unix epoch?</p>
+<p class="question"><a id="calibre_link-1447" href="#calibre_link-1525" class="calibre6">2</a>. What function returns the number of seconds since the Unix epoch?</p>
+<p class="question"><a id="calibre_link-1448" href="#calibre_link-1526" class="calibre6">3</a>. How can you pause your program for exactly 5 seconds?</p>
+<p class="question"><a id="calibre_link-1449" href="#calibre_link-1527" class="calibre6">4</a>. <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1846"></span>What does the <span class="literal">round()</span> function return?</p>
+<p class="question"><a id="calibre_link-1450" href="#calibre_link-1528" class="calibre6">5</a>. What is the difference between a <span class="literal">datetime</span> object and a <span class="literal">timedelta</span> object?</p>
+<p class="question"><a id="calibre_link-1451" href="#calibre_link-1529" class="calibre6">6</a>. Using the <span class="literal">datetime</span> module, what day of the week was January 7, 2019?</p>
+<p class="question"><a id="calibre_link-1452" href="#calibre_link-1530" class="calibre6">7</a>. Say you have a function named <span class="literal">spam()</span>. How can you call this function and run the code inside it in a separate thread?</p>
+<p class="question"><a id="calibre_link-1453" href="#calibre_link-1531" class="calibre6">8</a>. What should you do to avoid concurrency issues with multiple threads?</p>
+<h3 class="h1" id="calibre_link-564"><strong class="calibre2">Practice Projects</strong></h3>
+<p class="noindent">For practice, write programs that do the following.</p>
+<h4 class="h2" id="calibre_link-565"><strong class="calibre2"><em class="calibre9">Prettified Stopwatch</em></strong></h4>
+<p class="noindent">Expand the stopwatch project from this chapter so that it uses the <span class="literal">rjust()</span> and <span class="literal">ljust()</span> string methods to “prettify” the output. (These methods were covered in <a href="#calibre_link-207" class="calibre6">Chapter 6</a>.) Instead of output such as this:</p>
+<p class="programs">Lap #1: 3.56 (3.56)<br class="calibre5" />
+Lap #2: 8.63 (5.07)<br class="calibre5" />
+Lap #3: 17.68 (9.05)<br class="calibre5" />
+Lap #4: 19.11 (1.43)</p>
+<p class="noindent">. . . the output will look like this:</p>
+<p class="programs">Lap # 1:&nbsp;&nbsp;&nbsp;3.56 (&nbsp;&nbsp;3.56)<br class="calibre5" />
+Lap # 2:&nbsp;&nbsp;&nbsp;8.63 (&nbsp;&nbsp;5.07)<br class="calibre5" />
+Lap # 3:&nbsp;&nbsp;17.68 (&nbsp;&nbsp;9.05)<br class="calibre5" />
+Lap # 4:&nbsp;&nbsp;19.11 (&nbsp;&nbsp;1.43)</p>
+<p class="indent">Note that you will need string versions of the <span class="literal">lapNum</span>, <span class="literal">lapTime</span>, and <span class="literal">totalTime</span> integer and float variables in order to call the string methods on them.</p>
+<p class="indent">Next, use the <span class="literal">pyperclip</span> module introduced in <a href="#calibre_link-207" class="calibre6">Chapter 6</a> to copy the text output to the clipboard so the user can quickly paste the output to a text file or email.</p>
+<h4 class="h2" id="calibre_link-566"><strong class="calibre2"><em class="calibre9">Scheduled Web Comic Downloader</em></strong></h4>
+<p class="noindent">Write a program that checks the websites of several web comics and automatically downloads the images if the comic was updated since the program’s last visit. Your operating system’s scheduler (Scheduled Tasks on Windows, launchd on macOS, and cron on Linux) can run your Python program once a day. The Python program itself can download the comic and then copy it to your desktop so that it is easy to find. This will free you from having to check the website yourself to see whether it has updated. (A list of web comics is available at <em class="calibre7"><a href="https://nostarch.com/automatestuff2/" class="calibre6">https://nostarch.com/automatestuff2/</a></em>.)<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1847"></span></p>
+</div>
+
+
+<div><center><a href="../chapter16"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="../chapter18"><img src="/images/next.png" /></a></center></div>
+
+{% endblock %}

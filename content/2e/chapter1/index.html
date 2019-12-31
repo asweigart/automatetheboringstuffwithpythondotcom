@@ -1,0 +1,464 @@
+{% extends "secondeditionbase.html" %}
+{% set title = 'Automate the Boring Stuff with Python' %}
+{% block content %}
+
+
+<div><center><a href="../chapter0"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="../chapter2"><img src="/images/next.png" /></a></center></div>
+
+<div class="calibre" id="calibre_link-1651">
+<h2 class="h2b" id="calibre_link-89"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1016" class="calibre1"></span><strong class="calibre2"><span class="big">1</span><br class="calibre12" />PYTHON BASICS</strong></h2>
+<div class="image"><img src="../images/000085.jpg" alt="Image" class="calibre3" /></div>
+<p class="noindent">The Python programming language has a wide range of syntactical constructions, standard library functions, and interactive development environment features. Fortunately, you can ignore most of that; you just need to learn enough to write some handy little programs.</p>
+<p class="indent">You will, however, have to learn some basic programming concepts before you can do anything. Like a wizard in training, you might think these concepts seem arcane and tedious, but with some knowledge and practice, you’ll be able to command your computer like a magic wand and perform incredible feats.</p>
+<p class="indent">This chapter has a few examples that encourage you to type into the <em class="calibre7">interactive shell</em>, also called the <em class="calibre7">REPL</em> (Read-Evaluate-Print Loop), which lets you run (or <em class="calibre7">execute</em>) Python instructions one at a time and instantly shows you the results. Using the interactive shell is great for learning what basic Python instructions do, so give it a try as you follow along. You’ll remember the things you do much better than the things you only read.</p>
+<h3 class="h1" id="calibre_link-90"><strong class="calibre2"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-875" class="calibre1"></span>Entering Expressions into the Interactive Shell</strong></h3>
+<p class="noindent">You can run the interactive shell by launching the Mu editor, which you should have downloaded when going through the setup instructions in the Preface. On Windows, open the Start menu, type “Mu,” and open the Mu app. On macOS, open your Applications folder and double-click <strong class="calibre4">Mu</strong>. Click the <strong class="calibre4">New</strong> button and save an empty file as <em class="calibre7">blank.py</em>. When you run this blank file by clicking the <strong class="calibre4">Run</strong> button or pressing <small class="calibre11">F5</small>, it will open the interactive shell, which will open as a new pane that opens at the bottom of the Mu editor’s window. You should see a <span class="literal">&gt;&gt;&gt;</span> prompt in the interactive shell.</p>
+<p class="indent">Enter <span class="codestrong">2 + 2</span> at the prompt to have Python do some simple math. The Mu window should now look like this:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">2 + 2</span><br class="calibre5" />
+4<br class="calibre5" />
+&gt;&gt;&gt;</p>
+<p class="indent">In Python, <span class="literal">2 + 2</span> is called an <em class="calibre7">expression</em>, which is the most basic kind of programming instruction in the language. Expressions consist of <em class="calibre7">values</em> (such as <span class="literal">2</span>) and <em class="calibre7">operators</em> (such as <span class="literal">+</span>), and they can always <em class="calibre7">evaluate</em> (that is, reduce) down to a single value. That means you can use expressions anywhere in Python code that you could also use a value.</p>
+<p class="indent">In the previous example, <span class="literal">2 + 2</span> is evaluated down to a single value, <span class="literal">4</span>. A single value with no operators is also considered an expression, though it evaluates only to itself, as shown here:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">2</span><br class="calibre5" />
+2</p>
+<div class="sidebar">
+<p class="sidebart"><strong class="calibre4">ERRORS ARE OKAY!</strong></p>
+<p class="spara">Programs will crash if they contain code the computer can’t understand, which will cause Python to show an error message. An error message won’t break your computer, though, so don’t be afraid to make mistakes. A <em class="calibre7">crash</em> just means the program stopped running unexpectedly.</p>
+<p class="sparai">If you want to know more about an error, you can search for the exact error message text online for more information. You can also check out the resources at <em class="calibre7"><a href="https://nostarch.com/automatestuff2/" class="calibre6">https://nostarch.com/automatestuff2/</a></em> to see a list of common Python error messages and their meanings.</p>
+</div>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-18"></span>You can use plenty of other operators in Python expressions, too. For example, <a href="#calibre_link-1652" class="calibre6">Table 1-1</a> lists all the math operators in Python.</p>
+<p class="tabcap" id="calibre_link-1652"><strong class="calibre4">Table 1-1:</strong> Math Operators from Highest to Lowest Precedence</p>
+<table class="topbot-d">
+<colgroup class="calibre13">
+<col class="calibre14"></col>
+<col class="calibre14"></col>
+<col class="calibre14"></col>
+<col class="calibre14"></col>
+</colgroup>
+<thead class="calibre15">
+<tr class="calibre16">
+<td class="table-h"><p class="tab_th"><strong class="calibre4">Operator</strong></p></td>
+<td class="table-h"><p class="tab_th"><strong class="calibre4">Operation</strong></p></td>
+<td class="table-h"><p class="tab_th"><strong class="calibre4">Example</strong></p></td>
+<td class="table-h"><p class="tab_th"><strong class="calibre4">Evaluates to . . .</strong></p></td>
+</tr>
+</thead>
+<tbody class="calibre17">
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">**</span></p></td>
+<td class="table-b"><p class="taba">Exponent</p></td>
+<td class="table-b"><p class="taba"><span class="literal">2 ** 3</span></p></td>
+<td class="table-b"><p class="taba"><span class="literal">8</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">%</span></p></td>
+<td class="table-v"><p class="taba">Modulus/remainder</p></td>
+<td class="table-v"><p class="taba"><span class="literal">22 % 8</span></p></td>
+<td class="table-v"><p class="taba"><span class="literal">6</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">//</span></p></td>
+<td class="table-b"><p class="taba">Integer division/floored quotient</p></td>
+<td class="table-b"><p class="taba"><span class="literal">22 // 8</span></p></td>
+<td class="table-b"><p class="taba"><span class="literal">2</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">/</span></p></td>
+<td class="table-v"><p class="taba">Division</p></td>
+<td class="table-v"><p class="taba"><span class="literal">22 / 8</span></p></td>
+<td class="table-v"><p class="taba"><span class="literal">2.75</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">*</span></p></td>
+<td class="table-b"><p class="taba">Multiplication</p></td>
+<td class="table-b"><p class="taba"><span class="literal">3 * 5</span></p></td>
+<td class="table-b"><p class="taba"><span class="literal">15</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">-</span></p></td>
+<td class="table-v"><p class="taba">Subtraction</p></td>
+<td class="table-v"><p class="taba"><span class="literal">5 - 2</span></p></td>
+<td class="table-v"><p class="taba"><span class="literal">3</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-ba"><p class="taba"><span class="literal">+</span></p></td>
+<td class="table-ba"><p class="taba">Addition</p></td>
+<td class="table-ba"><p class="taba"><span class="literal">2 + 2</span></p></td>
+<td class="table-ba"><p class="taba"><span class="literal">4</span></p></td>
+</tr>
+</tbody>
+</table>
+<p class="indent">The <em class="calibre7">order of operations</em> (also called <em class="calibre7">precedence</em>) of Python math operators is similar to that of mathematics. The <span class="literal">**</span> operator is evaluated first; the <span class="literal">*</span>, <span class="literal">/</span>, <span class="literal">//</span>, and <span class="literal">%</span> operators are evaluated next, from left to right; and the <span class="literal">+</span> and <span class="literal">-</span> operators are evaluated last (also from left to right). You can use parentheses to override the usual precedence if you need to. Whitespace in between the operators and values doesn’t matter for Python (except for the indentation at the beginning of the line), but a single space is convention. Enter the following expressions into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">2 + 3 * 6</span><br class="calibre5" />
+20<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">(2 + 3) * 6</span><br class="calibre5" />
+30<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">48565878 * 578453</span><br class="calibre5" />
+28093077826734<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">2 ** 8</span><br class="calibre5" />
+256<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">23 / 7</span><br class="calibre5" />
+3.2857142857142856<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">23 // 7</span><br class="calibre5" />
+3<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">23 % 7</span><br class="calibre5" />
+2<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2</span><br class="calibre5" />
+4<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">(5 - 1) * ((7 + 1) / (3 - 1))</span><br class="calibre5" />
+16.0</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1083"></span>In each case, you as the programmer must enter the expression, but Python does the hard part of evaluating it down to a single value. Python will keep evaluating parts of the expression until it becomes a single value, as shown here:</p>
+<div class="imagec"><img src="../images/000066.jpg" alt="image" class="calibre3" /></div>
+<p class="indentb">These rules for putting operators and values together to form expressions are a fundamental part of Python as a programming language, just like the grammar rules that help us communicate. Here’s an example:</p>
+<p class="hang"><strong class="calibre4">This is a grammatically correct English sentence.</strong></p>
+<p class="hang"><strong class="calibre4">This grammatically is sentence not English correct a.</strong></p>
+<p class="indentt">The second line is difficult to parse because it doesn’t follow the rules of English. Similarly, if you enter a bad Python instruction, Python won’t be able to understand it and will display a <span class="literal">SyntaxError</span> error message, as shown here:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">5 +</span><br class="calibre5" />
+&nbsp;&nbsp;File "&lt;stdin&gt;", line 1<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;5 +<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^<br class="calibre5" />
+SyntaxError: invalid syntax<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">42 + 5 + * 2</span><br class="calibre5" />
+&nbsp;&nbsp;File "&lt;stdin&gt;", line 1<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;42 + 5 + * 2<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^<br class="calibre5" />
+SyntaxError: invalid syntax</p>
+<p class="indent">You can always test to see whether an instruction works by entering it into the interactive shell. Don’t worry about breaking the computer: the worst that could happen is that Python responds with an error message. Professional software developers get error messages while writing code all the time.</p>
+<h3 class="h1" id="calibre_link-91"><strong class="calibre2"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-768" class="calibre1"></span>The Integer, Floating-Point, and String Data Types</strong></h3>
+<p class="noindent">Remember that expressions are just values combined with operators, and they always evaluate down to a single value. A <em class="calibre7">data type</em> is a category for values, and every value belongs to exactly one data type. The most common data types in Python are listed in <a href="#calibre_link-1653" class="calibre6">Table 1-2</a>. The values <span class="literal">-2</span> and <span class="literal">30</span>, for example, are said to be <em class="calibre7">integer</em> values. The integer (or <em class="calibre7">int</em>) data type indicates values that are whole numbers. Numbers with a decimal point, such as <span class="literal">3.14</span>, are called <em class="calibre7">floating-point numbers</em> (or <em class="calibre7">floats</em>). Note that even though the value <span class="literal">42</span> is an integer, the value <span class="literal">42.0</span> would be a floating-point number.</p>
+<p class="tabcap" id="calibre_link-1653"><strong class="calibre4">Table 1-2:</strong> Common Data Types</p>
+<table class="topbot-d">
+<colgroup class="calibre13">
+<col class="calibre18"></col>
+<col class="calibre18"></col>
+</colgroup>
+<thead class="calibre15">
+<tr class="calibre16">
+<td class="table-h"><p class="tab_th"><strong class="calibre4">Data type</strong></p></td>
+<td class="table-h"><p class="tab_th"><strong class="calibre4">Examples</strong></p></td>
+</tr>
+</thead>
+<tbody class="calibre17">
+<tr class="calibre16">
+<td class="table-b"><p class="taba">Integers</p></td>
+<td class="table-b"><p class="taba"><span class="literal">-2</span>, <span class="literal">-1</span>, <span class="literal">0</span>, <span class="literal">1</span>, <span class="literal">2</span>, <span class="literal">3</span>, <span class="literal">4</span>, <span class="literal">5</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba">Floating-point numbers</p></td>
+<td class="table-b"><p class="taba"><span class="literal">-1.25</span>, <span class="literal">-1.0</span>, <span class="literal">-0.5</span>, <span class="literal">0.0</span>, <span class="literal">0.5</span>, <span class="literal">1.0</span>, <span class="literal">1.25</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-ba"><p class="taba">Strings</p></td>
+<td class="table-ba"><p class="taba"><span class="literal">'a'</span>, <span class="literal">'aa'</span>, <span class="literal">'aaa'</span>, <span class="literal">'Hello!'</span>, <span class="literal">'11 cats'</span></p></td>
+</tr>
+</tbody>
+</table>
+<p class="indent">Python programs can also have text values called <em class="calibre7">strings</em>, or <em class="calibre7">strs</em> (pronounced “stirs”). Always surround your string in single quote (<span class="literal">'</span>) characters (as in <span class="literal">'Hello'</span> or <span class="literal">'Goodbye cruel world!'</span>) so Python knows where the string begins and ends. You can even have a string with no characters in it, <span class="literal">''</span>, called a <em class="calibre7">blank string</em> or an <em class="calibre7">empty string</em>. Strings are explained in greater detail in <a href="#calibre_link-152" class="calibre6">Chapter 4</a>.</p>
+<p class="indent">If you ever see the error message <span class="literal">SyntaxError: EOL while scanning string literal</span>, you probably forgot the final single quote character at the end of the string, such as in this example:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">'Hello, world!</span><br class="calibre5" />
+SyntaxError: EOL while scanning string literal</p>
+<h3 class="h1" id="calibre_link-92"><strong class="calibre2">String Concatenation and Replication</strong></h3>
+<p class="noindent">The meaning of an operator may change based on the data types of the values next to it. For example, <span class="literal">+</span> is the addition operator when it operates on two integers or floating-point values. However, when <span class="literal">+</span> is used on two string values, it joins the strings as the <em class="calibre7">string concatenation</em> operator. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">'Alice' + 'Bob'</span><br class="calibre5" />
+'AliceBob'</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1039"></span>The expression evaluates down to a single, new string value that combines the text of the two strings. However, if you try to use the <span class="literal">+</span> operator on a string and an integer value, Python will not know how to handle this, and it will display an error message.</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">'Alice' + 42</span><br class="calibre5" />
+Traceback (most recent call last):<br class="calibre5" />
+&nbsp;&nbsp;File "&lt;pyshell#0&gt;", line 1, in &lt;module&gt;<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;'Alice' + 42<br class="calibre5" />
+TypeError: can only concatenate str (not "int") to str</p>
+<p class="indent">The error message <span class="literal">can only concatenate str (not "int") to str</span> means that Python thought you were trying to concatenate an integer to the string <span class="literal">'Alice'</span>. Your code will have to explicitly convert the integer to a string because Python cannot do this automatically. (Converting data types will be explained in “<a href="#calibre_link-97" class="calibre6">Dissecting Your Program</a>” on <a href="#calibre_link-762" class="calibre6">page 13</a> when we talk about the <span class="literal">str()</span>, <span class="literal">int()</span>, and <span class="literal">float()</span> functions.)</p>
+<p class="indent">The <span class="literal">*</span> operator multiplies two integer or floating-point values. But when the <span class="literal">*</span> operator is used on one string value and one integer value, it becomes the <em class="calibre7">string replication</em> operator. Enter a string multiplied by a number into the interactive shell to see this in action.</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">'Alice' * 5</span><br class="calibre5" />
+'AliceAliceAliceAliceAlice'</p>
+<p class="indent">The expression evaluates down to a single string value that repeats the original string a number of times equal to the integer value. String replication is a useful trick, but it’s not used as often as string concatenation.</p>
+<p class="indent">The <span class="literal">*</span> operator can be used with only two numeric values (for multiplication), or one string value and one integer value (for string replication). Otherwise, Python will just display an error message, like the following:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">'Alice' * 'Bob'</span><br class="calibre5" />
+Traceback (most recent call last):<br class="calibre5" />
+&nbsp;&nbsp;File "&lt;pyshell#32&gt;", line 1, in &lt;module&gt;<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;'Alice' * 'Bob'<br class="calibre5" />
+TypeError: can't multiply sequence by non-int of type 'str'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'Alice' * 5.0</span><br class="calibre5" />
+Traceback (most recent call last):<br class="calibre5" />
+&nbsp;&nbsp;File "&lt;pyshell#33&gt;", line 1, in &lt;module&gt;<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;'Alice' * 5.0<br class="calibre5" />
+TypeError: can't multiply sequence by non-int of type 'float'</p>
+<p class="indent">It makes sense that Python wouldn’t understand these expressions: you can’t multiply two words, and it’s hard to replicate an arbitrary string a fractional number of times.</p>
+<h3 class="h1" id="calibre_link-93"><strong class="calibre2"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-740" class="calibre1"></span>Storing Values in Variables</strong></h3>
+<p class="noindent">A <em class="calibre7">variable</em> is like a box in the computer’s memory where you can store a single value. If you want to use the result of an evaluated expression later in your program, you can save it inside a variable.</p>
+<h4 class="h2" id="calibre_link-94"><strong class="calibre2"><em class="calibre9">Assignment Statements</em></strong></h4>
+<p class="noindent">You’ll store values in variables with an <em class="calibre7">assignment statement</em>. An assignment statement consists of a variable name, an equal sign (called the <em class="calibre7">assignment operator</em>), and the value to be stored. If you enter the assignment statement <span class="literal">spam = 42</span>, then a variable named <span class="literal">spam</span> will have the integer value <span class="literal">42</span> stored in it.</p>
+<p class="indent">Think of a variable as a labeled box that a value is placed in, as in <a href="#calibre_link-1654" class="calibre6">Figure 1-1</a>.</p>
+<div class="image1"><a id="calibre_link-1654" class="calibre6"></a><img src="../images/000026.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 1-1: <span class="literal1">spam = 42</span> is like telling the program, “The variable <span class="literal1">spam</span> now has the integer value <span class="literal1">42</span> in it.”</em></p>
+<p class="indent">For example, enter the following into the interactive shell:</p>
+<p class="programs"><span class="ent">➊</span> &gt;&gt;&gt; <span class="codestrong1">spam = 40</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">spam</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;40<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">eggs = 2</span><br class="calibre5" />
+<span class="ent">➋</span> &gt;&gt;&gt; <span class="codestrong1">spam + eggs</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;42<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">spam + eggs + spam</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;82<br class="calibre5" />
+<span class="ent">➌</span> &gt;&gt;&gt; <span class="codestrong1">spam = spam + 2</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">spam</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;42</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1044"></span>A variable is <em class="calibre7">initialized</em> (or created) the first time a value is stored in it <span class="ent">➊</span>. After that, you can use it in expressions with other variables and values <span class="ent">➋</span>. When a variable is assigned a new value <span class="ent">➌</span>, the old value is forgotten, which is why <span class="literal">spam</span> evaluated to <span class="literal">42</span> instead of <span class="literal">40</span> at the end of the example. This is called <em class="calibre7">overwriting</em> the variable. Enter the following code into the interactive shell to try overwriting a string:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">spam = 'Hello'</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spam</span><br class="calibre5" />
+'Hello'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spam = 'Goodbye'</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spam</span><br class="calibre5" />
+'Goodbye'</p>
+<p class="indent">Just like the box in <a href="#calibre_link-1655" class="calibre6">Figure 1-2</a>, the <span class="literal">spam</span> variable in this example stores <span class="literal">'Hello'</span> until you replace the string with <span class="literal">'Goodbye'</span>.</p>
+<div class="image1"><a id="calibre_link-1655" class="calibre6"></a><img src="../images/000097.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 1-2: When a new value is assigned to a variable, the old one is forgotten.</em></p>
+<h4 class="h2" id="calibre_link-95"><strong class="calibre2"><em class="calibre9">Variable Names</em></strong></h4>
+<p class="noindent">A good variable name describes the data it contains. Imagine that you moved to a new house and labeled all of your moving boxes as <em class="calibre7">Stuff</em>. You’d never find anything! Most of this book’s examples (and Python’s documentation) use generic variable names like <span class="literal">spam</span>, <span class="literal">eggs</span>, and <span class="literal">bacon</span>, which come from the Monty Python “Spam” sketch. But in your programs, a descriptive name will help make your code more readable.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-772"></span>Though you can name your variables almost anything, Python does have some naming restrictions. <a href="#calibre_link-1656" class="calibre6">Table 1-3</a> has examples of legal variable names. You can name a variable anything as long as it obeys the following three rules:</p>
+<ul class="calibre8">
+<li class="noindent1">It can be only one word with no spaces.</li>
+<li class="noindent1">It can use only letters, numbers, and the underscore (<span class="literal">_</span>) character.</li>
+<li class="noindent1">It can’t begin with a number.</li>
+</ul>
+<p class="tabcap" id="calibre_link-1656"><strong class="calibre4">Table 1-3:</strong> Valid and Invalid Variable Names</p>
+<table class="topbot-d">
+<colgroup class="calibre13">
+<col class="calibre18"></col>
+<col class="calibre18"></col>
+</colgroup>
+<thead class="calibre15">
+<tr class="calibre16">
+<td class="table-h"><p class="tab_th"><strong class="calibre4">Valid variable names</strong></p></td>
+<td class="table-h"><p class="tab_th"><strong class="calibre4">Invalid variable names</strong></p></td>
+</tr>
+</thead>
+<tbody class="calibre17">
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">current_balance</span></p></td>
+<td class="table-b"><p class="taba"><span class="literal">current-balance</span> (hyphens are not allowed)</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">currentBalance</span></p></td>
+<td class="table-v"><p class="taba"><span class="literal">current balance</span> (spaces are not allowed)</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">account4</span></p></td>
+<td class="table-b"><p class="taba"><span class="literal">4account</span> (can’t begin with a number)</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">_42</span></p></td>
+<td class="table-v"><p class="taba"><span class="literal">42</span> (can’t begin with a number)</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">TOTAL_SUM</span></p></td>
+<td class="table-b"><p class="taba"><span class="literal">TOTAL_$UM</span> (special characters like <span class="literal">$</span> are not allowed)</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-va"><p class="taba"><span class="literal">hello</span></p></td>
+<td class="table-va"><p class="taba"><span class="literal">'hello'</span> (special characters like <span class="literal">'</span> are not allowed)</p></td>
+</tr>
+</tbody>
+</table>
+<p class="indent">Variable names are case-sensitive, meaning that <span class="literal">spam</span>, <span class="literal">SPAM</span>, <span class="literal">Spam</span>, and <span class="literal">sPaM</span> are four different variables. Though <span class="literal">Spam</span> is a valid variable you can use in a program, it is a Python convention to start your variables with a lowercase letter.</p>
+<p class="indent">This book uses <em class="calibre7">camelcase</em> for variable names instead of underscores; that is, variables <span class="literal">lookLikeThis</span> instead of <span class="literal">looking_like_this</span>. Some experienced programmers may point out that the official Python code style, PEP 8, says that underscores should be used. I unapologetically prefer camelcase and point to the “A Foolish Consistency Is the Hobgoblin of Little Minds” section in PEP 8 itself:</p>
+<p class="bq">Consistency with the style guide is important. But most importantly: know when to be inconsistent&mdash;sometimes the style guide just doesn’t apply. When in doubt, use your best judgment.</p>
+<h3 class="h1" id="calibre_link-96"><strong class="calibre2">Your First Program</strong></h3>
+<p class="noindent">While the interactive shell is good for running Python instructions one at a time, to write entire Python programs, you’ll type the instructions into the file editor. The <em class="calibre7">file editor</em> is similar to text editors such as Notepad or TextMate, but it has some features specifically for entering source code. To open a new file in Mu, click the <strong class="calibre4">New</strong> button on the top row.</p>
+<p class="indent">The window that appears should contain a cursor awaiting your input, but it’s different from the interactive shell, which runs Python instructions <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1706"></span>as soon as you press <small class="calibre11">ENTER</small>. The file editor lets you type in many instructions, save the file, and run the program. Here’s how you can tell the difference between the two:</p>
+<ul class="calibre8">
+<li class="noindent1">The interactive shell window will always be the one with the <span class="literal">&gt;&gt;&gt;</span> prompt.</li>
+<li class="noindent1">The file editor window will not have the <span class="literal">&gt;&gt;&gt;</span> prompt.</li>
+</ul>
+<p class="indent">Now it’s time to create your first program! When the file editor window opens, enter the following into it:</p>
+<p class="programs"><span class="ent">➊</span> # This program says hello and asks for my name.<br class="calibre5" /><br class="calibre5" />
+<span class="ent">➋</span> print('Hello, world!')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;print('What is your name?')&nbsp;&nbsp;&nbsp;&nbsp;# ask for their name<br class="calibre5" />
+<span class="ent">➌</span> myName = input()<br class="calibre5" />
+<span class="ent">➍</span> print('It is good to meet you, ' + myName)<br class="calibre5" />
+<span class="ent">➎</span> print('The length of your name is:')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;print(len(myName))<br class="calibre5" />
+<span class="ent">➏</span> print('What is your age?')&nbsp;&nbsp;&nbsp;&nbsp;# ask for their age<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;myAge = input()<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;print('You will be ' + str(int(myAge) + 1) + ' in a year.')</p>
+<p class="indent">Once you’ve entered your source code, save it so that you won’t have to retype it each time you start Mu. Click the <strong class="calibre4">Save</strong> button, enter <em class="calibre7">hello.py</em> in the File Name field, and then click <strong class="calibre4">Save</strong>.</p>
+<p class="indent">You should save your programs every once in a while as you type them. That way, if the computer crashes or you accidentally exit Mu, you won’t lose the code. As a shortcut, you can press <small class="calibre11">CTRL</small>-S on Windows and Linux or <img src="../images/000064.jpg" alt="image" class="calibre3" />-S on macOS to save your file.</p>
+<p class="indent">Once you’ve saved, let’s run our program. Press the <strong class="calibre4">F5</strong> key. Your program should run in the interactive shell window. Remember, you have to press <strong class="calibre4">F5</strong> from the file editor window, not the interactive shell window. Enter your name when your program asks for it. The program’s output in the interactive shell should look something like this:</p>
+<p class="programs">Python 3.7.0b4 (v3.7.0b4:eb96c37699, May&nbsp;&nbsp;2 2018, 19:02:22) [MSC v.1913 64 bit<br class="calibre5" />
+(AMD64)] on win32<br class="calibre5" />
+Type "copyright", "credits" or "license()" for more information.<br class="calibre5" />
+&gt;&gt;&gt; ================================ RESTART ================================<br class="calibre5" />
+&gt;&gt;&gt;<br class="calibre5" />
+Hello, world!<br class="calibre5" />
+What is your name?<br class="calibre5" />
+<span class="codestrong1">Al</span><br class="calibre5" />
+It is good to meet you, Al<br class="calibre5" />
+The length of your name is:<br class="calibre5" />
+2<br class="calibre5" />
+What is your age?<br class="calibre5" />
+<span class="codestrong1">4</span><br class="calibre5" />
+You will be 5 in a year.<br class="calibre5" />
+&gt;&gt;&gt;</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-762"></span>When there are no more lines of code to execute, the Python program <em class="calibre7">terminates</em>; that is, it stops running. (You can also say that the Python program <em class="calibre7">exits</em>.)</p>
+<p class="indent">You can close the file editor by clicking the X at the top of the window. To reload a saved program, select <strong class="calibre4">File</strong>▸<strong class="calibre4">Open...</strong> from the menu. Do that now, and in the window that appears, choose <em class="calibre7"><strong class="calibre4">hello.py</strong></em> and click the <strong class="calibre4">Open</strong> button. Your previously saved <em class="calibre7">hello.py</em> program should open in the file editor window.</p>
+<p class="indent">You can view the execution of a program using the Python Tutor visualization tool at <em class="calibre7"><a href="http://pythontutor.com/" class="calibre6">http://pythontutor.com/</a></em>. You can see the execution of this particular program at <em class="calibre7"><a href="https://autbor.com/hellopy/" class="calibre6">https://autbor.com/hellopy/</a></em>. Click the forward button to move through each step of the program’s execution. You’ll be able to see how the variables’ values and the output change.</p>
+<h3 class="h1" id="calibre_link-97"><strong class="calibre2">Dissecting Your Program</strong></h3>
+<p class="noindent">With your new program open in the file editor, let’s take a quick tour of the Python instructions it uses by looking at what each line of code does.</p>
+<h4 class="h2" id="calibre_link-98"><strong class="calibre2"><em class="calibre9">Comments</em></strong></h4>
+<p class="noindent">The following line is called a <em class="calibre7">comment</em>.</p>
+<p class="programs"><span class="ent">➊</span> # This program says hello and asks for my name.</p>
+<p class="indent">Python ignores comments, and you can use them to write notes or remind yourself what the code is trying to do. Any text for the rest of the line following a hash mark (<span class="literal">#</span>) is part of a comment.</p>
+<p class="indent">Sometimes, programmers will put a <span class="literal">#</span> in front of a line of code to temporarily remove it while testing a program. This is called <em class="calibre7">commenting out</em> code, and it can be useful when you’re trying to figure out why a program isn’t working. You can remove the <span class="literal">#</span> later when you are ready to put the line back in.</p>
+<p class="indent">Python also ignores the blank line after the comment. You can add as many blank lines to your program as you want. This can make your code easier to read, like paragraphs in a book.</p>
+<h4 class="h2" id="calibre_link-99"><strong class="calibre2"><em class="calibre9">The print() Function</em></strong></h4>
+<p class="noindent">The <span class="literal">print()</span> function displays the string value inside its parentheses on the screen.</p>
+<p class="programs"><span class="ent">➋</span> print('Hello, world!')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;print('What is your name?') # ask for their name</p>
+<p class="indent">The line <span class="literal">print('Hello, world!')</span> means “Print out the text in the string <span class="literal">'Hello, world!'</span>.” When Python executes this line, you say that Python is <em class="calibre7">calling</em> the <span class="literal">print()</span> function and the string value is being <em class="calibre7">passed</em> to the function. A value that is passed to a function call is an <em class="calibre7">argument</em>. Notice that <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-764"></span>the quotes are not printed to the screen. They just mark where the string begins and ends; they are not part of the string value.</p>
+<div class="note">
+<p class="notet"><strong class="calibre2"><span class="notes">NOTE</span></strong></p>
+<p class="notep"><em class="calibre7">You can also use this function to put a blank line on the screen; just call <span class="literal">print()</span> with nothing in between the parentheses.</em></p>
+</div>
+<p class="indent">When you write a function name, the opening and closing parentheses at the end identify it as the name of a function. This is why in this book, you’ll see <span class="literal">print()</span> rather than <span class="literal">print</span>. <a href="#calibre_link-132" class="calibre6">Chapter 3</a> describes functions in more detail.</p>
+<h4 class="h2" id="calibre_link-100"><strong class="calibre2"><em class="calibre9">The input() Function</em></strong></h4>
+<p class="noindent">The <span class="literal">input()</span> function waits for the user to type some text on the keyboard and press <small class="calibre11">ENTER</small>.</p>
+<p class="programs"><span class="ent">➌</span> myName = input()</p>
+<p class="indent">This function call evaluates to a string equal to the user’s text, and the line of code assigns the <span class="literal">myName</span> variable to this string value.</p>
+<p class="indent">You can think of the <span class="literal">input()</span> function call as an expression that evaluates to whatever string the user typed in. If the user entered <span class="literal">'Al'</span>, then the expression would evaluate to <span class="literal">myName = 'Al'</span>.</p>
+<p class="indent">If you call <span class="literal">input()</span> and see an error message, like <span class="literal">NameError: name 'Al' is not defined</span>, the problem is that you’re running the code with Python 2 instead of Python 3.</p>
+<h4 class="h2" id="calibre_link-101"><strong class="calibre2"><em class="calibre9">Printing the User’s Name</em></strong></h4>
+<p class="noindent">The following call to <span class="literal">print()</span> actually contains the expression <span class="literal">'It is good to meet you, ' + myName</span> between the parentheses.</p>
+<p class="programs"><span class="ent">➍</span> print('It is good to meet you, ' + myName)</p>
+<p class="indent">Remember that expressions can always evaluate to a single value. If <span class="literal">'Al'</span> is the value stored in <span class="literal">myName</span> on line <span class="ent">➌</span>, then this expression evaluates to <span class="literal">'It is good to meet you, Al'</span>. This single string value is then passed to <span class="literal">print()</span>, which prints it on the screen.</p>
+<h4 class="h2" id="calibre_link-102"><strong class="calibre2"><em class="calibre9">The len() Function</em></strong></h4>
+<p class="noindent">You can pass the <span class="literal">len()</span> function a string value (or a variable containing a string), and the function evaluates to the integer value of the number of characters in that string.</p>
+<p class="programs"><span class="ent">➎</span> print('The length of your name is:')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;print(len(myName))</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-973"></span>Enter the following into the interactive shell to try this:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">len('hello')</span><br class="calibre5" />
+5<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">len('My very energetic monster just scarfed nachos.')</span><br class="calibre5" />
+46<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">len('')</span><br class="calibre5" />
+0</p>
+<p class="indent">Just like those examples, <span class="literal">len(myName)</span> evaluates to an integer. It is then passed to <span class="literal">print()</span> to be displayed on the screen. The <span class="literal">print()</span> function allows you to pass it either integer values or string values, but notice the error that shows up when you type the following into the interactive shell:</p>
+<p class="programs">&nbsp;&gt;&gt;&gt; <span class="codestrong1">print('I am ' + 29 + ' years old.')</span><br class="calibre5" />
+Traceback (most recent call last):<br class="calibre5" />
+&nbsp;&nbsp;File "&lt;pyshell#6&gt;", line 1, in &lt;module&gt;<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('I am ' + 29 + ' years old.')<br class="calibre5" />
+TypeError: can only concatenate str (not "int") to str</p>
+<p class="indent">The <span class="literal">print()</span> function isn’t causing that error, but rather it’s the expression you tried to pass to <span class="literal">print()</span>. You get the same error message if you type the expression into the interactive shell on its own.</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">'I am ' + 29 + ' years old.'</span><br class="calibre5" />
+Traceback (most recent call last):<br class="calibre5" />
+&nbsp;&nbsp;File "&lt;pyshell#7&gt;", line 1, in &lt;module&gt;<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;'I am ' + 29 + ' years old.'<br class="calibre5" />
+TypeError: can only concatenate str (not "int") to str</p>
+<p class="indent">Python gives an error because the <span class="literal">+</span> operator can only be used to add two integers together or concatenate two strings. You can’t add an integer to a string, because this is ungrammatical in Python. You can fix this by using a string version of the integer instead, as explained in the next section.</p>
+<h4 class="h2" id="calibre_link-103"><strong class="calibre2"><em class="calibre9">The str(), int(), and float() Functions</em></strong></h4>
+<p class="noindent">If you want to concatenate an integer such as <span class="literal">29</span> with a string to pass to <span class="literal">print()</span>, you’ll need to get the value <span class="literal">'29'</span>, which is the string form of <span class="literal">29</span>. The <span class="literal">str()</span> function can be passed an integer value and will evaluate to a string value version of the integer, as follows:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">str(29)</span><br class="calibre5" />
+'29'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">print('I am ' + str(29) + ' years old.')</span><br class="calibre5" />
+I am 29 years old.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1707"></span>Because <span class="literal">str(29)</span> evaluates to <span class="literal">'29'</span>, the expression <span class="literal">'I am ' + str(29) + ' years old.'</span> evaluates to <span class="literal">'I am ' + '29' + ' years old.'</span>, which in turn evaluates to <span class="literal">'I am 29 years old.'</span>. This is the value that is passed to the <span class="literal">print()</span> function.</p>
+<p class="indent">The <span class="literal">str()</span>, <span class="literal">int()</span>, and <span class="literal">float()</span> functions will evaluate to the string, integer, and floating-point forms of the value you pass, respectively. Try converting some values in the interactive shell with these functions and watch what happens.</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">str(0)</span><br class="calibre5" />
+'0'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">str(-3.14)</span><br class="calibre5" />
+'-3.14'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">int('42')</span><br class="calibre5" />
+42<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">int('-99')</span><br class="calibre5" />
+-99<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">int(1.25)</span><br class="calibre5" />
+1<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">int(1.99)</span><br class="calibre5" />
+1<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">float('3.14')</span><br class="calibre5" />
+3.14<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">float(10)</span><br class="calibre5" />
+10.0</p>
+<p class="indent">The previous examples call the <span class="literal">str()</span>, <span class="literal">int()</span>, and <span class="literal">float()</span> functions and pass them values of the other data types to obtain a string, integer, or floating-point form of those values.</p>
+<p class="indent">The <span class="literal">str()</span> function is handy when you have an integer or float that you want to concatenate to a string. The <span class="literal">int()</span> function is also helpful if you have a number as a string value that you want to use in some mathematics. For example, the <span class="literal">input()</span> function always returns a string, even if the user enters a number. Enter <span class="codestrong">spam = input()</span> into the interactive shell and enter <span class="codestrong">101</span> when it waits for your text.</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">spam = input()</span><br class="calibre5" />
+<span class="codestrong1">101</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spam</span><br class="calibre5" />
+'101'</p>
+<p class="indent">The value stored inside <span class="literal">spam</span> isn’t the integer <span class="literal">101</span> but the string <span class="literal">'101'</span>. If you want to do math using the value in <span class="literal">spam</span>, use the <span class="literal">int()</span> function to get the integer form of <span class="literal">spam</span> and then store this as the new value in <span class="literal">spam</span>.</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">spam = int(spam)</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spam</span><br class="calibre5" />
+101</p>
+<p class="indent">Now you should be able to treat the <span class="literal">spam</span> variable as an integer instead of a string.</p>
+<p class="programs"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-974"></span>&gt;&gt;&gt; <span class="codestrong1">spam * 10 / 5</span><br class="calibre5" />
+202.0</p>
+<p class="indent">Note that if you pass a value to <span class="literal">int()</span> that it cannot evaluate as an integer, Python will display an error message.</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">int('99.99')</span><br class="calibre5" />
+Traceback (most recent call last):<br class="calibre5" />
+&nbsp;&nbsp;File "&lt;pyshell#18&gt;", line 1, in &lt;module&gt;<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;int('99.99')<br class="calibre5" />
+ValueError: invalid literal for int() with base 10: '99.99'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">int('twelve')</span><br class="calibre5" />
+Traceback (most recent call last):<br class="calibre5" />
+&nbsp;&nbsp;File "&lt;pyshell#19&gt;", line 1, in &lt;module&gt;<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;int('twelve')<br class="calibre5" />
+ValueError: invalid literal for int() with base 10: 'twelve'</p>
+<p class="indent">The <span class="literal">int()</span> function is also useful if you need to round a floating-point number down.</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">int(7.7)</span><br class="calibre5" />
+7<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">int(7.7) + 1</span><br class="calibre5" />
+8</p>
+<p class="indent">You used the <span class="literal">int()</span> and <span class="literal">str()</span> functions in the last three lines of your program to get a value of the appropriate data type for the code.</p>
+<p class="programs"><span class="ent">➏</span> print('What is your age?') # ask for their age<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;myAge = input()<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;print('You will be ' + str(int(myAge) + 1) + ' in a year.')</p>
+<div class="sidebar">
+<p class="sidebart"><strong class="calibre4">TEXT AND NUMBER EQUIVALENCE</strong></p>
+<p class="spara">Although the string value of a number is considered a completely different value from the integer or floating-point version, an integer can be equal to a floating point.</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">42 == '42'</span><br class="calibre5" />
+False<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">42 == 42.0</span><br class="calibre5" />
+True<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">42.0 == 0042.000</span><br class="calibre5" />
+True</p>
+<p class="sparai">Python makes this distinction because strings are text, while integers and floats are both numbers.</p>
+</div>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1708"></span>The <span class="literal">myAge</span> variable contains the value returned from <span class="literal">input()</span>. Because the <span class="literal">input()</span> function always returns a string (even if the user typed in a number), you can use the <span class="literal">int(myAge)</span> code to return an integer value of the string in <span class="literal">myAge</span>. This integer value is then added to <span class="literal">1</span> in the expression <span class="literal">int(myAge) + 1</span>.</p>
+<p class="indent">The result of this addition is passed to the <span class="literal">str()</span> function: <span class="literal">str(int(myAge) + 1)</span>. The string value returned is then concatenated with the strings <span class="literal">'You will be '</span> and <span class="literal">' in a year.'</span> to evaluate to one large string value. This large string is finally passed to <span class="literal">print()</span> to be displayed on the screen.</p>
+<p class="indent">Let’s say the user enters the string <span class="literal">'4'</span> for <span class="literal">myAge</span>. The string <span class="literal">'4'</span> is converted to an integer, so you can add one to it. The result is <span class="literal">5</span>. The <span class="literal">str()</span> function converts the result back to a string, so you can concatenate it with the second string, <span class="literal">'in a year.'</span>, to create the final message. These evaluation steps would look something like the following:</p>
+<div class="imagec"><img src="../images/000017.jpg" alt="image" class="calibre3" /></div>
+<h3 class="h1" id="calibre_link-104"><strong class="calibre2">Summary</strong></h3>
+<p class="noindent">You can compute expressions with a calculator or enter string concatenations with a word processor. You can even do string replication easily by copying and pasting text. But expressions, and their component values&mdash;operators, variables, and function calls&mdash;are the basic building blocks that make programs. Once you know how to handle these elements, you will be able to instruct Python to operate on large amounts of data for you.</p>
+<p class="indent">It is good to remember the different types of operators (<span class="literal">+</span>, <span class="literal">-</span>, <span class="literal">*</span>, <span class="literal">/</span>, <span class="literal">//</span>, <span class="literal">%</span>, and <span class="literal">**</span> for math operations, and <span class="literal">+</span> and <span class="literal">*</span> for string operations) and the three data types (integers, floating-point numbers, and strings) introduced in this chapter.</p>
+<p class="indent">I introduced a few different functions as well. The <span class="literal">print()</span> and <span class="literal">input()</span> functions handle simple text output (to the screen) and input (from the keyboard). The <span class="literal">len()</span> function takes a string and evaluates to an int of the number of characters in the string. The <span class="literal">str()</span>, <span class="literal">int()</span>, and <span class="literal">float()</span> functions will evaluate to the string, integer, or floating-point number form of the value they are passed.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1709"></span>In the next chapter, you’ll learn how to tell Python to make intelligent decisions about what code to run, what code to skip, and what code to repeat based on the values it has. This is known as <em class="calibre7">flow control</em>, and it allows you to write programs that make intelligent decisions.</p>
+<h3 class="h1" id="calibre_link-105"><strong class="calibre2">Practice Questions</strong></h3>
+<p class="question"><a id="calibre_link-1250" href="#calibre_link-1657" class="calibre6">1</a>. Which of the following are operators, and which are values?</p>
+<p class="programs1">*<br class="calibre5" />
+'hello'<br class="calibre5" />
+-88.8<br class="calibre5" />
+-<br class="calibre5" />
+/<br class="calibre5" />
++<br class="calibre5" />
+5</p>
+<p class="question"><a id="calibre_link-1251" href="#calibre_link-1658" class="calibre6">2</a>. Which of the following is a variable, and which is a string?</p>
+<p class="programs1">spam<br class="calibre5" />
+'spam'</p>
+<p class="question"><a id="calibre_link-1252" href="#calibre_link-1659" class="calibre6">3</a>. Name three data types.</p>
+<p class="question"><a id="calibre_link-1253" href="#calibre_link-1660" class="calibre6">4</a>. What is an expression made up of? What do all expressions do?</p>
+<p class="question"><a id="calibre_link-1254" href="#calibre_link-1661" class="calibre6">5</a>. This chapter introduced assignment statements, like <span class="literal">spam = 10</span>. What is the difference between an expression and a statement?</p>
+<p class="question"><a id="calibre_link-1255" href="#calibre_link-1662" class="calibre6">6</a>. What does the variable <span class="literal">bacon</span> contain after the following code runs?</p>
+<p class="programs1">bacon = 20<br class="calibre5" />
+bacon + 1</p>
+<p class="question"><a id="calibre_link-1256" href="#calibre_link-1663" class="calibre6">7</a>. What should the following two expressions evaluate to?</p>
+<p class="programs1">'spam' + 'spamspam'<br class="calibre5" />
+'spam' * 3</p>
+<p class="question"><a id="calibre_link-1257" href="#calibre_link-1664" class="calibre6">8</a>. Why is <span class="literal">eggs</span> a valid variable name while <span class="literal">100</span> is invalid?</p>
+<p class="question"><a id="calibre_link-1258" href="#calibre_link-1665" class="calibre6">9</a>. What three functions can be used to get the integer, floating-point number, or string version of a value?</p>
+<p class="question1"><a id="calibre_link-1259" href="#calibre_link-1666" class="calibre6">10</a>. <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1710"></span>Why does this expression cause an error? How can you fix it?</p>
+<p class="programs1">'I have eaten ' + 99 + ' burritos.'</p>
+<p class="question-para"><strong class="calibre4">Extra credit:</strong> Search online for the Python documentation for the <span class="literal">len()</span> function. It will be on a web page titled “Built-in Functions.” Skim the list of other functions Python has, look up what the <span class="literal">round()</span> function does, and experiment with it in the interactive shell.</p>
+</div>
+
+<div><center><a href="../chapter0"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="../chapter2"><img src="/images/next.png" /></a></center></div>
+
+{% endblock %}

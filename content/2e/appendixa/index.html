@@ -1,0 +1,77 @@
+{% extends "secondeditionbase.html" %}
+{% set title = 'Automate the Boring Stuff with Python' %}
+{% block content %}
+
+
+<div><center><a href="../chapter20"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="../appendixb"><img src="/images/next.png" /></a></center></div>
+
+
+<div class="calibre" id="calibre_link-1167">
+<h2 class="h2b" id="calibre_link-2"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1029" class="calibre1"></span><strong class="calibre2"><span class="big">A</span><br class="calibre12" />INSTALLING THIRD-PARTY MODULES</strong></h2>
+<div class="image"><img src="../images/000135.jpg" alt="Image" class="calibre3" /></div>
+<p class="noindent">Many developers have written their own modules, extending Python’s capabilities beyond what is provided by the standard library of modules packaged with Python. The primary way to install third-party modules is to use Python’s pip tool. This tool securely downloads and installs Python modules onto your computer from <em class="calibre7"><a href="https://pypi.python.org/" class="calibre6">https://pypi.python.org/</a></em>, the website of the Python Software Foundation. PyPI, or the Python Package Index, is a sort of free app store for Python modules.</p>
+<h3 class="h1" id="calibre_link-677"><strong class="calibre2">The pip Tool</strong></h3>
+<p class="noindent">While pip comes automatically installed with Python 3.4 and later on Windows and macOS, you may have to install it separately on Linux. You can see whether pip is already installed on Linux by running <span class="literal">which pip3</span> in a Terminal window. If it’s installed, you’ll see the location of <em class="calibre7">pip3</em> displayed. Otherwise, nothing will display. To install <em class="calibre7">pip3</em> on Ubuntu or Debian Linux, <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1035"></span>open a new Terminal window and enter <span class="codestrong">sudo apt-get install python3-pip</span>. To install <em class="calibre7">pip3</em> on Fedora Linux, enter <span class="codestrong">sudo yum install python3-pip</span> into a Terminal window. You’ll need to enter the administrator password for your computer.</p>
+<p class="indent">The pip tool is run from a <em class="calibre7">terminal</em> (also called <em class="calibre7">command line</em>) window, not from Python’s interactive shell. On Windows, run the “Command Prompt” program from the Start menu. On macOS, run Terminal from Spotlight. On Ubuntu Linux, run Terminal from Ubuntu Dash or press <small class="calibre11">CTRL</small>-<small class="calibre11">ALT</small>-T.</p>
+<p class="indent">If pip’s folder is not listed in the <span class="literal">PATH</span> environment variable, you may have to change directories in the terminal window with the <span class="literal">cd</span> command before running pip. If you need to find out your username, run <span class="literal">echo %USERNAME%</span> on Windows or <span class="literal">whoami</span> on macOS and Linux. Then run <span class="literal">cd</span> <span class="codeitalic">pip folder</span>, where pip’s folder is <em class="calibre7">C:\Users\&lt;USERNAME&gt;\AppData\Local\Programs\Python\Python37\Scripts</em> on Windows. On macOS, it is in <em class="calibre7">/Library/Frameworks/Python.framework/Versions/3.7/bin/</em>. On Linux, it is in <em class="calibre7">/home/&lt;USERNAME&gt;/.local/bin/</em>. Then you’ll be in the right folder to run the pip tool.</p>
+<h3 class="h1" id="calibre_link-678"><strong class="calibre2">Installing Third-Party Modules</strong></h3>
+<p class="noindent">The executable file for the pip tool is called <em class="calibre7">pip</em> on Windows and <em class="calibre7">pip3</em> on macOS and Linux. From the command line, you pass it the command <span class="literal">install</span> followed by the name of the module you want to install. For example, on Windows you would enter <span class="literal">pip install --user</span> <span class="codeitalic">MODULE</span>, where <span class="codeitalic">MODULE</span> is the name of the module.</p>
+<p class="indent">Because future changes to these third-party modules may be backward incompatible, I recommend that you install the exact versions used in this book, as given later in this section. You can add <span class="literal">-U</span> <span class="codeitalic">MODULE</span><span class="literal">==</span><span class="codeitalic">VERSION</span> to the end of the module name to install a particular version. Note that there are two equal signs in this command line option. For example<span class="literal">, pip install --user -U send2trash==1.5.0</span> installs version 1.5.0 of the <span class="literal">send2trash</span> module.</p>
+<p class="indent">You can install all of the modules covered in this book by downloading the “requirements” files for your operating system from <em class="calibre7"><a href="https://nostarch.com/automatestuff2/" class="calibre6">https://nostarch.com/automatestuff2/</a></em> and running one of the following commands:</p>
+<ul class="calibre8">
+<li class="noindent1">On Windows:<p class="programs">pip install --user &ndash;r automate-win-requirements.txt &ndash;&ndash;user</p></li>
+<li class="noindent1">On macOS:<p class="programs">pip3 install --user &ndash;r automate-mac-requirements.txt --user</p></li>
+<li class="noindent1">On Linux:<p class="programs">pip3 install --user &ndash;r automate-linux-requirements.txt --user</p></li>
+</ul>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1886"></span>The following list contains the third-party modules used in this book along with their versions. You can enter these commands separately if you only want to install a few of these modules on your computer.</p>
+<ul class="calibre8">
+<li class="noindent1"><span class="literal">pip install --user send2trash==1.5.0</span></li>
+<li class="noindent1"><span class="literal">pip install --user requests==2.21.0</span></li>
+<li class="noindent1"><span class="literal">pip install --user beautifulsoup4==4.7.1</span></li>
+<li class="noindent1"><span class="literal">pip install --user selenium==3.141.0</span></li>
+<li class="noindent1"><span class="literal">pip install --user openpyxl==2.6.1</span></li>
+<li class="noindent1"><span class="literal">pip install --user PyPDF2==1.26.0</span></li>
+<li class="noindent1"><span class="literal">pip install --user python-docx==0.8.10</span> (install <span class="literal">python-docx</span>, not <span class="literal">docx</span>)</li>
+<li class="noindent1"><span class="literal">pip install --user imapclient==2.1.0</span></li>
+<li class="noindent1"><span class="literal">pip install --user pyzmail36==1.0.4</span></li>
+<li class="noindent1"><span class="literal">pip install --user twilio</span></li>
+<li class="noindent1"><span class="literal">pip install --user ezgmail</span></li>
+<li class="noindent1"><span class="literal">pip install --user ezsheets</span></li>
+<li class="noindent1"><span class="literal">pip install --user pillow==6.0.0</span></li>
+<li class="noindent1"><span class="literal">pip install --user pyobjc-framework-Quartz==5.2</span> (on macOS only)</li>
+<li class="noindent1"><span class="literal">pip install --user pyobjc-core==5.2</span> (on macOS only)</li>
+<li class="noindent1"><span class="literal">pip install --user pyobjc==5.2</span> (on macOS only)</li>
+<li class="noindent1"><span class="literal">pip install --user python3-xlib==0.15</span> (on Linux only)</li>
+<li class="noindent1"><span class="literal">pip install --user pyautogui</span></li>
+</ul>
+<div class="note">
+<p class="notet"><strong class="calibre2"><span class="notes">NOTE</span></strong></p>
+<p class="notep"><em class="calibre7">For macOS users: The <span class="codeitalic">pyobjc</span> module can take 20 minutes or longer to install, so don’t be alarmed if it takes a while. You should also install the <span class="codeitalic">pyobjc-core</span> module first, which will reduce the overall installation time.</em></p>
+</div>
+<p class="indent">After installing a module, you can test that it installed successfully by running <span class="literal">import</span> <span class="codeitalic">ModuleName</span> in the interactive shell. If no error messages are displayed, you can assume the module was installed successfully.</p>
+<p class="indent">If you already have the module installed but would like to upgrade it to the latest version available on PyPI, run <span class="literal">pip install --user -U</span> <span class="codeitalic">MODULE</span> (or <span class="literal">pip3 install --user -U</span> <span class="codeitalic">MODULE</span> on macOS and Linux). The <span class="literal">--user</span> option installs the module in your home directory. This avoids potential permissions errors you might encounter when trying to install for all users.</p>
+<p class="indent">The latest versions of the Selenium and OpenPyXL modules tend to have changes that are backward incompatible with the versions used in this book. On the other hand, the Twilio, EZGmail, and EZSheets modules interact with online services, and you might be required to install the latest version of these modules with the <span class="literal">pip install --user -U</span> command.</p>
+<div class="note">
+<p class="notet"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1030" class="calibre1"></span><strong class="calibre2"><span class="notes">WARNING</span></strong></p>
+<p class="notep"><em class="calibre7">The first edition of this book suggested using the <span class="codeitalic">sudo</span> command if you encountered permission errors while running pip: <span class="codeitalic">sudo pip install module</span>. This is a bad practice, as it installs modules to the Python installation used by your operating system. Your operating system may run Python scripts to carry out system-related tasks, and if you install modules to this Python installation that conflict with its existing modules, you could create hard-to-fix bugs. Never use <span class="codeitalic">sudo</span> when installing Python modules.</em></p>
+</div>
+<h3 class="h1" id="calibre_link-679"><strong class="calibre2">Installing Modules for the Mu Editor</strong></h3>
+<p class="noindent">The Mu editor has its own Python environment, separate from the one that typical Python installations have. To install modules so that you can use them in scripts launched by Mu, you must bring up the Admin Panel by clicking the gear icon in the lower-right corner of the Mu editor. In the window that appears, click the Third Party Packages tab and follow the instructions for installing modules on that tab. The ability to install modules into Mu is still an early feature under development, so these instructions may change.</p>
+<p class="indent">If you are unable to install modules using the Admin Panel, you can also open a Terminal window and run the pip tool specific to the Mu editor. You’ll have to use pip’s <span class="literal">--target</span> command line option to specify Mu’s module folder. On Windows, this folder is <em class="calibre7">C:\Users\&lt;USERNAME&gt;\AppData\Local\Mu\pkgs</em>. On macOS, this folder is <em class="calibre7">/Applications/mu-editor.app/Contents/Resources/app_packages</em>. On Linux, you don’t need to enter a <span class="literal">--target</span> argument; just run the <span class="literal">pip3</span> command normally.</p>
+<p class="indent">For example, after you download the requirements file for your operating system from <em class="calibre7"><a href="https://nostarch.com/automatestuff2/" class="calibre6">https://nostarch.com/automatestuff2/</a></em>, run the following:</p>
+<ul class="calibre8">
+<li class="noindent1">On Windows:
+<p class="programs">pip install &ndash;r automate-win-requirements.txt --target "C:\Users\<span class="codeitalic1">USERNAME</span><br class="calibre5" />
+\AppData\Local\Mu\pkgs"</p></li>
+<li class="noindent1">On macOS:
+<p class="programs">pip3 install &ndash;r automate-mac-requirements.txt --target /Applications/<br class="calibre5" />
+mu-editor.app/Contents/Resources/app_packages</p></li>
+<li class="noindent1">On Linux:
+<p class="programs">pip3 install --user &ndash;r automate-linux-requirements.txt</p></li>
+</ul>
+<p class="indent">If you want to install only some of the modules, you can run the regular <span class="literal">pip</span> (or <span class="literal">pip3</span>) command and add the <span class="literal">--target</span> argument.</p>
+</div>
+
+<div><center><a href="../chapter20"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="../appendixb"><img src="/images/next.png" /></a></center></div>
+
+{% endblock %}

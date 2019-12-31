@@ -1,0 +1,693 @@
+{% extends "secondeditionbase.html" %}
+{% set title = 'Automate the Boring Stuff with Python' %}
+{% block content %}
+
+<div><center><a href="../chapter8"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="../chapter10"><img src="/images/next.png" /></a></center></div>
+
+<div class="calibre" id="calibre_link-1172">
+<h2 class="h2b" id="calibre_link-32"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-952" class="calibre1"></span><strong class="calibre2"><span class="big">9</span><br class="calibre12" />READING AND WRITING FILES</strong></h2>
+<div class="image"><img src="../images/000133.jpg" alt="Image" class="calibre3" /></div>
+<p class="noindent">Variables are a fine way to store data while your program is running, but if you want your data to persist even after your program has finished, you need to save it to a file. You can think of a file’s contents as a single string value, potentially gigabytes in size. In this chapter, you will learn how to use Python to create, read, and save files on the hard drive.</p>
+<h3 class="h1" id="calibre_link-290"><strong class="calibre2">Files and File Paths</strong></h3>
+<p class="noindent">A file has two key properties: a <em class="calibre7">filename</em> (usually written as one word) and a <em class="calibre7">path</em>. The path specifies the location of a file on the computer. For example, there is a file on my Windows laptop with the filename <em class="calibre7">project.docx</em> in the path <em class="calibre7">C:\Users\Al\Documents</em>. The part of the filename after the last period is called the file’s <em class="calibre7">extension</em> and tells you a file’s type. The filename <em class="calibre7">project.docx</em> <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-760"></span>is a Word document, and <em class="calibre7">Users</em>, <em class="calibre7">Al</em>, and <em class="calibre7">Documents</em> all refer to <em class="calibre7">folders</em> (also called <em class="calibre7">directories</em>). Folders can contain files and other folders. For example, <em class="calibre7">project.docx</em> is in the <em class="calibre7">Documents</em> folder, which is inside the <em class="calibre7">Al</em> folder, which is inside the <em class="calibre7">Users</em> folder. <a href="#calibre_link-1173" class="calibre6">Figure 9-1</a> shows this folder organization.</p>
+<div class="image1"><a id="calibre_link-1173" class="calibre6"></a><img src="../images/000009.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 9-1: A file in a hierarchy of folders</em></p>
+<p class="indent">The <em class="calibre7">C:\</em> part of the path is the <em class="calibre7">root folder</em>, which contains all other folders. On Windows, the root folder is named <em class="calibre7">C:\</em> and is also called the <em class="calibre7">C: drive</em>. On macOS and Linux, the root folder is <em class="calibre7">/</em>. In this book, I’ll use the Windows-style root folder, <em class="calibre7">C:\</em>. If you are entering the interactive shell examples on macOS or Linux, enter <span class="literal">/</span> instead.</p>
+<p class="indent">Additional <em class="calibre7">volumes</em>, such as a DVD drive or USB flash drive, will appear differently on different operating systems. On Windows, they appear as new, lettered root drives, such as <em class="calibre7">D:\</em> or <em class="calibre7">E:\</em>. On macOS, they appear as new folders under the <em class="calibre7">/Volumes</em> folder. On Linux, they appear as new folders under the <em class="calibre7">/mnt</em> (“mount”) folder. Also note that while folder names and filenames are not case-sensitive on Windows and macOS, they are case-sensitive on Linux.</p>
+<div class="note">
+<p class="notet"><strong class="calibre2"><span class="notes">NOTE</span></strong></p>
+<p class="notep"><em class="calibre7">Since your system probably has different files and folders on it than mine, you won’t be able to follow every example in this chapter exactly. Still, try to follow along using folders that exist on your computer.</em></p>
+</div>
+<h4 class="h2" id="calibre_link-291"><strong class="calibre2"><em class="calibre9">Backslash on Windows and Forward Slash on macOS and Linux</em></strong></h4>
+<p class="noindent">On Windows, paths are written using backslashes (<span class="literal">\</span>) as the separator between folder names. The macOS and Linux operating systems, however, use the forward slash (<em class="calibre7">/</em>) as their path separator. If you want your programs to work on all operating systems, you will have to write your Python scripts to handle both cases.</p>
+<p class="indent">Fortunately, this is simple to do with the <span class="literal">Path()</span> function in the <span class="literal">pathlib</span> module. If you pass it the string values of individual file and folder names in your path, <span class="literal">Path()</span> will return a string with a file path using the correct path separators. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">from pathlib import Path</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">Path('spam', 'bacon', 'eggs')</span><br class="calibre5" /><br class="calibre5" />
+WindowsPath('spam/bacon/eggs')<br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-761"></span>&gt;&gt;&gt; <span class="codestrong1">str(Path('spam', 'bacon', 'eggs'))</span><br class="calibre5" />
+'spam\\bacon\\eggs'</p>
+<p class="indent">Note that the convention for importing <span class="literal">pathlib</span> is to run <span class="literal">from pathlib import Path</span>, since otherwise we’d have to enter <span class="literal">pathlib.Path</span> everywhere <span class="literal">Path</span> shows up in our code. Not only is this extra typing redundant, but it’s also redundant.</p>
+<p class="indent">I’m running this chapter’s interactive shell examples on Windows, so <span class="literal">Path('spam', 'bacon', 'eggs')</span> returned a <span class="literal">WindowsPath</span> object for the joined path, represented as <span class="literal">WindowsPath('spam/bacon/eggs')</span>. Even though Windows uses backslashes, the <span class="literal">WindowsPath</span> representation in the interactive shell displays them using forward slashes, since open source software developers have historically favored the Linux operating system.</p>
+<p class="indent">If you want to get a simple text string of this path, you can pass it to the <span class="literal">str()</span> function, which in our example returns <span class="literal">'spam\\bacon\\eggs'</span>. (Notice that the backslashes are doubled because each backslash needs to be escaped by another backslash character.) If I had called this function on, say, Linux, <span class="literal">Path()</span> would have returned a <span class="literal">PosixPath</span> object that, when passed to <span class="literal">str()</span>, would have returned <span class="literal">'spam/bacon/eggs'</span>. (<em class="calibre7">POSIX</em> is a set of standards for Unix-like operating systems such as Linux.)</p>
+<p class="indent">These <span class="literal">Path</span> objects (really, <span class="literal">WindowsPath</span> or <span class="literal">PosixPath</span> objects, depending on your operating system) will be passed to several of the file-related functions introduced in this chapter. For example, the following code joins names from a list of filenames to the end of a folder’s name:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">from pathlib import Path</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">myFiles = ['accounts.txt', 'details.csv', 'invite.docx']</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">for filename in myFiles:</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="codestrong1">print(Path(r'C:\Users\Al', filename))</span><br class="calibre5" />
+C:\Users\Al\accounts.txt<br class="calibre5" />
+C:\Users\Al\details.csv<br class="calibre5" />
+C:\Users\Al\invite.docx</p>
+<p class="indent">On Windows, the backslash separates directories, so you can’t use it in filenames. However, you can use backslashes in filenames on macOS and Linux. So while <span class="literal">Path(r'spam\eggs')</span> refers to two separate folders (or a file <em class="calibre7">eggs</em> in a folder <em class="calibre7">spam</em>) on Windows, the same command would refer to a single folder (or file) named <em class="calibre7">spam\eggs</em> on macOS and Linux. For this reason, it’s usually a good idea to always use forward slashes in your Python code (and I’ll be doing so for the rest of this chapter). The <span class="literal">pathlib</span> module will ensure that it always works on all operating systems.</p>
+<p class="indent">Note that <span class="literal">pathlib</span> was introduced in Python 3.4 to replace older <span class="literal">os.path</span> functions. The Python Standard Library modules support it as of Python 3.6, but if you are working with legacy Python 2 versions, I recommend using <span class="literal">pathlib2</span>, which gives you <span class="literal">pathlib</span>’s features on Python 2.7. <a href="#calibre_link-2" class="calibre6">Appendix A</a> has instructions for installing <span class="literal">pathlib2</span> using pip. Whenever I’ve replaced an older <span class="literal">os.path</span> function with <span class="literal">pathlib</span>, I’ve made a short note. You can look up the older functions at <em class="calibre7"><a href="https://docs.python.org/3/library/os.path.html" class="calibre6">https://docs.python.org/3/library/os.path.html</a></em>.</p>
+<h4 class="h2" id="calibre_link-292"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1780" class="calibre1"></span><strong class="calibre2"><em class="calibre9">Using the / Operator to Join Paths</em></strong></h4>
+<p class="noindent">We normally use the <span class="literal">+</span> operator to add two integer or floating-point numbers, such as in the expression <span class="literal">2 + 2</span>, which evaluates to the integer value <span class="literal">4</span>. But we can also use the <span class="literal">+</span> operator to concatenate two string values, like the expression <span class="literal">'Hello' + 'World'</span>, which evaluates to the string value <span class="literal">'HelloWorld'</span>. Similarly, the <span class="literal">/</span> operator that we normally use for division can also combine <span class="literal">Path</span> objects and strings. This is helpful for modifying a <span class="literal">Path</span> object after you’ve already created it with the <span class="literal">Path()</span> function.</p>
+<p class="indent">For example, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">from pathlib import Path</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">Path('spam') / 'bacon' / 'eggs'</span><br class="calibre5" />
+WindowsPath('spam/bacon/eggs')<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">Path('spam') / Path('bacon/eggs')</span><br class="calibre5" />
+WindowsPath('spam/bacon/eggs')<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">Path('spam') / Path('bacon', 'eggs')</span><br class="calibre5" />
+WindowsPath('spam/bacon/eggs')</p>
+<p class="indent">Using the <span class="literal">/</span> operator with <span class="literal">Path</span> objects makes joining paths just as easy as string concatenation. It’s also safer than using string concatenation or the <span class="literal">join()</span> method, like we do in this example:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">homeFolder = r'C:\Users\Al'</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">subFolder = 'spam'</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">homeFolder + '\\' + subFolder</span><br class="calibre5" />
+'C:\\Users\\Al\\spam'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'\\'.join([homeFolder, subFolder])</span><br class="calibre5" />
+'C:\\Users\\Al\\spam'</p>
+<p class="indent">A script that uses this code isn’t safe, because its backslashes would only work on Windows. You could add an <span class="literal">if</span> statement that checks <span class="literal">sys.platform</span> (which contains a string describing the computer’s operating system) to decide what kind of slash to use, but applying this custom code everywhere it’s needed can be inconsistent and bug-prone.</p>
+<p class="indent">The <span class="literal">pathlib</span> module solves these problems by reusing the <span class="literal">/</span> math division operator to join paths correctly, no matter what operating system your code is running on. The following example uses this strategy to join the same paths as in the previous example:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">homeFolder = Path('C:/Users/Al')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">subFolder = Path('spam')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">homeFolder / subFolder</span><br class="calibre5" />
+WindowsPath('C:/Users/Al/spam')<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">str(homeFolder / subFolder)</span><br class="calibre5" />
+'C:\\Users\\Al\\spam'</p>
+<p class="indent">The only thing you need to keep in mind when using the <span class="literal">/</span> operator for joining paths is that one of the first two values must be a <span class="literal">Path</span> object. <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-840"></span>Python will give you an error if you try entering the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">'spam' / 'bacon' / 'eggs'</span><br class="calibre5" />
+Traceback (most recent call last):<br class="calibre5" />
+&nbsp;&nbsp;File "&lt;stdin&gt;", line 1, in &lt;module&gt;<br class="calibre5" />
+TypeError: unsupported operand type(s) for /: 'str' and 'str'</p>
+<p class="indent">Python evaluates the <span class="literal">/</span> operator from left to right and evaluates to a <span class="literal">Path</span> object, so either the first or second leftmost value must be a <span class="literal">Path</span> object for the entire expression to evaluate to a <span class="literal">Path</span> object. Here’s how the <span class="literal">/</span> operator and a <span class="literal">Path</span> object evaluate to the final <span class="literal">Path</span> object.</p>
+<div class="image"><img src="../images/000091.jpg" alt="image" class="calibre3" /></div>
+<p class="indent">If you see the <span class="literal">TypeError: unsupported operand type(s) for /: 'str' and 'str'</span> error message shown previously, you need to put a <span class="literal">Path</span> object on the left side of the expression.</p>
+<p class="indent">The <span class="literal">/</span> operator replaces the older <span class="literal">os.path.join()</span> function, which you can learn more about from <em class="calibre7"><a href="https://docs.python.org/3/library/os.path.html#os.path.join" class="calibre6">https://docs.python.org/3/library/os.path.html#os.path.join</a></em>.</p>
+<h4 class="h2" id="calibre_link-293"><strong class="calibre2"><em class="calibre9">The Current Working Directory</em></strong></h4>
+<p class="noindent">Every program that runs on your computer has a <em class="calibre7">current working directory</em>, or <em class="calibre7">cwd</em>. Any filenames or paths that do not begin with the root folder are assumed to be under the current working directory.</p>
+<div class="note">
+<p class="notet"><strong class="calibre2"><span class="notes">NOTE</span></strong></p>
+<p class="notep"><em class="calibre7">While</em> folder <em class="calibre7">is the more modern name for directory, note that</em> current working directory <em class="calibre7">(or just</em> working directory<em class="calibre7">) is the standard term, not “current working folder.”</em></p>
+</div>
+<p class="indent">You can get the current working directory as a string value with the <span class="literal">Path.cwd()</span> function and change it using <span class="literal">os.chdir()</span>. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">from pathlib import Path</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">import os</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">Path.cwd()</span><br class="calibre5" />
+WindowsPath('C:/Users/Al/AppData/Local/Programs/Python/Python37')'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">os.chdir('C:\\Windows\\System32')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">Path.cwd()</span><br class="calibre5" />
+WindowsPath('C:/Windows/System32')</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-756"></span>Here, the current working directory is set to <em class="calibre7">C:\Users\Al\AppData\Local\Programs\Python\Python37</em>, so the filename <em class="calibre7">project.docx</em> refers to <em class="calibre7">C:\Users\Al\AppData\Local\Programs\Python\Python37\project.docx</em>. When we change the current working directory to <em class="calibre7">C:\Windows\System32</em>, the filename <em class="calibre7">project.docx</em> is interpreted as <em class="calibre7">C:\Windows\System32\project.docx</em>.</p>
+<p class="indent">Python will display an error if you try to change to a directory that does not exist.</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">os.chdir('C:/ThisFolderDoesNotExist')</span><br class="calibre5" />
+Traceback (most recent call last):<br class="calibre5" />
+&nbsp;&nbsp;File "&lt;stdin&gt;", line 1, in &lt;module&gt;<br class="calibre5" />
+FileNotFoundError: [WinError 2] The system cannot find the file specified:<br class="calibre5" />
+'C:/ThisFolderDoesNotExist'</p>
+<p class="indent">There is no <span class="literal">pathlib</span> function for changing the working directory, because changing the current working directory while a program is running can often lead to subtle bugs.</p>
+<p class="indent">The <span class="literal">os.getcwd()</span> function is the older way of getting the current working directory as a string.</p>
+<h4 class="h2" id="calibre_link-294"><strong class="calibre2"><em class="calibre9">The Home Directory</em></strong></h4>
+<p class="noindent">All users have a folder for their own files on the computer called the <em class="calibre7">home directory</em> or <em class="calibre7">home folder</em>. You can get a <span class="literal">Path</span> object of the home folder by calling <span class="literal">Path.home()</span>:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">Path.home()</span><br class="calibre5" />
+WindowsPath('C:/Users/Al')</p>
+<p class="indent">The home directories are located in a set place depending on your operating system:</p>
+<ul class="calibre8">
+<li class="noindent1">On Windows, home directories are under <em class="calibre7">C:\Users</em>.</li>
+<li class="noindent1">On Mac, home directories are under <em class="calibre7">/Users</em>.</li>
+<li class="noindent1">On Linux, home directories are often under <em class="calibre7">/home</em>.</li>
+</ul>
+<p class="indent">Your scripts will almost certainly have permissions to read and write the files under your home directory, so it’s an ideal place to put the files that your Python programs will work with.</p>
+<h4 class="h2" id="calibre_link-295"><strong class="calibre2"><em class="calibre9">Absolute vs. Relative Paths</em></strong></h4>
+<p class="noindent">There are two ways to specify a file path:</p>
+<ul class="calibre8">
+<li class="noindent1">An <em class="calibre7">absolute path</em>, which always begins with the root folder</li>
+<li class="noindent1">A <em class="calibre7">relative path</em>, which is relative to the program’s current working directory</li>
+</ul>
+<p class="indent">There are also the <em class="calibre7">dot</em> (<span class="literal">.</span>) and <em class="calibre7">dot-dot</em> (<span class="literal">..</span>) folders. These are not real folders but special names that can be used in a path. A single period <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-757"></span>(“dot”) for a folder name is shorthand for “this directory.” Two periods (“dot-dot”) means “the parent folder.”</p>
+<p class="indent"><a href="#calibre_link-1174" class="calibre6">Figure 9-2</a> is an example of some folders and files. When the current working directory is set to <em class="calibre7">C:\bacon</em>, the relative paths for the other folders and files are set as they are in the figure.</p>
+<div class="image1"><a id="calibre_link-1174" class="calibre6"></a><img src="../images/000057.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 9-2: The relative paths for folders and files in the working directory</em> C:\bacon</p>
+<p class="indent">The <em class="calibre7">.\</em> at the start of a relative path is optional. For example, <em class="calibre7">.\spam.txt</em> and <em class="calibre7">spam.txt</em> refer to the same file.</p>
+<h4 class="h2" id="calibre_link-296"><strong class="calibre2"><em class="calibre9">Creating New Folders Using the os.makedirs() Function</em></strong></h4>
+<p class="noindent">Your programs can create new folders (directories) with the <span class="literal">os.makedirs()</span> function. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import os</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">os.makedirs('C:\\delicious\\walnut\\waffles')</span></p>
+<p class="indent">This will create not just the <em class="calibre7">C:\delicious</em> folder but also a <em class="calibre7">walnut</em> folder inside <em class="calibre7">C:\delicious</em> and a <em class="calibre7">waffles</em> folder inside <em class="calibre7">C:\delicious\walnut</em>. That is, <span class="literal">os.makedirs()</span> will create any necessary intermediate folders in order to ensure that the full path exists. <a href="#calibre_link-1175" class="calibre6">Figure 9-3</a> shows this hierarchy of folders.</p>
+<div class="image1"><a id="calibre_link-1175" class="calibre6"></a><img src="../images/000129.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 9-3: The result of <span class="literal1">os.makedirs('C:\\delicious\\walnut\\waffles')</span></em></p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-976"></span>To make a directory from a <span class="literal">Path</span> object, call the <span class="literal">mkdir()</span> method. For example, this code will create a <em class="calibre7">spam</em> folder under the home folder on my computer:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">from pathlib import Path</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">Path(r'C:\Users\Al\spam').mkdir()</span></p>
+<p class="indent">Note that <span class="literal">mkdir()</span> can only make one directory at a time; it won’t make several subdirectories at once like <span class="literal">os.makedirs()</span>.</p>
+<h4 class="h2" id="calibre_link-297"><strong class="calibre2"><em class="calibre9">Handling Absolute and Relative Paths</em></strong></h4>
+<p class="noindent">The <span class="literal">pathlib</span> module provides methods for checking whether a given path is an absolute path and returning the absolute path of a relative path.</p>
+<p class="indent">Calling the <span class="literal">is_absolute()</span> method on a <span class="literal">Path</span> object will return <span class="literal">True</span> if it represents an absolute path or <span class="literal">False</span> if it represents a relative path. For example, enter the following into the interactive shell, using your own files and folders instead of the exact ones listed here:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">Path.cwd()</span><br class="calibre5" />
+WindowsPath('C:/Users/Al/AppData/Local/Programs/Python/Python37')<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">Path.cwd().is_absolute()</span><br class="calibre5" />
+True<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">Path('spam/bacon/eggs').is_absolute()</span><br class="calibre5" />
+False</p>
+<p class="indent">To get an absolute path from a relative path, you can put <span class="literal">Path.cwd() /</span> in front of the relative <span class="literal">Path</span> object. After all, when we say “relative path,” we almost always mean a path that is relative to the current working directory. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">Path('my/relative/path')</span><br class="calibre5" />
+WindowsPath('my/relative/path')<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">Path.cwd() / Path('my/relative/path')</span><br class="calibre5" />
+WindowsPath('C:/Users/Al/AppData/Local/Programs/Python/Python37/my/relative/<br class="calibre5" />
+path')</p>
+<p class="indent">If your relative path is relative to another path besides the current working directory, just replace <span class="literal">Path.cwd()</span> with that other path instead. The following example gets an absolute path using the home directory instead of the current working directory:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">Path('my/relative/path')</span><br class="calibre5" />
+WindowsPath('my/relative/path')<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">Path.home() / Path('my/relative/path')</span><br class="calibre5" />
+WindowsPath('C:/Users/Al/my/relative/path')</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-774"></span>The <span class="literal">os.path</span> module also has some useful functions related to absolute and relative paths:</p>
+<ul class="calibre8">
+<li class="noindent1">Calling <span class="literal">os.path.abspath(</span><span class="codeitalic">path</span><span class="literal">)</span> will return a string of the absolute path of the argument. This is an easy way to convert a relative path into an absolute one.</li>
+<li class="noindent1">Calling <span class="literal">os.path.isabs(</span><span class="codeitalic">path</span><span class="literal">)</span> will return <span class="literal">True</span> if the argument is an absolute path and <span class="literal">False</span> if it is a relative path.</li>
+<li class="noindent1">Calling <span class="literal">os.path.relpath(</span><span class="codeitalic">path</span><span class="literal">,</span> <span class="codeitalic">start</span><span class="literal">)</span> will return a string of a relative path from the <span class="codeitalic">start</span> path to <span class="codeitalic">path</span>. If <span class="codeitalic">start</span> is not provided, the current working directory is used as the start path.</li>
+</ul>
+<p class="indent">Try these functions in the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">os.path.abspath('.')</span><br class="calibre5" /><br class="calibre5" />
+'C:\\Users\\Al\\AppData\\Local\\Programs\\Python\\Python37'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">os.path.abspath('.\\Scripts')</span><br class="calibre5" />
+'C:\\Users\\Al\\AppData\\Local\\Programs\\Python\\Python37\\Scripts'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">os.path.isabs('.')</span><br class="calibre5" />
+False<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">os.path.isabs(os.path.abspath('.'))</span><br class="calibre5" />
+True</p>
+<p class="indent">Since <em class="calibre7">C:\Users\Al\AppData\Local\Programs\Python\Python37</em> was the working directory when <span class="literal">os.path.abspath()</span> was called, the “single-dot” folder represents the absolute path <span class="literal">'C:\\Users\\Al\\AppData\\Local\\Programs\\Python\\Python37'</span>.</p>
+<p class="indent">Enter the following calls to <span class="literal">os.path.relpath()</span> into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">os.path.relpath('C:\\Windows', 'C:\\')</span><br class="calibre5" />
+'Windows'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">os.path.relpath('C:\\Windows', 'C:\\spam\\eggs')</span><br class="calibre5" />
+'..\\..\\Windows'</p>
+<p class="indent">When the relative path is within the same parent folder as the path, but is within subfolders of a different path, such as <span class="literal">'C:\\Windows'</span> and <span class="literal">'C:\\spam\\eggs'</span>, you can use the “dot-dot” notation to return to the parent folder.</p>
+<h4 class="h2" id="calibre_link-298"><strong class="calibre2"><em class="calibre9">Getting the Parts of a File Path</em></strong></h4>
+<p class="noindent">Given a <span class="literal">Path</span> object, you can extract the file path’s different parts as strings using several <span class="literal">Path</span> object attributes. These can be useful for constructing new file paths based on existing ones. The attributes are diagrammed in <a href="#calibre_link-1176" class="calibre6">Figure 9-4</a>.</p>
+<div class="image1"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1781"></span><a id="calibre_link-1176" class="calibre6"></a><img src="../images/000033.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 9-4: The parts of a Windows (top) and macOS/Linux (bottom) file path</em></p>
+<p class="indent">The parts of a file path include the following:</p>
+<ul class="calibre8">
+<li class="noindent1">The <em class="calibre7">anchor</em>, which is the root folder of the filesystem</li>
+<li class="noindent1">On Windows, the <em class="calibre7">drive</em>, which is the single letter that often denotes a physical hard drive or other storage device</li>
+<li class="noindent1">The <em class="calibre7">parent</em>, which is the folder that contains the file</li>
+<li class="noindent1">The <em class="calibre7">name</em> of the file, made up of the <em class="calibre7">stem</em> (or <em class="calibre7">base name</em>) and the <em class="calibre7">suffix</em> (or <em class="calibre7">extension</em>)</li>
+</ul>
+<p class="indent">Note that Windows <span class="literal">Path</span> objects have a <span class="literal">drive</span> attribute, but macOS and Linux <span class="literal">Path</span> objects don’t. The <span class="literal">drive</span> attribute doesn’t include the first backslash.</p>
+<p class="indent">To extract each attribute from the file path, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">p = Path('C:/Users/Al/spam.txt')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">p.anchor</span><br class="calibre5" />
+'C:\\'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">p.parent</span> # This is a Path object, not a string.<br class="calibre5" />
+WindowsPath('C:/Users/Al')<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">p.name</span><br class="calibre5" />
+'spam.txt'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">p.stem</span><br class="calibre5" />
+'spam'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">p.suffix</span><br class="calibre5" />
+'.txt'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">p.drive</span><br class="calibre5" />
+'C:'</p>
+<p class="indent">These attributes evaluate to simple string values, except for <span class="literal">parent</span>, which evaluates to another <span class="literal">Path</span> object.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-809"></span>The <span class="literal">parents</span> attribute (which is different from the <span class="literal">parent</span> attribute) evaluates to the ancestor folders of a <span class="literal">Path</span> object with an integer index:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">Path.cwd()</span><br class="calibre5" />
+WindowsPath('C:/Users/Al/AppData/Local/Programs/Python/Python37')<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">Path.cwd().parents[0]</span><br class="calibre5" />
+WindowsPath('C:/Users/Al/AppData/Local/Programs/Python')<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">Path.cwd().parents[1]</span><br class="calibre5" />
+WindowsPath('C:/Users/Al/AppData/Local/Programs')<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">Path.cwd().parents[2]</span><br class="calibre5" />
+WindowsPath('C:/Users/Al/AppData/Local')<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">Path.cwd().parents[3]</span><br class="calibre5" />
+WindowsPath('C:/Users/Al/AppData')<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">Path.cwd().parents[4]</span><br class="calibre5" />
+WindowsPath('C:/Users/Al')<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">Path.cwd().parents[5]</span><br class="calibre5" />
+WindowsPath('C:/Users')<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">Path.cwd().parents[6]</span><br class="calibre5" />
+WindowsPath('C:/')</p>
+<p class="indent">The older <span class="literal">os.path</span> module also has similar functions for getting the different parts of a path written in a string value. Calling <span class="literal">os.path.dirname(</span><span class="codeitalic">path</span><span class="literal">)</span> will return a string of everything that comes before the last slash in the <span class="literal">path</span> argument. Calling <span class="literal">os.path.basename(</span><span class="codeitalic">path</span><span class="literal">)</span> will return a string of everything that comes after the last slash in the <span class="literal">path</span> argument. The directory (or dir) name and base name of a path are outlined in <a href="#calibre_link-1177" class="calibre6">Figure 9-5</a>.</p>
+<div class="image1"><a id="calibre_link-1177" class="calibre6"></a><img src="../images/000022.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 9-5: The base name follows the last slash in a path and is the same as the filename. The dir name is everything before the last slash.</em></p>
+<p class="indent">For example, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">calcFilePath = 'C:\\Windows\\System32\\calc.exe'</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">os.path.basename(calcFilePath)</span><br class="calibre5" />
+'calc.exe'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">os.path.dirname(calcFilePath)</span><br class="calibre5" />
+'C:\\Windows\\System32'</p>
+<p class="indent">If you need a path’s dir name and base name together, you can just call <span class="literal">os.path.split()</span> to get a tuple value with these two strings, like so:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">calcFilePath = 'C:\\Windows\\System32\\calc.exe'</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">os.path.split(calcFilePath)</span><br class="calibre5" />
+('C:\\Windows\\System32', 'calc.exe')</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-810"></span>Notice that you could create the same tuple by calling <span class="literal">os.path.dirname()</span> and <span class="literal">os.path.basename()</span> and placing their return values in a tuple:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">(os.path.dirname(calcFilePath), os.path.basename(calcFilePath))</span><br class="calibre5" />
+('C:\\Windows\\System32', 'calc.exe')</p>
+<p class="indent">But <span class="literal">os.path.split()</span> is a nice shortcut if you need both values.</p>
+<p class="indent">Also, note that <span class="literal">os.path.split()</span> does <em class="calibre7">not</em> take a file path and return a list of strings of each folder. For that, use the <span class="literal">split()</span> string method and split on the string in <span class="literal">os.sep</span>. (Note that <span class="literal">sep</span> is in <span class="literal">os</span>, not <span class="literal">os.path</span>.) The <span class="literal">os.sep</span> variable is set to the correct folder-separating slash for the computer running the program, <span class="literal">'\\'</span> on Windows and <span class="literal">'/'</span> on macOS and Linux, and splitting on it will return a list of the individual folders.</p>
+<p class="indent">For example, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">calcFilePath.split(os.sep)</span><br class="calibre5" />
+['C:', 'Windows', 'System32', 'calc.exe']</p>
+<p class="indent">This returns all the parts of the path as strings.</p>
+<p class="indent">On macOS and Linux systems, the returned list of folders will begin with a blank string, like this:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">'/usr/bin'.split(os. sep)</span><br class="calibre5" />
+['', 'usr', 'bin']</p>
+<p class="indent">The <span class="literal">split()</span> string method will work to return a list of each part of the path.</p>
+<h4 class="h2" id="calibre_link-299"><strong class="calibre2"><em class="calibre9">Finding File Sizes and Folder Contents</em></strong></h4>
+<p class="noindent">Once you have ways of handling file paths, you can then start gathering information about specific files and folders. The <span class="literal">os.path</span> module provides functions for finding the size of a file in bytes and the files and folders inside a given folder.</p>
+<ul class="calibre8">
+<li class="noindent1">Calling <span class="literal">os.path.getsize(</span><span class="codeitalic">path</span><span class="literal">)</span> will return the size in bytes of the file in the <span class="codeitalic">path</span> argument.</li>
+<li class="noindent1">Calling <span class="literal">os.listdir(</span><span class="codeitalic">path</span><span class="literal">)</span> will return a list of filename strings for each file in the <span class="codeitalic">path</span> argument. (Note that this function is in the <span class="literal">os</span> module, not <span class="literal">os.path</span>.)</li>
+</ul>
+<p class="indent">Here’s what I get when I try these functions in the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">os.path.getsize('C:\\Windows\\System32\\calc.exe')</span><br class="calibre5" />
+27648<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">os.listdir('C:\\Windows\\System32')</span><br class="calibre5" />
+['0409', '12520437.cpx', '12520850.cpx', '5U877.ax', 'aaclient.dll',<br class="calibre5" />
+--<span class="codeitalic1">snip</span>--<br class="calibre5" />
+'xwtpdui.dll', 'xwtpw32.dll', 'zh-CN', 'zh-HK', 'zh-TW', 'zipfldr.dll']</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1782"></span>As you can see, the <em class="calibre7">calc.exe</em> program on my computer is 27,648 bytes in size, and I have a lot of files in <em class="calibre7">C:\Windows\system32</em>. If I want to find the total size of all the files in this directory, I can use <span class="literal">os.path.getsize()</span> and <span class="literal">os.listdir()</span> together.</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">totalSize = 0</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">for filename in os.listdir('C:\\Windows\\System32'):</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="codestrong1">totalSize = totalSize + os.path.getsize(os.path.join('C:\\Windows\\System32', filename))</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">print(totalSize)</span><br class="calibre5" />
+2559970473</p>
+<p class="indent">As I loop over each filename in the <em class="calibre7">C:\Windows\System32</em> folder, the <span class="literal">totalSize</span> variable is incremented by the size of each file. Notice how when I call <span class="literal">os.path.getsize()</span>, I use <span class="literal">os.path.join()</span> to join the folder name with the current filename. The integer that <span class="literal">os.path.getsize()</span> returns is added to the value of <span class="literal">totalSize</span>. After looping through all the files, I print <span class="literal">totalSize</span> to see the total size of the <em class="calibre7">C:\Windows\System32</em> folder.</p>
+<h4 class="h2" id="calibre_link-300"><strong class="calibre2"><em class="calibre9">Modifying a List of Files Using Glob Patterns</em></strong></h4>
+<p class="noindent">If you want to work on specific files, the <span class="literal">glob()</span> method is simpler to use than <span class="literal">listdir()</span>. Path objects have a <span class="literal">glob()</span> method for listing the contents of a folder according to a <em class="calibre7">glob pattern</em>. Glob patterns are like a simplified form of regular expressions often used in command line commands. The <span class="literal">glob()</span> method returns a generator object (which are beyond the scope of this book) that you’ll need to pass to <span class="literal">list()</span> to easily view in the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">p = Path('C:/Users/Al/Desktop')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">p.glob('*')</span> <br class="calibre5" />
+&lt;generator object Path.glob at 0x000002A6E389DED0&gt;<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">list(p.glob('*'))</span> # Make a list from the generator.<br class="calibre5" />
+[WindowsPath('C:/Users/Al/Desktop/1.png'), WindowsPath('C:/Users/Al/<br class="calibre5" />
+Desktop/22-ap.pdf'), WindowsPath('C:/Users/Al/Desktop/cat.jpg'),<br class="calibre5" />
+&nbsp;&nbsp;<span class="codeitalic1">--snip--</span><br class="calibre5" />
+WindowsPath('C:/Users/Al/Desktop/zzz.txt')]</p>
+<p class="indent">The asterisk (<span class="literal">*</span>) stands for “multiple of any characters,” so <span class="literal">p.glob('*')</span> returns a generator of all files in the path stored in <span class="literal">p</span>.</p>
+<p class="indent">Like with regexes, you can create complex expressions:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">list(p.glob('*.txt')</span> # Lists all text files.<br class="calibre5" />
+[WindowsPath('C:/Users/Al/Desktop/foo.txt'),<br class="calibre5" />
+<span class="codeitalic1">&nbsp;&nbsp;--snip--</span><br class="calibre5" />
+WindowsPath('C:/Users/Al/Desktop/zzz.txt')]</p>
+<p class="indent">The glob pattern <span class="literal">'*.txt'</span> will return files that start with any combination of characters as long as it ends with the string <span class="literal">'.txt'</span>, which is the text file extension.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-949"></span>In contrast with the asterisk, the question mark (<span class="literal">?</span>) stands for any single character:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">list(p.glob('project?.docx')</span><br class="calibre5" />
+[WindowsPath('C:/Users/Al/Desktop/project1.docx'), WindowsPath('C:/Users/Al/<br class="calibre5" />
+Desktop/project2.docx'),<br class="calibre5" />
+<span class="codeitalic1">&nbsp;&nbsp;--snip--</span><br class="calibre5" />
+WindowsPath('C:/Users/Al/Desktop/project9.docx')]</p>
+<p class="indent">The glob expression <span class="literal">'project?.docx'</span> will return <span class="literal">'project1.docx'</span> or <span class="literal">'project5.docx'</span>, but it will not return <span class="literal">'project10.docx'</span>, because <span class="literal">?</span> only matches to one character&mdash;so it will not match to the two-character string <span class="literal">'10'</span>.</p>
+<p class="indent">Finally, you can also combine the asterisk and question mark to create even more complex glob expressions, like this:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">list(p.glob('*.?x?')</span><br class="calibre5" />
+[WindowsPath('C:/Users/Al/Desktop/calc.exe'), WindowsPath('C:/Users/Al/<br class="calibre5" />
+Desktop/foo.txt'),<br class="calibre5" />
+<span class="codeitalic1">&nbsp;&nbsp;--snip--</span><br class="calibre5" />
+WindowsPath('C:/Users/Al/Desktop/zzz.txt')]</p>
+<p class="indent">The glob expression <span class="literal">'*.?x?'</span> will return files with any name and any three-character extension where the middle character is an <span class="literal">'x'</span>.</p>
+<p class="indent">By picking out files with specific attributes, the <span class="literal">glob()</span> method lets you easily specify the files in a directory you want to perform some operation on. You can use a <span class="literal">for</span> loop to iterate over the generator that <span class="literal">glob()</span> returns:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">p = Path('C:/Users/Al/Desktop')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">for textFilePathObj in p.glob('*.txt'):</span><br class="calibre5" />
+...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="codestrong1">print(textFilePathObj)</span> <span class="codeitalic1"><span class="codestrong1"># Prints the Path object as a string.</span></span><br class="calibre5" />
+...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="codeitalic1"><span class="codestrong1"># Do something with the text file.</span></span><br class="calibre5" />
+...<br class="calibre5" />
+C:\Users\Al\Desktop\foo.txt<br class="calibre5" />
+C:\Users\Al\Desktop\spam.txt<br class="calibre5" />
+C:\Users\Al\Desktop\zzz.txt</p>
+<p class="indent">If you want to perform some operation on every file in a directory, you can use either <span class="literal">os.listdir(p)</span> or <span class="literal">p.glob('*')</span>.</p>
+<h4 class="h2" id="calibre_link-301"><strong class="calibre2"><em class="calibre9">Checking Path Validity</em></strong></h4>
+<p class="noindent">Many Python functions will crash with an error if you supply them with a path that does not exist. Luckily, <span class="literal">Path</span> objects have methods to check whether a given path exists and whether it is a file or folder. Assuming that a variable <span class="literal">p</span> holds a <span class="literal">Path</span> object, you could expect the following:</p>
+<ul class="calibre8">
+<li class="noindent1">Calling <span class="literal">p.exists()</span> returns <span class="literal">True</span> if the path exists or returns <span class="literal">False</span> if it doesn’t exist.</li>
+<li class="noindent1">Calling <span class="literal">p.is_file()</span> returns <span class="literal">True</span> if the path exists and is a file, or returns <span class="literal">False</span> otherwise.</li>
+<li class="noindent1"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-814"></span>Calling <span class="literal">p.is_dir()</span> returns <span class="literal">True</span> if the path exists and is a directory, or returns <span class="literal">False</span> otherwise.</li>
+</ul>
+<p class="indent">On my computer, here’s what I get when I try these methods in the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">winDir = Path('C:/Windows')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">notExistsDir = Path('C:/This/Folder/Does/Not/Exist')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">calcFile = Path('C:/Windows</span><br class="calibre5" />
+<span class="codestrong1">/System32/calc.exe')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">winDir.exists()</span><br class="calibre5" />
+True<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">winDir.is_dir()</span><br class="calibre5" />
+True<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">notExistsDir.exists()</span><br class="calibre5" />
+False<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">calcFile.is_file()</span><br class="calibre5" />
+True<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">calcFile.is_dir()</span><br class="calibre5" />
+False</p>
+<p class="indent">You can determine whether there is a DVD or flash drive currently attached to the computer by checking for it with the <span class="literal">exists()</span> method. For instance, if I wanted to check for a flash drive with the volume named <em class="calibre7">D:\</em> on my Windows computer, I could do that with the following:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">dDrive = Path('D:/')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">dDrive.exists()</span><br class="calibre5" />
+False</p>
+<p class="indent">Oops! It looks like I forgot to plug in my flash drive.</p>
+<p class="indent">The older <span class="literal">os.path</span> module can accomplish the same task with the <span class="literal">os.path.exists(</span><span class="codeitalic">path</span><span class="literal">)</span>, <span class="literal">os.path.isfile(</span><span class="codeitalic">path</span><span class="literal">)</span>, and <span class="literal">os.path.isdir(</span><span class="codeitalic">path</span><span class="literal">)</span> functions, which act just like their <span class="literal">Path</span> function counterparts. As of Python 3.6, these functions can accept <span class="literal">Path</span> objects as well as strings of the file paths.</p>
+<h3 class="h1" id="calibre_link-302"><strong class="calibre2">The File Reading/Writing Process</strong></h3>
+<p class="noindent">Once you are comfortable working with folders and relative paths, you’ll be able to specify the location of files to read and write. The functions covered in the next few sections will apply to plaintext files. <em class="calibre7">Plaintext files</em> contain only basic text characters and do not include font, size, or color information. Text files with the <em class="calibre7">.txt</em> extension or Python script files with the <em class="calibre7">.py</em> extension are examples of plaintext files. These can be opened with Windows’s Notepad or macOS’s TextEdit application. Your programs can easily read the contents of plaintext files and treat them as an ordinary string value.</p>
+<p class="indent"><em class="calibre7">Binary files</em> are all other file types, such as word processing documents, PDFs, images, spreadsheets, and executable programs. If you open a binary <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-848"></span>file in Notepad or TextEdit, it will look like scrambled nonsense, like in <a href="#calibre_link-1178" class="calibre6">Figure 9-6</a>.</p>
+<div class="image1"><a id="calibre_link-1178" class="calibre6"></a><img src="../images/000150.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 9-6: The Windows <span class="literal1">calc.exe</span> program opened in Notepad</em></p>
+<p class="indent">Since every different type of binary file must be handled in its own way, this book will not go into reading and writing raw binary files directly. Fortunately, many modules make working with binary files easier&mdash;you will explore one of them, the <span class="literal">shelve</span> module, later in this chapter. The <span class="literal">pathlib</span> module’s <span class="literal">read_text()</span> method returns a string of the full contents of a text file. Its <span class="literal">write_text()</span> method creates a new text file (or overwrites an existing one) with the string passed to it. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">from pathlib import Path</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">p = Path('spam.txt')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">p.write_text('Hello, world!')</span><br class="calibre5" />
+13<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">p.read_text()</span><br class="calibre5" />
+'Hello, world!'</p>
+<p class="indent">These method calls create a <em class="calibre7">spam.txt</em> file with the content <span class="literal">'Hello, world!'</span>. The <span class="literal">13</span> that <span class="literal">write_text()</span> returns indicates that 13 characters were written to the file. (You can often disregard this information.) The <span class="literal">read_text()</span> call reads and returns the contents of our new file as a string: <span class="literal">'Hello, world!'</span>.</p>
+<p class="indent">Keep in mind that these <span class="literal">Path</span> object methods only provide basic interactions with files. The more common way of writing to a file involves using the <span class="literal">open()</span> function and file objects. There are three steps to reading or writing files in Python:</p>
+<ol class="calibre10">
+<li class="noindent1">Call the <span class="literal">open()</span> function to return a <span class="literal">File</span> object.</li>
+<li class="noindent1">Call the <span class="literal">read()</span> or <span class="literal">write()</span> method on the <span class="literal">File</span> object.</li>
+<li class="noindent1">Close the file by calling the <span class="literal">close()</span> method on the <span class="literal">File</span> object.</li>
+</ol>
+<p class="indent">We’ll go over these steps in the following sections.</p>
+<h4 class="h2" id="calibre_link-303"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-965" class="calibre1"></span><strong class="calibre2"><em class="calibre9">Opening Files with the open() Function</em></strong></h4>
+<p class="noindent">To open a file with the <span class="literal">open()</span> function, you pass it a string path indicating the file you want to open; it can be either an absolute or relative path. The <span class="literal">open()</span> function returns a <span class="literal">File</span> object.</p>
+<p class="indent">Try it by creating a text file named <em class="calibre7">hello.txt</em> using Notepad or TextEdit. Type <strong class="calibre4">Hello, world!</strong> as the content of this text file and save it in your user home folder. Then enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">helloFile = open(Path.home() / 'hello.txt')</span></p>
+<p class="indent">The <span class="literal">open()</span> function can also accept strings. If you’re using Windows, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">helloFile = open('C:\\Users\\</span><span class="codeitalic1"><span class="codestrong1">your_home_folder</span></span><span class="codestrong1">\\hello.txt')</span></p>
+<p class="indent">If you’re using macOS, enter the following into the interactive shell instead:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">helloFile = open('/Users/</span><span class="codeitalic1"><span class="codestrong1">your_home_folder</span></span><span class="codestrong1">/hello.txt')</span></p>
+<p class="indent">Make sure to replace <span class="codeitalic">your_home_folder</span> with your computer username. For example, my username is <em class="calibre7">Al</em>, so I’d enter <span class="literal">'C:\\Users\\Al\\hello.txt'</span> on Windows. Note that the <span class="literal">open()</span> function only accepts <span class="literal">Path</span> objects as of Python 3.6. In previous versions, you always need to pass a string to <span class="literal">open()</span>.</p>
+<p class="indent">Both these commands will open the file in “reading plaintext” mode, or <em class="calibre7">read mode</em> for short. When a file is opened in read mode, Python lets you only read data from the file; you can’t write or modify it in any way. Read mode is the default mode for files you open in Python. But if you don’t want to rely on Python’s defaults, you can explicitly specify the mode by passing the string value <span class="literal">'r'</span> as a second argument to <span class="literal">open()</span>. So <span class="literal">open('/Users/Al/hello.txt', 'r')</span> and <span class="literal">open('/Users/Al/hello.txt')</span> do the same thing.</p>
+<p class="indent">The call to <span class="literal">open()</span> returns a <span class="literal">File</span> object. A <span class="literal">File</span> object represents a file on your computer; it is simply another type of value in Python, much like the lists and dictionaries you’re already familiar with. In the previous example, you stored the <span class="literal">File</span> object in the variable <span class="literal">helloFile</span>. Now, whenever you want to read from or write to the file, you can do so by calling methods on the <span class="literal">File</span> object in <span class="literal">helloFile</span>.</p>
+<h4 class="h2" id="calibre_link-304"><strong class="calibre2"><em class="calibre9">Reading the Contents of Files</em></strong></h4>
+<p class="noindent">Now that you have a <span class="literal">File</span> object, you can start reading from it. If you want to read the entire contents of a file as a string value, use the <span class="literal">File</span> object’s <span class="literal">read()</span> method. Let’s continue with the <em class="calibre7">hello.txt</em> <span class="literal">File</span> object you stored in <span class="literal">helloFile</span>. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">helloContent = helloFile.read()</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">helloContent</span><br class="calibre5" />
+'Hello, world!'</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-970"></span>If you think of the contents of a file as a single large string value, the <span class="literal">read()</span> method returns the string that is stored in the file.</p>
+<p class="indent">Alternatively, you can use the <span class="literal">readlines()</span> method to get a <em class="calibre7">list</em> of string values from the file, one string for each line of text. For example, create a file named <em class="calibre7">sonnet29.txt</em> in the same directory as <em class="calibre7">hello.txt</em> and write the following text in it:</p>
+<p class="programs">When, in disgrace with fortune and men's eyes,<br class="calibre5" />
+I all alone beweep my outcast state,<br class="calibre5" />
+And trouble deaf heaven with my bootless cries,<br class="calibre5" />
+And look upon myself and curse my fate,</p>
+<p class="indent">Make sure to separate the four lines with line breaks. Then enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">sonnetFile = open(Path.home() / 'sonnet29.txt')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">sonnetFile.readlines()</span><br class="calibre5" />
+[When, in disgrace with fortune and men's eyes,\n', ' I all alone beweep my<br class="calibre5" />
+outcast state,\n', And trouble deaf heaven with my bootless cries,\n', And<br class="calibre5" />
+look upon myself and curse my fate,']</p>
+<p class="indent">Note that, except for the last line of the file, each of the string values ends with a newline character <span class="literal">\n</span>. A list of strings is often easier to work with than a single large string value.</p>
+<h4 class="h2" id="calibre_link-305"><strong class="calibre2"><em class="calibre9">Writing to Files</em></strong></h4>
+<p class="noindent">Python allows you to write content to a file in a way similar to how the <span class="literal">print()</span> function “writes” strings to the screen. You can’t write to a file you’ve opened in read mode, though. Instead, you need to open it in “write plaintext” mode or “append plaintext” mode, or <em class="calibre7">write mode</em> and <em class="calibre7">append mode</em> for short.</p>
+<p class="indent">Write mode will overwrite the existing file and start from scratch, just like when you overwrite a variable’s value with a new value. Pass <span class="literal">'w'</span> as the second argument to <span class="literal">open()</span> to open the file in write mode. Append mode, on the other hand, will append text to the end of the existing file. You can think of this as appending to a list in a variable, rather than overwriting the variable altogether. Pass <span class="literal">'a'</span> as the second argument to <span class="literal">open()</span> to open the file in append mode.</p>
+<p class="indent">If the filename passed to <span class="literal">open()</span> does not exist, both write and append mode will create a new, blank file. After reading or writing a file, call the <span class="literal">close()</span> method before opening the file again.</p>
+<p class="indent">Let’s put these concepts together. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">baconFile = open('bacon.txt', 'w')&nbsp;&nbsp;&nbsp;</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">baconFile.write('Hello, world!\n')</span><br class="calibre5" />
+13<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">baconFile.close()</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">baconFile = open('bacon.txt', 'a')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">baconFile.write('Bacon is not a vegetable.')</span><br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-968"></span>25<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">baconFile.close()</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">baconFile = open('bacon.txt')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">content = baconFile.read()</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">baconFile.close()</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">print(content)</span><br class="calibre5" />
+Hello, world!<br class="calibre5" />
+Bacon is not a vegetable.</p>
+<p class="indent">First, we open <em class="calibre7">bacon.txt</em> in write mode. Since there isn’t a <em class="calibre7">bacon.txt</em> yet, Python creates one. Calling <span class="literal">write()</span> on the opened file and passing <span class="literal">write()</span> the string argument <span class="literal">'Hello, world! /n'</span> writes the string to the file and returns the number of characters written, including the newline. Then we close the file.</p>
+<p class="indent">To add text to the existing contents of the file instead of replacing the string we just wrote, we open the file in append mode. We write <span class="literal">'Bacon is not a vegetable.'</span> to the file and close it. Finally, to print the file contents to the screen, we open the file in its default read mode, call <span class="literal">read()</span>, store the resulting <span class="literal">File</span> object in <span class="literal">content</span>, close the file, and print <span class="literal">content</span>.</p>
+<p class="indent">Note that the <span class="literal">write()</span> method does not automatically add a newline character to the end of the string like the <span class="literal">print()</span> function does. You will have to add this character yourself.</p>
+<p class="indent">As of Python 3.6, you can also pass a <span class="literal">Path</span> object to the <span class="literal">open()</span> function instead of a string for the filename.</p>
+<h3 class="h1" id="calibre_link-306"><strong class="calibre2">Saving Variables with the shelve Module</strong></h3>
+<p class="noindent">You can save variables in your Python programs to binary shelf files using the <span class="literal">shelve</span> module. This way, your program can restore data to variables from the hard drive. The <span class="literal">shelve</span> module will let you add Save and Open features to your program. For example, if you ran a program and entered some configuration settings, you could save those settings to a shelf file and then have the program load them the next time it is run.</p>
+<p class="indent">Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import shelve</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">shelfFile = shelve.open('mydata')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">cats = ['Zophie', 'Pooka', 'Simon']</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">shelfFile['cats'] = cats</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">shelfFile.close()</span></p>
+<p class="indent">To read and write data using the <span class="literal">shelve</span> module, you first import <span class="literal">shelve</span>. Call <span class="literal">shelve.open()</span> and pass it a filename, and then store the returned shelf value in a variable. You can make changes to the shelf value as if it were a dictionary. When you’re done, call <span class="literal">close()</span> on the shelf value. Here, our shelf value is stored in <span class="literal">shelfFile</span>. We create a list <span class="literal">cats</span> and write <span class="literal">shelfFile['cats'] = cats</span> to store the list in <span class="literal">shelfFile</span> as a value associated with the key <span class="literal">'cats'</span> (like in a dictionary). Then we call <span class="literal">close()</span> on <span class="literal">shelfFile</span>. Note that as of Python 3.7, <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1034"></span>you have to pass the <span class="literal">open()</span> shelf method filenames as strings. You can’t pass it <span class="literal">Path</span> object.</p>
+<p class="indent">After running the previous code on Windows, you will see three new files in the current working directory: <em class="calibre7">mydata.bak</em>, <em class="calibre7">mydata.dat</em>, and <em class="calibre7">mydata.dir</em>. On macOS, only a single <em class="calibre7">mydata.db</em> file will be created.</p>
+<p class="indent">These binary files contain the data you stored in your shelf. The format of these binary files is not important; you only need to know what the <span class="literal">shelve</span> module does, not how it does it. The module frees you from worrying about how to store your program’s data to a file.</p>
+<p class="indent">Your programs can use the <span class="literal">shelve</span> module to later reopen and retrieve the data from these shelf files. Shelf values don’t have to be opened in read or write mode&mdash;they can do both once opened. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">shelfFile = shelve.open('mydata')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">type(shelfFile)</span><br class="calibre5" />
+&lt;class 'shelve.DbfilenameShelf'&gt;<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">shelfFile['cats']</span><br class="calibre5" />
+['Zophie', 'Pooka', 'Simon']<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">shelfFile.close()</span></p>
+<p class="indent">Here, we open the shelf files to check that our data was stored correctly. Entering <span class="literal">shelfFile['cats']</span> returns the same list that we stored earlier, so we know that the list is correctly stored, and we call <span class="literal">close()</span>.</p>
+<p class="indent">Just like dictionaries, shelf values have <span class="literal">keys()</span> and <span class="literal">values()</span> methods that will return list-like values of the keys and values in the shelf. Since these methods return list-like values instead of true lists, you should pass them to the <span class="literal">list()</span> function to get them in list form. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">shelfFile = shelve.open('mydata')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">list(shelfFile.keys())</span><br class="calibre5" />
+['cats']<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">list(shelfFile.values())</span><br class="calibre5" />
+[['Zophie', 'Pooka', 'Simon']]<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">shelfFile.close()</span></p>
+<p class="indent">Plaintext is useful for creating files that you’ll read in a text editor such as Notepad or TextEdit, but if you want to save data from your Python programs, use the <span class="literal">shelve</span> module.</p>
+<h3 class="h1" id="calibre_link-307"><strong class="calibre2">Saving Variables with the pprint.pformat() Function</strong></h3>
+<p class="noindent">Recall from “<a href="#calibre_link-197" class="calibre6">Pretty Printing</a>” on <a href="#calibre_link-1050" class="calibre6">page 118</a> that the <span class="literal">pprint.pprint()</span> function will “pretty print” the contents of a list or dictionary to the screen, while the <span class="literal">pprint.pformat()</span> function will return this same text as a string instead of printing it. Not only is this string formatted to be easy to read, but it is also syntactically correct Python code. Say you have a dictionary stored in a variable and you want to save this variable and its contents for future use. Using <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-979"></span><span class="literal">pprint.pformat()</span> will give you a string that you can write to a <em class="calibre7">.py</em> file. This file will be your very own module that you can import whenever you want to use the variable stored in it.</p>
+<p class="indent">For example, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import pprint</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">cats = [{'name': 'Zophie', 'desc': 'chubby'}, {'name': 'Pooka', 'desc': 'fluffy'}]</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">pprint.pformat(cats)</span><br class="calibre5" />
+"[{'desc': 'chubby', 'name': 'Zophie'}, {'desc': 'fluffy', 'name': 'Pooka'}]"<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">fileObj = open('myCats.py', 'w')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">fileObj.write('cats = ' + pprint.pformat(cats) + '\n')</span><br class="calibre5" />
+83<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">fileObj.close()</span></p>
+<p class="indent">Here, we import <span class="literal">pprint</span> to let us use <span class="literal">pprint.pformat()</span>. We have a list of dictionaries, stored in a variable <span class="literal">cats</span>. To keep the list in <span class="literal">cats</span> available even after we close the shell, we use <span class="literal">pprint.pformat()</span> to return it as a string. Once we have the data in <span class="literal">cats</span> as a string, it’s easy to write the string to a file, which we’ll call <em class="calibre7">myCats.py</em>.</p>
+<p class="indent">The modules that an <span class="literal">import</span> statement imports are themselves just Python scripts. When the string from <span class="literal">pprint.pformat()</span> is saved to a <em class="calibre7">.py</em> file, the file is a module that can be imported just like any other.</p>
+<p class="indent">And since Python scripts are themselves just text files with the <em class="calibre7">.py</em> file extension, your Python programs can even generate other Python programs. You can then import these files into scripts.</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import myCats</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">myCats.cats</span><br class="calibre5" />
+[{'name': 'Zophie', 'desc': 'chubby'}, {'name': 'Pooka', 'desc': 'fluffy'}]<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">myCats.cats[0]</span><br class="calibre5" />
+{'name': 'Zophie', 'desc': 'chubby'}<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">myCats.cats[0]['name']</span><br class="calibre5" />
+'Zophie'</p>
+<p class="indent">The benefit of creating a <em class="calibre7">.py</em> file (as opposed to saving variables with the <span class="literal">shelve</span> module) is that because it is a text file, the contents of the file can be read and modified by anyone with a simple text editor. For most applications, however, saving data using the <span class="literal">shelve</span> module is the preferred way to save variables to a file. Only basic data types such as integers, floats, strings, lists, and dictionaries can be written to a file as simple text. <span class="literal">File</span> objects, for example, cannot be encoded as text.</p>
+<h3 class="h1" id="calibre_link-308"><strong class="calibre2">Project: Generating Random Quiz Files</strong></h3>
+<p class="noindent">Say you’re a geography teacher with 35 students in your class and you want to give a pop quiz on US state capitals. Alas, your class has a few bad eggs in it, and you can’t trust the students not to cheat. You’d like to randomize the <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1783"></span>order of questions so that each quiz is unique, making it impossible for anyone to crib answers from anyone else. Of course, doing this by hand would be a lengthy and boring affair. Fortunately, you know some Python.</p>
+<p class="indent">Here is what the program does:</p>
+<ol class="calibre10">
+<li class="noindent1">Creates 35 different quizzes</li>
+<li class="noindent1">Creates 50 multiple-choice questions for each quiz, in random order</li>
+<li class="noindent1">Provides the correct answer and three random wrong answers for each question, in random order</li>
+<li class="noindent1">Writes the quizzes to 35 text files</li>
+<li class="noindent1">Writes the answer keys to 35 text files</li>
+</ol>
+<p class="indent">This means the code will need to do the following:</p>
+<ol class="calibre10">
+<li class="noindent1">Store the states and their capitals in a dictionary</li>
+<li class="noindent1">Call <span class="literal">open()</span>, <span class="literal">write()</span>, and <span class="literal">close()</span> for the quiz and answer key text files</li>
+<li class="noindent1">Use <span class="literal">random.shuffle()</span> to randomize the order of the questions and multiple-choice options</li>
+</ol>
+<h4 class="h2" id="calibre_link-309"><strong class="calibre2"><em class="calibre9">Step 1: Store the Quiz Data in a Dictionary</em></strong></h4>
+<p class="noindent">The first step is to create a skeleton script and fill it with your quiz data. Create a file named <em class="calibre7">randomQuizGenerator.py</em>, and make it look like the following:</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;#! python3<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;# randomQuizGenerator.py - Creates quizzes with questions and answers in<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;# random order, along with the answer key.<br class="calibre5" />
+<span class="ent">➊</span> import random<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;# The quiz data. Keys are states and values are their capitals.<br class="calibre5" />
+<span class="ent">➋</span> capitals = {'Alabama': 'Montgomery', 'Alaska': 'Juneau', 'Arizona': 'Phoenix', <br class="calibre5" />
+&nbsp;&nbsp;&nbsp;'Arkansas': 'Little Rock', 'California': 'Sacramento', 'Colorado': 'Denver',<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;'Connecticut': 'Hartford', 'Delaware': 'Dover', 'Florida': 'Tallahassee',<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;'Georgia': 'Atlanta', 'Hawaii': 'Honolulu', 'Idaho': 'Boise', 'Illinois':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;'Springfield', 'Indiana': 'Indianapolis', 'Iowa': 'Des Moines', 'Kansas':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;'Topeka', 'Kentucky': 'Frankfort', 'Louisiana': 'Baton Rouge', 'Maine':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;'Augusta', 'Maryland': 'Annapolis', 'Massachusetts': 'Boston', 'Michigan':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;'Lansing', 'Minnesota': 'Saint Paul', 'Mississippi': 'Jackson', 'Missouri':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;'Jefferson City', 'Montana': 'Helena', 'Nebraska': 'Lincoln', 'Nevada':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;'Carson City', 'New Hampshire': 'Concord', 'New Jersey': 'Trenton', 'New<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;Mexico': 'Santa Fe', 'New York': 'Albany',<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;'North Carolina': 'Raleigh', 'North Dakota': 'Bismarck', 'Ohio': 'Columbus', 'Oklahoma': 'Oklahoma City',<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;'Oregon': 'Salem', 'Pennsylvania': 'Harrisburg', 'Rhode Island': 'Providence',<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;'South Carolina': 'Columbia', 'South Dakota': 'Pierre', 'Tennessee':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;'Nashville', 'Texas': 'Austin', 'Utah': 'Salt Lake City', 'Vermont':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;'Montpelier', 'Virginia': 'Richmond', 'Washington': 'Olympia', 'West<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;Virginia': 'Charleston', 'Wisconsin': 'Madison', 'Wyoming': 'Cheyenne'}<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;# Generate 35 quiz files.<br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1784"></span><span class="ent">➌</span> for quizNum in range(35): <br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# TODO: Create the quiz and answer key files.<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# TODO: Write out the header for the quiz.<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# TODO: Shuffle the order of the states.<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# TODO: Loop through all 50 states, making a question for each.</p>
+<p class="indent">Since this program will be randomly ordering the questions and answers, you’ll need to import the <span class="literal">random</span> module <span class="ent">➊</span> to make use of its functions. The <span class="literal">capitals</span> variable <span class="ent">➋</span> contains a dictionary with US states as keys and their capitals as values. And since you want to create 35 quizzes, the code that actually generates the quiz and answer key files (marked with <span class="literal">TODO</span> comments for now) will go inside a <span class="literal">for</span> loop that loops 35 times <span class="ent">➌</span>. (This number can be changed to generate any number of quiz files.)</p>
+<h4 class="h2" id="calibre_link-310"><strong class="calibre2"><em class="calibre9">Step 2: Create the Quiz File and Shuffle the Question Order</em></strong></h4>
+<p class="noindent">Now it’s time to start filling in those <span class="literal">TODO</span>s.</p>
+<p class="indent">The code in the loop will be repeated 35 times&mdash;once for each quiz&mdash;so you have to worry about only one quiz at a time within the loop. First you’ll create the actual quiz file. It needs to have a unique filename and should also have some kind of standard header in it, with places for the student to fill in a name, date, and class period. Then you’ll need to get a list of states in randomized order, which can be used later to create the questions and answers for the quiz.</p>
+<p class="indent">Add the following lines of code to <em class="calibre7">randomQuizGenerator.py</em>:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# randomQuizGenerator.py - Creates quizzes with questions and answers in<br class="calibre5" />
+# random order, along with the answer key.<br class="calibre5" /><br class="calibre5" />
+--<span class="codeitalic1">snip</span>--<br class="calibre5" /><br class="calibre5" />
+# Generate 35 quiz files.<br class="calibre5" />
+for quizNum in range(35):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="codestrong1"># Create the quiz and answer key files.</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;</span><span class="ent">➊</span> <span class="codestrong1">quizFile = open(f'capitalsquiz{quizNum + 1}.txt', 'w')</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;</span><span class="ent">➋</span> <span class="codestrong1">answerKeyFile = open(f'capitalsquiz_answers{quizNum + 1}.txt', 'w')</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="codestrong1"># Write out the header for the quiz.</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;</span><span class="ent">➌</span> <span class="codestrong1">quizFile.write('Name:\n\nDate:\n\nPeriod:\n\n')</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;quizFile.write((' ' * 20) + f'State Capitals Quiz (Form{quizNum + 1})')</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;quizFile.write('\n\n')</span><br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="codestrong1"># Shuffle the order of the states.</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;states = list(capitals.keys())</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;</span><span class="ent">➍</span> <span class="codestrong1">random.shuffle(states)</span><br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# TODO: Loop through all 50 states, making a question for each.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1053"></span>The filenames for the quizzes will be <em class="calibre7">capitalsquiz&lt;N&gt;.txt</em>, where <em class="calibre7">&lt;N&gt;</em> is a unique number for the quiz that comes from <span class="literal">quizNum</span>, the <span class="literal">for</span> loop’s counter. The answer key for <em class="calibre7">capitalsquiz&lt;N&gt;.txt</em> will be stored in a text file named <em class="calibre7">capitalsquiz_answers&lt;N&gt;.txt</em>. Each time through the loop, the <span class="literal">{quizNum + 1}</span> placeholder in <span class="literal">f'capitalsquiz{quizNum + 1}.txt'</span> and <span class="literal">f'capitalsquiz_answers{quizNum + 1}.txt'</span> will be replaced by the unique number, so the first quiz and answer key created will be <em class="calibre7">capitalsquiz1.txt</em> and <em class="calibre7">capitalsquiz_answers1.txt</em>. These files will be created with calls to the <span class="literal">open()</span> function at <span class="ent">➊</span> and <span class="ent">➋</span>, with <span class="literal">'w'</span> as the second argument to open them in write mode.</p>
+<p class="indent">The <span class="literal">write()</span> statements at <span class="ent">➌</span> create a quiz header for the student to fill out. Finally, a randomized list of US states is created with the help of the <span class="literal">random.shuffle()</span> function <span class="ent">➍</span>, which randomly reorders the values in any list that is passed to it.</p>
+<h4 class="h2" id="calibre_link-311"><strong class="calibre2"><em class="calibre9">Step 3: Create the Answer Options</em></strong></h4>
+<p class="noindent">Now you need to generate the answer options for each question, which will be multiple choice from A to D. You’ll need to create another <span class="literal">for</span> loop&mdash;this one to generate the content for each of the 50 questions on the quiz. Then there will be a third <span class="literal">for</span> loop nested inside to generate the multiple-choice options for each question. Make your code look like the following:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# randomQuizGenerator.py - Creates quizzes with questions and answers in<br class="calibre5" />
+# random order, along with the answer key.<br class="calibre5" /><br class="calibre5" />
+--<span class="codeitalic1">snip</span>--<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="codestrong1"># Loop through all 50 states, making a question for each.</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;for questionNum in range(50):</span><br class="calibre5" /><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Get right and wrong answers.</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="ent">➊</span> <span class="codestrong1">correctAnswer = capitals[states[questionNum]]</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="ent">➋</span> <span class="codestrong1">wrongAnswers = list(capitals.values())</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="ent">➌</span> <span class="codestrong1">del wrongAnswers[wrongAnswers.index(correctAnswer)]</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="ent">➍</span> <span class="codestrong1">wrongAnswers = random.sample(wrongAnswers, 3)</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="ent">➎</span> <span class="codestrong1">answerOptions = wrongAnswers + [correctAnswer]</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="ent">➏</span> <span class="codestrong1">random.shuffle(answerOptions)</span><br class="calibre5" /><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# TODO: Write the question and answer options to the quiz file.</span><br class="calibre5" /><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# TODO: Write the answer key to a file.</span></p>
+<p class="indent">The correct answer is easy to get&mdash;it’s stored as a value in the <span class="literal">capitals</span> dictionary <span class="ent">➊</span>. This loop will loop through the states in the shuffled <span class="literal">states</span> list, from <span class="literal">states[0]</span> to <span class="literal">states[49]</span>, find each state in <span class="literal">capitals</span>, and store that state’s corresponding capital in <span class="literal">correctAnswer</span>.</p>
+<p class="indent">The list of possible wrong answers is trickier. You can get it by duplicating <em class="calibre7">all</em> the values in the <span class="literal">capitals</span> dictionary <span class="ent">➋</span>, deleting the correct answer <span class="ent">➌</span>, and selecting three random values from this list <span class="ent">➍</span>. The <span class="literal">random.sample()</span> function makes it easy to do this selection. Its first argument is the list you want <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1785"></span>to select from; the second argument is the number of values you want to select. The full list of answer options is the combination of these three wrong answers with the correct answers <span class="ent">➎</span>. Finally, the answers need to be randomized <span class="ent">➏</span> so that the correct response isn’t always choice D.</p>
+<h4 class="h2" id="calibre_link-312"><strong class="calibre2"><em class="calibre9">Step 4: Write Content to the Quiz and Answer Key Files</em></strong></h4>
+<p class="noindent">All that is left is to write the question to the quiz file and the answer to the answer key file. Make your code look like the following:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# randomQuizGenerator.py - Creates quizzes with questions and answers in<br class="calibre5" />
+# random order, along with the answer key.<br class="calibre5" /><br class="calibre5" />
+--<span class="codeitalic1">snip</span>--<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;# Loop through all 50 states, making a question for each.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;for questionNum in range(50):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--<span class="codeitalic1">snip</span>--<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="codestrong1"># Write the question and the answer options to the quiz file.</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;quizFile.write(f'{questionNum + 1}. What is the capital of</span><br class="calibre5" />
+<span class="codestrong1">{states[questionNum]}?\n')</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="ent">➊</span> <span class="codestrong1">for i in range(4):</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="ent">➋</span> <span class="codestrong1">quizFile.write(f"&nbsp;&nbsp;&nbsp;&nbsp;{'ABCD'[i]}. { answerOptions[i]}\n")</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;quizFile.write('\n')</span><br class="calibre5" /><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Write the answer key to a file.</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="ent">➌</span> <span class="codestrong1">answerKeyFile.write(f"{questionNum + 1}.</span><br class="calibre5" />
+<span class="codestrong1">{'ABCD'[answerOptions.index(correctAnswer)]}")</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;quizFile.close()</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;answerKeyFile.close()</span></p>
+<p class="indent">A <span class="literal">for</span> loop that goes through integers <span class="literal">0</span> to <span class="literal">3</span> will write the answer options in the <span class="literal">answerOptions</span> list <span class="ent">➊</span>. The expression <span class="literal">'ABCD'[i]</span> at <span class="ent">➋</span> treats the string <span class="literal">'ABCD'</span> as an array and will evaluate to <span class="literal">'A'</span>,<span class="literal">'B'</span>, <span class="literal">'C'</span>, and then <span class="literal">'D'</span> on each respective iteration through the loop.</p>
+<p class="indent">In the final line <span class="ent">➌</span>, the expression <span class="literal">answerOptions.index(correctAnswer)</span> will find the integer index of the correct answer in the randomly ordered answer options, and <span class="literal">'ABCD'[answerOptions.index(correctAnswer)]</span> will evaluate to the correct answer’s letter to be written to the answer key file.</p>
+<p class="indent">After you run the program, this is how your <em class="calibre7">capitalsquiz1.txt</em> file will look, though of course your questions and answer options may be different from those shown here, depending on the outcome of your <span class="literal">random.shuffle()</span> calls:</p>
+<p class="programs">Name:<br class="calibre5" /><br class="calibre5" />
+Date:<br class="calibre5" /><br class="calibre5" />
+Period:<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;State Capitals Quiz (Form 1)<br class="calibre5" /><br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-980"></span>1. What is the capital of West Virginia?<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;A. Hartford<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;B. Santa Fe<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;C. Harrisburg<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;D. Charleston<br class="calibre5" /><br class="calibre5" />
+2. What is the capital of Colorado?<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;A. Raleigh<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;B. Harrisburg<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;C. Denver<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;D. Lincoln<br class="calibre5" /><br class="calibre5" />
+--<span class="codeitalic1">snip</span>--</p>
+<p class="indent">The corresponding <em class="calibre7">capitalsquiz_answers1.txt</em> text file will look like this:</p>
+<p class="programs">1. D<br class="calibre5" />
+2. C<br class="calibre5" />
+3. A<br class="calibre5" />
+4. C<br class="calibre5" />
+--<span class="codeitalic1">snip</span>--</p>
+<h3 class="h1" id="calibre_link-313"><strong class="calibre2">Project: Updatable Multi-Clipboard</strong></h3>
+<p class="noindent">Let’s rewrite the “multi-clipboard” program from <a href="#calibre_link-207" class="calibre6">Chapter 6</a> so that it uses the <span class="literal">shelve</span> module. The user will now be able to save new strings to load to the clipboard without having to modify the source code. We’ll name this new program <em class="calibre7">mcb.pyw</em> (since “mcb” is shorter to type than “multi-clipboard”). The <em class="calibre7">.pyw</em> extension means that Python won’t show a Terminal window when it runs this program. (See <a href="#calibre_link-35" class="calibre6">Appendix B</a> for more details.)</p>
+<p class="indent">The program will save each piece of clipboard text under a keyword. For example, when you run <span class="literal">py mcb.pyw save spam</span>, the current contents of the clipboard will be saved with the keyword <em class="calibre7">spam</em>. This text can later be loaded to the clipboard again by running <span class="literal">py mcb.pyw spam</span>. And if the user forgets what keywords they have, they can run <span class="literal">py mcb.pyw list</span> to copy a list of all keywords to the clipboard.</p>
+<p class="indent">Here’s what the program does:</p>
+<ol class="calibre10">
+<li class="noindent1">The command line argument for the keyword is checked.</li>
+<li class="noindent1">If the argument is <span class="literal">save</span>, then the clipboard contents are saved to the keyword.</li>
+<li class="noindent1">If the argument is <span class="literal">list</span>, then all the keywords are copied to the clipboard.</li>
+<li class="noindent1">Otherwise, the text for the keyword is copied to the clipboard.</li>
+</ol>
+<p class="indent">This means the code will need to do the following:</p>
+<ol class="calibre10">
+<li class="noindent1">Read the command line arguments from <span class="literal">sys.argv</span>.</li>
+<li class="noindent1">Read and write to the clipboard.</li>
+<li class="noindent1">Save and load to a shelf file.</li>
+</ol>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1786"></span>If you use Windows, you can easily run this script from the Run... window by creating a batch file named <em class="calibre7">mcb.bat</em> with the following content:</p>
+<p class="programs">@pyw.exe C:\Python34\mcb.pyw %*</p>
+<h4 class="h2" id="calibre_link-314"><strong class="calibre2"><em class="calibre9">Step 1: Comments and Shelf Setup</em></strong></h4>
+<p class="noindent">Let’s start by making a skeleton script with some comments and basic setup. Make your code look like the following:</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;#! python3<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;# mcb.pyw - Saves and loads pieces of text to the clipboard.<br class="calibre5" />
+<span class="ent">➊</span> # Usage: py.exe mcb.pyw save &lt;keyword&gt; - Saves clipboard to keyword.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;py.exe mcb.pyw &lt;keyword&gt; - Loads keyword to clipboard.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;py.exe mcb.pyw list - Loads all keywords to clipboard.<br class="calibre5" /><br class="calibre5" />
+<span class="ent">➋</span> import shelve, pyperclip, sys<br class="calibre5" /><br class="calibre5" />
+<span class="ent">➌</span> mcbShelf = shelve.open('mcb')<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;# TODO: Save clipboard content.<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;# TODO: List keywords and load content.<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;mcbShelf.close()</p>
+<p class="indent">It’s common practice to put general usage information in comments at the top of the file <span class="ent">➊</span>. If you ever forget how to run your script, you can always look at these comments for a reminder. Then you import your modules <span class="ent">➋</span>. Copying and pasting will require the <span class="literal">pyperclip</span> module, and reading the command line arguments will require the <span class="literal">sys</span> module. The <span class="literal">shelve</span> module will also come in handy: Whenever the user wants to save a new piece of clipboard text, you’ll save it to a shelf file. Then, when the user wants to paste the text back to their clipboard, you’ll open the shelf file and load it back into your program. The shelf file will be named with the prefix <em class="calibre7">mcb</em> <span class="ent">➌</span>.</p>
+<h4 class="h2" id="calibre_link-315"><strong class="calibre2"><em class="calibre9">Step 2: Save Clipboard Content with a Keyword</em></strong></h4>
+<p class="noindent">The program does different things depending on whether the user wants to save text to a keyword, load text into the clipboard, or list all the existing keywords. Let’s deal with that first case. Make your code look like the following:</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;#! python3<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;# mcb.pyw - Saves and loads pieces of text to the clipboard.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;--<span class="codeitalic1">snip</span>--<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;<span class="codestrong1"># Save clipboard content.</span><br class="calibre5" />
+<span class="ent">➊</span> <span class="codestrong1">if len(sys.argv) == 3 and sys.argv[1].lower() == 'save':</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="ent">➋</span> <span class="codestrong1">mcbShelf[sys.argv[2]] = pyperclip.paste()</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;<span class="codestrong1">elif len(sys.argv) == 2:</span><br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1046"></span>&nbsp;&nbsp;&nbsp;<span class="ent">➌</span> # TODO: List keywords and load content.<br class="calibre5" /><br class="calibre5" />
+mcbShelf.close()</p>
+<p class="indent">If the first command line argument (which will always be at index <span class="literal">1</span> of the <span class="literal">sys.argv</span> list) is <span class="literal">'save'</span> <span class="ent">➊</span>, the second command line argument is the keyword for the current content of the clipboard. The keyword will be used as the key for <span class="literal">mcbShelf</span>, and the value will be the text currently on the clipboard <span class="ent">➋</span>.</p>
+<p class="indent">If there is only one command line argument, you will assume it is either <span class="literal">'list'</span> or a keyword to load content onto the clipboard. You will implement that code later. For now, just put a <span class="literal">TODO</span> comment there <span class="ent">➌</span>.</p>
+<h4 class="h2" id="calibre_link-316"><strong class="calibre2"><em class="calibre9">Step 3: List Keywords and Load a Keyword’s Content</em></strong></h4>
+<p class="noindent">Finally, let’s implement the two remaining cases: the user wants to load clipboard text in from a keyword, or they want a list of all available keywords. Make your code look like the following:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# mcb.pyw - Saves and loads pieces of text to the clipboard.<br class="calibre5" />
+--<span class="codeitalic1">snip</span>--<br class="calibre5" /><br class="calibre5" />
+# Save clipboard content.<br class="calibre5" />
+if len(sys.argv) == 3 and sys.argv[1].lower() == 'save':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mcbShelf[sys.argv[2]] = pyperclip.paste()<br class="calibre5" />
+elif len(sys.argv) == 2:<br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# List keywords and load content.</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;</span><span class="ent">➊</span> <span class="codestrong1">if sys.argv[1].lower() == 'list':</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="ent">➋</span> <span class="codestrong1">pyperclip.copy(str(list(mcbShelf.keys())))</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif sys.argv[1] in mcbShelf:</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="ent">➌</span> <span class="codestrong1">pyperclip.copy(mcbShelf[sys.argv[1]])</span><br class="calibre5" /><br class="calibre5" />
+mcbShelf.close()</p>
+<p class="indent">If there is only one command line argument, first let’s check whether it’s <span class="literal">'list'</span> <span class="ent">➊</span>. If so, a string representation of the list of shelf keys will be copied to the clipboard <span class="ent">➋</span>. The user can paste this list into an open text editor to read it.</p>
+<p class="indent">Otherwise, you can assume the command line argument is a keyword. If this keyword exists in the <span class="literal">mcbShelf</span> shelf as a key, you can load the value onto the clipboard <span class="ent">➌</span>.</p>
+<p class="indent">And that’s it! Launching this program has different steps depending on what operating system your computer uses. See <a href="#calibre_link-35" class="calibre6">Appendix B</a> for details.</p>
+<p class="indent">Recall the password locker program you created in <a href="#calibre_link-207" class="calibre6">Chapter 6</a> that stored the passwords in a dictionary. Updating the passwords required changing the source code of the program. This isn’t ideal, because average users don’t feel comfortable changing source code to update their software. Also, every time you modify the source code to a program, you run the risk of accidentally introducing new bugs. By storing the data for a program in <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1787"></span>a different place than the code, you can make your programs easier for others to use and more resistant to bugs.</p>
+<h3 class="h1" id="calibre_link-317"><strong class="calibre2">Summary</strong></h3>
+<p class="noindent">Files are organized into folders (also called directories), and a path describes the location of a file. Every program running on your computer has a current working directory, which allows you to specify file paths relative to the current location instead of always typing the full (or absolute) path. The <span class="literal">pathlib</span> and <span class="literal">os.path</span> modules have many functions for manipulating file paths.</p>
+<p class="indent">Your programs can also directly interact with the contents of text files. The <span class="literal">open()</span> function can open these files to read in their contents as one large string (with the <span class="literal">read()</span> method) or as a list of strings (with the <span class="literal">readlines()</span> method). The <span class="literal">open()</span> function can open files in write or append mode to create new text files or add to existing text files, respectively.</p>
+<p class="indent">In previous chapters, you used the clipboard as a way of getting large amounts of text into a program, rather than typing it all in. Now you can have your programs read files directly from the hard drive, which is a big improvement, since files are much less volatile than the clipboard.</p>
+<p class="indent">In the next chapter, you will learn how to handle the files themselves, by copying them, deleting them, renaming them, moving them, and more.</p>
+<h3 class="h1" id="calibre_link-318"><strong class="calibre2">Practice Questions</strong></h3>
+<p class="question"><a id="calibre_link-1352" href="#calibre_link-1179" class="calibre6">1</a>. What is a relative path relative to?</p>
+<p class="question"><a id="calibre_link-1353" href="#calibre_link-1180" class="calibre6">2</a>. What does an absolute path start with?</p>
+<p class="question"><a id="calibre_link-1354" href="#calibre_link-1181" class="calibre6">3</a>. What does <span class="literal">Path('C:/Users') / 'Al'</span> evaluate to on Windows?</p>
+<p class="question"><a id="calibre_link-1355" href="#calibre_link-1182" class="calibre6">4</a>. What does <span class="literal">'C:/Users' / 'Al'</span> evaluate to on Windows?</p>
+<p class="question"><a id="calibre_link-1356" href="#calibre_link-1183" class="calibre6">5</a>. What do the <span class="literal">os.getcwd()</span> and <span class="literal">os.chdir()</span> functions do?</p>
+<p class="question"><a id="calibre_link-1357" href="#calibre_link-1184" class="calibre6">6</a>. What are the <span class="literal">.</span> and <span class="literal">..</span> folders?</p>
+<p class="question"><a id="calibre_link-1358" href="#calibre_link-1185" class="calibre6">7</a>. In <em class="calibre7">C:\bacon\eggs\spam.txt</em>, which part is the dir name, and which part is the base name?</p>
+<p class="question"><a id="calibre_link-1359" href="#calibre_link-1186" class="calibre6">8</a>. What are the three “mode” arguments that can be passed to the <span class="literal">open()</span> function?</p>
+<p class="question"><a id="calibre_link-1360" href="#calibre_link-1187" class="calibre6">9</a>. What happens if an existing file is opened in write mode?</p>
+<p class="question1"><a id="calibre_link-1361" href="#calibre_link-1188" class="calibre6">10</a>. What is the difference between the <span class="literal">read()</span> and <span class="literal">readlines()</span> methods?</p>
+<p class="question1"><a id="calibre_link-1362" href="#calibre_link-1189" class="calibre6">11</a>. What data structure does a shelf value resemble?</p>
+<h3 class="h1" id="calibre_link-319"><strong class="calibre2">Practice Projects</strong></h3>
+<p class="noindent">For practice, design and write the following programs.</p>
+<h4 class="h2" id="calibre_link-320"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1788" class="calibre1"></span><strong class="calibre2"><em class="calibre9">Extending the Multi-Clipboard</em></strong></h4>
+<p class="noindent">Extend the multi-clipboard program in this chapter so that it has a <span class="literal">delete &lt;keyword&gt;</span> command line argument that will delete a keyword from the shelf. Then add a <span class="literal">delete</span> command line argument that will delete <em class="calibre7">all</em> keywords.</p>
+<h4 class="h2" id="calibre_link-321"><strong class="calibre2"><em class="calibre9">Mad Libs</em></strong></h4>
+<p class="noindent">Create a Mad Libs program that reads in text files and lets the user add their own text anywhere the word <em class="calibre7">ADJECTIVE</em>, <em class="calibre7">NOUN</em>, <em class="calibre7">ADVERB</em>, or <em class="calibre7">VERB</em> appears in the text file. For example, a text file may look like this:</p>
+<p class="programs">The ADJECTIVE panda walked to the NOUN and then VERB. A nearby NOUN was<br class="calibre5" />
+unaffected by these events.</p>
+<p class="indent">The program would find these occurrences and prompt the user to replace them.</p>
+<p class="programs">Enter an adjective:<br class="calibre5" />
+<span class="codestrong1">silly</span><br class="calibre5" />
+Enter a noun:<br class="calibre5" />
+<span class="codestrong1">chandelier</span><br class="calibre5" />
+Enter a verb:<br class="calibre5" />
+<span class="codestrong1">screamed</span><br class="calibre5" />
+Enter a noun:<br class="calibre5" />
+<span class="codestrong1">pickup truck</span></p>
+<p class="indent">The following text file would then be created:</p>
+<p class="programs">The silly panda walked to the chandelier and then screamed. A nearby pickup<br class="calibre5" />truck was unaffected by these events.</p>
+<p class="indent">The results should be printed to the screen and saved to a new text file.</p>
+<h4 class="h2" id="calibre_link-322"><strong class="calibre2"><em class="calibre9">Regex Search</em></strong></h4>
+<p class="noindent">Write a program that opens all .<em class="calibre7">txt</em> files in a folder and searches for any line that matches a user-supplied regular expression. The results should be printed to the screen.</p>
+</div>
+
+<div><center><a href="../chapter8"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="../chapter10"><img src="/images/next.png" /></a></center></div>
+
+{% endblock %}

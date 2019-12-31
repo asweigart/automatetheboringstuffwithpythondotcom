@@ -1,0 +1,649 @@
+{% extends "secondeditionbase.html" %}
+{% set title = 'Automate the Boring Stuff with Python' %}
+{% block content %}
+
+<div><center><a href="../chapter6"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="../chapter8"><img src="/images/next.png" /></a></center></div>
+
+
+<div class="calibre" id="calibre_link-1142">
+<h2 class="h2b" id="calibre_link-238"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1076" class="calibre1"></span><strong class="calibre2"><span class="big">7</span><br class="calibre12" />PATTERN MATCHING WITH REGULAR EXPRESSIONS</strong></h2>
+<div class="image"><img src="../images/000015.jpg" alt="Image" class="calibre3" /></div>
+<p class="noindent">You may be familiar with searching for text by pressing <small class="calibre11">CTRL-</small>F and entering the words you’re looking for. <em class="calibre7">Regular expressions</em> go one step further: they allow you to specify a <em class="calibre7">pattern</em> of text to search for. You may not know a business’s exact phone number, but if you live in the United States or Canada, you know it will be three digits, followed by a hyphen, and then four more digits (and optionally, a three-digit area code at the start). This is how you, as a human, know a phone number when you see it: 415-555-1234 is a phone number, but 4,155,551,234 is not.</p>
+<p class="indent">We also recognize all sorts of other text patterns every day: email addresses have @ symbols in the middle, US social security numbers have nine digits and two hyphens, website URLs often have periods and forward slashes, news headlines use title case, social media hashtags begin with # and contain no spaces, and more.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1077"></span>Regular expressions are helpful, but few non-programmers know about them even though most modern text editors and word processors, such as Microsoft Word or OpenOffice, have find and find-and-replace features that can search based on regular expressions. Regular expressions are huge time-savers, not just for software users but also for programmers. In fact, tech writer Cory Doctorow argues that we should be teaching regular expressions even before programming:</p>
+<p class="bq">Knowing [regular expressions] can mean the difference between solving a problem in 3 steps and solving it in 3,000 steps. When you’re a nerd, you forget that the problems you solve with a couple keystrokes can take other people days of tedious, error-prone work to slog through.<sup class="calibre20"><a id="calibre_link-1169" href="#calibre_link-1143" class="calibre6">1</a></sup></p>
+<p class="indent">In this chapter, you’ll start by writing a program to find text patterns <em class="calibre7">without</em> using regular expressions and then see how to use regular expressions to make the code much less bloated. I’ll show you basic matching with regular expressions and then move on to some more powerful features, such as string substitution and creating your own character classes. Finally, at the end of the chapter, you’ll write a program that can automatically extract phone numbers and email addresses from a block of text.</p>
+<h3 class="h1" id="calibre_link-239"><strong class="calibre2">Finding Patterns of Text Without Regular Expressions</strong></h3>
+<p class="noindent">Say you want to find an American phone number in a string. You know the pattern if you’re American: three numbers, a hyphen, three numbers, a hyphen, and four numbers. Here’s an example: 415-555-4242.</p>
+<p class="indent">Let’s use a function named <span class="literal">isPhoneNumber()</span> to check whether a string matches this pattern, returning either <span class="literal">True</span> or <span class="literal">False</span>. Open a new file editor tab and enter the following code; then save the file as <em class="calibre7">isPhoneNumber.py</em>:</p>
+<p class="programs">def isPhoneNumber(text):<br class="calibre5" />
+&nbsp;&nbsp;<span class="ent">➊</span> if len(text) != 12:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return False<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for i in range(0, 3):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➋</span> if not text[i].isdecimal():<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return False<br class="calibre5" />
+&nbsp;&nbsp;<span class="ent">➌</span> if text[3] != '-':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return False<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for i in range(4, 7):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➍</span> if not text[i].isdecimal():<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return False<br class="calibre5" />
+&nbsp;&nbsp;<span class="ent">➎</span> if text[7] != '-':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return False<br class="calibre5" />
+&nbsp;<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1767"></span>&nbsp;&nbsp;&nbsp;&nbsp;for i in range(8, 12):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➏</span> if not text[i].isdecimal():<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return False<br class="calibre5" />
+&nbsp;&nbsp;<span class="ent">➐</span> return True<br class="calibre5" /><br class="calibre5" />
+print('Is 415-555-4242 a phone number?')<br class="calibre5" />
+print(isPhoneNumber('415-555-4242'))<br class="calibre5" />
+print('Is Moshi moshi a phone number?')<br class="calibre5" />
+print(isPhoneNumber('Moshi moshi'))</p>
+<p class="indent">When this program is run, the output looks like this:</p>
+<p class="programs">Is 415-555-4242 a phone number?<br class="calibre5" />
+True<br class="calibre5" />
+Is Moshi moshi a phone number?<br class="calibre5" />
+False</p>
+<p class="indent">The <span class="literal">isPhoneNumber()</span> function has code that does several checks to see whether the string in <span class="literal">text</span> is a valid phone number. If any of these checks fail, the function returns <span class="literal">False</span>. First the code checks that the string is exactly 12 characters <span class="ent">➊</span>. Then it checks that the area code (that is, the first three characters in <span class="literal">text</span>) consists of only numeric characters <span class="ent">➋</span>. The rest of the function checks that the string follows the pattern of a phone number: the number must have the first hyphen after the area code <span class="ent">➌</span>, three more numeric characters <span class="ent">➍</span>, then another hyphen <span class="ent">➎</span>, and finally four more numbers <span class="ent">➏</span>. If the program execution manages to get past all the checks, it returns <span class="literal">True</span> <span class="ent">➐</span>.</p>
+<p class="indent">Calling <span class="literal">isPhoneNumber()</span> with the argument <span class="literal">'415-555-4242'</span> will return <span class="literal">True</span>. Calling <span class="literal">isPhoneNumber()</span> with <span class="literal">'Moshi moshi'</span> will return <span class="literal">False</span>; the first test fails because <span class="literal">'Moshi moshi'</span> is not 12 characters long.</p>
+<p class="indent">If you wanted to find a phone number within a larger string, you would have to add even more code to find the phone number pattern. Replace the last four <span class="literal">print()</span> function calls in <em class="calibre7">isPhoneNumber.py</em> with the following:</p>
+<p class="programs">message = 'Call me at 415-555-1011 tomorrow. 415-555-9999 is my office.'<br class="calibre5" />
+for i in range(len(message)):<br class="calibre5" />
+&nbsp;&nbsp;<span class="ent">➊</span> chunk = message[i:i+12]<br class="calibre5" />
+&nbsp;&nbsp;<span class="ent">➋</span> if isPhoneNumber(chunk):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('Phone number found: ' + chunk)<br class="calibre5" />
+print('Done')</p>
+<p class="indent">When this program is run, the output will look like this:</p>
+<p class="programs">Phone number found: 415-555-1011<br class="calibre5" />
+Phone number found: 415-555-9999<br class="calibre5" />
+Done</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1768"></span>On each iteration of the <span class="literal">for</span> loop, a new chunk of 12 characters from <span class="literal">message</span> is assigned to the variable <span class="literal">chunk</span> <span class="ent">➊</span>. For example, on the first iteration, <span class="literal">i</span> is <span class="literal">0</span>, and <span class="literal">chunk</span> is assigned <span class="literal">message[0:12]</span> (that is, the string <span class="literal">'Call me at 4'</span>). On the next iteration, <span class="literal">i</span> is <span class="literal">1</span>, and <span class="literal">chunk</span> is assigned <span class="literal">message[1:13]</span> (the string <span class="literal">'all me at 41'</span>). In other words, on each iteration of the <span class="literal">for</span> loop, <span class="literal">chunk</span> takes on the following values:</p>
+<ul class="calibre8">
+<li class="noindent1"><span class="literal">'Call me at 4'</span></li>
+<li class="noindent1"><span class="literal">'all me at 41'</span></li>
+<li class="noindent1"><span class="literal">'ll me at 415'</span></li>
+<li class="noindent1"><span class="literal">'l me at 415-'</span></li>
+<li class="noindent1">. . . and so on.</li>
+</ul>
+<p class="indent">You pass <span class="literal">chunk</span> to <span class="literal">isPhoneNumber()</span> to see whether it matches the phone number pattern <span class="ent">➋</span>, and if so, you print the chunk.</p>
+<p class="indent">Continue to loop through <span class="literal">message</span>, and eventually the 12 characters in <span class="literal">chunk</span> will be a phone number. The loop goes through the entire string, testing each 12-character piece and printing any <span class="literal">chunk</span> it finds that satisfies <span class="literal">isPhoneNumber()</span>. Once we’re done going through <span class="literal">message</span>, we print <span class="literal">Done</span>.</p>
+<p class="indent">While the string in <span class="literal">message</span> is short in this example, it could be millions of characters long and the program would still run in less than a second. A similar program that finds phone numbers using regular expressions would also run in less than a second, but regular expressions make it quicker to write these programs.</p>
+<h3 class="h1" id="calibre_link-240"><strong class="calibre2">Finding Patterns of Text with Regular Expressions</strong></h3>
+<p class="noindent">The previous phone number&ndash;finding program works, but it uses a lot of code to do something limited: the <span class="literal">isPhoneNumber()</span> function is 17 lines but can find only one pattern of phone numbers. What about a phone number formatted like 415.555.4242 or (415) 555-4242? What if the phone number had an extension, like 415-555-4242 x99? The <span class="literal">isPhoneNumber()</span> function would fail to validate them. You could add yet more code for these additional patterns, but there is an easier way.</p>
+<p class="indent">Regular expressions, called <em class="calibre7">regexes</em> for short, are descriptions for a pattern of text. For example, a <span class="literal">\d</span> in a regex stands for a digit character&mdash;that is, any single numeral from 0 to 9. The regex <span class="literal">\d\d\d-\d\d\d-\d\d\d\d</span> is used by Python to match the same text pattern the previous <span class="literal">isPhoneNumber()</span> function did: a string of three numbers, a hyphen, three more numbers, another hyphen, and four numbers. Any other string would not match the <span class="literal">\d\d\d-\d\d\d-\d\d\d\d</span> regex.</p>
+<p class="indent">But regular expressions can be much more sophisticated. For example, adding a <span class="literal">3</span> in braces (<span class="literal">{3}</span>) after a pattern is like saying, “Match this pattern three times.” So the slightly shorter regex <span class="literal">\d{3}-\d{3}-\d{4}</span> also matches the correct phone number format.</p>
+<h4 class="h2" id="calibre_link-241"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-857" class="calibre1"></span><strong class="calibre2"><em class="calibre9">Creating Regex Objects</em></strong></h4>
+<p class="noindent">All the regex functions in Python are in the <span class="literal">re</span> module. Enter the following into the interactive shell to import this module:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import re</span></p>
+<div class="note">
+<p class="notet"><strong class="calibre2"><span class="notes">NOTE</span></strong></p>
+<p class="notep"><em class="calibre7">Most of the examples in this chapter will require the <span class="codeitalic">re</span> module, so remember to import it at the beginning of any script you write or any time you restart Mu. Otherwise, you’ll get a <span class="codeitalic">NameError: name 're' is not defined</span> error message.</em></p>
+</div>
+<p class="indent">Passing a string value representing your regular expression to <span class="literal">re.compile()</span> returns a <span class="literal">Regex</span> pattern object (or simply, a <span class="literal">Regex</span> object).</p>
+<p class="indent">To create a <span class="literal">Regex</span> object that matches the phone number pattern, enter the following into the interactive shell. (Remember that <span class="literal">\d</span> means “a digit character” and <span class="literal">\d\d\d-\d\d\d-\d\d\d\d</span> is the regular expression for a phone number pattern.)</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">phoneNumRegex = re.compile(r'\d\d\d-\d\d\d-\d\d\d\d')</span></p>
+<p class="indent">Now the <span class="literal">phoneNumRegex</span> variable contains a <span class="literal">Regex</span> object.</p>
+<h4 class="h2" id="calibre_link-242"><strong class="calibre2"><em class="calibre9">Matching Regex Objects</em></strong></h4>
+<p class="noindent">A <span class="literal">Regex</span> object’s <span class="literal">search()</span> method searches the string it is passed for any matches to the regex. The <span class="literal">search()</span> method will return <span class="literal">None</span> if the regex pattern is not found in the string. If the pattern <em class="calibre7">is</em> found, the <span class="literal">search()</span> method returns a <span class="literal">Match</span> object, which have a <span class="literal">group()</span> method that will return the actual matched text from the searched string. (I’ll explain groups shortly.) For example, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">phoneNumRegex = re.compile(r'\d\d\d-\d\d\d-\d\d\d\d')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo = phoneNumRegex.search('My number is 415-555-4242.')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">print('Phone number found: ' + mo.group())</span><br class="calibre5" />
+Phone number found: 415-555-4242</p>
+<p class="indent">The <span class="literal">mo</span> variable name is just a generic name to use for <span class="literal">Match</span> objects. This example might seem complicated at first, but it is much shorter than the earlier <em class="calibre7">isPhoneNumber.py</em> program and does the same thing.</p>
+<p class="indent">Here, we pass our desired pattern to <span class="literal">re.compile()</span> and store the resulting <span class="literal">Regex</span> object in <span class="literal">phoneNumRegex</span>. Then we call <span class="literal">search()</span> on <span class="literal">phoneNumRegex</span> and pass <span class="literal">search()</span> the string we want to match for during the search. The result of the search gets stored in the variable <span class="literal">mo</span>. In this example, we know that our pattern will be found in the string, so we know that a <span class="literal">Match</span> object will be returned. Knowing that <span class="literal">mo</span> contains a <span class="literal">Match</span> object and not the null value <span class="literal">None</span>, we can call <span class="literal">group()</span> on <span class="literal">mo</span> to return the match. Writing <span class="literal">mo.group()</span> inside our <span class="literal">print()</span> function call displays the whole match, <span class="literal">415-555-4242</span>.</p>
+<h4 class="h2" id="calibre_link-243"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-766" class="calibre1"></span><strong class="calibre2"><em class="calibre9">Review of Regular Expression Matching</em></strong></h4>
+<p class="noindent">While there are several steps to using regular expressions in Python, each step is fairly simple.</p>
+<ol class="calibre10">
+<li class="noindent1">Import the regex module with <span class="literal">import re</span>.</li>
+<li class="noindent1">Create a <span class="literal">Regex</span> object with the <span class="literal">re.compile()</span> function. (Remember to use a raw string.)</li>
+<li class="noindent1">Pass the string you want to search into the <span class="literal">Regex</span> object’s <span class="literal">search()</span> method. This returns a <span class="literal">Match</span> object.</li>
+<li class="noindent1">Call the <span class="literal">Match</span> object’s <span class="literal">group()</span> method to return a string of the actual matched text.</li>
+</ol>
+<div class="note">
+<p class="notet"><strong class="calibre2"><span class="notes">NOTE</span></strong></p>
+<p class="notep"><em class="calibre7">While I encourage you to enter the example code into the interactive shell, you should also make use of web-based regular expression testers, which can show you exactly how a regex matches a piece of text that you enter. I recommend the tester at</em> <a href="https://pythex.org/" class="calibre6">https://pythex.org/</a>.</p>
+</div>
+<h3 class="h1" id="calibre_link-244"><strong class="calibre2">More Pattern Matching with Regular Expressions</strong></h3>
+<p class="noindent">Now that you know the basic steps for creating and finding regular expression objects using Python, you’re ready to try some of their more powerful pattern-matching capabilities.</p>
+<h4 class="h2" id="calibre_link-245"><strong class="calibre2"><em class="calibre9">Grouping with Parentheses</em></strong></h4>
+<p class="noindent">Say you want to separate the area code from the rest of the phone number. Adding parentheses will create <em class="calibre7">groups</em> in the regex: <span class="literal">(\d\d\d)-(\d\d\d-\d\d\d\d)</span>. Then you can use the <span class="literal">group()</span> match object method to grab the matching text from just one group.</p>
+<p class="indent">The first set of parentheses in a regex string will be group <span class="literal">1</span>. The second set will be group <span class="literal">2</span>. By passing the <em class="calibre7">integer</em> <span class="literal">1</span> or <span class="literal">2</span> to the <span class="literal">group()</span> match object method, you can grab different parts of the matched text. Passing <span class="literal">0</span> or nothing to the <span class="literal">group()</span> method will return the entire matched text. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">phoneNumRegex = re.compile(r'(\d\d\d)-(\d\d\d-\d\d\d\d)')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo = phoneNumRegex.search('My number is 415-555-4242.')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo.group(1)</span><br class="calibre5" />
+'415'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo.group(2)</span><br class="calibre5" />
+'555-4242'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo.group(0)</span><br class="calibre5" />
+'415-555-4242'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo.group()</span><br class="calibre5" />
+'415-555-4242'</p>
+<p class="indent">If you would like to retrieve all the groups at once, use the <span class="literal">groups()</span> method&mdash;note the plural form for the name.</p>
+<p class="programs"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1769"></span>&gt;&gt;&gt; <span class="codestrong1">mo.groups()</span><br class="calibre5" />
+('415', '555-4242')<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">areaCode, mainNumber = mo.groups()</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">print(areaCode)</span><br class="calibre5" />
+415<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">print(mainNumber)</span><br class="calibre5" />
+555-4242</p>
+<p class="indent">Since <span class="literal">mo.groups()</span> returns a tuple of multiple values, you can use the multiple-assignment trick to assign each value to a separate variable, as in the previous <span class="literal">areaCode, mainNumber = mo.groups()</span> line.</p>
+<p class="indent">Parentheses have a special meaning in regular expressions, but what do you do if you need to match a parenthesis in your text? For instance, maybe the phone numbers you are trying to match have the area code set in parentheses. In this case, you need to escape the <span class="literal">(</span> and <span class="literal">)</span> characters with a backslash. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">phoneNumRegex = re.compile(r'(\(\d\d\d\)) (\d\d\d-\d\d\d\d)')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo = phoneNumRegex.search('My phone number is (415) 555-4242.')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo.group(1)</span><br class="calibre5" />
+'(415)'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo.group(2)</span><br class="calibre5" />
+'555-4242'</p>
+<p class="indent">The <span class="literal">\(</span> and <span class="literal">\)</span> escape characters in the raw string passed to <span class="literal">re.compile()</span> will match actual parenthesis characters. In regular expressions, the following characters have special meanings:</p>
+<p class="programs">.&nbsp;&nbsp;^&nbsp;&nbsp;$&nbsp;&nbsp;*&nbsp;&nbsp;+&nbsp;&nbsp;?&nbsp;&nbsp;{&nbsp;&nbsp;}&nbsp;&nbsp;[&nbsp;&nbsp;]&nbsp;&nbsp;\&nbsp;&nbsp;|&nbsp;&nbsp;(&nbsp;&nbsp;)</p>
+<p class="indent">If you want to detect these characters as part of your text pattern, you need to escape them with a backslash:</p>
+<p class="programs">\.&nbsp;&nbsp;\^&nbsp;&nbsp;\$&nbsp;&nbsp;\*&nbsp;&nbsp;\+&nbsp;&nbsp;\?&nbsp;&nbsp;\{&nbsp;&nbsp;\}&nbsp;&nbsp;\[&nbsp;&nbsp;\]&nbsp;&nbsp;\\&nbsp;&nbsp;\|&nbsp;&nbsp;\(&nbsp;&nbsp;\)</p>
+<p class="indent">Make sure to double-check that you haven’t mistaken escaped parentheses <span class="literal">\(</span> and <span class="literal">\)</span> for parentheses <span class="literal">(</span> and <span class="literal">)</span> in a regular expression. If you receive an error message about “missing )” or “unbalanced parenthesis,” you may have forgotten to include the closing unescaped parenthesis for a group, like in this example:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">re.compile(r'(\(Parentheses\)')</span><br class="calibre5" />
+Traceback (most recent call last):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;--<span class="codeitalic1">snip</span>--<br class="calibre5" />
+re.error: missing ), unterminated subpattern at position 0</p>
+<p class="indent">The error message tells you that there is an opening parenthesis at index <span class="literal">0</span> of the <span class="literal">r'(\(Parentheses\)'</span> string that is missing its corresponding closing parenthesis.</p>
+<h4 class="h2" id="calibre_link-246"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-767" class="calibre1"></span><strong class="calibre2"><em class="calibre9">Matching Multiple Groups with the Pipe</em></strong></h4>
+<p class="noindent">The <span class="literal">|</span> character is called a <em class="calibre7">pipe</em>. You can use it anywhere you want to match one of many expressions. For example, the regular expression <span class="literal">r'Batman|Tina Fey'</span> will match either <span class="literal">'Batman'</span> or <span class="literal">'Tina Fey'</span>.</p>
+<p class="indent">When <em class="calibre7">both</em> Batman and Tina Fey occur in the searched string, the first occurrence of matching text will be returned as the <span class="literal">Match</span> object. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">heroRegex = re.compile (r'Batman|Tina Fey')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo1 = heroRegex.search('Batman and Tina Fey')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo1.group()</span><br class="calibre5" />
+'Batman'<br class="calibre5" /><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo2 = heroRegex.search('Tina Fey and Batman')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo2.group()</span><br class="calibre5" />
+'Tina Fey'</p>
+<div class="note">
+<p class="notet"><strong class="calibre2"><span class="notes">NOTE</span></strong></p>
+<p class="notep"><em class="calibre7">You can find <span class="codeitalic">all</span> matching occurrences with the <span class="codeitalic">findall()</span> method that’s discussed in “<a href="#calibre_link-252" class="calibre6">The findall() Method</a>” on <a href="#calibre_link-746" class="calibre6">page 171</a>.</em></p>
+</div>
+<p class="indent">You can also use the pipe to match one of several patterns as part of your regex. For example, say you wanted to match any of the strings <span class="literal">'Batman'</span>, <span class="literal">'Batmobile'</span>, <span class="literal">'Batcopter'</span>, and <span class="literal">'Batbat'</span>. Since all these strings start with <span class="literal">Bat</span>, it would be nice if you could specify that prefix only once. This can be done with parentheses. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">batRegex = re.compile(r'Bat(man|mobile|copter|bat)')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo = batRegex.search('Batmobile lost a wheel')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo.group()</span><br class="calibre5" />
+'Batmobile'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo.group(1)</span><br class="calibre5" />
+'mobile'</p>
+<p class="indent">The method call <span class="literal">mo.group()</span> returns the full matched text <span class="literal">'Batmobile'</span>, while <span class="literal">mo.group(1)</span> returns just the part of the matched text inside the first parentheses group, <span class="literal">'mobile'</span>. By using the pipe character and grouping parentheses, you can specify several alternative patterns you would like your regex to match.</p>
+<p class="indent">If you need to match an actual pipe character, escape it with a backslash, like <span class="literal">\|</span>.</p>
+<h4 class="h2" id="calibre_link-247"><strong class="calibre2"><em class="calibre9">Optional Matching with the Question Mark</em></strong></h4>
+<p class="noindent">Sometimes there is a pattern that you want to match only optionally. That is, the regex should find a match regardless of whether that bit of text is there. The <span class="literal">?</span> character flags the group that precedes it as an optional part of the pattern. For example, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">batRegex = re.compile(r'Bat(wo)?man')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo1 = batRegex.search('The Adventures of Batman')</span><br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-770"></span>&gt;&gt;&gt; <span class="codestrong1">mo1.group()</span><br class="calibre5" />
+'Batman'<br class="calibre5" /><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo2 = batRegex.search('The Adventures of Batwoman')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo2.group()</span><br class="calibre5" />
+'Batwoman'</p>
+<p class="indent">The <span class="literal">(wo)?</span> part of the regular expression means that the pattern <span class="literal">wo</span> is an optional group. The regex will match text that has zero instances or one instance of <em class="calibre7">wo</em> in it. This is why the regex matches both <span class="literal">'Batwoman'</span> and <span class="literal">'Batman'</span>.</p>
+<p class="indent">Using the earlier phone number example, you can make the regex look for phone numbers that do or do not have an area code. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">phoneRegex = re.compile(r'(\d\d\d-)?\d\d\d-\d\d\d\d')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo1 = phoneRegex.search('My number is 415-555-4242')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo1.group()</span><br class="calibre5" />
+'415-555-4242'<br class="calibre5" /><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo2 = phoneRegex.search('My number is 555-4242')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo2.group()</span><br class="calibre5" />
+'555-4242'</p>
+<p class="indent">You can think of the <span class="literal">?</span> as saying, “Match zero or one of the group preceding this question mark.”</p>
+<p class="indent">If you need to match an actual question mark character, escape it with <span class="literal">\?</span>.</p>
+<h4 class="h2" id="calibre_link-248"><strong class="calibre2"><em class="calibre9">Matching Zero or More with the Star</em></strong></h4>
+<p class="noindent">The <span class="literal">*</span> (called the <em class="calibre7">star</em> or <em class="calibre7">asterisk</em>) means “match zero or more”&mdash;the group that precedes the star can occur any number of times in the text. It can be completely absent or repeated over and over again. Let’s look at the Batman example again.</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">batRegex = re.compile(r'Bat(wo)*man')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo1 = batRegex.search('The Adventures of Batman')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo1.group()</span><br class="calibre5" />
+'Batman'<br class="calibre5" /><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo2 = batRegex.search('The Adventures of Batwoman')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo2.group()</span><br class="calibre5" />
+'Batwoman'<br class="calibre5" /><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo3 = batRegex.search('The Adventures of Batwowowowoman')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo3.group()</span><br class="calibre5" />
+'Batwowowowoman'</p>
+<p class="indent">For <span class="literal">'Batman'</span>, the <span class="literal">(wo)*</span> part of the regex matches zero instances of <span class="literal">wo</span> in the string; for <span class="literal">'Batwoman'</span>, the <span class="literal">(wo)*</span> matches one instance of <span class="literal">wo</span>; and for <span class="literal">'Batwowowowoman'</span>, <span class="literal">(wo)*</span> matches four instances of <span class="literal">wo</span>.</p>
+<p class="indent">If you need to match an actual star character, prefix the star in the regular expression with a backslash, <span class="literal">\*</span>.</p>
+<h4 class="h2" id="calibre_link-249"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-748" class="calibre1"></span><strong class="calibre2"><em class="calibre9">Matching One or More with the Plus</em></strong></h4>
+<p class="noindent">While <span class="literal">*</span> means “match zero or more,” the <span class="literal">+</span> (or <em class="calibre7">plus</em>) means “match one or more.” Unlike the star, which does not require its group to appear in the matched string, the group preceding a plus must appear <em class="calibre7">at least once</em>. It is not optional. Enter the following into the interactive shell, and compare it with the star regexes in the previous section:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">batRegex = re.compile(r'Bat(wo)+man')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo1 = batRegex.search('The Adventures of Batwoman')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo1.group()</span><br class="calibre5" />
+'Batwoman'<br class="calibre5" /><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo2 = batRegex.search('The Adventures of Batwowowowoman')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo2.group()</span><br class="calibre5" />
+'Batwowowowoman'<br class="calibre5" /><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo3 = batRegex.search('The Adventures of Batman')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo3 == None</span><br class="calibre5" />
+True</p>
+<p class="indent">The regex <span class="literal">Bat(wo)+man</span> will not match the string <span class="literal">'The Adventures of Batman'</span>, because at least one <span class="literal">wo</span> is required by the plus sign.</p>
+<p class="indent">If you need to match an actual plus sign character, prefix the plus sign with a backslash to escape it: <span class="literal">\+</span>.</p>
+<h4 class="h2" id="calibre_link-250"><strong class="calibre2"><em class="calibre9">Matching Specific Repetitions with Braces</em></strong></h4>
+<p class="noindent">If you have a group that you want to repeat a specific number of times, follow the group in your regex with a number in braces. For example, the regex <span class="literal">(Ha){3}</span> will match the string <span class="literal">'HaHaHa'</span>, but it will not match <span class="literal">'HaHa'</span>, since the latter has only two repeats of the <span class="literal">(Ha)</span> group.</p>
+<p class="indent">Instead of one number, you can specify a range by writing a minimum, a comma, and a maximum in between the braces. For example, the regex <span class="literal">(Ha){3,5}</span> will match <span class="literal">'HaHaHa'</span>, <span class="literal">'HaHaHaHa'</span>, and <span class="literal">'HaHaHaHaHa'</span>.</p>
+<p class="indent">You can also leave out the first or second number in the braces to leave the minimum or maximum unbounded. For example, <span class="literal">(Ha){3,}</span> will match three or more instances of the <span class="literal">(Ha)</span> group, while <span class="literal">(Ha){,5}</span> will match zero to five instances. Braces can help make your regular expressions shorter. These two regular expressions match identical patterns:</p>
+<p class="programs">(Ha){3}<br class="calibre5" />
+(Ha)(Ha)(Ha)</p>
+<p class="indent">And these two regular expressions also match identical patterns:</p>
+<p class="programs">(Ha){3,5}<br class="calibre5" />
+((Ha)(Ha)(Ha))|((Ha)(Ha)(Ha)(Ha))|((Ha)(Ha)(Ha)(Ha)(Ha))</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-746"></span>Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">haRegex = re.compile(r'(Ha){3}')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo1 = haRegex.search('HaHaHa')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo1.group()</span><br class="calibre5" />
+'HaHaHa'<br class="calibre5" /><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo2 = haRegex.search('Ha')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo2 == None</span><br class="calibre5" />
+True</p>
+<p class="indent">Here, <span class="literal">(Ha){3}</span> matches <span class="literal">'HaHaHa'</span> but not <span class="literal">'Ha'</span>. Since it doesn’t match <span class="literal">'Ha'</span>, <span class="literal">search()</span> returns <span class="literal">None</span>.</p>
+<h3 class="h1" id="calibre_link-251"><strong class="calibre2">Greedy and Non-greedy Matching</strong></h3>
+<p class="noindent">Since <span class="literal">(Ha){3,5}</span> can match three, four, or five instances of <span class="literal">Ha</span> in the string <span class="literal">'HaHaHaHaHa'</span>, you may wonder why the <span class="literal">Match</span> object’s call to <span class="literal">group()</span> in the previous brace example returns <span class="literal">'HaHaHaHaHa'</span> instead of the shorter possibilities. After all, <span class="literal">'HaHaHa'</span> and <span class="literal">'HaHaHaHa'</span> are also valid matches of the regular expression <span class="literal">(Ha){3,5}</span>.</p>
+<p class="indent">Python’s regular expressions are <em class="calibre7">greedy</em> by default, which means that in ambiguous situations they will match the longest string possible. The <em class="calibre7">non-greedy</em> (also called <em class="calibre7">lazy</em>) version of the braces, which matches the shortest string possible, has the closing brace followed by a question mark.</p>
+<p class="indent">Enter the following into the interactive shell, and notice the difference between the greedy and non-greedy forms of the braces searching the same string:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">greedyHaRegex = re.compile(r'(Ha){3,5}')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo1 = greedyHaRegex.search('HaHaHaHaHa')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo1.group()</span><br class="calibre5" />
+'HaHaHaHaHa'<br class="calibre5" /><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">nongreedyHaRegex = re.compile(r'(Ha){3,5}?')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo2 = nongreedyHaRegex.search('HaHaHaHaHa')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo2.group()</span><br class="calibre5" />
+'HaHaHa'</p>
+<p class="indent">Note that the question mark can have two meanings in regular expressions: declaring a non-greedy match or flagging an optional group. These meanings are entirely unrelated.</p>
+<h3 class="h1" id="calibre_link-252"><strong class="calibre2">The findall() Method</strong></h3>
+<p class="noindent">In addition to the <span class="literal">search()</span> method, <span class="literal">Regex</span> objects also have a <span class="literal">findall()</span> method. While <span class="literal">search()</span> will return a <span class="literal">Match</span> object of the <em class="calibre7">first</em> matched text in the searched string, the <span class="literal">findall()</span> method will return the strings of <em class="calibre7">every</em> <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-836"></span>match in the searched string. To see how <span class="literal">search()</span> returns a <span class="literal">Match</span> object only on the first instance of matching text, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">phoneNumRegex = re.compile(r'\d\d\d-\d\d\d-\d\d\d\d')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo = phoneNumRegex.search('Cell: 415-555-9999 Work: 212-555-0000')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo.group()</span><br class="calibre5" />
+'415-555-9999'</p>
+<p class="indent">On the other hand, <span class="literal">findall()</span> will not return a <span class="literal">Match</span> object but a list of strings&mdash;<em class="calibre7">as long as there are no groups in the regular expression</em>. Each string in the list is a piece of the searched text that matched the regular expression. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">phoneNumRegex = re.compile(r'\d\d\d-\d\d\d-\d\d\d\d') # has no groups</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">phoneNumRegex.findall('Cell: 415-555-9999 Work: 212-555-0000')</span><br class="calibre5" />
+['415-555-9999', '212-555-0000']</p>
+<p class="indent">If there <em class="calibre7">are</em> groups in the regular expression, then <span class="literal">findall()</span> will return a list of tuples. Each tuple represents a found match, and its items are the matched strings for each group in the regex. To see <span class="literal">findall()</span> in action, enter the following into the interactive shell (notice that the regular expression being compiled now has groups in parentheses):</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">phoneNumRegex = re.compile(r'(\d\d\d)-(\d\d\d)-(\d\d\d\d)') # has groups</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">phoneNumRegex.findall('Cell: 415-555-9999 Work: 212-555-0000')</span><br class="calibre5" />
+[('415', '555', '9999'), ('212', '555', '0000')]</p>
+<p class="indent">To summarize what the <span class="literal">findall()</span> method returns, remember the following:</p>
+<ul class="calibre8">
+<li class="noindent1">When called on a regex with no groups, such as <span class="literal">\d\d\d-\d\d\d-\d\d\d\d</span>, the method <span class="literal">findall()</span> returns a list of string matches, such as <span class="literal">['415-555-9999', '212-555-0000']</span>.</li>
+<li class="noindent1">When called on a regex that has groups, such as <span class="literal">(\d\d\d)-(\d\d\d)-(\d\d\d\d)</span>, the method <span class="literal">findall()</span> returns a list of tuples of strings (one string for each group), such as <span class="literal">[('415', '555', '9999'), ('212', '555', '0000')]</span>.</li>
+</ul>
+<h3 class="h1" id="calibre_link-253"><strong class="calibre2">Character Classes</strong></h3>
+<p class="noindent">In the earlier phone number regex example, you learned that <span class="literal">\d</span> could stand for any numeric digit. That is, <span class="literal">\d</span> is shorthand for the regular expression <span class="literal">(0|1|2|3|4|5|6|7|8|9)</span>. There are many such <em class="calibre7">shorthand character classes</em>, as shown in <a href="#calibre_link-1144" class="calibre6">Table 7-1</a>.</p>
+<p class="tabcap" id="calibre_link-1144"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-773"></span><strong class="calibre4">Table 7-1:</strong> Shorthand Codes for Common Character Classes</p>
+<table class="topbot-d">
+<colgroup class="calibre13">
+<col class="calibre18"></col>
+<col class="calibre18"></col>
+</colgroup>
+<thead class="calibre15">
+<tr class="calibre16">
+<td class="table-h"><p class="tab_th"><strong class="calibre4">Shorthand character class</strong></p></td>
+<td class="table-h"><p class="tab_th"><strong class="calibre4">Represents</strong></p></td>
+</tr>
+</thead>
+<tbody class="calibre17">
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">\d</span></p></td>
+<td class="table-b"><p class="taba">Any numeric digit from 0 to 9.</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">\D</span></p></td>
+<td class="table-v"><p class="taba">Any character that is <em class="calibre7">not</em> a numeric digit from 0 to 9.</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">\w</span></p></td>
+<td class="table-b"><p class="taba">Any letter, numeric digit, or the underscore character. (Think of this as matching “word” characters.)</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">\W</span></p></td>
+<td class="table-v"><p class="taba">Any character that is <em class="calibre7">not</em> a letter, numeric digit, or the underscore character.</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">\s</span></p></td>
+<td class="table-b"><p class="taba">Any space, tab, or newline character. (Think of this as matching “space” characters.)</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-va"><p class="taba"><span class="literal">\S</span></p></td>
+<td class="table-va"><p class="taba">Any character that is <em class="calibre7">not</em> a space, tab, or newline.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="indent">Character classes are nice for shortening regular expressions. The character class <span class="literal">[0-5]</span> will match only the numbers <span class="literal">0</span> to <span class="literal">5</span>; this is much shorter than typing <span class="literal">(0|1|2|3|4|5)</span>. Note that while <span class="literal">\d</span> matches digits and <span class="literal">\w</span> matches digits, letters, and the underscore, there is no shorthand character class that matches only letters. (Though you can use the <span class="literal">[a-zA-Z]</span> character class, as explained next.)</p>
+<p class="indent">For example, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">xmasRegex = re.compile(r'\d+\s\w+')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">xmasRegex.findall('12 drummers, 11 pipers, 10 lords, 9 ladies, 8 maids, 7</span><br class="calibre5" />
+<span class="codestrong1">swans, 6 geese, 5 rings, 4 birds, 3 hens, 2 doves, 1 partridge')</span><br class="calibre5" />
+['12 drummers', '11 pipers', '10 lords', '9 ladies', '8 maids', '7 swans', '6<br class="calibre5" />
+geese', '5 rings', '4 birds', '3 hens', '2 doves', '1 partridge']</p>
+<p class="indent">The regular expression <span class="literal">\d+\s\w+</span> will match text that has one or more numeric digits (<span class="literal">\d+</span>), followed by a whitespace character (<span class="literal">\s</span>), followed by one or more letter/digit/underscore characters (<span class="literal">\w+</span>). The <span class="literal">findall()</span> method returns all matching strings of the regex pattern in a list.</p>
+<h3 class="h1" id="calibre_link-254"><strong class="calibre2">Making Your Own Character Classes</strong></h3>
+<p class="noindent">There are times when you want to match a set of characters but the shorthand character classes (<span class="literal">\d</span>, <span class="literal">\w</span>, <span class="literal">\s</span>, and so on) are too broad. You can define your own character class using square brackets. For example, the character class <span class="literal">[aeiouAEIOU]</span> will match any vowel, both lowercase and uppercase. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">vowelRegex = re.compile(r'[aeiouAEIOU]')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">vowelRegex.findall('RoboCop eats baby food. BABY FOOD.')</span><br class="calibre5" />
+['o', 'o', 'o', 'e', 'a', 'a', 'o', 'o', 'A', 'O', 'O']</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-749"></span>You can also include ranges of letters or numbers by using a hyphen. For example, the character class <span class="literal">[a-zA-Z0-9]</span> will match all lowercase letters, uppercase letters, and numbers.</p>
+<p class="indent">Note that inside the square brackets, the normal regular expression symbols are not interpreted as such. This means you do not need to escape the <span class="literal">.</span>, <span class="literal">*</span>, <span class="literal">?</span>, or <span class="literal">()</span> characters with a preceding backslash. For example, the character class <span class="literal">[0-5.]</span> will match digits <span class="literal">0</span> to <span class="literal">5</span> and a period. You do not need to write it as <span class="literal">[0-5\.]</span>.</p>
+<p class="indent">By placing a caret character (<span class="literal">^</span>) just after the character class’s opening bracket, you can make a <em class="calibre7">negative character class</em>. A negative character class will match all the characters that are <em class="calibre7">not</em> in the character class. For example, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">consonantRegex = re.compile(r'[^aeiouAEIOU]')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">consonantRegex.findall('RoboCop eats baby food. BABY FOOD.')</span><br class="calibre5" />
+['R', 'b', 'C', 'p', ' ', 't', 's', ' ', 'b', 'b', 'y', ' ', 'f', 'd', '.', '<br class="calibre5" />
+', 'B', 'B', 'Y', ' ', 'F', 'D', '.']</p>
+<p class="indent">Now, instead of matching every vowel, we’re matching every character that isn’t a vowel.</p>
+<h3 class="h1" id="calibre_link-255"><strong class="calibre2">The Caret and Dollar Sign Characters</strong></h3>
+<p class="noindent">You can also use the caret symbol (<span class="literal">^</span>) at the start of a regex to indicate that a match must occur at the <em class="calibre7">beginning</em> of the searched text. Likewise, you can put a dollar sign (<span class="literal">$</span>) at the end of the regex to indicate the string must <em class="calibre7">end</em> with this regex pattern. And you can use the <span class="literal">^</span> and <span class="literal">$</span> together to indicate that the entire string must match the regex&mdash;that is, it’s not enough for a match to be made on some subset of the string.</p>
+<p class="indent">For example, the <span class="literal">r'^Hello'</span> regular expression string matches strings that begin with <span class="literal">'Hello'</span>. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">beginsWithHello = re.compile(r'^Hello')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">beginsWithHello.search('Hello, world!')</span><br class="calibre5" />
+&lt;re.Match object; span=(0, 5), match='Hello'&gt;<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">beginsWithHello.search('He said hello.') == None</span><br class="calibre5" />
+True</p>
+<p class="indent">The <span class="literal">r'\d$'</span> regular expression string matches strings that end with a numeric character from 0 to 9. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">endsWithNumber = re.compile(r'\d$')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">endsWithNumber.search('Your number is 42')</span><br class="calibre5" />
+&lt;re.Match object; span=(16, 17), match='2'&gt;<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">endsWithNumber.search('Your number is forty two.') == None</span><br class="calibre5" />
+True</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-755"></span>The <span class="literal">r'^\d+$'</span> regular expression string matches strings that both begin and end with one or more numeric characters. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">wholeStringIsNum = re.compile(r'^\d+$')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">wholeStringIsNum.search('1234567890')</span><br class="calibre5" />
+&lt;re.Match object; span=(0, 10), match='1234567890'&gt;<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">wholeStringIsNum.search('12345xyz67890') == None</span><br class="calibre5" />
+True<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">wholeStringIsNum.search('12&nbsp;&nbsp;34567890') == None</span><br class="calibre5" />
+True</p>
+<p class="indent">The last two <span class="literal">search()</span> calls in the previous interactive shell example demonstrate how the entire string must match the regex if <span class="literal">^</span> and <span class="literal">$</span> are used.</p>
+<p class="indent">I always confuse the meanings of these two symbols, so I use the mnemonic “Carrots cost dollars” to remind myself that the caret comes first and the dollar sign comes last.</p>
+<h3 class="h1" id="calibre_link-256"><strong class="calibre2">The Wildcard Character</strong></h3>
+<p class="noindent">The <span class="literal">.</span> (or <em class="calibre7">dot</em>) character in a regular expression is called a <em class="calibre7">wildcard</em> and will match any character except for a newline. For example, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">atRegex = re.compile(r'.at')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">atRegex.findall('The cat in the hat sat on the flat mat.')</span><br class="calibre5" />
+['cat', 'hat', 'sat', 'lat', 'mat']</p>
+<p class="indent">Remember that the dot character will match just one character, which is why the match for the text <span class="literal">flat</span> in the previous example matched only <span class="literal">lat</span>. To match an actual dot, escape the dot with a backslash: <span class="literal">\.</span>.</p>
+<h4 class="h2" id="calibre_link-257"><strong class="calibre2"><em class="calibre9">Matching Everything with Dot-Star</em></strong></h4>
+<p class="noindent">Sometimes you will want to match everything and anything. For example, say you want to match the string <span class="literal">'First Name:'</span>, followed by any and all text, followed by <span class="literal">'Last Name:'</span>, and then followed by anything again. You can use the dot-star (<span class="literal">.*</span>) to stand in for that “anything.” Remember that the dot character means “any single character except the newline,” and the star character means “zero or more of the preceding character.”</p>
+<p class="indent">Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">nameRegex = re.compile(r'First Name: (.*) Last Name: (.*)')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo = nameRegex.search('First Name: Al Last Name: Sweigart')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo.group(1)</span><br class="calibre5" />
+'Al'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo.group(2)</span><br class="calibre5" />
+'Sweigart'</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-747"></span>The dot-star uses <em class="calibre7">greedy</em> mode: It will always try to match as much text as possible. To match any and all text in a <em class="calibre7">non-greedy</em> fashion, use the dot, star, and question mark (<span class="literal">.*?</span>). Like with braces, the question mark tells Python to match in a non-greedy way.</p>
+<p class="indent">Enter the following into the interactive shell to see the difference between the greedy and non-greedy versions:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">nongreedyRegex = re.compile(r'&lt;.*?&gt;')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo = nongreedyRegex.search('&lt;To serve man&gt; for dinner.&gt;')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo.group()</span><br class="calibre5" />
+'&lt;To serve man&gt;'<br class="calibre5" /><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">greedyRegex = re.compile(r'&lt;.*&gt;')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo = greedyRegex.search('&lt;To serve man&gt; for dinner.&gt;')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">mo.group()</span><br class="calibre5" />
+'&lt;To serve man&gt; for dinner.&gt;'</p>
+<p class="indent">Both regexes roughly translate to “Match an opening angle bracket, followed by anything, followed by a closing angle bracket.” But the string <span class="literal">'&lt;To serve man&gt; for dinner.&gt;'</span> has two possible matches for the closing angle bracket. In the non-greedy version of the regex, Python matches the shortest possible string: <span class="literal">'&lt;To serve man&gt;'</span>. In the greedy version, Python matches the longest possible string: <span class="literal">'&lt;To serve man&gt; for dinner.&gt;'</span>.</p>
+<h4 class="h2" id="calibre_link-258"><strong class="calibre2"><em class="calibre9">Matching Newlines with the Dot Character</em></strong></h4>
+<p class="noindent">The dot-star will match everything except a newline. By passing <span class="literal">re.DOTALL</span> as the second argument to <span class="literal">re.compile()</span>, you can make the dot character match <em class="calibre7">all</em> characters, including the newline character.</p>
+<p class="indent">Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">noNewlineRegex = re.compile('.*')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">noNewlineRegex.search('Serve the public trust.\nProtect the innocent.</span><br class="calibre5" />
+<span class="codestrong1">\nUphold the law.').group()</span><br class="calibre5" />
+'Serve the public trust.'<br class="calibre5" /><br class="calibre5" />
+<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">newlineRegex = re.compile('.*', re.DOTALL)</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">newlineRegex.search('Serve the public trust.\nProtect the innocent.</span><br class="calibre5" />
+<span class="codestrong1">\nUphold the law.').group()</span><br class="calibre5" />
+'Serve the public trust.\nProtect the innocent.\nUphold the law.'</p>
+<p class="indent">The regex <span class="literal">noNewlineRegex</span>, which did not have <span class="literal">re.DOTALL</span> passed to the <span class="literal">re.compile()</span> call that created it, will match everything only up to the first newline character, whereas <span class="literal">newlineRegex</span>, which <em class="calibre7">did</em> have <span class="literal">re.DOTALL</span> passed to <span class="literal">re.compile()</span>, matches everything. This is why the <span class="literal">newlineRegex.search()</span> call matches the full string, including its newline characters.</p>
+<h3 class="h1" id="calibre_link-259"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-831" class="calibre1"></span><strong class="calibre2">Review of Regex Symbols</strong></h3>
+<p class="noindent">This chapter covered a lot of notation, so here’s a quick review of what you learned about basic regular expression syntax:</p>
+<ul class="calibre8">
+<li class="noindent1">The <span class="literal">?</span> matches zero or one of the preceding group.</li>
+<li class="noindent1">The <span class="literal">*</span> matches zero or more of the preceding group.</li>
+<li class="noindent1">The <span class="literal">+</span> matches one or more of the preceding group.</li>
+<li class="noindent1">The <span class="literal">{n}</span> matches exactly <em class="calibre7">n</em> of the preceding group.</li>
+<li class="noindent1">The <span class="literal">{n,}</span> matches <em class="calibre7">n</em> or more of the preceding group.</li>
+<li class="noindent1">The <span class="literal">{,m}</span> matches 0 to <em class="calibre7">m</em> of the preceding group.</li>
+<li class="noindent1">The <span class="literal">{n,m}</span> matches at least <em class="calibre7">n</em> and at most <em class="calibre7">m</em> of the preceding group.</li>
+<li class="noindent1"><span class="literal">{n,m}?</span> or <span class="literal">*?</span> or <span class="literal">+?</span> performs a non-greedy match of the preceding group.</li>
+<li class="noindent1"><span class="literal">^spam</span> means the string must begin with <em class="calibre7">spam</em>.</li>
+<li class="noindent1"><span class="literal">spam$</span> means the string must end with <em class="calibre7">spam</em>.</li>
+<li class="noindent1">The <span class="literal">.</span> matches any character, except newline characters.</li>
+<li class="noindent1"><span class="literal">\d</span>, <span class="literal">\w</span>, and <span class="literal">\s</span> match a digit, word, or space character, respectively.</li>
+<li class="noindent1"><span class="literal">\D</span>, <span class="literal">\W</span>, and <span class="literal">\S</span> match anything except a digit, word, or space character, respectively.</li>
+<li class="noindent1"><span class="literal">[abc]</span> matches any character between the brackets (such as <em class="calibre7">a</em>, <em class="calibre7">b</em>, or <em class="calibre7">c</em>).</li>
+<li class="noindent1"><span class="literal">[^abc]</span> matches any character that isn’t between the brackets.</li>
+</ul>
+<h3 class="h1" id="calibre_link-260"><strong class="calibre2">Case-Insensitive Matching</strong></h3>
+<p class="noindent">Normally, regular expressions match text with the exact casing you specify. For example, the following regexes match completely different strings:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">regex1 = re.compile('RoboCop')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">regex2 = re.compile('ROBOCOP')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">regex3 = re.compile('robOcop')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">regex4 = re.compile('RobocOp')</span></p>
+<p class="indent">But sometimes you care only about matching the letters without worrying whether they’re uppercase or lowercase. To make your regex case-insensitive, you can pass <span class="literal">re.IGNORECASE</span> or <span class="literal">re.I</span> as a second argument to <span class="literal">re.compile()</span>. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">robocop = re.compile(r'robocop', re.I)</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">robocop.search('RoboCop is part man, part machine, all cop.').group()</span><br class="calibre5" />
+'RoboCop'<br class="calibre5" /><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">robocop.search('ROBOCOP protects the innocent.').group()</span><br class="calibre5" />
+'ROBOCOP'<br class="calibre5" /><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">robocop.search('Al, why does your programming book talk about robocop so much?').group()</span><br class="calibre5" />
+'robocop'</p>
+<h3 class="h1" id="calibre_link-261"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1078" class="calibre1"></span><strong class="calibre2">Substituting Strings with the sub() Method</strong></h3>
+<p class="noindent">Regular expressions can not only find text patterns but can also substitute new text in place of those patterns. The <span class="literal">sub()</span> method for <span class="literal">Regex</span> objects is passed two arguments. The first argument is a string to replace any matches. The second is the string for the regular expression. The <span class="literal">sub()</span> method returns a string with the substitutions applied.</p>
+<p class="indent">For example, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">namesRegex = re.compile(r'Agent \w+')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">namesRegex.sub('CENSORED', 'Agent Alice gave the secret documents to Agent Bob.')</span><br class="calibre5" />
+'CENSORED gave the secret documents to CENSORED.'</p>
+<p class="indent">Sometimes you may need to use the matched text itself as part of the substitution. In the first argument to <span class="literal">sub()</span>, you can type <span class="literal">\1</span>, <span class="literal">\2</span>, <span class="literal">\3</span>, and so on, to mean “Enter the text of group <span class="literal">1</span>, <span class="literal">2</span>, <span class="literal">3</span>, and so on, in the substitution.”</p>
+<p class="indent">For example, say you want to censor the names of the secret agents by showing just the first letters of their names. To do this, you could use the regex <span class="literal">Agent (\w)\w*</span> and pass <span class="literal">r'\1****'</span> as the first argument to <span class="literal">sub()</span>. The <span class="literal">\1</span> in that string will be replaced by whatever text was matched by group <span class="literal">1</span>&mdash;that is, the <span class="literal">(\w)</span> group of the regular expression.</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">agentNamesRegex = re.compile(r'Agent (\w)\w*')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">agentNamesRegex.sub(r'\1****', 'Agent Alice told Agent Carol that Agent</span><br class="calibre5" />
+<span class="codestrong1">Eve knew Agent Bob was a double agent.')</span><br class="calibre5" />
+A**** told C**** that E**** knew B**** was a double agent.'</p>
+<h3 class="h1" id="calibre_link-262"><strong class="calibre2">Managing Complex Regexes</strong></h3>
+<p class="noindent">Regular expressions are fine if the text pattern you need to match is simple. But matching complicated text patterns might require long, convoluted regular expressions. You can mitigate this by telling the <span class="literal">re.compile()</span> function to ignore whitespace and comments inside the regular expression string. This “verbose mode” can be enabled by passing the variable <span class="literal">re.VERBOSE</span> as the second argument to <span class="literal">re.compile()</span>.</p>
+<p class="indent">Now instead of a hard-to-read regular expression like this:</p>
+<p class="programs">phoneRegex = re.compile(r'((\d{3}|\(\d{3}\))?(\s|-|\.)?\d{3}(\s|-|\.)\d{4}<br class="calibre5" />
+(\s*(ext|x|ext.)\s*\d{2,5})?)')</p>
+<p class="noindent">you can spread the regular expression over multiple lines with comments like this:</p>
+<p class="programs">phoneRegex = re.compile(r'''(<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;(\d{3}|\(\d{3}\))?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# area code<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;(\s|-|\.)?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# separator<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;\d{3}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# first 3 digits<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;(\s|-|\.)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# separator<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;\d{4}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# last 4 digits<br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-817"></span>&nbsp;&nbsp;&nbsp;&nbsp;(\s*(ext|x|ext.)\s*\d{2,5})?&nbsp;&nbsp;# extension<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;)''', re.VERBOSE)</p>
+<p class="indent">Note how the previous example uses the triple-quote syntax (<span class="literal">'''</span>) to create a multiline string so that you can spread the regular expression definition over many lines, making it much more legible.</p>
+<p class="indent">The comment rules inside the regular expression string are the same as regular Python code: the <span class="literal">#</span> symbol and everything after it to the end of the line are ignored. Also, the extra spaces inside the multiline string for the regular expression are not considered part of the text pattern to be matched. This lets you organize the regular expression so it’s easier to read.</p>
+<h3 class="h1" id="calibre_link-263"><strong class="calibre2">Combining re.IGNORECASE, re.DOTALL, and re.VERBOSE</strong></h3>
+<p class="noindent">What if you want to use <span class="literal">re.VERBOSE</span> to write comments in your regular expression but also want to use <span class="literal">re.IGNORECASE</span> to ignore capitalization? Unfortunately, the <span class="literal">re.compile()</span> function takes only a single value as its second argument. You can get around this limitation by combining the <span class="literal">re.IGNORECASE</span>, <span class="literal">re.DOTALL</span>, and <span class="literal">re.VERBOSE</span> variables using the pipe character (<span class="literal">|</span>), which in this context is known as the <em class="calibre7">bitwise or</em> operator.</p>
+<p class="indent">So if you want a regular expression that’s case-insensitive <em class="calibre7">and</em> includes newlines to match the dot character, you would form your <span class="literal">re.compile()</span> call like this:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">someRegexValue = re.compile('foo', re.IGNORECASE | re.DOTALL)</span></p>
+<p class="indent">Including all three options in the second argument will look like this:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">someRegexValue = re.compile('foo', re.IGNORECASE | re.DOTALL | re.VERBOSE)</span></p>
+<p class="indent">This syntax is a little old-fashioned and originates from early versions of Python. The details of the bitwise operators are beyond the scope of this book, but check out the resources at <em class="calibre7"><a href="https://nostarch.com/automatestuff2/" class="calibre6">https://nostarch.com/automatestuff2/</a></em> for more information. You can also pass other options for the second argument; they’re uncommon, but you can read more about them in the resources, too.</p>
+<h3 class="h1" id="calibre_link-264"><strong class="calibre2">Project: Phone Number and Email Address Extractor</strong></h3>
+<p class="noindent">Say you have the boring task of finding every phone number and email address in a long web page or document. If you manually scroll through the page, you might end up searching for a long time. But if you had a program that could search the text in your clipboard for phone numbers and email addresses, you could simply press <small class="calibre11">CTRL-</small>A to select all the text, press <small class="calibre11">CTRL-</small>C to copy it to the clipboard, and then run your program. It could replace the text on the clipboard with just the phone numbers and email addresses it finds.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1770"></span>Whenever you’re tackling a new project, it can be tempting to dive right into writing code. But more often than not, it’s best to take a step back and consider the bigger picture. I recommend first drawing up a high-level plan for what your program needs to do. Don’t think about the actual code yet&mdash;you can worry about that later. Right now, stick to broad strokes.</p>
+<p class="indent">For example, your phone and email address extractor will need to do the following:</p>
+<ol class="calibre10">
+<li class="noindent1">Get the text off the clipboard.</li>
+<li class="noindent1">Find all phone numbers and email addresses in the text.</li>
+<li class="noindent1">Paste them onto the clipboard.</li>
+</ol>
+<p class="indent">Now you can start thinking about how this might work in code. The code will need to do the following:</p>
+<ol class="calibre10">
+<li class="noindent1">Use the <span class="literal">pyperclip</span> module to copy and paste strings.</li>
+<li class="noindent1">Create two regexes, one for matching phone numbers and the other for matching email addresses.</li>
+<li class="noindent1">Find all matches, not just the first match, of both regexes.</li>
+<li class="noindent1">Neatly format the matched strings into a single string to paste.</li>
+<li class="noindent1">Display some kind of message if no matches were found in the text.</li>
+</ol>
+<p class="indent">This list is like a road map for the project. As you write the code, you can focus on each of these steps separately. Each step is fairly manageable and expressed in terms of things you already know how to do in Python.</p>
+<h4 class="h2" id="calibre_link-265"><strong class="calibre2"><em class="calibre9">Step 1: Create a Regex for Phone Numbers</em></strong></h4>
+<p class="noindent">First, you have to create a regular expression to search for phone numbers. Create a new file, enter the following, and save it as <em class="calibre7">phoneAndEmail.py</em>:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# phoneAndEmail.py - Finds phone numbers and email addresses on the clipboard.<br class="calibre5" /><br class="calibre5" />
+import pyperclip, re<br class="calibre5" /><br class="calibre5" />
+phoneRegex = re.compile(r'''(<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;(\d{3}|\(\d{3}\))?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# area code<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;(\s|-|\.)?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# separator<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;(\d{3})&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# first 3 digits<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;(\s|-|\.)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# separator<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;(\d{4})&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# last 4 digits<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;(\s*(ext|x|ext.)\s*(\d{2,5}))?&nbsp;&nbsp;&nbsp;&nbsp;# extension<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;)''', re.VERBOSE)<br class="calibre5" /><br class="calibre5" />
+# TODO: Create email regex.<br class="calibre5" /><br class="calibre5" />
+# TODO: Find matches in clipboard text.<br class="calibre5" /><br class="calibre5" />
+# TODO: Copy results to the clipboard.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1771"></span>The <span class="literal">TODO</span> comments are just a skeleton for the program. They’ll be replaced as you write the actual code.</p>
+<p class="indent">The phone number begins with an <em class="calibre7">optional</em> area code, so the area code group is followed with a question mark. Since the area code can be just three digits (that is, <span class="literal">\d{3}</span>) <em class="calibre7">or</em> three digits within parentheses (that is, <span class="literal">\(\d{3}\)</span>), you should have a pipe joining those parts. You can add the regex comment <span class="literal"># Area code</span> to this part of the multiline string to help you remember what <span class="literal">(\d{3}|\(\d{3}\))?</span> is supposed to match.</p>
+<p class="indent">The phone number separator character can be a space (<span class="literal">\s</span>), hyphen (<span class="literal">-</span>), or period (<span class="literal">.</span>), so these parts should also be joined by pipes. The next few parts of the regular expression are straightforward: three digits, followed by another separator, followed by four digits. The last part is an optional extension made up of any number of spaces followed by <span class="literal">ext</span>, <span class="literal">x</span>, or <span class="literal">ext.</span>, followed by two to five digits.</p>
+<div class="note">
+<p class="notet"><strong class="calibre2"><span class="notes">NOTE</span></strong></p>
+<p class="notep"><em class="calibre7">It’s easy to get mixed up with regular expressions that contain groups with parentheses <span class="literal">( )</span> and escaped parentheses <span class="literal">\( \)</span>. Remember to double-check that you’re using the correct one if you get a “missing ), unterminated subpattern” error message.</em></p>
+</div>
+<h4 class="h2" id="calibre_link-266"><strong class="calibre2"><em class="calibre9">Step 2: Create a Regex for Email Addresses</em></strong></h4>
+<p class="noindent">You will also need a regular expression that can match email addresses. Make your program look like the following:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# phoneAndEmail.py - Finds phone numbers and email addresses on the clipboard.<br class="calibre5" /><br class="calibre5" />
+import pyperclip, re<br class="calibre5" /><br class="calibre5" />
+phoneRegex = re.compile(r'''(<br class="calibre5" />
+--<span class="codeitalic1">snip</span>--<br class="calibre5" /><br class="calibre5" />
+<span class="codestrong1"># Create email regex.</span><br class="calibre5" />
+<span class="codestrong1">emailRegex = re.compile(r'''(</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;</span><span class="ent">➊</span> <span class="codestrong1">[a-zA-Z0-9._%+-]+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# username</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;</span><span class="ent">➋</span> <span class="codestrong1">@&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# @ symbol</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;</span><span class="ent">➌</span> <span class="codestrong1">[a-zA-Z0-9.-]+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# domain name</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;(\.[a-zA-Z]{2,4})&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# dot-something</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;)''', re.VERBOSE)</span><br class="calibre5" /><br class="calibre5" />
+# TODO: Find matches in clipboard text.<br class="calibre5" /><br class="calibre5" />
+# TODO: Copy results to the clipboard.</p>
+<p class="indent">The username part of the email address <span class="ent">➊</span> is one or more characters that can be any of the following: lowercase and uppercase letters, numbers, a dot, an underscore, a percent sign, a plus sign, or a hyphen. You can put all of these into a character class: <span class="literal">[a-zA-Z0-9._%+-]</span>.</p>
+<p class="indent">The domain and username are separated by an <em class="calibre7">@</em> symbol <span class="ent">➋</span>. The domain name <span class="ent">➌</span> has a slightly less permissive character class with only letters, numbers, periods, and hyphens: <span class="literal">[a-zA-Z0-9.-]</span>. And last will be <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1088"></span>the “dot-com” part (technically known as the <em class="calibre7">top-level domain</em>), which can really be dot-anything. This is between two and four characters.</p>
+<p class="indent">The format for email addresses has a lot of weird rules. This regular expression won’t match every possible valid email address, but it’ll match almost any typical email address you’ll encounter.</p>
+<h4 class="h2" id="calibre_link-267"><strong class="calibre2"><em class="calibre9">Step 3: Find All Matches in the Clipboard Text</em></strong></h4>
+<p class="noindent">Now that you have specified the regular expressions for phone numbers and email addresses, you can let Python’s <span class="literal">re</span> module do the hard work of finding all the matches on the clipboard. The <span class="literal">pyperclip.paste()</span> function will get a string value of the text on the clipboard, and the <span class="literal">findall()</span> regex method will return a list of tuples.</p>
+<p class="indent">Make your program look like the following:</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;#! python3<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;# phoneAndEmail.py - Finds phone numbers and email addresses on the clipboard.<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;import pyperclip, re<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;phoneRegex = re.compile(r'''(<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;--<span class="codeitalic1">snip</span>--<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;<span class="codestrong1"># Find matches in clipboard text.</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;<span class="codestrong1">text = str(pyperclip.paste())</span><br class="calibre5" /><br class="calibre5" />
+<span class="ent">➊</span> <span class="codestrong1">matches = []</span><br class="calibre5" />
+<span class="ent">➋</span> <span class="codestrong1">for groups in phoneRegex.findall(text):</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;phoneNum = '-'.join([groups[1], groups[3], groups[5]])</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if groups[8] != '':</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;phoneNum += ' x' + groups[8]</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;matches.append(phoneNum)</span><br class="calibre5" />
+<span class="ent">➌</span> <span class="codestrong1">for groups in emailRegex.findall(text):</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;matches.append(groups[0])</span><br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;# TODO: Copy results to the clipboard.</p>
+<p class="indent">There is one tuple for each match, and each tuple contains strings for each group in the regular expression. Remember that group <span class="literal">0</span> matches the entire regular expression, so the group at index <span class="literal">0</span> of the tuple is the one you are interested in.</p>
+<p class="indent">As you can see at <span class="ent">➊</span>, you’ll store the matches in a list variable named <span class="literal">matches</span>. It starts off as an empty list, and a couple <span class="literal">for</span> loops. For the email addresses, you append group <span class="literal">0</span> of each match <span class="ent">➌</span>. For the matched phone numbers, you don’t want to just append group <span class="literal">0</span>. While the program <em class="calibre7">detects</em> phone numbers in several formats, you want the phone number appended to be in a single, standard format. The <span class="literal">phoneNum</span> variable contains a string built from groups <span class="literal">1</span>, <span class="literal">3</span>, <span class="literal">5</span>, and <span class="literal">8</span> of the matched text <span class="ent">➋</span>. (These groups are the area code, first three digits, last four digits, and extension.)</p>
+<h4 class="h2" id="calibre_link-268"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1772" class="calibre1"></span><strong class="calibre2"><em class="calibre9">Step 4: Join the Matches into a String for the Clipboard</em></strong></h4>
+<p class="noindent">Now that you have the email addresses and phone numbers as a list of strings in <span class="literal">matches</span>, you want to put them on the clipboard. The <span class="literal">pyperclip.copy()</span> function takes only a single string value, not a list of strings, so you call the <span class="literal">join()</span> method on <span class="literal">matches</span>.</p>
+<p class="indent">To make it easier to see that the program is working, let’s print any matches you find to the terminal. If no phone numbers or email addresses were found, the program should tell the user this.</p>
+<p class="indent">Make your program look like the following:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# phoneAndEmail.py - Finds phone numbers and email addresses on the clipboard.<br class="calibre5" /><br class="calibre5" />
+--<span class="codeitalic1">snip</span>--<br class="calibre5" />
+for groups in emailRegex.findall(text):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;matches.append(groups[0])<br class="calibre5" /><br class="calibre5" />
+<span class="codestrong1"># Copy results to the clipboard.</span><br class="calibre5" />
+<span class="codestrong1">if len(matches) &gt; 0:</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;pyperclip.copy('\n'.join(matches))</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;print('Copied to clipboard:')</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;print('\n'.join(matches))</span><br class="calibre5" />
+<span class="codestrong1">else:</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;print('No phone numbers or email addresses found.')</span></p>
+<h4 class="h2" id="calibre_link-269"><strong class="calibre2"><em class="calibre9">Running the Program</em></strong></h4>
+<p class="noindent">For an example, open your web browser to the No Starch Press contact page at <em class="calibre7"><a href="https://nostarch.com/contactus/" class="calibre6">https://nostarch.com/contactus/</a></em>, press <small class="calibre11">CTRL-</small>A to select all the text on the page, and press <small class="calibre11">CTRL</small>-C to copy it to the clipboard. When you run this program, the output will look something like this:</p>
+<p class="programs">Copied to clipboard:<br class="calibre5" />
+800-420-7240<br class="calibre5" />
+415-863-9900<br class="calibre5" />
+415-863-9950<br class="calibre5" />
+info@nostarch.com<br class="calibre5" />
+media@nostarch.com<br class="calibre5" />
+academic@nostarch.com<br class="calibre5" />
+info@nostarch.com</p>
+<h4 class="h2" id="calibre_link-270"><strong class="calibre2"><em class="calibre9">Ideas for Similar Programs</em></strong></h4>
+<p class="noindent">Identifying patterns of text (and possibly substituting them with the <span class="literal">sub()</span> method) has many different potential applications. For example, you could:</p>
+<ul class="calibre8">
+<li class="noindent1">Find website URLs that begin with <em class="calibre7">http://</em> or <em class="calibre7">https://</em>.</li>
+<li class="noindent1">Clean up dates in different date formats (such as 3/14/2019, 03-14-2019, and 2015/3/19) by replacing them with dates in a single, standard format.</li>
+<li class="noindent1"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1059"></span>Remove sensitive information such as Social Security or credit card numbers.</li>
+<li class="noindent1">Find common typos such as multiple spaces between words, accidentally accidentally repeated words, or multiple exclamation marks at the end of sentences. Those are annoying!!</li>
+</ul>
+<h3 class="h1" id="calibre_link-271"><strong class="calibre2">Summary</strong></h3>
+<p class="noindent">While a computer can search for text quickly, it must be told precisely what to look for. Regular expressions allow you to specify the pattern of characters you are looking for, rather than the exact text itself. In fact, some word processing and spreadsheet applications provide find-and-replace features that allow you to search using regular expressions.</p>
+<p class="indent">The <span class="literal">re</span> module that comes with Python lets you compile <span class="literal">Regex</span> objects. These objects have several methods: <span class="literal">search()</span> to find a single match, <span class="literal">findall()</span> to find all matching instances, and <span class="literal">sub()</span> to do a find-and-replace substitution of text.</p>
+<p class="indent">You can find out more in the official Python documentation at <em class="calibre7"><a href="https://docs.python.org/3/library/re.html" class="calibre6">https://docs.python.org/3/library/re.html</a></em>. Another useful resource is the tutorial website <em class="calibre7"><a href="https://www.regular-expressions.info/" class="calibre6">https://www.regular-expressions.info/</a></em>.</p>
+<h3 class="h1" id="calibre_link-272"><strong class="calibre2">Practice Questions</strong></h3>
+<p class="question"><a id="calibre_link-1323" href="#calibre_link-1145" class="calibre6">1</a>. What is the function that creates <span class="literal">Regex</span> objects?</p>
+<p class="question"><a id="calibre_link-1324" href="#calibre_link-1146" class="calibre6">2</a>. Why are raw strings often used when creating <span class="literal">Regex</span> objects?</p>
+<p class="question"><a id="calibre_link-1325" href="#calibre_link-1147" class="calibre6">3</a>. What does the <span class="literal">search()</span> method return?</p>
+<p class="question"><a id="calibre_link-1326" href="#calibre_link-1148" class="calibre6">4</a>. How do you get the actual strings that match the pattern from a <span class="literal">Match</span> object?</p>
+<p class="question"><a id="calibre_link-1327" href="#calibre_link-1149" class="calibre6">5</a>. In the regex created from <span class="literal">r'(\d\d\d)-(\d\d\d-\d\d\d\d)'</span>, what does group <span class="literal">0</span> cover? Group <span class="literal">1</span>? Group <span class="literal">2</span>?</p>
+<p class="question"><a id="calibre_link-1328" href="#calibre_link-1150" class="calibre6">6</a>. Parentheses and periods have specific meanings in regular expression syntax. How would you specify that you want a regex to match actual parentheses and period characters?</p>
+<p class="question"><a id="calibre_link-1329" href="#calibre_link-1151" class="calibre6">7</a>. The <span class="literal">findall()</span> method returns a list of strings or a list of tuples of strings. What makes it return one or the other?</p>
+<p class="question"><a id="calibre_link-1330" href="#calibre_link-1152" class="calibre6">8</a>. What does the <span class="literal">|</span> character signify in regular expressions?</p>
+<p class="question"><a id="calibre_link-1331" href="#calibre_link-1153" class="calibre6">9</a>. What two things does the <span class="literal">?</span> character signify in regular expressions?</p>
+<p class="question1"><a id="calibre_link-1332" href="#calibre_link-1154" class="calibre6">10</a>. What is the difference between the <span class="literal">+</span> and <span class="literal">*</span> characters in regular expressions?</p>
+<p class="question1"><a id="calibre_link-1333" href="#calibre_link-1155" class="calibre6">11</a>. What is the difference between <span class="literal">{3}</span> and <span class="literal">{3,5}</span> in regular expressions?</p>
+<p class="question1"><a id="calibre_link-1334" href="#calibre_link-1156" class="calibre6">12</a>. What do the <span class="literal">\d</span>, <span class="literal">\w</span>, and <span class="literal">\s</span> shorthand character classes signify in regular expressions?</p>
+<p class="question1"><a id="calibre_link-1335" href="#calibre_link-1157" class="calibre6">13</a>. <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1773"></span>What do the <span class="literal">\D</span>, <span class="literal">\W</span>, and <span class="literal">\S</span> shorthand character classes signify in regular expressions?</p>
+<p class="question1"><a id="calibre_link-1336" href="#calibre_link-1158" class="calibre6">14</a>. What is the difference between <span class="literal">.*</span> and <span class="literal">.*?</span>?</p>
+<p class="question1"><a id="calibre_link-1337" href="#calibre_link-1159" class="calibre6">15</a>. What is the character class syntax to match all numbers and lowercase letters?</p>
+<p class="question1"><a id="calibre_link-1338" href="#calibre_link-1160" class="calibre6">16</a>. How do you make a regular expression case-insensitive?</p>
+<p class="question1"><a id="calibre_link-1339" href="#calibre_link-1161" class="calibre6">17</a>. What does the <span class="literal">.</span> character normally match? What does it match if <span class="literal">re.DOTALL</span> is passed as the second argument to <span class="literal">re.compile()</span>?</p>
+<p class="question1"><a id="calibre_link-1340" href="#calibre_link-1162" class="calibre6">18</a>. If <span class="literal">numRegex = re.compile(r'\d+')</span>, what will <span class="literal">numRegex.sub('X', '12 drummers, 11 pipers, five rings, 3 hens')</span> return?</p>
+<p class="question1"><a id="calibre_link-1341" href="#calibre_link-1163" class="calibre6">19</a>. What does passing <span class="literal">re.VERBOSE</span> as the second argument to <span class="literal">re.compile()</span> allow you to do?</p>
+<p class="question1"><a id="calibre_link-1342" href="#calibre_link-1164" class="calibre6">20</a>. How would you write a regex that matches a number with commas for every three digits? It must match the following:</p>
+<ul class="calibre8">
+<li class="noindent1"><span class="literal">'42'</span></li>
+<li class="noindent1"><span class="literal">'1,234'</span></li>
+<li class="noindent1"><span class="literal">'6,368,745'</span></li>
+</ul>
+<p class="question-para">but not the following:</p>
+<ul class="calibre8">
+<li class="noindent1"><span class="literal">'12,34,567'</span> (which has only two digits between the commas)</li>
+<li class="noindent1"><span class="literal">'1234'</span> (which lacks commas)</li>
+</ul>
+<p class="question1"><a id="calibre_link-1343" href="#calibre_link-1165" class="calibre6">21</a>. How would you write a regex that matches the full name of someone whose last name is Watanabe? You can assume that the first name that comes before it will always be one word that begins with a capital letter. The regex must match the following:</p>
+<ul class="calibre8">
+<li class="noindent1"><span class="literal">'Haruto Watanabe'</span></li>
+<li class="noindent1"><span class="literal">'Alice Watanabe'</span></li>
+<li class="noindent1"><span class="literal">'RoboCop Watanabe'</span></li>
+</ul>
+<p class="question-para">but not the following:</p>
+<ul class="calibre8">
+<li class="noindent1"><span class="literal">'haruto Watanabe'</span> (where the first name is not capitalized)</li>
+<li class="noindent1"><span class="literal">'Mr. Watanabe'</span> (where the preceding word has a nonletter character)</li>
+<li class="noindent1"><span class="literal">'Watanabe'</span> (which has no first name)</li>
+<li class="noindent1"><span class="literal">'Haruto watanabe'</span> (where Watanabe is not capitalized)</li>
+</ul>
+<p class="question1"><a id="calibre_link-1344" href="#calibre_link-1166" class="calibre6">22</a>. How would you write a regex that matches a sentence where the first word is either <em class="calibre7">Alice</em>, <em class="calibre7">Bob</em>, or <em class="calibre7">Carol</em>; the second word is either <em class="calibre7">eats</em>, <em class="calibre7">pets</em>, or <em class="calibre7">throws</em>; the third word is <em class="calibre7">apples</em>, <em class="calibre7">cats</em>, or <em class="calibre7">baseballs</em>; and the sentence ends with a period? This regex should be case-insensitive. It must match the following:</p>
+<ul class="calibre8">
+<li class="noindent1"><span class="literal">'Alice eats apples.'</span></li>
+<li class="noindent1"><span class="literal">'Bob pets cats.'</span></li>
+<li class="noindent1"><span class="literal">'Carol throws baseballs.'</span></li>
+<li class="noindent1"><span class="literal">'Alice throws Apples.'</span></li>
+<li class="noindent1"><span class="literal">'BOB EATS CATS.'</span></li>
+</ul>
+<p class="question-para"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1774"></span>but not the following:</p>
+<ul class="calibre8">
+<li class="noindent1"><span class="literal">'RoboCop eats apples.'</span></li>
+<li class="noindent1"><span class="literal">'ALICE THROWS FOOTBALLS.'</span></li>
+<li class="noindent1"><span class="literal">'Carol eats 7 cats.'</span></li>
+</ul>
+<h3 class="h1" id="calibre_link-273"><strong class="calibre2">Practice Projects</strong></h3>
+<p class="noindent">For practice, write programs to do the following tasks.</p>
+<h4 class="h2" id="calibre_link-274"><strong class="calibre2"><em class="calibre9">Date Detection</em></strong></h4>
+<p class="noindent">Write a regular expression that can detect dates in the <em class="calibre7">DD/MM/YYYY</em> format. Assume that the days range from 01 to 31, the months range from 01 to 12, and the years range from 1000 to 2999. Note that if the day or month is a single digit, it’ll have a leading zero.</p>
+<p class="indent">The regular expression doesn’t have to detect correct days for each month or for leap years; it will accept nonexistent dates like 31/02/2020 or 31/04/2021. Then store these strings into variables named <span class="literal">month</span>, <span class="literal">day</span>, and <span class="literal">year</span>, and write additional code that can detect if it is a valid date. April, June, September, and November have 30 days, February has 28 days, and the rest of the months have 31 days. February has 29 days in leap years. Leap years are every year evenly divisible by 4, except for years evenly divisible by 100, unless the year is also evenly divisible by 400. Note how this calculation makes it impossible to make a reasonably sized regular expression that can detect a valid date.</p>
+<h4 class="h2" id="calibre_link-275"><strong class="calibre2"><em class="calibre9">Strong Password Detection</em></strong></h4>
+<p class="noindent">Write a function that uses regular expressions to make sure the password string it is passed is strong. A strong password is defined as one that is at least eight characters long, contains both uppercase and lowercase characters, and has at least one digit. You may need to test the string against multiple regex patterns to validate its strength.</p>
+<h4 class="h2" id="calibre_link-276"><strong class="calibre2"><em class="calibre9">Regex Version of the strip() Method</em></strong></h4>
+<p class="noindent">Write a function that takes a string and does the same thing as the <span class="literal">strip()</span> string method. If no other arguments are passed other than the string to strip, then whitespace characters will be removed from the beginning and end of the string. Otherwise, the characters specified in the second argument to the function will be removed from the string.</p>
+</div>
+
+<div><center><a href="../chapter6"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="../chapter8"><img src="/images/next.png" /></a></center></div>
+
+{% endblock %}

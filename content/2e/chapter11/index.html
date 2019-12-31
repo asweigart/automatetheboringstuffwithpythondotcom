@@ -1,0 +1,387 @@
+{% extends "secondeditionbase.html" %}
+{% set title = 'Automate the Boring Stuff with Python' %}
+{% block content %}
+
+<div><center><a href="../chapter10"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="../chapter12"><img src="/images/next.png" /></a></center></div>
+
+<div class="calibre" id="calibre_link-1192">
+<h2 class="h2b" id="calibre_link-349"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-895" class="calibre1"></span><strong class="calibre2"><span class="big">11</span><br class="calibre12" />DEBUGGING</strong></h2>
+<div class="image"><img src="../images/000102.jpg" alt="Image" class="calibre3" /></div>
+<p class="noindent">Now that you know enough to write more complicated programs, you may start finding not-so-simple bugs in them. This chapter covers some tools and techniques for finding the root cause of bugs in your program to help you fix bugs faster and with less effort.</p>
+<p class="indent">To paraphrase an old joke among programmers, writing code accounts for 90 percent of programming. Debugging code accounts for the other 90 percent.</p>
+<p class="indent">Your computer will do only what you tell it to do; it won’t read your mind and do what you <em class="calibre7">intended</em> it to do. Even professional programmers create bugs all the time, so don’t feel discouraged if your program has a problem.</p>
+<p class="indent">Fortunately, there are a few tools and techniques to identify what exactly your code is doing and where it’s going wrong. First, you will look at logging and assertions, two features that can help you detect bugs early. In general, the earlier you catch bugs, the easier they will be to fix.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-901"></span>Second, you will look at how to use the debugger. The debugger is a feature of Mu that executes a program one instruction at a time, giving you a chance to inspect the values in variables while your code runs, and track how the values change over the course of your program. This is much slower than running the program at full speed, but it is helpful to see the actual values in a program while it runs, rather than deducing what the values might be from the source code.</p>
+<h3 class="h1" id="calibre_link-350"><strong class="calibre2">Raising Exceptions</strong></h3>
+<p class="noindent">Python raises an exception whenever it tries to execute invalid code. In <a href="#calibre_link-132" class="calibre6">Chapter 3</a>, you read about how to handle Python’s exceptions with <span class="literal">try</span> and <span class="literal">except</span> statements so that your program can recover from exceptions that you anticipated. But you can also raise your own exceptions in your code. Raising an exception is a way of saying, “Stop running the code in this function and move the program execution to the <span class="literal">except</span> statement.”</p>
+<p class="indent">Exceptions are raised with a <span class="literal">raise</span> statement. In code, a <span class="literal">raise</span> statement consists of the following:</p>
+<ul class="calibre8">
+<li class="noindent1">The <span class="literal">raise</span> keyword</li>
+<li class="noindent1">A call to the <span class="literal">Exception()</span> function</li>
+<li class="noindent1">A string with a helpful error message passed to the <span class="literal">Exception()</span> function</li>
+</ul>
+<p class="indent">For example, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">raise Exception('This is the error message.')</span><br class="calibre5" />
+Traceback (most recent call last):<br class="calibre5" />
+&nbsp;&nbsp;File "&lt;pyshell#191&gt;", line 1, in &lt;module&gt;<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;raise Exception('This is the error message.')<br class="calibre5" />
+Exception: This is the error message.</p>
+<p class="indent">If there are no <span class="literal">try</span> and <span class="literal">except</span> statements covering the <span class="literal">raise</span> statement that raised the exception, the program simply crashes and displays the exception’s error message.</p>
+<p class="indent">Often it’s the code that calls the function, rather than the function itself, that knows how to handle an exception. That means you will commonly see a <span class="literal">raise</span> statement inside a function and the <span class="literal">try</span> and <span class="literal">except</span> statements in the code calling the function. For example, open a new file editor tab, enter the following code, and save the program as <em class="calibre7">boxPrint.py</em>:</p>
+<p class="programs">def boxPrint(symbol, width, height):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;if len(symbol) != 1:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➊</span> raise Exception('Symbol must be a single character string.')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;if width &lt;= 2:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➋</span> raise Exception('Width must be greater than 2.')<br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-896"></span>&nbsp;&nbsp;&nbsp;&nbsp;if height &lt;= 2:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➌</span> raise Exception('Height must be greater than 2.')<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print(symbol * width)<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;for i in range(height - 2):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(symbol + (' ' * (width - 2)) + symbol)<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print(symbol * width)<br class="calibre5" /><br class="calibre5" />
+for sym, w, h in (('*', 4, 4), ('O', 20, 5), ('x', 1, 3), ('ZZ', 3, 3)):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;try:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;boxPrint(sym, w, h)<br class="calibre5" />
+&nbsp;&nbsp;<span class="ent">➍</span> except Exception as err:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➎</span> print('An exception happened: ' + str(err))</p>
+<p class="indent">You can view the execution of this program at <em class="calibre7"><a href="https://autbor.com/boxprint" class="calibre6">https://autbor.com/boxprint</a></em>. Here we’ve defined a <span class="literal">boxPrint()</span> function that takes a character, a width, and a height, and uses the character to make a little picture of a box with that width and height. This box shape is printed to the screen.</p>
+<p class="indent">Say we want the character to be a single character, and the width and height to be greater than 2. We add <span class="literal">if</span> statements to raise exceptions if these requirements aren’t satisfied. Later, when we call <span class="literal">boxPrint()</span> with various arguments, our <span class="literal">try</span>/<span class="literal">except</span> will handle invalid arguments.</p>
+<p class="indent">This program uses the <span class="literal">except Exception as err</span> form of the <span class="literal">except</span> statement <span class="ent">➍</span>. If an <span class="literal">Exception</span> object is returned from <span class="literal">boxPrint()</span> <span class="ent">➊</span> <span class="ent">➋</span> <span class="ent">➌</span>, this <span class="literal">except</span> statement will store it in a variable named <span class="literal">err</span>. We can then convert the <span class="literal">Exception</span> object to a string by passing it to <span class="literal">str()</span> to produce a user-friendly error message <span class="ent">➎</span>. When you run this <em class="calibre7">boxPrint.py</em>, the output will look like this:</p>
+<p class="programs">****<br class="calibre5" />
+*&nbsp;&nbsp;*<br class="calibre5" />
+*&nbsp;&nbsp;*<br class="calibre5" />
+****<br class="calibre5" />
+OOOOOOOOOOOOOOOOOOOO<br class="calibre5" />
+O&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;O<br class="calibre5" />
+O&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;O<br class="calibre5" />
+O&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;O<br class="calibre5" />
+OOOOOOOOOOOOOOOOOOOO<br class="calibre5" />
+An exception happened: Width must be greater than 2.<br class="calibre5" />
+An exception happened: Symbol must be a single character string.</p>
+<p class="indent">Using the <span class="literal">try</span> and <span class="literal">except</span> statements, you can handle errors more gracefully instead of letting the entire program crash.</p>
+<h3 class="h1" id="calibre_link-351"><strong class="calibre2">Getting the Traceback as a String</strong></h3>
+<p class="noindent">When Python encounters an error, it produces a treasure trove of error information called the <em class="calibre7">traceback</em>. The traceback includes the error message, the line number of the line that caused the error, and the sequence of the function calls that led to the error. This sequence of calls is called the <em class="calibre7">call stack</em>.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-897"></span>Open a new file editor tab in Mu, enter the following program, and save it as <em class="calibre7">errorExample.py</em>:</p>
+<p class="programs">def spam():<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;bacon()<br class="calibre5" /><br class="calibre5" />
+def bacon():<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;raise Exception('This is the error message.')<br class="calibre5" /><br class="calibre5" />
+spam()</p>
+<p class="indent">When you run <em class="calibre7">errorExample.py</em>, the output will look like this:</p>
+<p class="programs">Traceback (most recent call last):<br class="calibre5" />
+&nbsp;&nbsp;File "errorExample.py", line 7, in &lt;module&gt;<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;spam()<br class="calibre5" />
+&nbsp;&nbsp;File "errorExample.py", line 2, in spam<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;bacon()<br class="calibre5" />
+&nbsp;&nbsp;File "errorExample.py", line 5, in bacon<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;raise Exception('This is the error message.')<br class="calibre5" />
+Exception: This is the error message.</p>
+<p class="indent">From the traceback, you can see that the error happened on line 5, in the <span class="literal">bacon()</span> function. This particular call to <span class="literal">bacon()</span> came from line 2, in the <span class="literal">spam()</span> function, which in turn was called on line 7. In programs where functions can be called from multiple places, the call stack can help you determine which call led to the error.</p>
+<p class="indent">Python displays the traceback whenever a raised exception goes unhandled. But you can also obtain it as a string by calling <span class="literal">traceback.format_exc()</span>. This function is useful if you want the information from an exception’s traceback but also want an <span class="literal">except</span> statement to gracefully handle the exception. You will need to import Python’s <span class="literal">traceback</span> module before calling this function.</p>
+<p class="indent">For example, instead of crashing your program right when an exception occurs, you can write the traceback information to a text file and keep your program running. You can look at the text file later, when you’re ready to debug your program. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import traceback</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">try:</span><br class="calibre5" />
+<span class="codestrong1">...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raise Exception('This is the error message.')</span><br class="calibre5" />
+<span class="codestrong1">except:</span><br class="calibre5" />
+<span class="codestrong1">...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errorFile = open('errorInfo.txt', 'w')</span><br class="calibre5" />
+<span class="codestrong1">...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errorFile.write(traceback.format_exc())</span><br class="calibre5" />
+<span class="codestrong1">...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errorFile.close()</span><br class="calibre5" />
+<span class="codestrong1">...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('The traceback info was written to errorInfo.txt.')</span><br class="calibre5" /><br class="calibre5" /><br class="calibre5" />
+111<br class="calibre5" />
+The traceback info was written to errorInfo.txt.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-799"></span>The <span class="literal">111</span> is the return value from the <span class="literal">write()</span> method, since 111 characters were written to the file. The traceback text was written to <em class="calibre7">errorInfo.txt</em>.</p>
+<p class="programs">Traceback (most recent call last):<br class="calibre5" />
+&nbsp;&nbsp;File "&lt;pyshell#28&gt;", line 2, in &lt;module&gt;<br class="calibre5" />
+Exception: This is the error message.</p>
+<p class="indent">In “<a href="#calibre_link-354" class="calibre6">Logging</a>” on <a href="#calibre_link-898" class="calibre6">page 255</a>, you’ll learn how to use the <span class="literal">logging</span> module, which is more effective than simply writing this error information to text files.</p>
+<h3 class="h1" id="calibre_link-352"><strong class="calibre2">Assertions</strong></h3>
+<p class="noindent">An <em class="calibre7">assertion</em> is a sanity check to make sure your code isn’t doing something obviously wrong. These sanity checks are performed by <span class="literal">assert</span> statements. If the sanity check fails, then an <span class="literal">AssertionError</span> exception is raised. In code, an <span class="literal">assert</span> statement consists of the following:</p>
+<ul class="calibre8">
+<li class="noindent1">The <span class="literal">assert</span> keyword</li>
+<li class="noindent1">A condition (that is, an expression that evaluates to <span class="literal">True</span> or <span class="literal">False</span>)</li>
+<li class="noindent1">A comma</li>
+<li class="noindent1">A string to display when the condition is <span class="literal">False</span></li>
+</ul>
+<p class="indent">In plain English, an <span class="literal">assert</span> statement says, “I assert that the condition holds true, and if not, there is a bug somewhere, so immediately stop the program.” For example, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">ages = [26, 57, 92, 54, 22, 15, 17, 80, 47, 73]</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ages.sort()</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ages</span><br class="calibre5" />
+[15, 17, 22, 26, 47, 54, 57, 73, 80, 92]<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">assert</span><br class="calibre5" />
+<span class="codestrong1">ages[0] &lt;= ages[-1]</span> # Assert that the first age is &lt;= the last age.</p>
+<p class="indent">The <span class="literal">assert</span> statement here asserts that the first item in <span class="literal">ages</span> should be less than or equal to the last one. This is a sanity check; if the code in <span class="literal">sort()</span> is bug-free and did its job, then the assertion would be true.</p>
+<p class="indent">Because the <span class="literal">ages[0] &lt;= ages[-1]</span> expression evaluates to <span class="literal">True</span>, the <span class="literal">assert</span> statement does nothing.</p>
+<p class="indent">However, let’s pretend we had a bug in our code. Say we accidentally called the <span class="literal">reverse()</span> list method instead of the <span class="literal">sort()</span> list method. When we enter the following in the interactive shell, the <span class="literal">assert</span> statement raises an <span class="literal">AssertionError</span>:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">ages = [26, 57, 92, 54, 22, 15, 17, 80, 47, 73]</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ages.reverse()</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ages</span><br class="calibre5" />
+[73, 47, 80, 17, 15, 22, 54, 92, 57, 26]<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">assert ages[0] &lt;= ages[-1]</span> # Assert that the first age is &lt;= the last age.<br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-800"></span>Traceback (most recent call last):<br class="calibre5" />
+&nbsp;&nbsp;File "&lt;stdin&gt;", line 1, in &lt;module&gt;<br class="calibre5" />
+AssertionError</p>
+<p class="indent">Unlike exceptions, your code should <em class="calibre7">not</em> handle <span class="literal">assert</span> statements with <span class="literal">try</span> and <span class="literal">except</span>; if an <span class="literal">assert</span> fails, your program <em class="calibre7">should</em> crash. By “failing fast” like this, you shorten the time between the original cause of the bug and when you first notice the bug. This will reduce the amount of code you will have to check before finding the bug’s cause.</p>
+<p class="indent">Assertions are for programmer errors, not user errors. Assertions should only fail while the program is under development; a user should never see an assertion error in a finished program. For errors that your program can run into as a normal part of its operation (such as a file not being found or the user entering invalid data), raise an exception instead of detecting it with an <span class="literal">assert</span> statement. You shouldn’t use <span class="literal">assert</span> statements in place of raising exceptions, because users can choose to turn off assertions. If you run a Python script with <span class="literal">python -O myscript.py</span> instead of <span class="literal">python myscript.py</span>, Python will skip <span class="literal">assert</span> statements. Users might disable assertions when they’re developing a program and need to run it in a production setting that requires peak performance. (Though, in many cases, they’ll leave assertions enabled even then.)</p>
+<p class="indent">Assertions also aren’t a replacement for comprehensive testing. For instance, if the previous <span class="literal">ages</span> example was set to <span class="literal">[10, 3, 2, 1, 20]</span>, then the <span class="literal">assert ages[0] &lt;= ages[-1]</span> assertion wouldn’t notice that the list was unsorted, because it just happened to have a first age that was less than or equal to the last age, which is the only thing the assertion checked for.</p>
+<h4 class="h2" id="calibre_link-353"><strong class="calibre2"><em class="calibre9">Using an Assertion in a Traffic Light Simulation</em></strong></h4>
+<p class="noindent">Say you’re building a traffic light simulation program. The data structure representing the stoplights at an intersection is a dictionary with keys <span class="literal">'ns'</span> and <span class="literal">'ew'</span>, for the stoplights facing north-south and east-west, respectively. The values at these keys will be one of the strings <span class="literal">'green'</span>, <span class="literal">'yellow'</span>, or <span class="literal">'red'</span>. The code would look something like this:</p>
+<p class="programs">market_2nd = {'ns': 'green', 'ew': 'red'}<br class="calibre5" />
+mission_16th = {'ns': 'red', 'ew': 'green'}</p>
+<p class="indent">These two variables will be for the intersections of Market Street and 2nd Street, and Mission Street and 16th Street. To start the project, you want to write a <span class="literal">switchLights()</span> function, which will take an intersection dictionary as an argument and switch the lights.</p>
+<p class="indent">At first, you might think that <span class="literal">switchLights()</span> should simply switch each light to the next color in the sequence: Any <span class="literal">'green'</span> values should change to <span class="literal">'yellow'</span>, <span class="literal">'yellow'</span> values should change to <span class="literal">'red'</span>, and <span class="literal">'red'</span> values should change to <span class="literal">'green'</span>. The code to implement this idea might look like this:</p>
+<p class="programs">def switchLights(stoplight):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;for key in stoplight.keys():<br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-898"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if stoplight[key] == 'green':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stoplight[key] = 'yellow'<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif stoplight[key] == 'yellow':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stoplight[key] = 'red'<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif stoplight[key] == 'red':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stoplight[key] = 'green'<br class="calibre5" /><br class="calibre5" />
+switchLights(market_2nd)</p>
+<p class="indent">You may already see the problem with this code, but let’s pretend you wrote the rest of the simulation code, thousands of lines long, without noticing it. When you finally do run the simulation, the program doesn’t crash&mdash;but your virtual cars do!</p>
+<p class="indent">Since you’ve already written the rest of the program, you have no idea where the bug could be. Maybe it’s in the code simulating the cars or in the code simulating the virtual drivers. It could take hours to trace the bug back to the <span class="literal">switchLights()</span> function.</p>
+<p class="indent">But if while writing <span class="literal">switchLights()</span> you had added an assertion to check that <em class="calibre7">at least one of the lights is always red</em>, you might have included the following at the bottom of the function:</p>
+<p class="programs">assert 'red' in stoplight.values(), 'Neither light is red! ' + str(stoplight)</p>
+<p class="indent">With this assertion in place, your program would crash with this error message:</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;Traceback (most recent call last):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File "carSim.py", line 14, in &lt;module&gt;<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;switchLights(market_2nd)<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File "carSim.py", line 13, in switchLights<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;assert 'red' in stoplight.values(), 'Neither light is red! ' +<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;str(stoplight)<br class="calibre5" />
+<span class="ent">➊</span> AssertionError: Neither light is red! {'ns': 'yellow', 'ew': 'green'}</p>
+<p class="indent">The important line here is the <span class="literal">AssertionError</span> <span class="ent">➊</span>. While your program crashing is not ideal, it immediately points out that a sanity check failed: neither direction of traffic has a red light, meaning that traffic could be going both ways. By failing fast early in the program’s execution, you can save yourself a lot of future debugging effort.</p>
+<h3 class="h1" id="calibre_link-354"><strong class="calibre2">Logging</strong></h3>
+<p class="noindent">If you’ve ever put a <span class="literal">print()</span> statement in your code to output some variable’s value while your program is running, you’ve used a form of <em class="calibre7">logging</em> to debug your code. Logging is a great way to understand what’s happening in your program and in what order it’s happening. Python’s <span class="literal">logging</span> module makes it easy to create a record of custom messages that you write. These log messages will describe when the program execution has reached the logging <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-811"></span>function call and list any variables you have specified at that point in time. On the other hand, a missing log message indicates a part of the code was skipped and never executed.</p>
+<h4 class="h2" id="calibre_link-355"><strong class="calibre2"><em class="calibre9">Using the logging Module</em></strong></h4>
+<p class="noindent">To enable the <span class="literal">logging</span> module to display log messages on your screen as your program runs, copy the following to the top of your program (but under the <span class="literal">#! python</span> shebang line):</p>
+<p class="programs">import logging<br class="calibre5" />
+logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s -&nbsp;&nbsp;%(levelname)<br class="calibre5" />
+s -&nbsp;&nbsp;%(message)s')</p>
+<p class="indent">You don’t need to worry too much about how this works, but basically, when Python logs an event, it creates a <span class="literal">LogRecord</span> object that holds information about that event. The <span class="literal">logging</span> module’s <span class="literal">basicConfig()</span> function lets you specify what details about the <span class="literal">LogRecord</span> object you want to see and how you want those details displayed.</p>
+<p class="indent">Say you wrote a function to calculate the <em class="calibre7">factorial</em> of a number. In mathematics, factorial 4 is 1 × 2 × 3 × 4, or 24. Factorial 7 is 1 × 2 × 3 × 4 × 5 × 6 × 7, or 5,040. Open a new file editor tab and enter the following code. It has a bug in it, but you will also enter several log messages to help yourself figure out what is going wrong. Save the program as <em class="calibre7">factorialLog.py</em>.</p>
+<p class="programs">import logging<br class="calibre5" />
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s -&nbsp;&nbsp;%(levelname)s<br class="calibre5" />
+-&nbsp;&nbsp;%(message)s')<br class="calibre5" />
+logging.debug('Start of program')<br class="calibre5" /><br class="calibre5" />
+def factorial(n):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;logging.debug('Start of factorial(%s%%)'&nbsp;&nbsp;% (n))<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;total = 1<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;for i in range(n + 1):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;total *= i<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;logging.debug('i is ' + str(i) + ', total is ' + str(total))<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;logging.debug('End of factorial(%s%%)'&nbsp;&nbsp;% (n))<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;return total<br class="calibre5" /><br class="calibre5" />
+print(factorial(5))<br class="calibre5" />
+logging.debug('End of program')</p>
+<p class="indent">Here, we use the <span class="literal">logging.debug()</span> function when we want to print log information. This <span class="literal">debug()</span> function will call <span class="literal">basicConfig()</span>, and a line of information will be printed. This information will be in the format we specified in <span class="literal">basicConfig()</span> and will include the messages we passed to <span class="literal">debug()</span>. The <span class="literal">print(factorial(5))</span> call is part of the original program, so the result is displayed even if logging messages are disabled.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1796"></span>The output of this program looks like this:</p>
+<p class="programs">2019-05-23 16:20:12,664 - DEBUG - Start of program<br class="calibre5" />
+2019-05-23 16:20:12,664 - DEBUG - Start of factorial(5)<br class="calibre5" />
+2019-05-23 16:20:12,665 - DEBUG - i is 0, total is 0<br class="calibre5" />
+2019-05-23 16:20:12,668 - DEBUG - i is 1, total is 0<br class="calibre5" />
+2019-05-23 16:20:12,670 - DEBUG - i is 2, total is 0<br class="calibre5" />
+2019-05-23 16:20:12,673 - DEBUG - i is 3, total is 0<br class="calibre5" />
+2019-05-23 16:20:12,675 - DEBUG - i is 4, total is 0<br class="calibre5" />
+2019-05-23 16:20:12,678 - DEBUG - i is 5, total is 0<br class="calibre5" />
+2019-05-23 16:20:12,680 - DEBUG - End of factorial(5)<br class="calibre5" />
+0<br class="calibre5" />
+2019-05-23 16:20:12,684 - DEBUG - End of program</p>
+<p class="indent">The <span class="literal">factorial()</span> function is returning <span class="literal">0</span> as the factorial of <span class="literal">5</span>, which isn’t right. The <span class="literal">for</span> loop should be multiplying the value in <span class="literal">total</span> by the numbers from <span class="literal">1</span> to <span class="literal">5</span>. But the log messages displayed by <span class="literal">logging.debug()</span> show that the <span class="literal">i</span> variable is starting at <span class="literal">0</span> instead of <span class="literal">1</span>. Since zero times anything is zero, the rest of the iterations also have the wrong value for <span class="literal">total</span>. Logging messages provide a trail of breadcrumbs that can help you figure out when things started to go wrong.</p>
+<p class="indent">Change the <span class="literal">for i in range(n + 1):</span> line to <span class="literal">for i in range(</span><span class="codestrong">1,</span> <span class="literal">n + 1):</span>, and run the program again. The output will look like this:</p>
+<p class="programs">2019-05-23 17:13:40,650 - DEBUG - Start of program<br class="calibre5" />
+2019-05-23 17:13:40,651 - DEBUG - Start of factorial(5)<br class="calibre5" />
+2019-05-23 17:13:40,651 - DEBUG - i is 1, total is 1<br class="calibre5" />
+2019-05-23 17:13:40,654 - DEBUG - i is 2, total is 2<br class="calibre5" />
+2019-05-23 17:13:40,656 - DEBUG - i is 3, total is 6<br class="calibre5" />
+2019-05-23 17:13:40,659 - DEBUG - i is 4, total is 24<br class="calibre5" />
+2019-05-23 17:13:40,661 - DEBUG - i is 5, total is 120<br class="calibre5" />
+2019-05-23 17:13:40,661 - DEBUG - End of factorial(5)<br class="calibre5" />
+120<br class="calibre5" />
+2019-05-23 17:13:40,666 - DEBUG - End of program</p>
+<p class="indent">The <span class="literal">factorial(5)</span> call correctly returns <span class="literal">120</span>. The log messages showed what was going on inside the loop, which led straight to the bug.</p>
+<p class="indent">You can see that the <span class="literal">logging.debug()</span> calls printed out not just the strings passed to them but also a timestamp and the word <em class="calibre7">DEBUG</em>.</p>
+<h4 class="h2" id="calibre_link-356"><strong class="calibre2"><em class="calibre9">Don’t Debug with the print() Function</em></strong></h4>
+<p class="noindent">Typing <span class="literal">import logging</span> and <span class="literal">logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')</span> is somewhat unwieldy. You may want to use <span class="literal">print()</span> calls instead, but don’t give in to this temptation! Once you’re done debugging, you’ll end up spending a lot of time removing <span class="literal">print()</span> calls from your code for each log message. You might even accidentally remove some <span class="literal">print()</span> calls that were being used for nonlog messages. The nice thing about log messages is that you’re free to fill your program <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-879"></span>with as many as you like, and you can always disable them later by adding a single <span class="literal">logging.disable(logging.CRITICAL)</span> call. Unlike <span class="literal">print()</span>, the <span class="literal">logging</span> module makes it easy to switch between showing and hiding log messages.</p>
+<p class="indent">Log messages are intended for the programmer, not the user. The user won’t care about the contents of some dictionary value you need to see to help with debugging; use a log message for something like that. For messages that the user will want to see, like <em class="calibre7">File not found</em> or <em class="calibre7">Invalid input, please enter a number</em>, you should use a <span class="literal">print()</span> call. You don’t want to deprive the user of useful information after you’ve disabled log messages.</p>
+<h4 class="h2" id="calibre_link-357"><strong class="calibre2"><em class="calibre9">Logging Levels</em></strong></h4>
+<p class="noindent"><em class="calibre7">Logging levels</em> provide a way to categorize your log messages by importance. There are five logging levels, described in <a href="#calibre_link-1193" class="calibre6">Table 11-1</a> from least to most important. Messages can be logged at each level using a different logging function.</p>
+<p class="tabcap" id="calibre_link-1193"><strong class="calibre4">Table 11-1:</strong> Logging Levels in Python</p>
+<table class="topbot-d">
+<colgroup class="calibre13">
+<col class="calibre21"></col>
+<col class="calibre21"></col>
+<col class="calibre22"></col>
+</colgroup>
+<thead class="calibre15">
+<tr class="calibre16">
+<td class="table-h"><p class="tab_th"><strong class="calibre4">Level</strong></p></td>
+<td class="table-h"><p class="tab_th"><strong class="calibre4">Logging function</strong></p></td>
+<td class="table-h"><p class="tab_th"><strong class="calibre4">Description</strong></p></td>
+</tr>
+</thead>
+<tbody class="calibre17">
+<tr class="calibre16">
+<td class="table-b"><p class="taba">DEBUG</p></td>
+<td class="table-b"><p class="taba"><span class="literal">logging.debug()</span></p></td>
+<td class="table-b"><p class="taba">The lowest level. Used for small details. Usually you care about these messages only when diagnosing problems.</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba">INFO</p></td>
+<td class="table-v"><p class="taba"><span class="literal">logging.info()</span></p></td>
+<td class="table-v"><p class="taba">Used to record information on general events in your program or confirm that things are working at their point in the program.</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba">WARNING</p></td>
+<td class="table-b"><p class="taba"><span class="literal">logging.warning()</span></p></td>
+<td class="table-b"><p class="taba">Used to indicate a potential problem that doesn’t prevent the program from working but might do so in the future.</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba">ERROR</p></td>
+<td class="table-v"><p class="taba"><span class="literal">logging.error()</span></p></td>
+<td class="table-v"><p class="taba">Used to record an error that caused the program to fail to do something.</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-ba"><p class="taba">CRITICAL</p></td>
+<td class="table-ba"><p class="taba"><span class="literal">logging.critical()</span></p></td>
+<td class="table-ba"><p class="taba">The highest level. Used to indicate a fatal error that has caused or is about to cause the program to stop running entirely.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="indent">Your logging message is passed as a string to these functions. The logging levels are suggestions. Ultimately, it is up to you to decide which category your log message falls into. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import logging</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s -</span><br class="calibre5" />
+<span class="codestrong1">%(levelname)s -&nbsp;&nbsp;%(message)s')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">logging.debug('Some debugging details.')</span><br class="calibre5" />
+2019-05-18 19:04:26,901 - DEBUG - Some debugging details.<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">logging.info('The logging module is working.')</span><br class="calibre5" />
+2019-05-18 19:04:35,569 - INFO - The logging module is working.<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">logging.warning('An error message is about to be logged.')</span><br class="calibre5" />
+2019-05-18 19:04:56,843 - WARNING - An error message is about to be logged.<br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1797"></span>&gt;&gt;&gt; <span class="codestrong1">logging.error('An error has occurred.')</span><br class="calibre5" />
+2019-05-18 19:05:07,737 - ERROR - An error has occurred.<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">logging.critical('The program is unable to recover!')</span><br class="calibre5" />
+2019-05-18 19:05:45,794 - CRITICAL - The program is unable to recover!</p>
+<p class="indent">The benefit of logging levels is that you can change what priority of logging message you want to see. Passing <span class="literal">logging.DEBUG</span> to the <span class="literal">basicConfig()</span> function’s <span class="literal">level</span> keyword argument will show messages from all the logging levels (DEBUG being the lowest level). But after developing your program some more, you may be interested only in errors. In that case, you can set <span class="literal">basicConfig()</span>’s <span class="literal">level</span> argument to <span class="literal">logging.ERROR</span>. This will show only ERROR and CRITICAL messages and skip the DEBUG, INFO, and WARNING messages.</p>
+<h4 class="h2" id="calibre_link-358"><strong class="calibre2"><em class="calibre9">Disabling Logging</em></strong></h4>
+<p class="noindent">After you’ve debugged your program, you probably don’t want all these log messages cluttering the screen. The <span class="literal">logging.disable()</span> function disables these so that you don’t have to go into your program and remove all the logging calls by hand. You simply pass <span class="literal">logging.disable()</span> a logging level, and it will suppress all log messages at that level or lower. So if you want to disable logging entirely, just add <span class="literal">logging.disable(logging.CRITICAL)</span> to your program. For example, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import logging</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">logging.basicConfig(level=logging.INFO, format=' %(asctime)s -</span><br class="calibre5" />
+<span class="codestrong1">%(levelname)s -&nbsp;&nbsp;%(message)s')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">logging.critical('Critical error! Critical error!')</span><br class="calibre5" />
+2019-05-22 11:10:48,054 - CRITICAL - Critical error! Critical error!<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">logging.disable(logging.CRITICAL)</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">logging.critical('Critical error! Critical error!')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">logging.error('Error! Error!')</span></p>
+<p class="indent">Since <span class="literal">logging.disable()</span> will disable all messages after it, you will probably want to add it near the <span class="literal">import logging</span> line of code in your program. This way, you can easily find it to comment out or uncomment that call to enable or disable logging messages as needed.</p>
+<h4 class="h2" id="calibre_link-359"><strong class="calibre2"><em class="calibre9">Logging to a File</em></strong></h4>
+<p class="noindent">Instead of displaying the log messages to the screen, you can write them to a text file. The <span class="literal">logging.basicConfig()</span> function takes a <span class="literal">filename</span> keyword argument, like so:</p>
+<p class="programs">import logging<br class="calibre5" />
+logging.basicConfig(<span class="codestrong1">filename='myProgramLog.txt'</span>, level=logging.DEBUG, format='<br class="calibre5" />
+%(asctime)s -&nbsp;&nbsp;%(levelname)s -&nbsp;&nbsp;%(message)s')</p>
+<p class="indent">The log messages will be saved to <em class="calibre7">myProgramLog.txt</em>. While logging messages are helpful, they can clutter your screen and make it hard to read <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-899"></span>the program’s output. Writing the logging messages to a file will keep your screen clear and store the messages so you can read them after running the program. You can open this text file in any text editor, such as Notepad or TextEdit.</p>
+<h3 class="h1" id="calibre_link-360"><strong class="calibre2">Mu’s Debugger</strong></h3>
+<p class="noindent">The <em class="calibre7">debugger</em> is a feature of the Mu editor, IDLE, and other editor software that allows you to execute your program one line at a time. The debugger will run a single line of code and then wait for you to tell it to continue. By running your program “under the debugger” like this, you can take as much time as you want to examine the values in the variables at any given point during the program’s lifetime. This is a valuable tool for tracking down bugs.</p>
+<p class="indent">To run a program under Mu’s debugger, click the <strong class="calibre4">Debug</strong> button in the top row of buttons, next to the Run button. Along with the usual output pane at the bottom, the Debug Inspector pane will open along the right side of the window. This pane lists the current value of variables in your program. In <a href="#calibre_link-1194" class="calibre6">Figure 11-1</a>, the debugger has paused the execution of the program just before it would have run the first line of code. You can see this line highlighted in the file editor.</p>
+<div class="image1"><a id="calibre_link-1194" class="calibre6"></a><img src="../images/000049.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 11-1: Mu running a program under the debugger</em></p>
+<p class="indent">Debugging mode also adds the following new buttons to the top of the editor: Continue, Step Over, Step In, and Step Out. The usual Stop button is also available.</p>
+<h4 class="h2" id="calibre_link-361"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1798" class="calibre1"></span><strong class="calibre2"><em class="calibre9">Continue</em></strong></h4>
+<p class="noindent">Clicking the Continue button will cause the program to execute normally until it terminates or reaches a <em class="calibre7">breakpoint</em>. (I will describe breakpoints later in this chapter.) If you are done debugging and want the program to continue normally, click the Continue button.</p>
+<h4 class="h2" id="calibre_link-362"><strong class="calibre2"><em class="calibre9">Step In</em></strong></h4>
+<p class="noindent">Clicking the Step In button will cause the debugger to execute the next line of code and then pause again. If the next line of code is a function call, the debugger will “step into” that function and jump to the first line of code of that function.</p>
+<h4 class="h2" id="calibre_link-363"><strong class="calibre2"><em class="calibre9">Step Over</em></strong></h4>
+<p class="noindent">Clicking the Step Over button will execute the next line of code, similar to the Step In button. However, if the next line of code is a function call, the Step Over button will “step over” the code in the function. The function’s code will be executed at full speed, and the debugger will pause as soon as the function call returns. For example, if the next line of code calls a <span class="literal">spam()</span> function but you don’t really care about code inside this function, you can click Step Over to execute the code in the function at normal speed, and then pause when the function returns. For this reason, using the Over button is more common than using the Step In button.</p>
+<h4 class="h2" id="calibre_link-364"><strong class="calibre2"><em class="calibre9">Step Out</em></strong></h4>
+<p class="noindent">Clicking the Step Out button will cause the debugger to execute lines of code at full speed until it returns from the current function. If you have stepped into a function call with the Step In button and now simply want to keep executing instructions until you get back out, click the Out button to “step out” of the current function call.</p>
+<h4 class="h2" id="calibre_link-365"><strong class="calibre2"><em class="calibre9">Stop</em></strong></h4>
+<p class="noindent">If you want to stop debugging entirely and not bother to continue executing the rest of the program, click the Stop button. The Stop button will immediately terminate the program.</p>
+<h4 class="h2" id="calibre_link-366"><strong class="calibre2"><em class="calibre9">Debugging a Number Adding Program</em></strong></h4>
+<p class="noindent">Open a new file editor tab and enter the following code:</p>
+<p class="programs">print('Enter the first number to add:')<br class="calibre5" />
+first = input()<br class="calibre5" />
+print('Enter the second number to add:')<br class="calibre5" />
+second = input()<br class="calibre5" />
+print('Enter the third number to add:')<br class="calibre5" />
+third = input()<br class="calibre5" />
+print('The sum is ' + first + second + third)</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1799"></span>Save it as <em class="calibre7">buggyAddingProgram.py</em> and run it first without the debugger enabled. The program will output something like this:</p>
+<p class="programs">Enter the first number to add:<br class="calibre5" />
+<span class="codestrong1">5</span><br class="calibre5" />
+Enter the second number to add:<br class="calibre5" />
+<span class="codestrong1">3</span><br class="calibre5" />
+Enter the third number to add:<br class="calibre5" />
+<span class="codestrong1">42</span><br class="calibre5" />
+The sum is 5342</p>
+<p class="indent">The program hasn’t crashed, but the sum is obviously wrong. Run the program again, this time under the debugger.</p>
+<p class="indent">When you click the Debug button, the program pauses on line 1, which is the line of code it is about to execute. Mu should look like <a href="#calibre_link-1195" class="calibre6">Figure 10-1</a>.</p>
+<p class="indent">Click the <strong class="calibre4">Step</strong> <strong class="calibre4">Over</strong> button once to execute the first <span class="literal">print()</span> call. You should use Step Over instead of Step In here, since you don’t want to step into the code for the <span class="literal">print()</span> function. (Although Mu should prevent the debugger from entering Python’s built-in functions.) The debugger moves on to line 2, and highlights line 2 in the file editor, as shown in <a href="#calibre_link-1196" class="calibre6">Figure 11-2</a>. This shows you where the program execution currently is.</p>
+<div class="image1"><a id="calibre_link-1196" class="calibre6"></a><img src="../images/000144.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 11-2: The Mu editor window after clicking Step Over</em></p>
+<p class="indent">Click <strong class="calibre4">Step</strong> <strong class="calibre4">Over</strong> again to execute the <span class="literal">input()</span> function call. The highlighting will go away while Mu waits for you to type something for the <span class="literal">input()</span> call into the output pane. Enter <span class="literal">5</span> and press <small class="calibre11">ENTER</small>. The highlighting will return.</p>
+<p class="indent">Keep clicking <strong class="calibre4">Step</strong> <strong class="calibre4">Over</strong>, and enter <span class="codestrong">3</span> and <span class="codestrong">42</span> as the next two numbers. When the debugger reaches line 7, the final <span class="literal">print()</span> call in the program, the Mu editor window should look like <a href="#calibre_link-1197" class="calibre6">Figure 11-3</a>.</p>
+<div class="image1"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1800"></span><a id="calibre_link-1197" class="calibre6"></a><img src="../images/000086.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 11-3: The Debug Inspector pane on the right side shows that the variables are set to strings instead of integers, causing the bug.</em></p>
+<p class="indent">In the Debug Inspector pane, you should see that the <span class="literal">first</span>, <span class="literal">second</span>, and <span class="literal">third</span> variables are set to string values <span class="literal">'5'</span>, <span class="literal">'3'</span>, and <span class="literal">'42'</span> instead of integer values <span class="literal">5</span>, <span class="literal">3</span>, and <span class="literal">42</span>. When the last line is executed, Python concatenates these strings instead of adding the numbers together, causing the bug.</p>
+<p class="indent">Stepping through the program with the debugger is helpful but can also be slow. Often you’ll want the program to run normally until it reaches a certain line of code. You can configure the debugger to do this with breakpoints.</p>
+<h4 class="h2" id="calibre_link-367"><strong class="calibre2"><em class="calibre9">Breakpoints</em></strong></h4>
+<p class="noindent">A <em class="calibre7">breakpoint</em> can be set on a specific line of code and forces the debugger to pause whenever the program execution reaches that line. Open a new file editor tab and enter the following program, which simulates flipping a coin 1,000 times. Save it as <em class="calibre7">coinFlip.py</em>.</p>
+<p class="programs">import random<br class="calibre5" />
+heads = 0<br class="calibre5" />
+for i in range(1, 1001):<br class="calibre5" />
+&nbsp;&nbsp;<span class="ent">➊</span> if random.randint(0, 1) == 1:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;heads = heads + 1<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if i == 500:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➋</span> print('Halfway done!')<br class="calibre5" />
+print('Heads came up ' + str(heads) + ' times.')</p>
+<p class="indent">The <span class="literal">random.randint(0, 1)</span> call <span class="ent">➊</span> will return <span class="literal">0</span> half of the time and <span class="literal">1</span> the other half of the time. This can be used to simulate a 50/50 coin flip where <span class="literal">1</span> represents heads. When you run this program without the debugger, it quickly outputs something like the following:</p>
+<p class="programs">Halfway done!<br class="calibre5" />
+Heads came up 490 times.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-900"></span>If you ran this program under the debugger, you would have to click the Step Over button thousands of times before the program terminated. If you were interested in the value of <span class="literal">heads</span> at the halfway point of the program’s execution, when 500 of 1,000 coin flips have been completed, you could instead just set a breakpoint on the line <span class="literal">print('Halfway done!')</span> <span class="ent">➋</span>. To set a breakpoint, click the line number in the file editor to cause a red dot to appear, marking the breakpoint like in <a href="#calibre_link-1198" class="calibre6">Figure 11-4</a>.</p>
+<div class="image1"><a id="calibre_link-1198" class="calibre6"></a><img src="../images/000124.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 11-4: Setting a breakpoint causes a red dot (circled) to appear next to the line number.</em></p>
+<p class="indent">You don’t want to set a breakpoint on the <span class="literal">if</span> statement line, since the <span class="literal">if</span> statement is executed on every single iteration through the loop. When you set the breakpoint on the code in the <span class="literal">if</span> statement, the debugger breaks only when the execution enters the <span class="literal">if</span> clause.</p>
+<p class="indent">The line with the breakpoint will have a red dot next to it. When you run the program under the debugger, it will start in a paused state at the first line, as usual. But if you click Continue, the program will run at full speed until it reaches the line with the breakpoint set on it. You can then click Continue, Step Over, Step In, or Step Out to continue as normal.</p>
+<p class="indent">If you want to remove a breakpoint, click the line number again. The red dot will go away, and the debugger will not break on that line in the future.</p>
+<h3 class="h1" id="calibre_link-368"><strong class="calibre2">Summary</strong></h3>
+<p class="noindent">Assertions, exceptions, logging, and the debugger are all valuable tools to find and prevent bugs in your program. Assertions with the Python <span class="literal">assert</span> statement are a good way to implement “sanity checks” that give you an early warning when a necessary condition doesn’t hold true. Assertions are only for errors that the program shouldn’t try to recover from and should fail fast. Otherwise, you should raise an exception.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1801"></span>An exception can be caught and handled by the <span class="literal">try</span> and <span class="literal">except</span> statements. The <span class="literal">logging</span> module is a good way to look into your code while it’s running and is much more convenient to use than the <span class="literal">print()</span> function because of its different logging levels and ability to log to a text file.</p>
+<p class="indent">The debugger lets you step through your program one line at a time. Alternatively, you can run your program at normal speed and have the debugger pause execution whenever it reaches a line with a breakpoint set. Using the debugger, you can see the state of any variable’s value at any point during the program’s lifetime.</p>
+<p class="indent">These debugging tools and techniques will help you write programs that work. Accidentally introducing bugs into your code is a fact of life, no matter how many years of coding experience you have.</p>
+<h3 class="h1" id="calibre_link-369"><strong class="calibre2">Practice Questions</strong></h3>
+<p class="question"><a id="calibre_link-1367" href="#calibre_link-1199" class="calibre6">1</a>. Write an <span class="literal">assert</span> statement that triggers an <span class="literal">AssertionError</span> if the variable <span class="literal">spam</span> is an integer less than <span class="literal">10</span>.</p>
+<p class="question"><a id="calibre_link-1368" href="#calibre_link-1200" class="calibre6">2</a>. Write an <span class="literal">assert</span> statement that triggers an <span class="literal">AssertionError</span> if the variables <span class="literal">eggs</span> and <span class="literal">bacon</span> contain strings that are the same as each other, even if their cases are different (that is, <span class="literal">'hello'</span> and <span class="literal">'hello'</span> are considered the same, and <span class="literal">'goodbye'</span> and <span class="literal">'GOODbye'</span> are also considered the same).</p>
+<p class="question"><a id="calibre_link-1369" href="#calibre_link-1201" class="calibre6">3</a>. Write an <span class="literal">assert</span> statement that <em class="calibre7">always</em> triggers an <span class="literal">AssertionError</span>.</p>
+<p class="question"><a id="calibre_link-1370" href="#calibre_link-1202" class="calibre6">4</a>. What are the two lines that your program must have in order to be able to call <span class="literal">logging.debug()</span>?</p>
+<p class="question"><a id="calibre_link-1371" href="#calibre_link-1203" class="calibre6">5</a>. What are the two lines that your program must have in order to have <span class="literal">logging.debug()</span> send a logging message to a file named <em class="calibre7">programLog.txt</em>?</p>
+<p class="question"><a id="calibre_link-1372" href="#calibre_link-1204" class="calibre6">6</a>. What are the five logging levels?</p>
+<p class="question"><a id="calibre_link-1373" href="#calibre_link-1205" class="calibre6">7</a>. What line of code can you add to disable all logging messages in your program?</p>
+<p class="question"><a id="calibre_link-1374" href="#calibre_link-1206" class="calibre6">8</a>. Why is using logging messages better than using <span class="literal">print()</span> to display the same message?</p>
+<p class="question"><a id="calibre_link-1375" href="#calibre_link-1207" class="calibre6">9</a>. What are the differences between the Step Over, Step In, and Step Out buttons in the debugger?</p>
+<p class="question1"><a id="calibre_link-1376" href="#calibre_link-1208" class="calibre6">10</a>. After you click Continue, when will the debugger stop?</p>
+<p class="question1"><a id="calibre_link-1377" href="#calibre_link-1209" class="calibre6">11</a>. What is a breakpoint?</p>
+<p class="question1"><a id="calibre_link-1378" href="#calibre_link-1210" class="calibre6">12</a>. How do you set a breakpoint on a line of code in Mu?</p>
+<h3 class="h1" id="calibre_link-370"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1802" class="calibre1"></span><strong class="calibre2">Practice Project</strong></h3>
+<p class="noindent">For practice, write a program that does the following.</p>
+<h4 class="h2" id="calibre_link-371"><strong class="calibre2"><em class="calibre9">Debugging Coin Toss</em></strong></h4>
+<p class="noindent">The following program is meant to be a simple coin toss guessing game. The player gets two guesses (it’s an easy game). However, the program has several bugs in it. Run through the program a few times to find the bugs that keep the program from working correctly.</p>
+<p class="programs">import random<br class="calibre5" />
+guess = ''<br class="calibre5" />
+while guess not in ('heads', 'tails'):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('Guess the coin toss! Enter heads or tails:')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;guess = input()<br class="calibre5" />
+toss = random.randint(0, 1) # 0 is tails, 1 is heads<br class="calibre5" />
+if toss == guess:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('You got it!')<br class="calibre5" />
+else:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('Nope! Guess again!')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;guesss = input()<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;if toss == guess:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('You got it!')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;else:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('Nope. You are really bad at this game.')</p>
+</div>
+
+<div><center><a href="../chapter10"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="../chapter12"><img src="/images/next.png" /></a></center></div>
+
+{% endblock %}

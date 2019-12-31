@@ -1,0 +1,383 @@
+{% extends "secondeditionbase.html" %}
+{% set title = 'Automate the Boring Stuff with Python' %}
+{% block content %}
+
+<div><center><a href="../chapter9"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="../chapter11"><img src="/images/next.png" /></a></center></div>
+
+<div class="calibre" id="calibre_link-1513">
+<h2 class="h2b" id="calibre_link-30"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1789" class="calibre1"></span><strong class="calibre2"><span class="big">10</span><br class="calibre12" />ORGANIZING FILES</strong></h2>
+<div class="image"><img src="../images/000060.jpg" alt="Image" class="calibre3" /></div>
+<p class="noindent">In the previous chapter, you learned how to create and write to new files in Python. Your programs can also organize preexisting files on the hard drive. Maybe you’ve had the experience of going through a folder full of dozens, hundreds, or even thousands of files and copying, renaming, moving, or compressing them all by hand. Or consider tasks such as these:</p>
+<ul class="calibre8">
+<li class="noindent1">Making copies of all PDF files (and <em class="calibre7">only</em> the PDF files) in every subfolder of a folder</li>
+<li class="noindent1">Removing the leading zeros in the filenames for every file in a folder of hundreds of files named <em class="calibre7">spam001.txt</em>, <em class="calibre7">spam002.txt</em>, <em class="calibre7">spam003.txt</em>, and so on</li>
+<li class="noindent1">Compressing the contents of several folders into one ZIP file (which could be a simple backup system)</li>
+</ul>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-871"></span>All this boring stuff is just begging to be automated in Python. By programming your computer to do these tasks, you can transform it into a quick-working file clerk who never makes mistakes.</p>
+<p class="indent">As you begin working with files, you may find it helpful to be able to quickly see what the extension (.<em class="calibre7">txt</em>, .<em class="calibre7">pdf</em>, .<em class="calibre7">jpg</em>, and so on) of a file is. With macOS and Linux, your file browser most likely shows extensions automatically. With Windows, file extensions may be hidden by default. To show extensions, go to <strong class="calibre4">Start</strong> ▸ <strong class="calibre4">Control Panel</strong> ▸ <strong class="calibre4">Appearance and Personalization</strong> ▸ <strong class="calibre4">Folder Options</strong>. On the View tab, under Advanced Settings, uncheck the <strong class="calibre4">Hide extensions for known file types</strong> checkbox.</p>
+<h3 class="h1" id="calibre_link-323"><strong class="calibre2">The shutil Module</strong></h3>
+<p class="noindent">The <span class="literal">shutil</span> (or shell utilities) module has functions to let you copy, move, rename, and delete files in your Python programs. To use the <span class="literal">shutil</span> functions, you will first need to use <span class="literal">import shutil</span>.</p>
+<h4 class="h2" id="calibre_link-324"><strong class="calibre2"><em class="calibre9">Copying Files and Folders</em></strong></h4>
+<p class="noindent">The <span class="literal">shutil</span> module provides functions for copying files, as well as entire folders.</p>
+<p class="indent">Calling <span class="literal">shutil.copy(</span><span class="codeitalic">source</span><span class="literal">,</span> <span class="codeitalic">destination</span><span class="literal">)</span> will copy the file at the path <span class="codeitalic">source</span> to the folder at the path <span class="codeitalic">destination</span>. (Both <span class="codeitalic">source</span> and <span class="codeitalic">destination</span> can be strings or <span class="literal">Path</span> objects.) If <span class="codeitalic">destination</span> is a filename, it will be used as the new name of the copied file. This function returns a string or <span class="literal">Path</span> object of the copied file.</p>
+<p class="indent">Enter the following into the interactive shell to see how <span class="literal">shutil.copy()</span> works:</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">import shutil, os</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">from pathlib import Path</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">p = Path.home()</span><br class="calibre5" />
+<span class="ent">➊</span> &gt;&gt;&gt; <span class="codestrong1">shutil.copy(p / 'spam.txt', p / 'some_folder')</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;'C:\\Users\\Al\\some_folder\\spam.txt'<br class="calibre5" />
+<span class="ent">➋</span> &gt;&gt;&gt; <span class="codestrong1">shutil.copy(p / 'eggs.txt', p / 'some_folder/eggs2.txt')</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;WindowsPath('C:/Users/Al/some_folder/eggs2.txt')</p>
+<p class="indent">The first <span class="literal">shutil.copy()</span> call copies the file at <em class="calibre7">C:\Users\Al\spam.txt</em> to the folder <em class="calibre7">C:\Users\Al\some_folder</em>. The return value is the path of the newly copied file. Note that since a folder was specified as the destination <span class="ent">➊</span>, the original <em class="calibre7">spam.txt</em> filename is used for the new, copied file’s filename. The second <span class="literal">shutil.copy()</span> call <span class="ent">➋</span> also copies the file at <em class="calibre7">C:\Users\Al\eggs.txt</em> to the folder <em class="calibre7">C:\Users\Al\some_folder</em> but gives the copied file the name <em class="calibre7">eggs2.txt</em>.</p>
+<p class="indent">While <span class="literal">shutil.copy()</span> will copy a single file, <span class="literal">shutil.copytree()</span> will copy an entire folder and every folder and file contained in it. Calling <span class="literal">shutil.copytree(</span><span class="codeitalic">source</span><span class="literal">,</span> <span class="codeitalic">destination</span><span class="literal">)</span> will copy the folder at the path <span class="codeitalic">source</span>, along with all of its files and subfolders, to the folder at the path <span class="codeitalic">destination</span>. The <span class="codeitalic">source</span> and <span class="codeitalic">destination</span> parameters are both strings. The function returns a string of the path of the copied folder.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-966"></span>Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import shutil, os</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">from pathlib import Path</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">p = Path.home()</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">shutil.copytree(p / 'spam', p / 'spam_backup')</span><br class="calibre5" />
+WindowsPath('C:/Users/Al/spam_backup')</p>
+<p class="indent">The <span class="literal">shutil.copytree()</span> call creates a new folder named <em class="calibre7">spam_backup</em> with the same content as the original <em class="calibre7">spam</em> folder. You have now safely backed up your precious, precious spam.</p>
+<h4 class="h2" id="calibre_link-325"><strong class="calibre2"><em class="calibre9">Moving and Renaming Files and Folders</em></strong></h4>
+<p class="noindent">Calling <span class="literal">shutil.move(</span><span class="codeitalic">source</span><span class="literal">,</span> <span class="codeitalic">destination</span><span class="literal">)</span> will move the file or folder at the path <span class="codeitalic">source</span> to the path <span class="codeitalic">destination</span> and will return a string of the absolute path of the new location.</p>
+<p class="indent">If <span class="codeitalic">destination</span> points to a folder, the <span class="codeitalic">source</span> file gets moved into <span class="codeitalic">destination</span> and keeps its current filename. For example, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import shutil</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">shutil.move('C:\\bacon.txt', 'C:\\eggs')</span><br class="calibre5" />
+'C:\\eggs\\bacon.txt'</p>
+<p class="indent">Assuming a folder named <em class="calibre7">eggs</em> already exists in the <em class="calibre7">C:\</em> directory, this <span class="literal">shutil.move()</span> call says, “Move <em class="calibre7">C:\bacon.txt</em> into the folder <em class="calibre7">C:\eggs</em>.”</p>
+<p class="indent">If there had been a <em class="calibre7">bacon.txt</em> file already in <em class="calibre7">C:\eggs</em>, it would have been overwritten. Since it’s easy to accidentally overwrite files in this way, you should take some care when using <span class="literal">move()</span>.</p>
+<p class="indent">The <span class="codeitalic">destination</span> path can also specify a filename. In the following example, the <span class="codeitalic">source</span> file is moved <em class="calibre7">and</em> renamed.</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">shutil.move('C:\\bacon.txt', 'C:\\eggs\\new_bacon.txt')</span><br class="calibre5" />
+'C:\\eggs\\new_bacon.txt'</p>
+<p class="indent">This line says, “Move <em class="calibre7">C:\bacon.txt</em> into the folder <em class="calibre7">C:\eggs</em>, and while you’re at it, rename that <em class="calibre7">bacon.txt</em> file to <em class="calibre7">new_bacon.txt</em>.”</p>
+<p class="indent">Both of the previous examples worked under the assumption that there was a folder <em class="calibre7">eggs</em> in the <em class="calibre7">C:\</em> directory. But if there is no <em class="calibre7">eggs</em> folder, then <span class="literal">move()</span> will rename <em class="calibre7">bacon.txt</em> to a file named <em class="calibre7">eggs</em>.</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">shutil.move('C:\\bacon.txt', 'C:\\eggs')</span><br class="calibre5" />
+'C:\\eggs'</p>
+<p class="indent">Here, <span class="literal">move()</span> can’t find a folder named <em class="calibre7">eggs</em> in the <em class="calibre7">C:\</em> directory and so assumes that <span class="codeitalic">destination</span> must be specifying a filename, not a folder. So the <em class="calibre7">bacon.txt</em> text file is renamed to <em class="calibre7">eggs</em> (a text file without the <em class="calibre7">.txt</em> file extension)&mdash;probably not what you wanted! This can be a tough-to-spot bug in your programs since the <span class="literal">move()</span> call can happily do something that might be <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-905"></span>quite different from what you were expecting. This is yet another reason to be careful when using <span class="literal">move()</span>.</p>
+<p class="indent">Finally, the folders that make up the destination must already exist, or else Python will throw an exception. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">shutil.move('spam.txt', 'c:\\does_not_exist\\eggs\\ham')</span><br class="calibre5" />
+Traceback (most recent call last):<br class="calibre5" />
+&nbsp;&nbsp;--<span class="codeitalic1">snip</span>--<br class="calibre5" />
+FileNotFoundError: [Errno 2] No such file or directory: 'c:\\does_not_exist\\<br class="calibre5" />
+eggs\\ham'</p>
+<p class="indent">Python looks for <em class="calibre7">eggs</em> and <em class="calibre7">ham</em> inside the directory <em class="calibre7">does_not_exist</em>. It doesn’t find the nonexistent directory, so it can’t move <em class="calibre7">spam.txt</em> to the path you specified.</p>
+<h4 class="h2" id="calibre_link-326"><strong class="calibre2"><em class="calibre9">Permanently Deleting Files and Folders</em></strong></h4>
+<p class="noindent">You can delete a single file or a single empty folder with functions in the <span class="literal">os</span> module, whereas to delete a folder and all of its contents, you use the <span class="literal">shutil</span> module.</p>
+<ul class="calibre8">
+<li class="noindent1">Calling <span class="literal">os.unlink(</span><span class="codeitalic">path</span><span class="literal">)</span> will delete the file at <span class="codeitalic">path</span>.</li>
+<li class="noindent1">Calling <span class="literal">os.rmdir(</span><span class="codeitalic">path</span><span class="literal">)</span> will delete the folder at <span class="codeitalic">path</span>. This folder must be empty of any files or folders.</li>
+<li class="noindent1">Calling <span class="literal">shutil.rmtree(</span><span class="codeitalic">path</span><span class="literal">)</span> will remove the folder at <span class="codeitalic">path</span>, and all files and folders it contains will also be deleted.</li>
+</ul>
+<p class="indent">Be careful when using these functions in your programs! It’s often a good idea to first run your program with these calls commented out and with <span class="literal">print()</span> calls added to show the files that would be deleted. Here is a Python program that was intended to delete files that have the <em class="calibre7">.txt</em> file extension but has a typo (highlighted in bold) that causes it to delete <em class="calibre7">.rxt</em> files instead:</p>
+<p class="programs">import os<br class="calibre5" />
+from pathlib import Path<br class="calibre5" />
+for filename in Path.home().glob('*.<span class="codestrong1">r</span>xt'):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;os.unlink(filename)</p>
+<p class="indent">If you had any important files ending with <em class="calibre7">.rxt</em>, they would have been accidentally, permanently deleted. Instead, you should have first run the program like this:</p>
+<p class="programs">import os<br class="calibre5" />
+from pathlib import Path<br class="calibre5" />
+for filename in Path.home().glob('*.rxt'):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;#os.unlink(filename)<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print(filename)</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-906"></span>Now the <span class="literal">os.unlink()</span> call is commented, so Python ignores it. Instead, you will print the filename of the file that would have been deleted. Running this version of the program first will show you that you’ve accidentally told the program to delete <em class="calibre7">.rxt</em> files instead of <em class="calibre7">.txt</em> files.</p>
+<p class="indent">Once you are certain the program works as intended, delete the <span class="literal">print(filename)</span> line and uncomment the <span class="literal">os.unlink(filename)</span> line. Then run the program again to actually delete the files.</p>
+<h4 class="h2" id="calibre_link-327"><strong class="calibre2"><em class="calibre9">Safe Deletes with the send2trash Module</em></strong></h4>
+<p class="noindent">Since Python’s built-in <span class="literal">shutil.rmtree()</span> function irreversibly deletes files and folders, it can be dangerous to use. A much better way to delete files and folders is with the third-party <span class="literal">send2trash</span> module. You can install this module by running <span class="literal">pip install --user send2trash</span> from a Terminal window. (See <a href="#calibre_link-2" class="calibre6">Appendix A</a> for a more in-depth explanation of how to install third-party modules.)</p>
+<p class="indent">Using <span class="literal">send2trash</span> is much safer than Python’s regular delete functions, because it will send folders and files to your computer’s trash or recycle bin instead of permanently deleting them. If a bug in your program deletes something with <span class="literal">send2trash</span> you didn’t intend to delete, you can later restore it from the recycle bin.</p>
+<p class="indent">After you have installed <span class="literal">send2trash</span>, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import send2trash</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">baconFile = open('bacon.txt', 'a')&nbsp;&nbsp;&nbsp;# creates the file</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">baconFile.write('Bacon is not a vegetable.')</span><br class="calibre5" />
+25<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">baconFile.close()</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">send2trash.send2trash('bacon.txt')</span></p>
+<p class="indent">In general, you should always use the <span class="literal">send2trash.send2trash()</span> function to delete files and folders. But while sending files to the recycle bin lets you recover them later, it will not free up disk space like permanently deleting them does. If you want your program to free up disk space, use the <span class="literal">os</span> and <span class="literal">shutil</span> functions for deleting files and folders. Note that the <span class="literal">send2trash()</span> function can only send files to the recycle bin; it cannot pull files out of it.</p>
+<h3 class="h1" id="calibre_link-328"><strong class="calibre2">Walking a Directory Tree</strong></h3>
+<p class="noindent">Say you want to rename every file in some folder and also every file in every subfolder of that folder. That is, you want to walk through the directory tree, touching each file as you go. Writing a program to do this could get tricky; fortunately, Python provides a function to handle this process for you.</p>
+<p class="indent">Let’s look at the <em class="calibre7">C:\delicious</em> folder with its contents, shown in <a href="#calibre_link-1195" class="calibre6">Figure 10-1</a>.</p>
+<div class="image1"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-969"></span><a id="calibre_link-1195" class="calibre6"></a><img src="../images/000047.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 10-1: An example folder that contains three folders and four files</em></p>
+<p class="indent">Here is an example program that uses the <span class="literal">os.walk()</span> function on the directory tree from <a href="#calibre_link-1195" class="calibre6">Figure 10-1</a>:</p>
+<p class="programs">import os<br class="calibre5" /><br class="calibre5" />
+for folderName, subfolders, filenames in os.walk('C:\\delicious'):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('The current folder is ' + folderName)<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;for subfolder in subfolders:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('SUBFOLDER OF ' + folderName + ': ' + subfolder)<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;for filename in filenames:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('FILE INSIDE ' + folderName + ': '+ filename)<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('')</p>
+<p class="indent">The <span class="literal">os.walk()</span> function is passed a single string value: the path of a folder. You can use <span class="literal">os.walk()</span> in a <span class="literal">for</span> loop statement to walk a directory tree, much like how you can use the <span class="literal">range()</span> function to walk over a range of numbers. Unlike <span class="literal">range()</span>, the <span class="literal">os.walk()</span> function will return three values on each iteration through the loop:</p>
+<ul class="calibre8">
+<li class="noindent1">A string of the current folder’s name</li>
+<li class="noindent1">A list of strings of the folders in the current folder</li>
+<li class="noindent1">A list of strings of the files in the current folder</li>
+</ul>
+<p class="indent">(By current folder, I mean the folder for the current iteration of the <span class="literal">for</span> loop. The current working directory of the program is <em class="calibre7">not</em> changed by <span class="literal">os.walk()</span>.)</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-860"></span>Just like you can choose the variable name <span class="literal">i</span> in the code <span class="literal">for i in range(10):</span>, you can also choose the variable names for the three values listed earlier. I usually use the names <span class="literal">foldername</span>, <span class="literal">subfolders</span>, and <span class="literal">filenames</span>.</p>
+<p class="indent">When you run this program, it will output the following:</p>
+<p class="programs">The current folder is C:\delicious<br class="calibre5" />
+SUBFOLDER OF C:\delicious: cats <br class="calibre5" />
+SUBFOLDER OF C:\delicious: walnut<br class="calibre5" />
+FILE INSIDE C:\delicious: spam.txt<br class="calibre5" /><br class="calibre5" />
+The current folder is C:\delicious\cats<br class="calibre5" />
+FILE INSIDE C:\delicious\cats: catnames.txt<br class="calibre5" />
+FILE INSIDE C:\delicious\cats: zophie.jpg<br class="calibre5" /><br class="calibre5" />
+The current folder is C:\delicious\walnut<br class="calibre5" />
+SUBFOLDER OF C:\delicious\walnut: waffles<br class="calibre5" /><br class="calibre5" />
+The current folder is C:\delicious\walnut\waffles<br class="calibre5" />
+FILE INSIDE C:\delicious\walnut\waffles: butter.txt.</p>
+<p class="indent">Since <span class="literal">os.walk()</span> returns lists of strings for the <span class="literal">subfolder</span> and <span class="literal">filename</span> variables, you can use these lists in their own <span class="literal">for</span> loops. Replace the <span class="literal">print()</span> function calls with your own custom code. (Or if you don’t need one or both of them, remove the <span class="literal">for</span> loops.)</p>
+<h3 class="h1" id="calibre_link-329"><strong class="calibre2">Compressing Files with the zipfile Module</strong></h3>
+<p class="noindent">You may be familiar with ZIP files (with the <em class="calibre7">.zip</em> file extension), which can hold the compressed contents of many other files. Compressing a file reduces its size, which is useful when transferring it over the internet. And since a ZIP file can also contain multiple files and subfolders, it’s a handy way to package several files into one. This single file, called an <em class="calibre7">archive file</em>, can then be, say, attached to an email.</p>
+<p class="indent">Your Python programs can create and open (or <em class="calibre7">extract</em>) ZIP files using functions in the <span class="literal">zipfile</span> module. Say you have a ZIP file named <em class="calibre7">example.zip</em> that has the contents shown in <a href="#calibre_link-1514" class="calibre6">Figure 10-2</a>.</p>
+<div class="image1"><a id="calibre_link-1514" class="calibre6"></a><img src="../images/000008.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 10-2: The contents of</em> example.zip</p>
+<p class="indent">You can download this ZIP file from <em class="calibre7"><a href="https://nostarch.com/automatestuff2/" class="calibre6">https://nostarch.com/automatestuff2/</a></em> or just follow along using a ZIP file already on your computer.</p>
+<h4 class="h2" id="calibre_link-330"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-859" class="calibre1"></span><strong class="calibre2"><em class="calibre9">Reading ZIP Files</em></strong></h4>
+<p class="noindent">To read the contents of a ZIP file, first you must create a <span class="literal">ZipFile</span> object (note the capital letters <em class="calibre7">Z</em> and <em class="calibre7">F</em>). <span class="literal">ZipFile</span> objects are conceptually similar to the <span class="literal">File</span> objects you saw returned by the <span class="literal">open()</span> function in the previous chapter: they are values through which the program interacts with the file. To create a <span class="literal">ZipFile</span> object, call the <span class="literal">zipfile.ZipFile()</span> function, passing it a string of the <em class="calibre7">.ZIP</em> file’s filename. Note that <span class="literal">zipfile</span> is the name of the Python module, and <span class="literal">ZipFile()</span> is the name of the function.</p>
+<p class="indent">For example, enter the following into the interactive shell:</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">import zipfile, os</span><br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">from pathlib import Path</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">p = Path.home()</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">exampleZip = zipfile.ZipFile(p / 'example.zip')</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">exampleZip.namelist()</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;['spam.txt', 'cats/', 'cats/catnames.txt', 'cats/zophie.jpg']<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">spamInfo = exampleZip.getinfo('spam.txt')</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">spamInfo.file_size</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;13908<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">spamInfo.compress_size</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;3828<br class="calibre5" />
+<span class="ent">➊</span> &gt;&gt;&gt; <span class="codestrong1">f'Compressed file is {round(spamInfo.file_size / spamInfo</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;<span class="codestrong1">.compress_size, 2)}x smaller!'</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;<span class="codestrong1">)</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;'Compressed file is 3.63x smaller!'<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">exampleZip.close()</span></p>
+<p class="indent">A <span class="literal">ZipFile</span> object has a <span class="literal">namelist()</span> method that returns a list of strings for all the files and folders contained in the ZIP file. These strings can be passed to the <span class="literal">getinfo()</span> <span class="literal">ZipFile</span> method to return a <span class="literal">ZipInfo</span> object about that particular file. <span class="literal">ZipInfo</span> objects have their own attributes, such as <span class="literal">file_size</span> and <span class="literal">compress_size</span> in bytes, which hold integers of the original file size and compressed file size, respectively. While a <span class="literal">ZipFile</span> object represents an entire archive file, a <span class="literal">ZipInfo</span> object holds useful information about a <em class="calibre7">single file</em> in the archive.</p>
+<p class="indent">The command at <span class="ent">➊</span> calculates how efficiently <em class="calibre7">example.zip</em> is compressed by dividing the original file size by the compressed file size and prints this information.</p>
+<h4 class="h2" id="calibre_link-331"><strong class="calibre2"><em class="calibre9">Extracting from ZIP Files</em></strong></h4>
+<p class="noindent">The <span class="literal">extractall()</span> method for <span class="literal">ZipFile</span> objects extracts all the files and folders from a ZIP file into the current working directory.</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">import zipfile, os</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">from pathlib import Path</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">p = Path.home()</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">exampleZip = zipfile.ZipFile(p / 'example.zip')</span><br class="calibre5" />
+<span class="ent">➊</span> &gt;&gt;&gt; <span class="codestrong1">exampleZip.extractall()</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">exampleZip.close()</span></p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-858"></span>After running this code, the contents of <em class="calibre7">example.zip</em> will be extracted to <em class="calibre7">C:\</em>. Optionally, you can pass a folder name to <span class="literal">extractall()</span> to have it extract the files into a folder other than the current working directory. If the folder passed to the <span class="literal">extractall()</span> method does not exist, it will be created. For instance, if you replaced the call at <span class="ent">➊</span> with <span class="literal">exampleZip.extractall('C:\\delicious')</span>, the code would extract the files from <em class="calibre7">example.zip</em> into a newly created <em class="calibre7">C:\delicious</em> folder.</p>
+<p class="indent">The <span class="literal">extract()</span> method for <span class="literal">ZipFile</span> objects will extract a single file from the ZIP file. Continue the interactive shell example:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">exampleZip.extract('spam.txt')</span><br class="calibre5" />
+'C:\\spam.txt'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">exampleZip.extract('spam.txt', 'C:\\some\\new\\folders')</span><br class="calibre5" />
+'C:\\some\\new\\folders\\spam.txt'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">exampleZip.close()</span></p>
+<p class="indent">The string you pass to <span class="literal">extract()</span> must match one of the strings in the list returned by <span class="literal">namelist()</span>. Optionally, you can pass a second argument to <span class="literal">extract()</span> to extract the file into a folder other than the current working directory. If this second argument is a folder that doesn’t yet exist, Python will create the folder. The value that <span class="literal">extract()</span> returns is the absolute path to which the file was extracted.</p>
+<h4 class="h2" id="calibre_link-332"><strong class="calibre2"><em class="calibre9">Creating and Adding to ZIP Files</em></strong></h4>
+<p class="noindent">To create your own compressed ZIP files, you must open the <span class="literal">ZipFile</span> object in <em class="calibre7">write mode</em> by passing <span class="literal">'w'</span> as the second argument. (This is similar to opening a text file in write mode by passing <span class="literal">'w'</span> to the <span class="literal">open()</span> function.)</p>
+<p class="indent">When you pass a path to the <span class="literal">write()</span> method of a <span class="literal">ZipFile</span> object, Python will compress the file at that path and add it into the ZIP file. The <span class="literal">write()</span> method’s first argument is a string of the filename to add. The second argument is the <em class="calibre7">compression type</em> parameter, which tells the computer what algorithm it should use to compress the files; you can always just set this value to <span class="literal">zipfile.ZIP_DEFLATED</span>. (This specifies the <em class="calibre7">deflate</em> compression algorithm, which works well on all types of data.) Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import zipfile</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">newZip = zipfile.ZipFile('new.zip', 'w')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">newZip.write('spam.txt', compress_type=zipfile.ZIP_DEFLATED)</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">newZip.close()</span></p>
+<p class="indent">This code will create a new ZIP file named <em class="calibre7">new.zip</em> that has the compressed contents of <em class="calibre7">spam.txt</em>.</p>
+<p class="indent">Keep in mind that, just as with writing to files, write mode will erase all existing contents of a ZIP file. If you want to simply add files to an existing ZIP file, pass <span class="literal">'a'</span> as the second argument to <span class="literal">zipfile.ZipFile()</span> to open the ZIP file in <em class="calibre7">append mode</em>.</p>
+<h3 class="h1" id="calibre_link-333"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-967" class="calibre1"></span><strong class="calibre2">Project: Renaming Files with American-Style Dates to European-Style Dates</strong></h3>
+<p class="noindent">Say your boss emails you thousands of files with American-style dates (MM-DD-YYYY) in their names and needs them renamed to European-style dates (DD-MM-YYYY). This boring task could take all day to do by hand! Let’s write a program to do it instead.</p>
+<p class="indent">Here’s what the program does:</p>
+<ol class="calibre10">
+<li class="noindent1">It searches all the filenames in the current working directory for American-style dates.</li>
+<li class="noindent1">When one is found, it renames the file with the month and day swapped to make it European-style.</li>
+</ol>
+<p class="indent">This means the code will need to do the following:</p>
+<ol class="calibre10">
+<li class="noindent1">Create a regex that can identify the text pattern of American-style dates.</li>
+<li class="noindent1">Call <span class="literal">os.listdir()</span> to find all the files in the working directory.</li>
+<li class="noindent1">Loop over each filename, using the regex to check whether it has a date.</li>
+<li class="noindent1">If it has a date, rename the file with <span class="literal">shutil.move()</span>.</li>
+</ol>
+<p class="indent">For this project, open a new file editor window and save your code as <em class="calibre7">renameDates.py</em>.</p>
+<h4 class="h2" id="calibre_link-334"><strong class="calibre2"><em class="calibre9">Step 1: Create a Regex for American-Style Dates</em></strong></h4>
+<p class="noindent">The first part of the program will need to import the necessary modules and create a regex that can identify MM-DD-YYYY dates. The to-do comments will remind you what’s left to write in this program. Typing them as <span class="literal">TODO</span> makes them easy to find using Mu editor’s <small class="calibre11">CTRL-F</small> find feature. Make your code look like the following:</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;#! python3<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;# renameDates.py - Renames filenames with American MM-DD-YYYY date format<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;# to European DD-MM-YYYY.<br class="calibre5" /><br class="calibre5" />
+<span class="ent">➊</span> import shutil, os, re<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;# Create a regex that matches files with the American date format.<br class="calibre5" />
+<span class="ent">➋</span> datePattern = re.compile(r"""^(.*?) # all text before the date<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;((0|1)?\d)-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# one or two digits for the month<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;((0|1|2|3)?\d)-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# one or two digits for the day<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;((19|20)\d\d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# four digits for the year<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(.*?)$&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# all text after the date<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;""", re.VERBOSE<span class="ent">➌</span>)<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;# TODO: Loop over the files in the working directory.<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;# TODO: Skip files without a date.<br class="calibre5" /><br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1790"></span>&nbsp;&nbsp;&nbsp;# TODO: Get the different parts of the filename.<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;# TODO: Form the European-style filename.<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;# TODO: Get the full, absolute file paths.<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;# TODO: Rename the files.</p>
+<p class="indent">From this chapter, you know the <span class="literal">shutil.move()</span> function can be used to rename files: its arguments are the name of the file to rename and the new filename. Because this function exists in the <span class="literal">shutil</span> module, you must import that module <span class="ent">➊</span>.</p>
+<p class="indent">But before renaming the files, you need to identify which files you want to rename. Filenames with dates such as <em class="calibre7">spam4-4-1984.txt</em> and <em class="calibre7">01-03-2014eggs.zip</em> should be renamed, while filenames without dates such as <em class="calibre7">littlebrother.epub</em> can be ignored.</p>
+<p class="indent">You can use a regular expression to identify this pattern. After importing the <span class="literal">re</span> module at the top, call <span class="literal">re.compile()</span> to create a <span class="literal">Regex</span> object <span class="ent">➋</span>. Passing <span class="literal">re.VERBOSE</span> for the second argument <span class="ent">➌</span> will allow whitespace and comments in the regex string to make it more readable.</p>
+<p class="indent">The regular expression string begins with <span class="literal">^(.*?)</span> to match any text at the beginning of the filename that might come before the date. The <span class="literal">((0|1)?\d)</span> group matches the month. The first digit can be either <span class="literal">0</span> or <span class="literal">1</span>, so the regex matches <span class="literal">12</span> for December but also <span class="literal">02</span> for February. This digit is also optional so that the month can be <span class="literal">04</span> or <span class="literal">4</span> for April. The group for the day is <span class="literal">((0|1|2|3)?\d)</span> and follows similar logic; <span class="literal">3</span>, <span class="literal">03</span>, and <span class="literal">31</span> are all valid numbers for days. (Yes, this regex will accept some invalid dates such as <span class="literal">4-31-2014</span>, <span class="literal">2-29-2013</span>, and <span class="literal">0-15-2014</span>. Dates have a lot of thorny special cases that can be easy to miss. But for simplicity, the regex in this program works well enough.)</p>
+<p class="indent">While 1885 is a valid year, you can just look for years in the 20th or 21st century. This will keep your program from accidentally matching nondate filenames with a date-like format, such as <em class="calibre7">10-10-1000.txt</em>.</p>
+<p class="indent">The <span class="literal">(.*?)$</span> part of the regex will match any text that comes after the date.</p>
+<h4 class="h2" id="calibre_link-335"><strong class="calibre2"><em class="calibre9">Step 2: Identify the Date Parts from the Filenames</em></strong></h4>
+<p class="noindent">Next, the program will have to loop over the list of filename strings returned from <span class="literal">os.listdir()</span> and match them against the regex. Any files that do not have a date in them should be skipped. For filenames that have a date, the matched text will be stored in several variables. Fill in the first three <span class="literal">TODO</span>s in your program with the following code:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# renameDates.py - Renames filenames with American MM-DD-YYYY date format<br class="calibre5" />
+# to European DD-MM-YYYY.<br class="calibre5" /><br class="calibre5" />
+--<span class="codeitalic1">snip</span>--<br class="calibre5" /><br class="calibre5" />
+<span class="codestrong1"># Loop over the files in the working directory.</span><br class="calibre5" />
+<span class="codestrong1">for amerFilename in os.listdir('.'):</span><br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1791"></span><span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;mo = datePattern.search(amerFilename)</span><br class="calibre5" /><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;# Skip files without a date.</span><br class="calibre5" />
+&nbsp;&nbsp;<span class="ent">➊</span> <span class="codestrong1">if mo == None:</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➋</span> <span class="codestrong1">continue</span><br class="calibre5" /><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;</span><span class="ent">➌</span> <span class="codestrong1"># Get the different parts of the filename.</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;beforePart = mo.group(1)</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;monthPart&nbsp;&nbsp;= mo.group(2)</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;dayPart&nbsp;&nbsp;&nbsp;&nbsp;= mo.group(4)</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;yearPart&nbsp;&nbsp;&nbsp;= mo.group(6)</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;afterPart&nbsp;&nbsp;= mo.group(8)</span><br class="calibre5" /><br class="calibre5" />
+--<span class="codeitalic1">snip</span>--</p>
+<p class="indent">If the <span class="literal">Match</span> object returned from the <span class="literal">search()</span> method is <span class="literal">None</span> <span class="ent">➊</span>, then the filename in <span class="literal">amerFilename</span> does not match the regular expression. The <span class="literal">continue</span> statement <span class="ent">➋</span> will skip the rest of the loop and move on to the next filename.</p>
+<p class="indent">Otherwise, the various strings matched in the regular expression groups are stored in variables named <span class="literal">beforePart</span>, <span class="literal">monthPart</span>, <span class="literal">dayPart</span>, <span class="literal">yearPart</span>, and <span class="literal">afterPart</span> <span class="ent">➌</span>. The strings in these variables will be used to form the European-style filename in the next step.</p>
+<p class="indent">To keep the group numbers straight, try reading the regex from the beginning, and count up each time you encounter an opening parenthesis. Without thinking about the code, just write an outline of the regular expression. This can help you visualize the groups. Here’s an example:</p>
+<p class="programs">datePattern = re.compile(r"""^(<span class="codestrong1">1</span>) # all text before the date<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="codestrong1">2</span> (<span class="codestrong1">3</span>) )-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# one or two digits for the month<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="codestrong1">4</span> (<span class="codestrong1">5</span>) )-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# one or two digits for the day<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="codestrong1">6</span> (<span class="codestrong1">7</span>) )&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# four digits for the year<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="codestrong1">8</span>)$&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# all text after the date<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;""", re.VERBOSE)</p>
+<p class="indent">Here, the numbers <strong class="calibre4">1</strong> through <strong class="calibre4">8</strong> represent the groups in the regular expression you wrote. Making an outline of the regular expression, with just the parentheses and group numbers, can give you a clearer understanding of your regex before you move on with the rest of the program.</p>
+<h4 class="h2" id="calibre_link-336"><strong class="calibre2"><em class="calibre9">Step 3: Form the New Filename and Rename the Files</em></strong></h4>
+<p class="noindent">As the final step, concatenate the strings in the variables made in the previous step with the European-style date: the date comes before the month. Fill in the three remaining <span class="literal">TODO</span>s in your program with the following code:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# renameDates.py - Renames filenames with American MM-DD-YYYY date format # to European DD-MM-YYYY.<br class="calibre5" /><br class="calibre5" />
+--<span class="codeitalic1">snip</span>--<br class="calibre5" /><br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-806"></span>&nbsp;&nbsp;&nbsp;<span class="codestrong1">&nbsp;&nbsp;# Form the European-style filename.</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;</span><span class="ent">➊</span> <span class="codestrong1">euroFilename = beforePart + dayPart + '-' + monthPart + '-' + yearPart +</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;afterPart</span><br class="calibre5" /><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Get the full, absolute file paths.</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;absWorkingDir = os.path.abspath('.')</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;amerFilename = os.path.join(absWorkingDir, amerFilename)</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;euroFilename = os.path.join(absWorkingDir, euroFilename)</span><br class="calibre5" /><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Rename the files.</span><br class="calibre5" />
+&nbsp;&nbsp;<span class="ent">➋</span> <span class="codestrong1">print(f'Renaming "{amerFilename}" to "{euroFilename}"...')</span><br class="calibre5" />
+&nbsp;&nbsp;<span class="ent">➌</span> <span class="codestrong1">#shutil.move(amerFilename, euroFilename)&nbsp;&nbsp;&nbsp;# uncomment after testing</span></p>
+<p class="indent">Store the concatenated string in a variable named <span class="literal">euroFilename</span> <span class="ent">➊</span>. Then, pass the original filename in <span class="literal">amerFilename</span> and the new <span class="literal">euroFilename</span> variable to the <span class="literal">shutil.move()</span> function to rename the file <span class="ent">➌</span>.</p>
+<p class="indent">This program has the <span class="literal">shutil.move()</span> call commented out and instead prints the filenames that will be renamed <span class="ent">➋</span>. Running the program like this first can let you double-check that the files are renamed correctly. Then you can uncomment the <span class="literal">shutil.move()</span> call and run the program again to actually rename the files.</p>
+<h4 class="h2" id="calibre_link-337"><strong class="calibre2"><em class="calibre9">Ideas for Similar Programs</em></strong></h4>
+<p class="noindent">There are many other reasons you might want to rename a large number of files.</p>
+<ul class="calibre8">
+<li class="noindent1">To add a prefix to the start of the filename, such as adding <em class="calibre7">spam_</em> to rename <em class="calibre7">eggs.txt</em> to <em class="calibre7">spam_eggs.txt</em></li>
+<li class="noindent1">To change filenames with European-style dates to American-style dates</li>
+<li class="noindent1">To remove the zeros from files such as <em class="calibre7">spam0042.txt</em></li>
+</ul>
+<h3 class="h1" id="calibre_link-338"><strong class="calibre2">Project: Backing Up a Folder into a ZIP File</strong></h3>
+<p class="noindent">Say you’re working on a project whose files you keep in a folder named <em class="calibre7">C:\AlsPythonBook</em>. You’re worried about losing your work, so you’d like to create ZIP file “snapshots” of the entire folder. You’d like to keep different versions, so you want the ZIP file’s filename to increment each time it is made; for example, <em class="calibre7">AlsPythonBook_1.zip</em>, <em class="calibre7">AlsPythonBook_2.zip</em>, <em class="calibre7">AlsPythonBook_3.zip</em>, and so on. You could do this by hand, but it is rather annoying, and you might accidentally misnumber the ZIP files’ names. It would be much simpler to run a program that does this boring task for you.</p>
+<p class="indent">For this project, open a new file editor window and save it as <em class="calibre7">backupToZip.py</em>.</p>
+<h4 class="h2" id="calibre_link-339"><strong class="calibre2"><em class="calibre9">Step 1: Figure Out the ZIP File’s Name</em></strong></h4>
+<p class="noindent">The code for this program will be placed into a function named <span class="literal">backupToZip()</span>. This will make it easy to copy and paste the function <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1792"></span>into other Python programs that need this functionality. At the end of the program, the function will be called to perform the backup. Make your program look like this:</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;#! python3<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;# backupToZip.py - Copies an entire folder and its contents into<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;# a ZIP file whose filename increments.<br class="calibre5" /><br class="calibre5" />
+<span class="ent">➊</span> import zipfile, os<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;def backupToZip(folder):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Back up the entire contents of "folder" into a ZIP file.<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;folder = os.path.abspath(folder)&nbsp;&nbsp;&nbsp;# make sure folder is absolute<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Figure out the filename this code should use based on<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# what files already exist.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➋</span> number = 1<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➌</span> while True:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;zipFilename = os.path.basename(folder) + '_' + str(number) + '.zip'<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if not os.path.exists(zipFilename):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;number = number + 1<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➍</span> # TODO: Create the ZIP file.<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# TODO: Walk the entire folder tree and compress the files in each folder.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('Done.')<br class="calibre5" /><br class="calibre5" />
+backupToZip('C:\\delicious')</p>
+<p class="indent">Do the basics first: add the shebang (<span class="literal">#!</span>) line, describe what the program does, and import the <span class="literal">zipfile</span> and <span class="literal">os</span> modules <span class="ent">➊</span>.</p>
+<p class="indent">Define a <span class="literal">backupToZip()</span> function that takes just one parameter, <span class="literal">folder</span>. This parameter is a string path to the folder whose contents should be backed up. The function will determine what filename to use for the ZIP file it will create; then the function will create the file, walk the <span class="literal">folder</span> folder, and add each of the subfolders and files to the ZIP file. Write <span class="literal">TODO</span> comments for these steps in the source code to remind yourself to do them later <span class="ent">➍</span>.</p>
+<p class="indent">The first part, naming the ZIP file, uses the base name of the absolute path of <span class="literal">folder</span>. If the folder being backed up is <em class="calibre7">C:\delicious</em>, the ZIP file’s name should be <em class="calibre7">delicious_N.zip</em>, where <em class="calibre7">N</em> = 1 is the first time you run the program, <em class="calibre7">N</em> = 2 is the second time, and so on.</p>
+<p class="indent">You can determine what <em class="calibre7">N</em> should be by checking whether <em class="calibre7">delicious_1.zip</em> already exists, then checking whether <em class="calibre7">delicious_2.zip</em> already exists, and so on. Use a variable named <span class="literal">number</span> for <em class="calibre7">N</em> <span class="ent">➋</span>, and keep incrementing it inside the loop that calls <span class="literal">os.path.exists()</span> to check whether the file exists <span class="ent">➌</span>. The first nonexistent filename found will cause the loop to <span class="literal">break</span>, since it will have found the filename of the new zip.</p>
+<h4 class="h2" id="calibre_link-340"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1793" class="calibre1"></span><strong class="calibre2"><em class="calibre9">Step 2: Create the New ZIP File</em></strong></h4>
+<p class="noindent">Next let’s create the ZIP file. Make your program look like the following:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# backupToZip.py - Copies an entire folder and its contents into<br class="calibre5" />
+# a ZIP file whose filename increments.<br class="calibre5" /><br class="calibre5" />
+--<span class="codeitalic1">snip</span>--<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;while True:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;zipFilename = os.path.basename(folder) + '_' + str(number) + '.zip'<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if not os.path.exists(zipFilename):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;number = number + 1<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="codestrong1"># Create the ZIP file.</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;print(f'Creating {zipFilename}...')</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;</span><span class="ent">➊</span> <span class="codestrong1">backupZip = zipfile.ZipFile(zipFilename, 'w')</span><br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# TODO: Walk the entire folder tree and compress the files in each folder.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('Done.')<br class="calibre5" /><br class="calibre5" />
+backupToZip('C:\\delicious')</p>
+<p class="indent">Now that the new ZIP file’s name is stored in the <span class="literal">zipFilename</span> variable, you can call <span class="literal">zipfile.ZipFile()</span> to actually create the ZIP file <span class="ent">➊</span>. Be sure to pass <span class="literal">'w'</span> as the second argument so that the ZIP file is opened in write mode.</p>
+<h4 class="h2" id="calibre_link-341"><strong class="calibre2"><em class="calibre9">Step 3: Walk the Directory Tree and Add to the ZIP File</em></strong></h4>
+<p class="noindent">Now you need to use the <span class="literal">os.walk()</span> function to do the work of listing every file in the folder and its subfolders. Make your program look like the following:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# backupToZip.py - Copies an entire folder and its contents into<br class="calibre5" />
+# a ZIP file whose filename increments.<br class="calibre5" /><br class="calibre5" />
+--<span class="codeitalic1">snip</span>--<br class="calibre5" /><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Walk the entire folder tree and compress the files in each folder.</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;</span><span class="ent">➊</span> <span class="codestrong1">for foldername, subfolders, filenames in os.walk(folder):</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(f'Adding files in {foldername}...')</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Add the current folder to the ZIP file.</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="ent">➋</span> <span class="codestrong1">backupZip.write(foldername)</span><br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="codestrong1"># Add all the files in this folder to the ZIP file.</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="ent">➌</span> <span class="codestrong1">for filename in filenames:</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;newBase = os.path.basename(folder) + '_'</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if filename.startswith(newBase) and filename.endswith('.zip'):</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue&nbsp;&nbsp;&nbsp;# don't back up the backup ZIP files</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;backupZip.write(os.path.join(foldername, filename))</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;backupZip.close()</span><br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-807"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('Done.')<br class="calibre5" /><br class="calibre5" />
+backupToZip('C:\\delicious')</p>
+<p class="indent">You can use <span class="literal">os.walk()</span> in a <span class="literal">for</span> loop <span class="ent">➊</span>, and on each iteration it will return the iteration’s current folder name, the subfolders in that folder, and the filenames in that folder.</p>
+<p class="indent">In the <span class="literal">for</span> loop, the folder is added to the ZIP file <span class="ent">➋</span>. The nested <span class="literal">for</span> loop can go through each filename in the <span class="literal">filenames</span> list <span class="ent">➌</span>. Each of these is added to the ZIP file, except for previously made backup ZIPs.</p>
+<p class="indent">When you run this program, it will produce output that will look something like this:</p>
+<p class="programs">Creating delicious_1.zip...<br class="calibre5" />
+Adding files in C:\delicious...<br class="calibre5" />
+Adding files in C:\delicious\cats...<br class="calibre5" />
+Adding files in C:\delicious\waffles...<br class="calibre5" />
+Adding files in C:\delicious\walnut...<br class="calibre5" />
+Adding files in C:\delicious\walnut\waffles...<br class="calibre5" />
+Done.</p>
+<p class="indent">The second time you run it, it will put all the files in <em class="calibre7">C:\delicious</em> into a ZIP file named <em class="calibre7">delicious_2.zip</em>, and so on.</p>
+<h4 class="h2" id="calibre_link-342"><strong class="calibre2"><em class="calibre9">Ideas for Similar Programs</em></strong></h4>
+<p class="noindent">You can walk a directory tree and add files to compressed ZIP archives in several other programs. For example, you can write programs that do the following:</p>
+<ul class="calibre8">
+<li class="noindent1">Walk a directory tree and archive just files with certain extensions, such as <em class="calibre7">.txt</em> or <em class="calibre7">.py</em>, and nothing else.</li>
+<li class="noindent1">Walk a directory tree and archive every file except the <em class="calibre7">.txt</em> and <em class="calibre7">.py</em> ones.</li>
+<li class="noindent1">Find the folder in a directory tree that has the greatest number of files or the folder that uses the most disk space.</li>
+</ul>
+<h3 class="h1" id="calibre_link-343"><strong class="calibre2">Summary</strong></h3>
+<p class="noindent">Even if you are an experienced computer user, you probably handle files manually with the mouse and keyboard. Modern file explorers make it easy to work with a few files. But sometimes you’ll need to perform a task that would take hours using your computer’s file explorer.</p>
+<p class="indent">The <span class="literal">os</span> and <span class="literal">shutil</span> modules offer functions for copying, moving, renaming, and deleting files. When deleting files, you might want to use the <span class="literal">send2trash</span> module to move files to the recycle bin or trash rather than permanently deleting them. And when writing programs that handle files, <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1794"></span>it’s a good idea to comment out the code that does the actual copy/move/rename/delete and add a <span class="literal">print()</span> call instead so you can run the program and verify exactly what it will do.</p>
+<p class="indent">Often you will need to perform these operations not only on files in one folder but also on every folder in that folder, every folder in those folders, and so on. The <span class="literal">os.walk()</span> function handles this trek across the folders for you so that you can concentrate on what your program needs to do with the files in them.</p>
+<p class="indent">The <span class="literal">zipfile</span> module gives you a way of compressing and extracting files in <em class="calibre7">.ZIP</em> archives through Python. Combined with the file-handling functions of <span class="literal">os</span> and <span class="literal">shutil</span>, <span class="literal">zipfile</span> makes it easy to package up several files from anywhere on your hard drive. These <em class="calibre7">.ZIP</em> files are much easier to upload to websites or send as email attachments than many separate files.</p>
+<p class="indent">Previous chapters of this book have provided source code for you to copy. But when you write your own programs, they probably won’t come out perfectly the first time. The next chapter focuses on some Python modules that will help you analyze and debug your programs so that you can quickly get them working correctly.</p>
+<h3 class="h1" id="calibre_link-344"><strong class="calibre2">Practice Questions</strong></h3>
+<p class="question"><a id="calibre_link-1363" href="#calibre_link-1515" class="calibre6">1</a>. What is the difference between <span class="literal">shutil.copy()</span> and <span class="literal">shutil.copytree()</span>?</p>
+<p class="question"><a id="calibre_link-1364" href="#calibre_link-1516" class="calibre6">2</a>. What function is used to rename files?</p>
+<p class="question"><a id="calibre_link-1365" href="#calibre_link-1517" class="calibre6">3</a>. What is the difference between the delete functions in the <span class="literal">send2trash</span> and <span class="literal">shutil</span> modules?</p>
+<p class="question"><a id="calibre_link-1366" href="#calibre_link-1518" class="calibre6">4</a>. <span class="literal">ZipFile</span> objects have a <span class="literal">close()</span> method just like <span class="literal">File</span> objects’ <span class="literal">close()</span> method. What <span class="literal">ZipFile</span> method is equivalent to <span class="literal">File</span> objects’ <span class="literal">open()</span> method?</p>
+<h3 class="h1" id="calibre_link-345"><strong class="calibre2">Practice Projects</strong></h3>
+<p class="noindent">For practice, write programs to do the following tasks.</p>
+<h4 class="h2" id="calibre_link-346"><strong class="calibre2"><em class="calibre9">Selective Copy</em></strong></h4>
+<p class="noindent">Write a program that walks through a folder tree and searches for files with a certain file extension (such as <em class="calibre7">.pdf</em> or <em class="calibre7">.jpg</em>). Copy these files from whatever location they are in to a new folder.</p>
+<h4 class="h2" id="calibre_link-347"><strong class="calibre2"><em class="calibre9">Deleting Unneeded Files</em></strong></h4>
+<p class="noindent">It’s not uncommon for a few unneeded but humongous files or folders to take up the bulk of the space on your hard drive. If you’re trying to free up room on your computer, you’ll get the most bang for your buck by deleting the most massive of the unwanted files. But first you have to find them.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1795"></span>Write a program that walks through a folder tree and searches for exceptionally large files or folders&mdash;say, ones that have a file size of more than 100MB. (Remember that to get a file’s size, you can use <span class="literal">os.path.getsize()</span> from the <span class="literal">os</span> module.) Print these files with their absolute path to the screen.</p>
+<h4 class="h2" id="calibre_link-348"><strong class="calibre2"><em class="calibre9">Filling in the Gaps</em></strong></h4>
+<p class="noindent">Write a program that finds all files with a given prefix, such as <em class="calibre7">spam001.txt</em>, <em class="calibre7">spam002.txt</em>, and so on, in a single folder and locates any gaps in the numbering (such as if there is a <em class="calibre7">spam001.txt</em> and <em class="calibre7">spam003.txt</em> but no <em class="calibre7">spam002.txt</em>). Have the program rename all the later files to close this gap.</p>
+<p class="indent">As an added challenge, write another program that can insert gaps into numbered files so that a new file can be added.</p>
+</div>
+
+<div><center><a href="../chapter9"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="../chapter11"><img src="/images/next.png" /></a></center></div>
+
+{% endblock %}

@@ -1,0 +1,422 @@
+{% extends "secondeditionbase.html" %}
+{% set title = 'Automate the Boring Stuff with Python' %}
+{% block content %}
+
+<div><center><a href="../chapter13"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="../chapter15"><img src="/images/next.png" /></a></center></div>
+
+<div class="calibre" id="calibre_link-1229">
+<h2 class="h2b" id="calibre_link-457"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1819" class="calibre1"></span><strong class="calibre2"><span class="big">14</span><br class="calibre12" />WORKING WITH GOOGLE SHEETS</strong></h2>
+<div class="image"><img src="../images/000053.jpg" alt="Image" class="calibre3" /></div>
+<p class="noindent">Google Sheets, the free, web-based spreadsheet application available to anyone with a Google account or Gmail address, has become a useful, feature-rich competitor to Excel. Google Sheets has its own API, but this API can be confusing to learn and use. This chapter covers the EZSheets third-party module, documented at <em class="calibre7"><a href="https://ezsheets.readthedocs.io/" class="calibre6">https://ezsheets.readthedocs.io/</a></em>. While not as full featured as the official Google Sheets API, EZSheets makes common spreadsheet tasks easy to perform.</p>
+<h3 class="h1" id="calibre_link-458"><strong class="calibre2">Installing and Setting Up EZSheets</strong></h3>
+<p class="noindent">You can install EZSheets by opening a new terminal window and running <span class="literal">pip install --user ezsheets</span>. As part of this installation, EZSheets will also install the <span class="literal">google-api-python-client</span>, <span class="literal">google-auth-httplib2</span>, and <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-957"></span><span class="literal">google-auth-oauthlib</span> modules. These modules allow your program to log in to Google’s servers and make API requests. EZSheets handles the interaction with these modules, so you don’t need to concern yourself with how they work.</p>
+<h4 class="h2" id="calibre_link-459"><strong class="calibre2"><em class="calibre9">Obtaining Credentials and Token Files</em></strong></h4>
+<p class="noindent">Before you can use EZSheets, you need to enable the Google Sheets and Google Drive APIs for your Google account. Visit the following web pages and click the <strong class="calibre4">Enable API</strong> buttons at the top of each:</p>
+<ul class="calibre8">
+<li class="noindent1"><em class="calibre7"><a href="https://console.developers.google.com/apis/library/sheets.googleapis.com/" class="calibre6">https://console.developers.google.com/apis/library/sheets.googleapis.com/</a></em></li>
+<li class="noindent1"><em class="calibre7"><a href="https://console.developers.google.com/apis/library/drive.googleapis.com/" class="calibre6">https://console.developers.google.com/apis/library/drive.googleapis.com/</a></em></li>
+</ul>
+<p class="indent">You’ll also need to obtain three files, which you should save in the same folder as your <em class="calibre7">.py</em> Python script that uses EZSheets:</p>
+<ul class="calibre8">
+<li class="noindent1">A credentials file named <em class="calibre7">credentials-sheets.json</em></li>
+<li class="noindent1">A token for Google Sheets named <em class="calibre7">token-sheets.pickle</em></li>
+<li class="noindent1">A token for Google Drive named <em class="calibre7">token-drive.pickle</em></li>
+</ul>
+<p class="indent">The credentials file will generate the token files. The easiest way to obtain a credentials file is to go to the Google Sheets Python Quickstart page at <em class="calibre7"><a href="https://developers.google.com/sheets/api/quickstart/python/" class="calibre6">https://developers.google.com/sheets/api/quickstart/python/</a></em> and click the blue <strong class="calibre4">Enable the Google Sheets API</strong> button, as shown in <a href="#calibre_link-1230" class="calibre6">Figure 14-1</a>. You’ll need to log in to your Google account to view this page.</p>
+<div class="image1" id="calibre_link-1230"><img src="../images/000148.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 14-1: Obtaining a</em> credentials.json <em class="calibre7">file.</em></p>
+<p class="indent">Clicking this button will bring up a window with a <strong class="calibre4">Download Client Configuration</strong> link that lets you download a <em class="calibre7">credentials.json</em> file. Rename this file to <em class="calibre7">credentials-sheets.json</em> and place it in the same folder as your Python scripts.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1820"></span>Once you have a <em class="calibre7">credentials-sheets.json</em> file, run the <span class="literal">import ezsheets</span> module. The first time you import the EZSheets module, it will open a new browser window for you to log in to your Google account. Click <strong class="calibre4">Allow</strong>, as shown in <a href="#calibre_link-1231" class="calibre6">Figure 14-2</a>.</p>
+<div class="image1"><a id="calibre_link-1231" class="calibre6"></a><img src="../images/000089.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 14-2: Allowing Quickstart to access your Google account</em></p>
+<p class="indent">The message about Quickstart comes from the fact that you downloaded the credentials file from the Google Sheets Python Quickstart page. Note that this window will open <em class="calibre7">twice</em>: first for Google Sheets access and second for Google Drive access. EZSheets uses Google Drive access to upload, download, and delete spreadsheets.</p>
+<p class="indent">After you log in, the browser window will prompt you to close it, and the <em class="calibre7">token-sheets.pickle</em> and <em class="calibre7">token-drive.pickle</em> files will appear in the same folder as <em class="calibre7">credentials-sheets.json</em>. You only need to go through this process the first time you run <span class="literal">import ezsheets</span>.</p>
+<p class="indent">If you encounter an error after clicking Allow and the page seems to hang, make sure you have first enabled the Google Sheets and Drive APIs from the links at the start of this section. It may take a few minutes for Google’s servers to register this change, so you may have to wait before you can use EZSheets.</p>
+<p class="indent">Don’t share the credential or token files with anyone&mdash;treat them like passwords.</p>
+<h4 class="h2" id="calibre_link-460"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-958" class="calibre1"></span><strong class="calibre2"><em class="calibre9">Revoking the Credentials File</em></strong></h4>
+<p class="noindent">If you accidentally share the credential or token files with someone, they won’t be able to change your Google account password, but they will have access to your spreadsheets. You can revoke these files by going to the Google Cloud Platform developer’s console page at <em class="calibre7"><a href="https://console.developers.google.com/" class="calibre6">https://console.developers.google.com/</a></em>. You’ll need to log in to your Google account to view this page. Click the <strong class="calibre4">Credentials</strong> link on the sidebar. Then click the trash can icon next to the credentials file you’ve accidentally shared, as shown in <a href="#calibre_link-1232" class="calibre6">Figure 14-3</a>.</p>
+<div class="image1"><a id="calibre_link-1232" class="calibre6"></a><img src="../images/000036.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 14-3: The Credentials page in the Google Cloud Platform developer’s console</em></p>
+<p class="indent">To generate a new credentials file from this page, click the <strong class="calibre4">Create Credentials</strong> button and select <strong class="calibre4">OAuth client ID</strong>, also shown in <a href="#calibre_link-1232" class="calibre6">Figure 14-3</a>. Next, for Application Type, select <strong class="calibre4">Other</strong> and give the file any name you like. This new credentials file will then be listed on the page, and you can click on the download icon to download it. The downloaded file will have a long, complicated filename, so you should rename it to the default filename that EZSheets attempts to load: <em class="calibre7">credentials-sheets.json</em>. You can also generate a new credential file by clicking the Enable the Google Sheets API button mentioned in the previous section.</p>
+<h3 class="h1" id="calibre_link-461"><strong class="calibre2">Spreadsheet Objects</strong></h3>
+<p class="noindent">In Google Sheets, a <em class="calibre7">spreadsheet</em> can contain multiple <em class="calibre7">sheets</em> (also called <em class="calibre7">worksheets</em>), and each sheet contains columns and rows of values. <a href="#calibre_link-1233" class="calibre6">Figure 14-4</a> shows a spreadsheet titled “Education Data” containing three sheets titled “Students,” “Classes,” and “Resources.” The first column of each sheet is labeled A, and the first row is labeled 1.</p>
+<div class="image1"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1821"></span><a id="calibre_link-1233" class="calibre6"></a><img src="../images/000127.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 14-4: A spreadsheet titled “Education Data” with three sheets</em></p>
+<p class="indent">While most of your work will involve modifying the <span class="literal">Sheet</span> objects, you can also modify <span class="literal">Spreadsheet</span> objects, as you’ll see in the next section.</p>
+<h4 class="h2" id="calibre_link-462"><strong class="calibre2"><em class="calibre9">Creating, Uploading, and Listing Spreadsheets</em></strong></h4>
+<p class="noindent">You can make a new <span class="literal">Spreadsheet</span> object from an existing spreadsheet, a blank spreadsheet, or an uploaded spreadsheet. To make a <span class="literal">Spreadsheet</span> object from an existing Google Sheets spreadsheet, you’ll need the spreadsheet’s ID string. The unique ID for a Google Sheets spreadsheet can be found in the URL, after the <em class="calibre7">spreadsheets/d/</em> part and before the <em class="calibre7">/edit</em> part. For example, the spreadsheet featured in <a href="#calibre_link-1233" class="calibre6">Figure 14-4</a> is located at the URL <em class="calibre7">https://docs.google.com/spreadsheets/d/1J-Jx6Ne2K_vqI9J2SO-TAXOFbxx_9tUjwnkPC22LjeU/edit#gid=151537240/</em>, so its ID is <span class="literal">1J-Jx6Ne2K_vqI9J2SO-TAXOFbxx_9tUjwnkPC22LjeU</span>.</p>
+<div class="note">
+<p class="notet"><strong class="calibre2"><span class="notes">NOTE</span></strong></p>
+<p class="notep"><em class="calibre7">The specific spreadsheet IDs used in this chapter are for my Google account’s spreadsheets. They won’t work if you enter them into your interactive shell. Go to</em> <a href="https://sheets.google.com/" class="calibre6">https://sheets.google.com/</a> <em class="calibre7">to create spreadsheets under your account and then get the IDs from the address bar.</em></p>
+</div>
+<p class="indent">Pass your spreadsheet’s ID as a string to the <span class="literal">ezsheets.Spreadsheet()</span> function to obtain a <span class="literal">Spreadsheet</span> object for its spreadsheet:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import ezsheets</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss = ezsheets.Spreadsheet('</span><span class="codeitalic1"><span class="codestrong1">1J-Jx6Ne2K_vqI9J2SO-TAXOFbxx_9tUjwnkPC22LjeU</span></span><span class="codestrong1">')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss</span><br class="calibre5" />
+Spreadsheet(spreadsheetId='<span class="codeitalic1">1J-Jx6Ne2K_vqI9J2SO-TAXOFbxx_9tUjwnkPC22LjeU</span>')<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss.title</span><br class="calibre5" />
+'Education Data'</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1822"></span>For convenience, you can also obtain a <span class="literal">Spreadsheet</span> object of an existing spreadsheet by passing the spreadsheet’s full URL to the function. Or, if there is only one spreadsheet in your Google account with that title, you can pass the title of the spreadsheet as a string.</p>
+<p class="indent">To make a new, blank spreadsheet, call the <span class="literal">ezsheets.createSpreadsheet()</span> function and pass it a string for the new spreadsheet’s title. For example, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import ezsheets</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss = ezsheets.createSpreadsheet('</span><span class="codeitalic1"><span class="codestrong1">Title of My New Spreadsheet</span></span><span class="codestrong1">')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss.title</span><br class="calibre5" />
+'<span class="codeitalic1">Title of My New Spreadsheet</span>'</p>
+<p class="indent">To upload an existing Excel, OpenOffice, CSV, or TSV spreadsheet to Google Sheets, pass the filename of the spreadsheet to <span class="literal">ezsheets.upload()</span>. Enter the following into the interactive shell, replacing <span class="codeitalic">my_spreadsheet.xlsx</span> with a spreadsheet file of your own:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import ezsheets</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss = ezsheets.upload('</span><span class="codeitalic1"><span class="codestrong1">my_spreadsheet.xlsx</span></span><span class="codestrong1">')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss.title</span><br class="calibre5" />
+'<span class="codeitalic1">my_spreadsheet</span>'</p>
+<p class="indent">You can list the spreadsheets in your Google account by calling the <span class="literal">listSpreadsheets()</span> function. Enter the following into the interactive shell after uploading a spreadsheet:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">ezsheets.listSpreadsheets()</span><br class="calibre5" />
+{'<span class="codeitalic1">1J-Jx6Ne2K_vqI9J2SO-TAXOFbxx_9tUjwnkPC22LjeU</span>': 'Education Data'}</p>
+<p class="indent">The <span class="literal">listSpreadsheets()</span> function returns a dictionary where the keys are spreadsheet IDs and the values are the titles of each spreadsheet.</p>
+<p class="indent">Once you’ve obtained a <span class="literal">Spreadsheet</span> object, you can use its attributes and methods to manipulate the online spreadsheet hosted on Google Sheets.</p>
+<h4 class="h2" id="calibre_link-463"><strong class="calibre2"><em class="calibre9">Spreadsheet Attributes</em></strong></h4>
+<p class="noindent">While the actual data lives in a spreadsheet’s individual sheets, the <span class="literal">Spreadsheet</span> object has the following attributes for manipulating the spreadsheet itself: <span class="literal">title</span>, <span class="literal">spreadsheetId</span>, <span class="literal">url</span>, <span class="literal">sheetTitles</span>, and <span class="literal">sheets</span>. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import ezsheets</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss = ezsheets.Spreadsheet('</span><span class="codeitalic1"><span class="codestrong1">1J-Jx6Ne2K_vqI9J2SO-TAXOFbxx_9tUjwnkPC22LjeU</span></span><span class="codestrong1">')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss.title&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span># The title of the spreadsheet.<br class="calibre5" />
+'Education Data'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss.title = 'Class Data'</span> # Change the title.<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss.spreadsheetId</span> # The unique ID (this is a read-only attribute).<br class="calibre5" />
+<span class="codeitalic1">'1J-Jx6Ne2K_vqI9J2SO-TAXOFbxx_9tUjwnkPC22LjeU'</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss.url&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span># The original URL (this is a read-only attribute).<br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-915"></span>'https://docs.google.com/spreadsheets/d/<span class="codeitalic1">1J-Jx6Ne2K_vqI9J2SO-</span><br class="calibre5" />
+<span class="codeitalic1">TAXOFbxx_9tUjwnkPC22LjeU/</span>'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss.sheetTitles&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span># The titles of all the Sheet objects<br class="calibre5" />
+('Students', 'Classes', 'Resources')<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss.sheets&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span># The Sheet objects in this Spreadsheet, in order.<br class="calibre5" />
+(&lt;Sheet sheetId=0, title='Students', rowCount=1000, columnCount=26&gt;, &lt;Sheet<br class="calibre5" />
+sheetId=1669384683, title='Classes', rowCount=1000, columnCount=26&gt;, &lt;Sheet<br class="calibre5" />
+sheetId=151537240, title='Resources', rowCount=1000, columnCount=26&gt;)<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss[0]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span># The first Sheet object in this Spreadsheet.<br class="calibre5" />
+&lt;Sheet sheetId=0, title='Students', rowCount=1000, columnCount=26&gt;<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss['Students']&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span># Sheets can also be accessed by title.<br class="calibre5" />
+&lt;Sheet sheetId=0, title='Students', rowCount=1000, columnCount=26&gt;<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">del ss[0]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span># Delete the first Sheet object in this Spreadsheet.<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss.sheetTitles&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span># The "Students" Sheet object has been deleted:<br class="calibre5" />
+('Classes', 'Resources')</p>
+<p class="indent">If someone changes the spreadsheet through the Google Sheets website, your script can update the <span class="literal">Spreadsheet</span> object to match the online data by calling the <span class="literal">refresh()</span> method:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">ss.refresh()</span></p>
+<p class="indent">This will refresh not only the <span class="literal">Spreadsheet</span> object’s attributes but also the data in the <span class="literal">Sheet</span> objects it contains. The changes you make to the <span class="literal">Spreadsheet</span> object will be reflected in the online spreadsheet in real time.</p>
+<h4 class="h2" id="calibre_link-464"><strong class="calibre2"><em class="calibre9">Downloading and Uploading Spreadsheets</em></strong></h4>
+<p class="noindent">You can download a Google Sheets spreadsheet in a number of formats: Excel, OpenOffice, CSV, TSV, and PDF. You can also download it as a ZIP file containing HTML files of the spreadsheet’s data. EZSheets contains functions for each of these options:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import ezsheets</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss = ezsheets.Spreadsheet('</span><span class="codeitalic1"><span class="codestrong1">1J-Jx6Ne2K_vqI9J2SO-TAXOFbxx_9tUjwnkPC22LjeU</span></span><span class="codestrong1">')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss.title</span><br class="calibre5" />
+'Class Data'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss.downloadAsExcel()</span> # Downloads the spreadsheet as an Excel file.<br class="calibre5" />
+'Class_Data.xlsx'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss.downloadAsODS()</span> # Downloads the spreadsheet as an OpenOffice file.<br class="calibre5" />
+'Class_Data.ods'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss.downloadAsCSV()</span> # Only downloads the first sheet as a CSV file.<br class="calibre5" />
+'Class_Data.csv'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss.downloadAsTSV()</span> # Only downloads the first sheet as a TSV file.<br class="calibre5" />
+'Class_Data.tsv'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss.downloadAsPDF()</span> # Downloads the spreadsheet as a PDF.<br class="calibre5" />
+'Class_Data.pdf'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss.downloadAsHTML()</span> # Downloads the spreadsheet as a ZIP of HTML files.<br class="calibre5" />
+'Class_Data.zip'</p>
+<p class="indent">Note that files in the CSV and TSV formats can contain only one sheet; therefore, if you download a Google Sheets spreadsheet in this format, you <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-878"></span>will get the first sheet only. To download other sheets, you’ll need to change the <span class="literal">Sheet</span> object’s <span class="literal">index</span> attribute to <span class="literal">0</span>. See “<a href="#calibre_link-468" class="calibre6">Creating and Deleting Sheets</a>” on <a href="#calibre_link-1234" class="calibre6">page 341</a> for information on how to do this.</p>
+<p class="indent">The download functions all return a string of the downloaded file’s filename. You can also specify your own filename for the spreadsheet by passing the new filename to the download function:</p>
+<p class="programs">&gt;&gt;&gt; ss.downloadAsExcel('<span class="codeitalic1">a_different_filename</span>.xlsx')<br class="calibre5" />
+'<span class="codeitalic1">a_different_filename</span>.xlsx'</p>
+<p class="indent">The function should return the updated filename.</p>
+<h4 class="h2" id="calibre_link-465"><strong class="calibre2"><em class="calibre9">Deleting Spreadsheets</em></strong></h4>
+<p class="noindent">To delete a spreadsheet, call the <span class="literal">delete()</span> method:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import ezsheets</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss = ezsheets.createSpreadsheet('Delete me')</span> # Create the spreadsheet.<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ezsheets.listSpreadsheets()</span> # Confirm that we've created a spreadsheet.<br class="calibre5" />
+{'1aCw2NNJSZblDbhygVv77kPsL3djmgV5zJZllSOZ_mRk': 'Delete me'}<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss.delete()</span> # Delete the spreadsheet.<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ezsheets.listSpreadsheets()</span><br class="calibre5" />
+{}</p>
+<p class="indent">The <span class="literal">delete()</span> method will move your spreadsheet to the Trash folder on your Google Drive. You can view the contents of your Trash folder at <em class="calibre7"><a href="https://drive.google.com/drive/trash" class="calibre6">https://drive.google.com/drive/trash</a></em>. To permanently delete your spreadsheet, pass <span class="literal">True</span> for the <span class="literal">permanent</span> keyword argument:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">ss.delete(permanent=True)</span></p>
+<p class="indent">In general, permanently deleting your spreadsheets is not a good idea, because it would be impossible to recover a spreadsheet that a bug in your script accidentally deleted. Even free Google Drive accounts have gigabytes of storage available, so you most likely don’t need to worry about freeing up space.</p>
+<h3 class="h1" id="calibre_link-466"><strong class="calibre2">Sheet Objects</strong></h3>
+<p class="noindent">A <span class="literal">Spreadsheet</span> object will have one or more <span class="literal">Sheet</span> objects. The <span class="literal">Sheet</span> objects represent the rows and columns of data in each sheet. You can access these sheets using the square brackets operator and an integer index. The <span class="literal">Spreadsheet</span> object’s <span class="literal">sheets</span> attribute holds a tuple of <span class="literal">Sheet</span> objects in the order in which they appear in the spreadsheet. To access the <span class="literal">Sheet</span> objects in a spreadsheet, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import ezsheets</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss = ezsheets.Spreadsheet('</span><span class="codeitalic1"><span class="codestrong1">1J-Jx6Ne2K_vqI9J2SO-TAXOFbxx_9tUjwnkPC22LjeU</span></span><span class="codestrong1">')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss.sheets&nbsp;&nbsp;&nbsp;&nbsp;</span># The Sheet objects in this Spreadsheet, in order.<br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-959"></span>(&lt;Sheet sheetId=1669384683, title='Classes', rowCount=1000, columnCount=26&gt;,<br class="calibre5" />
+&lt;Sheet sheetId=151537240, title='Resources', rowCount=1000, columnCount=26&gt;)<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss.sheets[0]</span> # Gets the first Sheet object in this Spreadsheet.<br class="calibre5" />
+&lt;Sheet sheetId=1669384683, title='Classes', rowCount=1000, columnCount=26&gt;<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss[0]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span># Also gets the first Sheet object in this Spreadsheet.<br class="calibre5" />
+&lt;Sheet sheetId=1669384683, title='Classes', rowCount=1000, columnCount=26&gt;</p>
+<p class="indent">You can also obtain a <span class="literal">Sheet</span> object with the square brackets operator and a string of the sheet’s name. The <span class="literal">Spreadsheet</span> object’s <span class="literal">sheetTitles</span> attribute holds a tuple of all the sheet titles. For example, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">ss.sheetTitles</span> # The titles of all the Sheet objects in this Spreadsheet.<br class="calibre5" />
+('Classes', 'Resources')<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss['Classes']</span> # Sheets can also be accessed by title.<br class="calibre5" />
+&lt;Sheet sheetId=1669384683, title='Classes', rowCount=1000, columnCount=26&gt;</p>
+<p class="indent">Once you have a <span class="literal">Sheet</span> object, you can read data from and write data to it using the <span class="literal">Sheet</span> object’s methods, as explained in the next section.</p>
+<h4 class="h2" id="calibre_link-467"><strong class="calibre2"><em class="calibre9">Reading and Writing Data</em></strong></h4>
+<p class="noindent">Just as in Excel, Google Sheets worksheets have columns and rows of cells containing data. You can use the square brackets operator to read and write data from and to these cells. For example, to create a new spreadsheet and add data to it, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import ezsheets</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss = ezsheets.createSpreadsheet('My Spreadsheet')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">sheet = ss[0]</span> # Get the first sheet in this spreadsheet.<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">sheet.title</span><br class="calibre5" />
+'Sheet1'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">sheet = ss[0]</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">sheet['A1'] = 'Name'</span> # Set the value in cell A1.<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">sheet['B1'] = 'Age'</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">sheet['C1'] = 'Favorite Movie'</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">sheet['A1']</span> # Read the value in cell A1.<br class="calibre5" />
+'Name'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">sheet['A2']</span> # Empty cells return a blank string.<br class="calibre5" />
+''<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">sheet[2, 1]</span> # Column 2, Row 1 is the same address as B1.<br class="calibre5" />
+'Age'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">sheet['A2'] = 'Alice'</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">sheet['B2'] = 30</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">sheet['C2'] = 'RoboCop'</span></p>
+<p class="indent">These instructions should produce a Google Sheets spreadsheet that looks like <a href="#calibre_link-1235" class="calibre6">Figure 14-5</a>.</p>
+<div class="image1"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-864"></span><a id="calibre_link-1235" class="calibre6"></a><img src="../images/000074.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 14-5: The spreadsheet created with the example instructions</em></p>
+<p class="indent">Multiple users can update a sheet simultaneously. To refresh the local data in the <span class="literal">Sheet</span> object, call its <span class="literal">refresh()</span> method:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">sheet.refresh()</span></p>
+<p class="indent">All of the data in the <span class="literal">Sheet</span> object is loaded when the <span class="literal">Spreadsheet</span> object is first loaded, so the data is read instantly. However, writing values to the online spreadsheet requires a network connection and can take about a second. If you have thousands of cells to update, updating them one at a time might be quite slow.</p>
+<h5 class="h2" id="calibre_link-1823"><strong class="calibre2">Column and Row Addressing</strong></h5>
+<p class="noindent">Cell addressing works in Google Sheets just like in Excel. The only difference is that, unlike Python’s 0-based list indexes, Google Sheets have 1-based columns and rows: the first column or row is at index 1, not 0. You can convert the <span class="literal">'A2'</span> string-style address to the <span class="literal">(column, row)</span> tuple-style address (and vice versa) with the <span class="literal">convertAddress()</span> function. The <span class="literal">getColumnLetterOf()</span> and <span class="literal">getColumnNumberOf()</span> functions will also convert a column address between letters and numbers. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import ezsheets</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ezsheets.convertAddress('A2')</span> # Converts addresses...<br class="calibre5" />
+(1, 2)<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ezsheets.convertAddress(1, 2)</span> # ...and converts them back, too.<br class="calibre5" />
+'A2'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ezsheets.getColumnLetterOf(2)</span><br class="calibre5" />
+'B'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ezsheets.getColumnNumberOf('B')</span><br class="calibre5" />
+2<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ezsheets.getColumnLetterOf(999)</span><br class="calibre5" />
+'ALK'<br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-961"></span>&gt;&gt;&gt; <span class="codestrong1">ezsheets.getColumnNumberOf('ZZZ')</span><br class="calibre5" />
+18278</p>
+<p class="indent">The <span class="literal">'A2'</span> string-style addresses are convenient if you’re typing addresses into your source code. But the <span class="literal">(column, row)</span> tuple-style addresses are convenient if you’re looping over a range of addresses and need a numeric form for the column. The <span class="literal">convertAddress()</span>, <span class="literal">getColumnLetterOf()</span>, and <span class="literal">getColumnNumberOf()</span> functions are helpful when you need to convert between the two formats.</p>
+<h5 class="h2" id="calibre_link-1824"><strong class="calibre2">Reading and Writing Entire Columns and Rows</strong></h5>
+<p class="noindent">As mentioned, writing data one cell at a time can often take too long. Fortunately, EZSheets has <span class="literal">Sheet</span> methods for reading and writing entire columns and rows at the same time. The <span class="literal">getColumn()</span>, <span class="literal">getRow()</span>, <span class="literal">updateColumn()</span>, and <span class="literal">updateRow()</span> methods will, respectively, read and write columns and rows. These methods make requests to the Google Sheets servers to update the spreadsheet, so they require that you be connected to the internet. In this section’s example, we’ll upload <em class="calibre7">produceSales.xlsx</em> from the last chapter to Google Sheets. The first eight rows look like <a href="#calibre_link-1236" class="calibre6">Table 14-1</a>.</p>
+<p class="tabcap" id="calibre_link-1236"><strong class="calibre4">Table 14-1:</strong> The First Eight Rows of the <em class="calibre7">produceSales.xlsx</em> Spreadsheet</p>
+<table class="topbot-d">
+<colgroup class="calibre13">
+<col class="calibre23"></col>
+<col class="calibre23"></col>
+<col class="calibre23"></col>
+<col class="calibre23"></col>
+<col class="calibre23"></col>
+</colgroup>
+<thead class="calibre15">
+<tr class="calibre16">
+<td class="table-h"></td>
+<td class="table-h"><p class="tab_th"><strong class="calibre4">A</strong></p></td>
+<td class="table-h"><p class="tab_th"><strong class="calibre4">B</strong></p></td>
+<td class="table-h"><p class="tab_th"><strong class="calibre4">C</strong></p></td>
+<td class="table-h"><p class="tab_th"><strong class="calibre4">D</strong></p></td>
+</tr>
+</thead>
+<tbody class="calibre17">
+<tr class="calibre16">
+<td class="table-b"><p class="taba">1</p></td>
+<td class="table-b"><p class="taba">PRODUCE</p></td>
+<td class="table-b"><p class="taba">COST PER POUND</p></td>
+<td class="table-b"><p class="taba">POUNDS SOLD</p></td>
+<td class="table-b"><p class="taba">TOTAL</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba">2</p></td>
+<td class="table-v"><p class="taba">Potatoes</p></td>
+<td class="table-v"><p class="taba">0.86</p></td>
+<td class="table-v"><p class="taba">21.6</p></td>
+<td class="table-v"><p class="taba">18.58</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba">3</p></td>
+<td class="table-b"><p class="taba">Okra</p></td>
+<td class="table-b"><p class="taba">2.26</p></td>
+<td class="table-b"><p class="taba">38.6</p></td>
+<td class="table-b"><p class="taba">87.24</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba">4</p></td>
+<td class="table-v"><p class="taba">Fava beans</p></td>
+<td class="table-v"><p class="taba">2.69</p></td>
+<td class="table-v"><p class="taba">32.8</p></td>
+<td class="table-v"><p class="taba">88.23</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba">5</p></td>
+<td class="table-b"><p class="taba">Watermelon</p></td>
+<td class="table-b"><p class="taba">0.66</p></td>
+<td class="table-b"><p class="taba">27.3</p></td>
+<td class="table-b"><p class="taba">18.02</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba">6</p></td>
+<td class="table-v"><p class="taba">Garlic</p></td>
+<td class="table-v"><p class="taba">1.19</p></td>
+<td class="table-v"><p class="taba">4.9</p></td>
+<td class="table-v"><p class="taba">5.83</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba">7</p></td>
+<td class="table-b"><p class="taba">Parsnips</p></td>
+<td class="table-b"><p class="taba">2.27</p></td>
+<td class="table-b"><p class="taba">1.1</p></td>
+<td class="table-b"><p class="taba">2.5</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-va"><p class="taba">8</p></td>
+<td class="table-va"><p class="taba">Asparagus</p></td>
+<td class="table-va"><p class="taba">2.49</p></td>
+<td class="table-va"><p class="taba">37.9</p></td>
+<td class="table-va"><p class="taba">94.37</p></td>
+</tr>
+</tbody>
+</table>
+<p class="indent">To upload this spreadsheet, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import ezsheets</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss = ezsheets.upload('produceSales.xlsx')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">sheet = ss[0]</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">sheet.getRow(1)</span> # The first row is row 1, not row 0.<br class="calibre5" />
+['PRODUCE', 'COST PER POUND', 'POUNDS SOLD', 'TOTAL', '', '']<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">sheet.getRow(2)</span><br class="calibre5" />
+['Potatoes', '0.86', '21.6', '18.58', '', '']<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">columnOne = sheet.getColumn(1)</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">sheet.getColumn(1)</span><br class="calibre5" />
+['PRODUCE', 'Potatoes', 'Okra', 'Fava beans', 'Watermelon', 'Garlic',<br class="calibre5" />
+<span class="codeitalic1">--snip--</span> <br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">sheet.getColumn('A')</span> # Same result as getColumn(1)<br class="calibre5" />
+['PRODUCE', 'Potatoes', 'Okra', 'Fava beans', 'Watermelon', 'Garlic', <br class="calibre5" />
+<span class="codeitalic1">--snip--</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">sheet.getRow(3)</span><br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-960"></span>['Okra', '2.26', '38.6', '87.24', '', '']<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">sheet.updateRow(3, ['Pumpkin', '11.50', '20', '230'])</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">sheet.getRow(3)</span><br class="calibre5" />
+['Pumpkin', '11.50', '20', '230', '', '']<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">columnOne = sheet.getColumn(1)</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">for i, value in enumerate(columnOne):</span><br class="calibre5" />
+...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Make the Python list contain uppercase strings:<br class="calibre5" />
+...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="codestrong1">columnOne[i] = value.upper()</span><br class="calibre5" />
+...<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">sheet.updateColumn(1, columnOne)</span> # Update the entire column in one<br class="calibre5" />
+request.</p>
+<p class="indent">The <span class="literal">getRow()</span> and <span class="literal">getColumn()</span> functions retrieve the data from every cell in a specific row or column as a list of values. Note that empty cells become blank string values in the list. You can pass <span class="literal">getColumn()</span> either a column number or letter to tell it to retrieve a specific column’s data. The previous example shows that <span class="literal">getColumn(1)</span> and <span class="literal">getColumn('A')</span> return the same list.</p>
+<p class="indent">The <span class="literal">updateRow()</span> and <span class="literal">updateColumn()</span> functions will overwrite all the data in the row or column, respectively, with the list of values passed to the function. In this example, the third row initially contains information about okra, but the <span class="literal">updateRow()</span> call replaces it with data about pumpkin. Call <span class="literal">sheet.getRow(3)</span> again to view the new values in the third row.</p>
+<p class="indent">Next, let’s update the “produceSales” spreadsheet. Updating cells one at a time is slow if you have many cells to update. Getting a column or row as a list, updating the list, and then updating the entire column or row with the list is much faster, since all the changes can be made in one request.</p>
+<p class="indent">To get all of the rows at once, call the <span class="literal">getRows()</span> method to return a list of lists. The inner lists inside the outer list each represent a single row of the sheet. You can modify the values in this data structure to change the produce name, pounds sold, and total cost of some of the rows. Then you pass it to the <span class="literal">updateRows()</span> method by entering the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">rows = sheet.getRows()</span> # Get every row in the spreadsheet.<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">rows[0]</span> # Examine the values in the first row.<br class="calibre5" />
+['PRODUCE', 'COST PER POUND', 'POUNDS SOLD', 'TOTAL', '', '']<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">rows[1]</span><br class="calibre5" />
+['POTATOES', '0.86', '21.6', '18.58', '', '']<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">rows[1][0] = 'PUMPKIN'</span> # Change the produce name.<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">rows[1]</span><br class="calibre5" />
+['PUMPKIN', '0.86', '21.6', '18.58', '', '']<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">rows[10]</span><br class="calibre5" />
+['OKRA', '2.26', '40', '90.4', '', '']<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">rows[10][2] = '400'</span> # Change the pounds sold.<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">rows[10][3] = '904'</span> # Change the total.<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">rows[10]</span><br class="calibre5" />
+['OKRA', '2.26', '400', '904', '', '']<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">sheet.updateRows(rows)</span> # Update the online spreadsheet with the changes.</p>
+<p class="indent">You can update the entire sheet in a single request by passing <span class="literal">updateRows()</span> the list of lists returned from <span class="literal">getRows()</span>, amended with the changes made to rows 1 and 10.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1234"></span>Note that the rows in the Google Sheet have empty strings at the end. This is because the uploaded sheet has a column count of <span class="literal">6</span>, but we have only 4 columns of data. You can read the number of rows and columns in a sheet with the <span class="literal">rowCount</span> and <span class="literal">columnCount</span> attributes. Then by setting these values, you can change the size of the sheet.</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">sheet.rowCount&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span># The number of rows in the sheet.<br class="calibre5" />
+23758<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">sheet.columnCount&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span># The number of columns in the sheet.<br class="calibre5" />
+6<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">sheet.columnCount = 4</span> # Change the number of columns to 4.<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">sheet.columnCount&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span># Now the number of columns in the sheet is 4.<br class="calibre5" />
+4</p>
+<p class="indent">These instructions should delete the fifth and sixth columns of the “produceSales” spreadsheet, as shown in <a href="#calibre_link-1237" class="calibre6">Figure 14-6</a>.</p>
+<div class="image1"><a id="calibre_link-1237" class="calibre6"></a><img src="../images/000021.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 14-6: The sheet before (left) and after (right) changing the column count to 4</em></p>
+<p class="indent">According to <em class="calibre7"><a href="https://support.google.com/drive/answer/37603?hl=en/" class="calibre6">https://support.google.com/drive/answer/37603?hl=en/</a></em>, Google Sheets spreadsheets can have up to 5 million cells in them. However, it’s a good idea to make sheets only as big as you need to minimize the time it takes to update and refresh the data.</p>
+<h4 class="h2" id="calibre_link-468"><strong class="calibre2"><em class="calibre9">Creating and Deleting Sheets</em></strong></h4>
+<p class="noindent">All Google Sheets spreadsheets start with a single sheet named “Sheet1.” You can add additional sheets to the end of the list of sheets with the <span class="literal">createSheet()</span> method, to which you pass a string to use as the new sheet’s title. An optional second argument can specify the integer index of the new sheet. To create a spreadsheet and then add new sheets to it, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import ezsheets</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss = ezsheets.createSpreadsheet('Multiple Sheets')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss.sheetTitles</span><br class="calibre5" />
+('Sheet1',)<br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-842"></span>&gt;&gt;&gt; <span class="codestrong1">ss.createSheet('Spam')</span> # Create a new sheet at the end of the list of<br class="calibre5" />
+sheets.<br class="calibre5" />
+&lt;Sheet sheetId=2032744541, title='Spam', rowCount=1000, columnCount=26&gt;<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss.createSheet('Eggs')</span> # Create another new sheet.<br class="calibre5" />
+&lt;Sheet sheetId=417452987, title='Eggs', rowCount=1000, columnCount=26&gt;<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss.sheetTitles</span><br class="calibre5" />
+('Sheet1', 'Spam', 'Eggs')<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss.createSheet('Bacon', 0)</span> code&gt;# Create a sheet at index 0 in the list of<br class="calibre5" />
+sheets.<br class="calibre5" />
+&lt;Sheet sheetId=814694991, title='Bacon', rowCount=1000, columnCount=26&gt;<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss.sheetTitles</span><br class="calibre5" />
+('Bacon', 'Sheet1', 'Spam', 'Eggs')</p>
+<p class="indent">These instructions add three new sheets to the spreadsheet: “Bacon,” “Spam,” and “Eggs” (in addition to the default “Sheet1”). The sheets in a spreadsheet are ordered, and new sheets go to the end of the list unless you pass a second argument to <span class="literal">createSheet()</span> specifying the sheet’s index. Here, you create the sheet titled “Bacon” at index <span class="literal">0</span>, making “Bacon” the first sheet in the spreadsheet and displacing the other three sheets by one position. This is similar to the behavior of the <span class="literal">insert()</span> list method.</p>
+<p class="indent">You can see the new sheets on the tabs at the bottom of the screen, as shown in <a href="#calibre_link-1238" class="calibre6">Figure 14-7</a>.</p>
+<div class="image1"><a id="calibre_link-1238" class="calibre6"></a><img src="../images/000114.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 14-7: The “Multiple Sheets” spreadsheet after adding sheets “Spam,” “Eggs,” and “Bacon”</em></p>
+<p class="indent">The <span class="literal">Sheet</span> object’s <span class="literal">delete()</span> method will delete the sheet from the spreadsheet. If you want to keep the sheet but delete the data it contains, call the <span class="literal">clear()</span> method to clear all the cells and make it a blank sheet. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">ss.sheetTitles</span><br class="calibre5" />
+('Bacon', 'Sheet1', 'Spam', 'Eggs')<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss[0].delete()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span># Delete the sheet at index 0: the "Bacon" sheet.<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss.sheetTitles</span><br class="calibre5" />
+('Sheet1', 'Spam', 'Eggs')<br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-870"></span>&gt;&gt;&gt; <span class="codestrong1">ss['Spam'].delete()</span> # Delete the "Spam" sheet.<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss.sheetTitles</span><br class="calibre5" />
+('Sheet1', 'Eggs')<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">sheet = ss['Eggs']&nbsp;&nbsp;</span># Assign a variable to the "Eggs" sheet.<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">sheet.delete()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span># Delete the "Eggs" sheet.<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss.sheetTitles</span><br class="calibre5" />
+('Sheet1',)<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss[0].clear()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span># Clear all the cells on the "Sheet1" sheet.<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss.sheetTitles&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span># The "Sheet1" sheet is empty but still exists.<br class="calibre5" />
+('Sheet1',)</p>
+<p class="indent">Deleting sheets is permanent; there’s no way to recover the data. However, you can back up sheets by copying them to another spreadsheet with the <span class="literal">copyTo()</span> method, as explained in the next section.</p>
+<h4 class="h2" id="calibre_link-469"><strong class="calibre2"><em class="calibre9">Copying Sheets</em></strong></h4>
+<p class="noindent">Every <span class="literal">Spreadsheet</span> object has an ordered list of the <span class="literal">Sheet</span> objects it contains, and you can use this list to reorder the sheets (as shown in the previous section) or copy them to other spreadsheets. To copy a <span class="literal">Sheet</span> object to another <span class="literal">Spreadsheet</span> object, call the <span class="literal">copyTo()</span> method. Pass it the destination <span class="literal">Spreadsheet</span> object as an argument. To create two spreadsheets and copy the first spreadsheet’s data to the other sheet, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import ezsheets</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss1 = ezsheets.createSpreadsheet('First Spreadsheet')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss2 = ezsheets.createSpreadsheet('Second Spreadsheet')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss1[0]</span><br class="calibre5" />
+&lt;Sheet sheetId=0, title='Sheet1', rowCount=1000, columnCount=26&gt;<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss1[0].updateRow(1, ['Some', 'data', 'in', 'the', 'first', 'row'])</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss1[0].copyTo(ss2)</span> # Copy the ss1's Sheet1 to the ss2 spreadsheet.<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ss2.sheetTitles&nbsp;&nbsp;&nbsp;&nbsp;</span># ss2 now contains a copy of ss1's Sheet1.<br class="calibre5" />
+('Sheet1', 'Copy of Sheet1')</p>
+<p class="indent">Note that since the destination spreadsheet (<span class="literal">ss2</span> in the previous example) already had a sheet named <span class="literal">Sheet1</span>, the copied sheet will be named <span class="literal">Copy of Sheet1</span>. Copied sheets appear at the end of the list of the destination spreadsheet’s sheets. If you wish, you can change their <span class="literal">index</span> attribute to reorder them in the new spreadsheet.</p>
+<h3 class="h1" id="calibre_link-470"><strong class="calibre2">Working with Google Sheets Quotas</strong></h3>
+<p class="noindent">Because Google Sheets is online, it’s easy to share sheets among multiple users who can all access the sheets simultaneously. However, this also means that reading and updating the sheets will be slower than reading and updating Excel files stored locally on your hard drive. In addition, Google Sheets has limits on how many read and write operations you can perform.</p>
+<p class="indent">According to Google’s developer guidelines, users are restricted to creating 250 new spreadsheets a day, and free Google accounts can <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1825"></span>perform 100 read and 100 write requests per 100 seconds. Attempting to exceed this quota will raise the <span class="literal">googleapiclient.errors.HttpError</span> “Quota exceeded for quota group” exception. EZSheets will automatically catch this exception and retry the request. When this happens, the function calls to read or write data will take several seconds (or even a full minute or two) before they return. If the request continues to fail (which is possible if another script using the same credentials is also making requests), EZSheets will re-raise this exception.</p>
+<p class="indent">This means that, on occasion, your EZSheets method calls may take several seconds before they return. If you want to view your API usage or increase your quota, go to the IAM &amp; Admin Quotas page at <em class="calibre7"><a href="https://console.developers.google.com/quotas/" class="calibre6">https://console.developers.google.com/quotas/</a></em> to learn about paying for increased usage. If you’d rather just deal with the <span class="literal">HttpError</span> exceptions yourself, you can set <span class="literal">ezsheets.IGNORE_QUOTA</span> to <span class="literal">True</span>, and EZSheet’s methods will raise these exceptions when it encounters them.</p>
+<h3 class="h1" id="calibre_link-471"><strong class="calibre2">Summary</strong></h3>
+<p class="noindent">Google Sheets is a popular online spreadsheet application that runs in your browser. Using the EZSheets third-party module, you can download, create, read, and modify spreadsheets. EZSheets represents spreadsheets as <span class="literal">Spreadsheet</span> objects, each of which contains an ordered list of <span class="literal">Sheet</span> objects. Each sheet has columns and rows of data that you can read and update in several ways.</p>
+<p class="indent">While Google Sheets makes sharing data and cooperative editing easy, its main disadvantage is speed: you must update spreadsheets with web requests, which can take a few seconds to execute. But for most purposes, this speed restriction won’t affect Python scripts using EZSheets. Google Sheets also limits how often you can make changes.</p>
+<p class="indent">For complete documentation of EZSheet’s features, visit <em class="calibre7"><a href="https://ezsheets.readthedocs.io/" class="calibre6">https://ezsheets.readthedocs.io/</a></em>.</p>
+<h3 class="h1" id="calibre_link-472"><strong class="calibre2">Practice Questions</strong></h3>
+<p class="question"><a id="calibre_link-1415" href="#calibre_link-1239" class="calibre6">1</a>. What three files do you need for EZSheets to access Google Sheets?</p>
+<p class="question"><a id="calibre_link-1416" href="#calibre_link-1240" class="calibre6">2</a>. What two types of objects does EZSheets have?</p>
+<p class="question"><a id="calibre_link-1417" href="#calibre_link-1241" class="calibre6">3</a>. How can you create an Excel file from a Google Sheet spreadsheet?</p>
+<p class="question"><a id="calibre_link-1418" href="#calibre_link-1242" class="calibre6">4</a>. How can you create a Google Sheet spreadsheet from an Excel file?</p>
+<p class="question"><a id="calibre_link-1419" href="#calibre_link-1243" class="calibre6">5</a>. The <span class="literal">ss</span> variable contains a <span class="literal">Spreadsheet</span> object. What code will read data from the cell B2 in a sheet titled “Students”?</p>
+<p class="question"><a id="calibre_link-1420" href="#calibre_link-1244" class="calibre6">6</a>. How can you find the column letters for column 999?</p>
+<p class="question"><a id="calibre_link-1421" href="#calibre_link-1245" class="calibre6">7</a>. How can you find out how many rows and columns a sheet has?</p>
+<p class="question"><a id="calibre_link-1422" href="#calibre_link-1246" class="calibre6">8</a>. How do you delete a spreadsheet? Is this deletion permanent?</p>
+<p class="question"><a id="calibre_link-1423" href="#calibre_link-1247" class="calibre6">9</a>. <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1826"></span>What functions will create a new <span class="literal">Spreadsheet</span> object and a new <span class="literal">Sheet</span> object, respectively?</p>
+<p class="question1"><a id="calibre_link-1424" href="#calibre_link-1248" class="calibre6">10</a>. What will happen if, by making frequent read and write requests with EZSheets, you exceed your Google account’s quota?</p>
+<h3 class="h1" id="calibre_link-473"><strong class="calibre2">Practice Projects</strong></h3>
+<p class="noindent">For practice, write programs to do the following tasks.</p>
+<h4 class="h2" id="calibre_link-474"><strong class="calibre2"><em class="calibre9">Downloading Google Forms Data</em></strong></h4>
+<p class="noindent">Google Forms allows you to create simple online forms that make it easy to collect information from people. The information they enter into the form is stored in a Google Sheet. For this project, write a program that can automatically download the form information that users have submitted. Go to <em class="calibre7"><a href="https://docs.google.com/forms/" class="calibre6">https://docs.google.com/forms/</a></em> and start a new form; it will be blank. Add fields to the form that ask the user for a name and email address. Then click the <strong class="calibre4">Send</strong> button in the upper right to get a link to your new form, such as <em class="calibre7"><a href="https://goo.gl/forms/QZsq5sC2Qe4fYO592/" class="calibre6">https://goo.gl/forms/QZsq5sC2Qe4fYO592/</a></em>. Try to enter a few example responses into this form.</p>
+<p class="indent">On the “Responses” tab of your form, click the green <strong class="calibre4">Create Spreadsheet</strong> button to create a Google Sheets spreadsheet that will hold the responses that users submit. You should see your example responses in the first rows of this spreadsheet. Then write a Python script using EZSheets to collect a list of the email addresses on this spreadsheet.</p>
+<h4 class="h2" id="calibre_link-475"><strong class="calibre2"><em class="calibre9">Converting Spreadsheets to Other Formats</em></strong></h4>
+<p class="noindent">You can use Google Sheets to convert a spreadsheet file into other formats. Write a script that passes a submitted file to <span class="literal">upload()</span>. Once the spreadsheet has uploaded to Google Sheets, download it using <span class="literal">downloadAsExcel()</span>, <span class="literal">downloadAsODS()</span>, and other such functions to create a copy of the spreadsheet in these other formats.</p>
+<h4 class="h2" id="calibre_link-476"><strong class="calibre2"><em class="calibre9">Finding Mistakes in a Spreadsheet</em></strong></h4>
+<p class="noindent">After a long day at the bean-counting office, I’ve finished a spreadsheet with all the bean totals and uploaded them to Google Sheets. The spreadsheet is publicly viewable (but not editable). You can get this spreadsheet with the following code:</p>
+<p class="programs">&gt;&gt;&gt; import ezsheets<br class="calibre5" />
+&gt;&gt;&gt; ss = ezsheets.Spreadsheet('1jDZEdvSIh4TmZxccyy0ZXrH-ELlrwq8_YYiZrEOB4jg')</p>
+<p class="indent">You can look at this spreadsheet in your browser by going to <em class="calibre7"><a href="https://docs.google.com/spreadsheets/d/1jDZEdvSIh4TmZxccyy0ZXrH-ELlrwq8_YYiZrEOB4jg/edit?usp=sharing/" class="calibre6">https://docs.google.com/spreadsheets/d/1jDZEdvSIh4TmZxccyy0ZXrH-ELlrwq8_YYiZrEOB4jg/edit?usp=sharing/</a></em>. The columns of the first sheet in this spreadsheet are “Beans per Jar,” “Jars,” and “Total Beans.” The “Total Beans” column is <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1827"></span>the product of the numbers in the “Beans per Jar” and “Jars” columns. However, there is a mistake in one of the 15,000 rows in this sheet. That’s too many rows to check by hand. Luckily, you can write a script that checks the totals.</p>
+<p class="indent">As a hint, you can access the individual cells in a row with <span class="codeitalic">ss</span><span class="literal">[0].getRow(</span><span class="codeitalic">rowNum</span><span class="literal">)</span>, where <span class="codeitalic">ss</span> is the <span class="literal">Spreadsheet</span> object and <span class="codeitalic">rowNum</span> is the row number. Remember that row numbers in Google Sheets begin at 1, not 0. The cell values will be strings, so you’ll need to convert them to integers so your program can work with them. The expression <span class="literal">int(</span><span class="codeitalic">ss</span><span class="literal">[0].getRow(2)[0]) * int(</span><span class="codeitalic">ss</span><span class="literal">[0].getRow(2)[1]) == int(</span><span class="codeitalic">ss</span><span class="literal">[0].getRow(2)[2])</span> evaluates to <span class="literal">True</span> if the row has the correct total. Put this code in a loop to identify which row in the sheet has the incorrect total.</p>
+</div>
+
+<div><center><a href="../chapter13"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="../chapter15"><img src="/images/next.png" /></a></center></div>
+
+{% endblock %}

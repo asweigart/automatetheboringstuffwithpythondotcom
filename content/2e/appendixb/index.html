@@ -1,0 +1,76 @@
+{% extends "secondeditionbase.html" %}
+{% set title = 'Automate the Boring Stuff with Python' %}
+{% block content %}
+
+
+
+<div><center><a href="../appendixa"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="../appendixc"><img src="/images/next.png" /></a></center></div>
+
+<div class="calibre" id="calibre_link-1190">
+<h2 class="h2b" id="calibre_link-35"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1037" class="calibre1"></span><strong class="calibre2"><span class="big">B</span><br class="calibre12" />RUNNING PROGRAMS</strong></h2>
+<div class="image"><img src="../images/000079.jpg" alt="Image" class="calibre3" /></div>
+<p class="noindent">If you have a program open in Mu, running it is a simple matter of pressing F5 or clicking the Run button at the top of the window. This is an easy way to run programs while writing them, but opening Mu to run your finished programs can be a burden. There are more convenient ways to execute Python scripts, depending on which operating system you’re using.</p>
+<h3 class="h1" id="calibre_link-680"><strong class="calibre2">Running Programs from the Terminal Window</strong></h3>
+<p class="noindent">When you open a terminal window (such as Command Prompt on Windows or Terminal on macOS and Linux), you’ll see a mostly blank window into which you can enter text commands. You can run your programs from the terminal, but if you’re not used to it, using your computer through a terminal (also called a <em class="calibre7">command line</em>) can be intimidating: unlike a graphical user interface, it offers no hints about what you’re supposed to do.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1038"></span>To open a terminal window on Windows, click the Start button, enter Command Prompt, and press <small class="calibre11">ENTER</small>. On macOS, click on the Spotlight icon in the upper right, type Terminal, and press <small class="calibre11">ENTER</small>. On Ubuntu Linux, you can press the <small class="calibre11">WIN</small> key to bring up Dash, type Terminal, and press <small class="calibre11">ENTER</small>. The keyboard shortcut <small class="calibre11">CTRL</small>-<small class="calibre11">ALT</small>-T will also open a terminal window on Ubuntu.</p>
+<p class="indent">Just as the interactive shell has a <span class="literal">&gt;&gt;&gt;</span> prompt, the terminal will display a prompt for you to enter commands. On Windows, it will be the full path of the folder you are currently in:</p>
+<p class="programs">C:\Users\Al&gt;<span class="codestrong1">your commands go here</span></p>
+<p class="indent">On macOS, the prompt shows your computer’s name, a colon, the current working directory (with your home folder represented as <span class="literal">~</span> for short), and your username, followed by a dollar sign (<span class="literal">$</span>):</p>
+<p class="programs">Als-MacBook-Pro:~ al$ <span class="codestrong1">your commands go here</span></p>
+<p class="indent">On Ubuntu Linux, the prompt is similar to macOS’s, except it begins with the username and an <span class="literal">@</span> sign:</p>
+<p class="programs">al@al-VirtualBox:~$ <span class="codestrong1">your commands go here</span></p>
+<p class="indent">It’s possible to customize these prompts, but that’s beyond the scope of this book.</p>
+<p class="indent">When you enter a command, like <span class="literal">python</span> on Windows or <span class="literal">python3</span> on macOS and Linux, the terminal checks for a program with that name in the folder you’re currently in. If it doesn’t find it there, it will check the folders listed in the <span class="literal">PATH</span> environment variable. You can think of <em class="calibre7">environment variables</em> as variables for your entire operating system. They’ll contain a few system settings. To see the value stored in the <span class="literal">PATH</span> environment variable, run <span class="literal">echo %PATH%</span> on Windows and <span class="literal">echo $PATH</span> on macOS and Linux. Here’s an example on macOS:</p>
+<p class="programs">Als-MacBook-Pro:~ al$ <span class="codestrong1">echo $PATH</span><br class="calibre5" />
+/Library/Frameworks/Python.framework/Versions/3.7/bin:/usr/local/bin:/usr/<br class="calibre5" />
+bin:/bin:/usr/sbin:/sbin</p>
+<p class="indent">On macOS, the <em class="calibre7">python3</em> program file is located in the <em class="calibre7">/Library/Frameworks/Python.framework/Versions/3.7/bin</em> folder, so you don’t have to enter <span class="literal">/Library/Frameworks/Python.framework/Versions/3.7/bin/python3</span> or switch to that folder first to run it; you can enter <span class="literal">python3</span> from any folder, and the terminal will find it in one of the <span class="literal">PATH</span> environment variable’s folders. Adding a program’s folder to the <span class="literal">PATH</span> environment variable is a convenient shortcut.</p>
+<p class="indent">If you want to run a <em class="calibre7">.py</em> program, you must enter <span class="literal">python</span> (or <span class="literal">python3</span>) followed by the <em class="calibre7">.py</em> filename. This will run Python, and in turn Python will run the code it finds in that <em class="calibre7">.py</em> file. After the Python program finishes, <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-801"></span>you’ll return to the terminal prompt. For example, on Windows, a simple “Hello, world!” program would look like this:</p>
+<p class="programs">Microsoft Windows [Version 10.0.17134.648]<br class="calibre5" />
+(c) 2018 Microsoft Corporation. All rights reserved.<br class="calibre5" />
+<br class="calibre5" />
+C:\Users\Al&gt;<span class="codestrong1">python hello.py</span><br class="calibre5" />
+Hello, world!<br class="calibre5" />
+<br class="calibre5" />
+C:\Users\Al&gt;</p>
+<p class="indent">Running <span class="literal">python</span> (or <span class="literal">python3</span>) without any filename will cause Python to launch the interactive shell.</p>
+<h3 class="h1" id="calibre_link-681"><strong class="calibre2">Running Python Programs on Windows</strong></h3>
+<p class="noindent">There are a few other ways you can run Python programs on Windows. Instead of opening a terminal window to run your Python scripts, you can press <small class="calibre11">WIN</small>-R to open the Run Dialog box and enter <span class="literal">py C:\</span><span class="codeitalic">path\to\your\pythonScript.py</span>, as shown in <a href="#calibre_link-1191" class="calibre6">Figure B-1</a>. The <em class="calibre7">py.exe</em> program is installed at <em class="calibre7">C:\Windows\py.exe</em>, which is already in the <span class="literal">PATH</span> environment variable, and typing the <em class="calibre7">.exe</em> file extension is optional when running programs.</p>
+<div class="image1"><a id="calibre_link-1191" class="calibre6"></a><img src="../images/000028.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure B-1: The Run dialog on Windows</em></p>
+<p class="indent">The downside of this method is that you must enter the full path to your script. Also, while running your Python script from the dialog box will open a new terminal window to display its output, this window will automatically close when the program ends, and you might miss some output.</p>
+<p class="indent">You can solve these problems by creating a <em class="calibre7">batch script</em>, which is a small text file with the <em class="calibre7">.bat</em> file extension that can run multiple terminal commands, much like a shell script in macOS and Linux. You can use a text editor such as Notepad to create these files.</p>
+<p class="indent">To make a batch file, make a new text file containing a single line, like this:</p>
+<p class="programs"><span class="codestrong1">@py.exe C:\path\to\your\pythonScript.py %*</span><br class="calibre5" />
+<span class="codestrong1">@pause</span></p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1036"></span>Replace this path with the absolute path to your own program and save this file with a <em class="calibre7">.bat</em> file extension (for example, <em class="calibre7">pythonScript.bat</em>). The <span class="literal">@</span> sign at the start of each command prevents it from being displayed in the terminal window, and the <span class="literal">%*</span> forwards any command line arguments entered after the batch filename to the Python script. The Python script, in turn, reads the command line arguments in the <span class="literal">sys.argv</span> list. This batch file will keep you from having to type the full absolute path for the Python program every time you want to run it. In addition, <span class="literal">@pause</span> will add <span class="literal">"Press any key to continue..."</span> after the end of the Python script to prevent the program’s window from disappearing too quickly. I recommend you place all your batch and <em class="calibre7">.py</em> files in a single folder that already exists in the <span class="literal">PATH</span> environment variable, such as <em class="calibre7">C:\Users\&lt;USERNAME&gt;</em>.</p>
+<p class="indent">With a batch file set up to run your Python script, you don’t need to open a terminal window and type the full file path and name of your Python script. Instead, just press <small class="calibre11">WIN</small>-R, enter <span class="literal">pythonScript</span> (the full <em class="calibre7">pythonScript.bat</em> name isn’t necessary), and press <small class="calibre11">ENTER</small> to run your script.</p>
+<h3 class="h1" id="calibre_link-682"><strong class="calibre2">Running Python Programs on macOS</strong></h3>
+<p class="noindent">On macOS, you can create a shell script to run your Python scripts by creating a text file with the .<em class="calibre7">command</em> file extension. Create a new file in a text editor such as TextEdit and add the following content:</p>
+<p class="programs"><span class="codestrong1">#!/usr/bin/env bash</span><br class="calibre5" />
+<span class="codestrong1">python3 /path/to/your/pythonScript.py</span></p>
+<p class="indent">Save this file with the .<em class="calibre7">command</em> file extension in your home folder (for example, on my computer it’s <em class="calibre7">/Users/al</em>). In a terminal window, make this shell script executable by running <span class="literal">chmod u+x</span> <span class="codeitalic">yourScript</span><span class="literal">.command</span>. Now you will be able to click the Spotlight icon (or press <img src="../images/000064.jpg" alt="image" class="calibre3" />-<small class="calibre11">SPACE</small>) and enter <span class="codeitalic">yourScript</span><span class="literal">.command</span> to run the shell script, which in turn will run your Python script.</p>
+<h3 class="h1" id="calibre_link-683"><strong class="calibre2">Running Python Programs on Ubuntu Linux</strong></h3>
+<p class="noindent">Running your Python scripts in Ubuntu Linux from the Dash menu requires considerable setup. Let’s say we have a <em class="calibre7">/home/al/example.py</em> script (your Python script could be in a different folder with a different filename) that we want to run from Dash. First, use a text editor such as <span class="literal">gedit</span> to create a new file with the following content:</p>
+<p class="programs">[Desktop Entry]<br class="calibre5" />
+Name=example.py<br class="calibre5" />
+Exec=gnome-terminal -- /home/al/example.sh<br class="calibre5" />
+Type=Application<br class="calibre5" />
+Categories=GTK;GNOME;Utility;</p>
+<p class="indent">Save this file to the <em class="calibre7">/home/&lt;al&gt;/.local/share/applications</em> folder (replacing <em class="calibre7">al</em> with your own username) as <em class="calibre7">example.desktop</em>. If your text editor doesn’t <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1089"></span>show the <em class="calibre7">.local</em> folder (because folders that begin with a period are considered hidden), you may have to save it to your home folder (such as <em class="calibre7">/home/al</em>) and open a terminal window to move the file with the <span class="literal">mv /home/al/example.desktop /home/al/.local/share/applications</span> command.</p>
+<p class="indent">When the <em class="calibre7">example.desktop</em> file is in the <em class="calibre7">/home/al/.local/share/applications</em> folder, you’ll be able to press the Windows key on your keyboard to bring up Dash and type <em class="calibre7">example.py</em> (or whatever you put for the <span class="literal">Name</span> field). This opens a new terminal window (specifically, the <span class="literal">gnome-terminal</span> program) that runs the <em class="calibre7">/home/al/example.sh</em> shell script, which we’ll create next.</p>
+<p class="indent">In the text editor, create a new file with the following content:</p>
+<p class="programs">#!/usr/bin/env bash<br class="calibre5" />
+python3 /home/al/example.py<br class="calibre5" />
+bash</p>
+<p class="indent">Save this file to <em class="calibre7">/home/al/example.sh</em>. This is a shell script: a script that runs a series of terminal commands. This shell script will run our <em class="calibre7">/home/al/example.py</em> Python script and then run the bash shell program. Without the bash command on the last line, the terminal window would close as soon as the Python script finishes and you’d miss any text that <span class="literal">print()</span> function calls put on the screen.</p>
+<p class="indent">You’ll need to add execute permissions to this shell script, so run the following command from a terminal window:</p>
+<p class="programs">al@ubuntu:~$ <span class="codestrong1">chmod u+x /home/al/example.sh</span></p>
+<p class="indent">With the <em class="calibre7">example.desktop</em> and <em class="calibre7">example.sh</em> files set up, you’ll now be able to run the <em class="calibre7">example.py</em> script by pressing the Windows key and entering <em class="calibre7">example.py</em> (or whatever name you put in the <span class="literal">Name</span> field of the <em class="calibre7">example.desktop</em> file).</p>
+<h3 class="h1" id="calibre_link-684"><strong class="calibre2">Running Python Programs with Assertions Disabled</strong></h3>
+<p class="noindent">You can disable the <span class="literal">assert</span> statements in your Python programs to gain a slight performance improvement. When running Python from the terminal, include the <span class="literal">-O</span> switch after <span class="literal">python</span> or <span class="literal">python3</span> and before the name of the <em class="calibre7">.py</em> file. This will run an optimized version of your program that skips the assertion checks.<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1887"></span></p>
+</div>
+
+<div><center><a href="../appendixa"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="../appendixc"><img src="/images/next.png" /></a></center></div>
+
+{% endblock %}

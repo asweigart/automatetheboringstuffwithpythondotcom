@@ -1,0 +1,804 @@
+{% extends "secondeditionbase.html" %}
+{% set title = 'Automate the Boring Stuff with Python' %}
+{% block content %}
+
+<div><center><a href="../chapter11"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="../chapter13"><img src="/images/next.png" /></a></center></div>
+
+
+<div class="calibre" id="calibre_link-33">
+<h2 class="h2b" id="calibre_link-372"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1094" class="calibre1"></span><strong class="calibre2"><span class="big">12</span><br class="calibre12" />WEB SCRAPING</strong></h2>
+<div class="image"><img src="../images/000070.jpg" alt="Image" class="calibre3" /></div>
+<p class="noindent">In those rare, terrifying moments when I’m without Wi-Fi, I realize just how much of what I do on the computer is really what I do on the internet. Out of sheer habit I’ll find myself trying to check email, read friends’ Twitter feeds, or answer the question, “Did Kurtwood Smith have any major roles before he was in the original 1987 <em class="calibre7">RoboCop</em>?”<sup class="calibre20"><a id="calibre_link-1170" href="#calibre_link-34" class="calibre6">1</a></sup></p>
+<p class="indentb">Since so much work on a computer involves going on the internet, it’d be great if your programs could get online. <em class="calibre7">Web scraping</em> is the term for using a program to download and process content from the web. For example, Google runs many web scraping programs to index web pages for <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-824"></span>its search engine. In this chapter, you will learn about several modules that make it easy to scrape web pages in Python.</p>
+<p class="hang"><span class="codestrong">webbrowser</span> Comes with Python and opens a browser to a specific page.</p>
+<p class="hang"><span class="codestrong">requests</span> Downloads files and web pages from the internet.</p>
+<p class="hang"><span class="codestrong">bs4</span> Parses HTML, the format that web pages are written in.</p>
+<p class="hang"><span class="codestrong">selenium</span> Launches and controls a web browser. The <span class="literal">selenium</span> module is able to fill in forms and simulate mouse clicks in this browser.</p>
+<h3 class="h1" id="calibre_link-373"><strong class="calibre2">Project: mapIt.py with the webbrowser Module</strong></h3>
+<p class="noindent">The <span class="literal">webbrowser</span> module’s <span class="literal">open()</span> function can launch a new browser to a specified URL. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import webbrowser</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">webbrowser.open('https://inventwithpython.com/')</span></p>
+<p class="indent">A web browser tab will open to the URL <em class="calibre7"><a href="https://inventwithpython.com/" class="calibre6">https://inventwithpython.com/</a></em>. This is about the only thing the <span class="literal">webbrowser</span> module can do. Even so, the <span class="literal">open()</span> function does make some interesting things possible. For example, it’s tedious to copy a street address to the clipboard and bring up a map of it on Google Maps. You could take a few steps out of this task by writing a simple script to automatically launch the map in your browser using the contents of your clipboard. This way, you only have to copy the address to a clipboard and run the script, and the map will be loaded for you.</p>
+<p class="indent">This is what your program does:</p>
+<ol class="calibre10">
+<li class="noindent1">Gets a street address from the command line arguments or clipboard</li>
+<li class="noindent1">Opens the web browser to the Google Maps page for the address</li>
+</ol>
+<p class="indent">This means your code will need to do the following:</p>
+<ol class="calibre10">
+<li class="noindent1">Read the command line arguments from <span class="literal">sys.argv</span>.</li>
+<li class="noindent1">Read the clipboard contents.</li>
+<li class="noindent1">Call the <span class="literal">webbrowser.open()</span> function to open the web browser.</li>
+</ol>
+<p class="indent">Open a new file editor tab and save it as <em class="calibre7">mapIt.py</em>.</p>
+<h4 class="h2" id="calibre_link-374"><strong class="calibre2"><em class="calibre9">Step 1: Figure Out the URL</em></strong></h4>
+<p class="noindent">Based on the instructions in <a href="#calibre_link-35" class="calibre6">Appendix B</a>, set up <em class="calibre7">mapIt.py</em> so that when you run it from the command line, like so . . .</p>
+<p class="programs">C:\&gt; mapit 870 Valencia St, San Francisco, CA 94110</p>
+<p class="noindent">. . . the script will use the command line arguments instead of the clipboard. If there are no command line arguments, then the program will know to use the contents of the clipboard.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-854"></span>First you need to figure out what URL to use for a given street address. When you load <em class="calibre7"><a href="https://maps.google.com/" class="calibre6">https://maps.google.com/</a></em> in the browser and search for an address, the URL in the address bar looks something like this: <em class="calibre7"><a href="https://www.google.com/maps/place/870+Valencia+St/@37.7590311,-122.4215096,17z/data=!3m1!4b1!4m2!3m1!1s0x808f7e3dadc07a37:0xc86b0b2bb93b73d8" class="calibre6">https://www.google.com/maps/place/870+Valencia+St/@37.7590311,-122.4215096,17z/data=!3m1!4b1!4m2!3m1!1s0x808f7e3dadc07a37:0xc86b0b2bb93b73d8</a></em>.</p>
+<p class="indent">The address is in the URL, but there’s a lot of additional text there as well. Websites often add extra data to URLs to help track visitors or customize sites. But if you try just going to <em class="calibre7"><a href="https://www.google.com/maps/place/870+Valencia+St+San+Francisco+CA/" class="calibre6">https://www.google.com/maps/place/870+Valencia+St+San+Francisco+CA/</a></em>, you’ll find that it still brings up the correct page. So your program can be set to open a web browser to <span class="literal">'https://www.google.com/maps/place/</span><span class="codeitalic">your_address_string</span><span class="literal">'</span> (where <span class="codeitalic">your_address_string</span> is the address you want to map).</p>
+<h4 class="h2" id="calibre_link-375"><strong class="calibre2"><em class="calibre9">Step 2: Handle the Command Line Arguments</em></strong></h4>
+<p class="noindent">Make your code look like this:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# mapIt.py - Launches a map in the browser using an address from the<br class="calibre5" />
+# command line or clipboard.<br class="calibre5" /><br class="calibre5" />
+import webbrowser, sys<br class="calibre5" />
+if len(sys.argv) &gt; 1:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;# Get address from command line.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;address = ' '.join(sys.argv[1:])<br class="calibre5" /><br class="calibre5" />
+# TODO: Get address from clipboard.</p>
+<p class="indent">After the program’s <span class="literal">#!</span> shebang line, you need to import the <span class="literal">webbrowser</span> module for launching the browser and import the <span class="literal">sys</span> module for reading the potential command line arguments. The <span class="literal">sys.argv</span> variable stores a list of the program’s filename and command line arguments. If this list has more than just the filename in it, then <span class="literal">len(sys.argv)</span> evaluates to an integer greater than <span class="literal">1</span>, meaning that command line arguments have indeed been provided.</p>
+<p class="indent">Command line arguments are usually separated by spaces, but in this case, you want to interpret all of the arguments as a single string. Since <span class="literal">sys.argv</span> is a list of strings, you can pass it to the <span class="literal">join()</span> method, which returns a single string value. You don’t want the program name in this string, so instead of <span class="literal">sys.argv</span>, you should pass <span class="literal">sys.argv[1:]</span> to chop off the first element of the array. The final string that this expression evaluates to is stored in the <span class="literal">address</span> variable.</p>
+<p class="indent">If you run the program by entering this into the command line . . .</p>
+<p class="programs">mapit 870 Valencia St, San Francisco, CA 94110</p>
+<p class="noindent">. . . the <span class="literal">sys.argv</span> variable will contain this list value:</p>
+<p class="programs">['mapIt.py', '870', 'Valencia', 'St, ', 'San', 'Francisco, ', 'CA', '94110']</p>
+<p class="indent">The <span class="literal">address</span> variable will contain the string <span class="literal">'870 Valencia St, San Francisco, CA 94110'</span>.</p>
+<h4 class="h2" id="calibre_link-376"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1040" class="calibre1"></span><strong class="calibre2"><em class="calibre9">Step 3: Handle the Clipboard Content and Launch the Browser</em></strong></h4>
+<p class="noindent">Make your code look like the following:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# mapIt.py - Launches a map in the browser using an address from the<br class="calibre5" />
+# command line or clipboard.<br class="calibre5" />
+import webbrowser, sys<span class="codestrong1">,</span> <span class="codestrong1">pyperclip</span><br class="calibre5" />
+if len(sys.argv) &gt; 1:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;# Get address from command line.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;address = ' '.join(sys.argv[1:])<br class="calibre5" />
+<span class="codestrong1">else:</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;# Get address from clipboard.</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;address = pyperclip.paste()</span><br class="calibre5" /><br class="calibre5" />
+<span class="codestrong1">webbrowser.open('https://www.google.com/maps/place/' + address)</span></p>
+<p class="indent">If there are no command line arguments, the program will assume the address is stored on the clipboard. You can get the clipboard content with <span class="literal">pyperclip.paste()</span> and store it in a variable named <span class="literal">address</span>. Finally, to launch a web browser with the Google Maps URL, call <span class="literal">webbrowser.open()</span>.</p>
+<p class="indent">While some of the programs you write will perform huge tasks that save you hours, it can be just as satisfying to use a program that conveniently saves you a few seconds each time you perform a common task, such as getting a map of an address. <a href="#calibre_link-36" class="calibre6">Table 12-1</a> compares the steps needed to display a map with and without <em class="calibre7">mapIt.py</em>.</p>
+<p class="tabcap" id="calibre_link-36"><strong class="calibre4">Table 12-1:</strong> Getting a Map with and Without <em class="calibre7">mapIt.py</em></p>
+<table class="topbot-d">
+<colgroup class="calibre13">
+<col class="calibre18"></col>
+<col class="calibre18"></col>
+</colgroup>
+<thead class="calibre15">
+<tr class="calibre16">
+<td class="table-h"><p class="tab_th"><strong class="calibre4">Manually getting a map</strong></p></td>
+<td class="table-h"><p class="tab_th"><strong class="calibre4">Using mapIt.py</strong></p></td>
+</tr>
+</thead>
+<tbody class="calibre17">
+<tr class="calibre16">
+<td class="table-ba"><ol class="calibre10">
+<li class="noindent1">Highlight the address.</li>
+<li class="noindent1">Copy the address.</li>
+<li class="noindent1">Open the web browser.</li>
+<li class="noindent1">Go to <em class="calibre7"><a href="https://maps.google.com/" class="calibre6">https://maps.google.com/</a></em>.</li>
+<li class="noindent1">Click the address text field.</li>
+<li class="noindent1">Paste the address.</li>
+<li class="noindent1">Press enter.</li></ol></td>
+<td class="table-ba"><ol class="calibre10">
+<li class="noindent1">Highlight the address.</li>
+<li class="noindent1">Copy the address.</li>
+<li class="noindent1">Run <em class="calibre7">mapIt.py</em>.</li></ol></td>
+</tr>
+</tbody>
+</table>
+<p class="indent">See how <em class="calibre7">mapIt.py</em> makes this task less tedious?</p>
+<h4 class="h2" id="calibre_link-377"><strong class="calibre2"><em class="calibre9">Ideas for Similar Programs</em></strong></h4>
+<p class="noindent">As long as you have a URL, the <span class="literal">webbrowser</span> module lets users cut out the step of opening the browser and directing themselves to a website. Other programs could use this functionality to do the following:</p>
+<ul class="calibre8">
+<li class="noindent1">Open all links on a page in separate browser tabs.</li>
+<li class="noindent1">Open the browser to the URL for your local weather.</li>
+<li class="noindent1">Open several social network sites that you regularly check.</li>
+</ul>
+<h3 class="h1" id="calibre_link-378"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-917" class="calibre1"></span><strong class="calibre2">Downloading Files from the Web with the requests Module</strong></h3>
+<p class="noindent">The <span class="literal">requests</span> module lets you easily download files from the web without having to worry about complicated issues such as network errors, connection problems, and data compression. The <span class="literal">requests</span> module doesn’t come with Python, so you’ll have to install it first. From the command line, run <span class="codestrong">pip install --user requests</span>. (<a href="#calibre_link-2" class="calibre6">Appendix A</a> has additional details on how to install third-party modules.)</p>
+<p class="indent">The <span class="literal">requests</span> module was written because Python’s <span class="literal">urllib2</span> module is too complicated to use. In fact, take a permanent marker and black out this entire paragraph. Forget I ever mentioned <span class="literal">urllib2</span>. If you need to download things from the web, just use the <span class="literal">requests</span> module.</p>
+<p class="indent">Next, do a simple test to make sure the <span class="literal">requests</span> module installed itself correctly. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import requests</span></p>
+<p class="indent">If no error messages show up, then the <span class="literal">requests</span> module has been successfully installed.</p>
+<h4 class="h2" id="calibre_link-379"><strong class="calibre2"><em class="calibre9">Downloading a Web Page with the requests.get() Function</em></strong></h4>
+<p class="noindent">The <span class="literal">requests.get()</span> function takes a string of a URL to download. By calling <span class="literal">type()</span> on <span class="literal">requests.get()</span>’s return value, you can see that it returns a <span class="literal">Response</span> object, which contains the response that the web server gave for your request. I’ll explain the <span class="literal">Response</span> object in more detail later, but for now, enter the following into the interactive shell while your computer is connected to the internet:</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">import requests</span><br class="calibre5" />
+<span class="ent">➊</span> &gt;&gt;&gt; <span class="codestrong1">res = requests.get('https://automatetheboringstuff.com/files/rj.txt')</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">type(res)</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&lt;class 'requests.models.Response'&gt;<br class="calibre5" />
+<span class="ent">➋</span> &gt;&gt;&gt; <span class="codestrong1">res.status_code == requests.codes.ok</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;True<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">len(res.text)</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;178981<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">print(res.text[:250])</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;The Project Gutenberg EBook of Romeo and Juliet, by William Shakespeare<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;This eBook is for the use of anyone anywhere at no cost and with<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;almost no restrictions whatsoever.&nbsp;&nbsp;You may copy it, give it away or<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;re-use it under the terms of the Proje</p>
+<p class="indent">The URL goes to a text web page for the entire play of <em class="calibre7">Romeo and Juliet</em>, provided on this book’s site <span class="ent">➊</span>. You can tell that the request for this web page succeeded by checking the <span class="literal">status_code</span> attribute of the <span class="literal">Response</span> object. If it is equal to the value of <span class="literal">requests.codes.ok</span>, then everything went fine <span class="ent">➋</span>. (Incidentally, the status code for “OK” in the HTTP protocol is 200. You may already be familiar with the 404 status code for “Not Found.”) <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1073"></span>You can find a complete list of HTTP status codes and their meanings at <em class="calibre7"><a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes" class="calibre6">https://en.wikipedia.org/wiki/List_of_HTTP_status_codes</a></em>.</p>
+<p class="indent">If the request succeeded, the downloaded web page is stored as a string in the <span class="literal">Response</span> object’s <span class="literal">text</span> variable. This variable holds a large string of the entire play; the call to <span class="literal">len(res.text)</span> shows you that it is more than 178,000 characters long. Finally, calling <span class="literal">print(res.text[:250])</span> displays only the first 250 characters.</p>
+<p class="indent">If the request failed and displayed an error message, like “Failed to establish a new connection” or “Max retries exceeded,” then check your internet connection. Connecting to servers can be quite complicated, and I can’t give a full list of possible problems here. You can find common causes of your error by doing a web search of the error message in quotes.</p>
+<h4 class="h2" id="calibre_link-380"><strong class="calibre2"><em class="calibre9">Checking for Errors</em></strong></h4>
+<p class="noindent">As you’ve seen, the <span class="literal">Response</span> object has a <span class="literal">status_code</span> attribute that can be checked against <span class="literal">requests.codes.ok</span> (a variable that has the integer value <span class="literal">200</span>) to see whether the download succeeded. A simpler way to check for success is to call the <span class="literal">raise_for_status()</span> method on the <span class="literal">Response</span> object. This will raise an exception if there was an error downloading the file and will do nothing if the download succeeded. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">res = requests.get('https://inventwithpython.com/page_that_does_not_exist')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">res.raise_for_status()</span><br class="calibre5" />
+Traceback (most recent call last):<br class="calibre5" />
+&nbsp;&nbsp;File "&lt;stdin&gt;", line 1, in &lt;module&gt;<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;File "C:\Users\Al\AppData\Local\Programs\Python\Python37\lib\site-packages\requests\models<br class="calibre5" />
+.py", line 940, in raise_for_status<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;raise HTTPError(http_error_msg, response=self)<br class="calibre5" />
+requests.exceptions.HTTPError: 404 Client Error: Not Found for url: https://inventwithpython<br class="calibre5" />
+.com/page_that_does_not_exist.html</p>
+<p class="indent">The <span class="literal">raise_for_status()</span> method is a good way to ensure that a program halts if a bad download occurs. This is a good thing: You want your program to stop as soon as some unexpected error happens. If a failed download <em class="calibre7">isn’t</em> a deal breaker for your program, you can wrap the <span class="literal">raise_for_status()</span> line with <span class="literal">try</span> and <span class="literal">except</span> statements to handle this error case without crashing.</p>
+<p class="programs">import requests<br class="calibre5" />
+res = requests.get('https://inventwithpython.com/page_that_does_not_exist')<br class="calibre5" />
+try:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;res.raise_for_status()<br class="calibre5" />
+except Exception as exc:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('There was a problem: %s' % (exc))</p>
+<p class="indent">This <span class="literal">raise_for_status()</span> method call causes the program to output the following:</p>
+<p class="programs">There was a problem: 404 Client Error: Not Found for url: https://<br class="calibre5" />
+inventwithpython.com/page_that_does_not_exist.html</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-916"></span>Always call <span class="literal">raise_for_status()</span> after calling <span class="literal">requests.get()</span>. You want to be sure that the download has actually worked before your program continues.</p>
+<h3 class="h1" id="calibre_link-381"><strong class="calibre2">Saving Downloaded Files to the Hard Drive</strong></h3>
+<p class="noindent">From here, you can save the web page to a file on your hard drive with the standard <span class="literal">open()</span> function and <span class="literal">write()</span> method. There are some slight differences, though. First, you must open the file in <em class="calibre7">write binary</em> mode by passing the string <span class="literal">'wb'</span> as the second argument to <span class="literal">open()</span>. Even if the page is in plaintext (such as the <em class="calibre7">Romeo and Juliet</em> text you downloaded earlier), you need to write binary data instead of text data in order to maintain the <em class="calibre7">Unicode encoding</em> of the text.</p>
+<p class="indent">To write the web page to a file, you can use a <span class="literal">for</span> loop with the <span class="literal">Response</span> object’s <span class="literal">iter_content()</span> method.</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import requests</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">res = requests.get('https://automatetheboringstuff.com/files/rj.txt')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">res.raise_for_status()</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">playFile = open('RomeoAndJuliet.txt', 'wb')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">for chunk in res.iter_content(100000):</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;playFile.write(chunk)</span><br class="calibre5" /><br class="calibre5" />
+100000<br class="calibre5" />
+78981<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">playFile.close()</span></p>
+<p class="indent">The <span class="literal">iter_content()</span> method returns “chunks” of the content on each iteration through the loop. Each chunk is of the <em class="calibre7">bytes</em> data type, and you get to specify how many bytes each chunk will contain. One hundred thousand bytes is generally a good size, so pass <span class="literal">100000</span> as the argument to <span class="literal">iter_content()</span>.</p>
+<p class="indent">The file <em class="calibre7">RomeoAndJuliet.txt</em> will now exist in the current working directory. Note that while the filename on the website was <em class="calibre7">rj.txt</em>, the file on your hard drive has a different filename. The <span class="literal">requests</span> module simply handles downloading the contents of web pages. Once the page is downloaded, it is simply data in your program. Even if you were to lose your internet <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1003"></span>connection after downloading the web page, all the page data would still be on your computer.</p>
+<div class="sidebar">
+<p class="sidebart"><strong class="calibre4">UNICODE ENCODINGS</strong></p>
+<p class="spara">Unicode encodings are beyond the scope of this book, but you can learn more about them from these web pages:</p>
+<ul class="calibre8">
+<li class="noindent1">Joel on Software: The Absolute Minimum Every Software Developer Absolutely, Positively Must Know About Unicode and Character Sets (No Excuses!): <em class="calibre7"><a href="https://www.joelonsoftware.com/articles/Unicode.html" class="calibre6">https://www.joelonsoftware.com/articles/Unicode.html</a></em></li>
+<li class="noindent1">Pragmatic Unicode: <em class="calibre7"><a href="https://nedbatchelder.com/text/unipain.html" class="calibre6">https://nedbatchelder.com/text/unipain.html</a></em></li>
+</ul>
+</div>
+<p class="indent">The <span class="literal">write()</span> method returns the number of bytes written to the file. In the previous example, there were 100,000 bytes in the first chunk, and the remaining part of the file needed only 78,981 bytes.</p>
+<p class="indent">To review, here’s the complete process for downloading and saving a file:</p>
+<ol class="calibre10">
+<li class="noindent1">Call <span class="literal">requests.get()</span> to download the file.</li>
+<li class="noindent1">Call <span class="literal">open()</span> with <span class="literal">'wb'</span> to create a new file in write binary mode.</li>
+<li class="noindent1">Loop over the <span class="literal">Response</span> object’s <span class="literal">iter_content()</span> method.</li>
+<li class="noindent1">Call <span class="literal">write()</span> on each iteration to write the content to the file.</li>
+<li class="noindent1">Call <span class="literal">close()</span> to close the file.</li>
+</ol>
+<p class="indent">That’s all there is to the <span class="literal">requests</span> module! The <span class="literal">for</span> loop and <span class="literal">iter_content()</span> stuff may seem complicated compared to the <span class="literal">open()</span>/<span class="literal">write()</span>/<span class="literal">close()</span> workflow you’ve been using to write text files, but it’s to ensure that the <span class="literal">requests</span> module doesn’t eat up too much memory even if you download massive files. You can learn about the <span class="literal">requests</span> module’s other features from <em class="calibre7"><a href="https://requests.readthedocs.org/" class="calibre6">https://requests.readthedocs.org/</a></em>.</p>
+<h3 class="h1" id="calibre_link-382"><strong class="calibre2">HTML</strong></h3>
+<p class="noindent">Before you pick apart web pages, you’ll learn some HTML basics. You’ll also see how to access your web browser’s powerful developer tools, which will make scraping information from the web much easier.</p>
+<h4 class="h2" id="calibre_link-383"><strong class="calibre2"><em class="calibre9">Resources for Learning HTML</em></strong></h4>
+<p class="noindent"><em class="calibre7">Hypertext Markup Language (HTML)</em> is the format that web pages are written in. This chapter assumes you have some basic experience with HTML, but if you need a beginner tutorial, I suggest one of the following sites:</p>
+<ul class="calibre8">
+<li class="noindent1"><em class="calibre7"><a href="https://developer.mozilla.org/en-US/learn/html/" class="calibre6">https://developer.mozilla.org/en-US/learn/html/</a></em></li>
+<li class="noindent1"><em class="calibre7"><a href="https://htmldog.com/guides/html/beginner/" class="calibre6">https://htmldog.com/guides/html/beginner/</a></em></li>
+<li class="noindent1"><em class="calibre7"><a href="https://www.codecademy.com/learn/learn-html" class="calibre6">https://www.codecademy.com/learn/learn-html</a></em></li>
+</ul>
+<h4 class="h2" id="calibre_link-384"><strong class="calibre2"><em class="calibre9">A Quick Refresher</em></strong></h4>
+<p class="noindent">In case it’s been a while since you’ve looked at any HTML, here’s a quick overview of the basics. An HTML file is a plaintext file with the <em class="calibre7">.html</em> file extension. The text in these files is surrounded by <em class="calibre7">tags</em>, which are words enclosed in angle brackets. The tags tell the browser how to format the web page. A starting tag and closing tag can enclose some text to form an <em class="calibre7">element</em>. The <em class="calibre7">text</em> (or <em class="calibre7">inner HTML</em>) is the content between the starting and closing tags. For example, the following HTML will display <em class="calibre7">Hello, world!</em> in the browser, with <em class="calibre7">Hello</em> in bold:</p>
+<p class="programs">&lt;strong&gt;Hello&lt;/strong&gt;, world!</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-803"></span>This HTML will look like <a href="#calibre_link-37" class="calibre6">Figure 12-1</a> in a browser.</p>
+<div class="image1"><a id="calibre_link-37" class="calibre6"></a><img src="../images/000018.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 12-1:</em> Hello, world! <em class="calibre7">rendered in the browser</em></p>
+<p class="indent">The opening <span class="literal">&lt;strong&gt;</span> tag says that the enclosed text will appear in bold. The closing <span class="literal">&lt;/strong&gt;</span> tags tells the browser where the end of the bold text is.</p>
+<p class="indent">There are many different tags in HTML. Some of these tags have extra properties in the form of <em class="calibre7">attributes</em> within the angle brackets. For example, the <span class="literal">&lt;a&gt;</span> tag encloses text that should be a link. The URL that the text links to is determined by the <span class="literal">href</span> attribute. Here’s an example:</p>
+<p class="programs">Al's free &lt;a href="https://inventwithpython.com"&gt;Python books&lt;/a&gt;.</p>
+<p class="indent">This HTML will look like <a href="#calibre_link-38" class="calibre6">Figure 12-2</a> in a browser.</p>
+<div class="image1"><a id="calibre_link-38" class="calibre6"></a><img src="../images/000111.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 12-2: The link rendered in the browser</em></p>
+<p class="indent">Some elements have an <span class="literal">id</span> attribute that is used to uniquely identify the element in the page. You will often instruct your programs to seek out an element by its <span class="literal">id</span> attribute, so figuring out an element’s <span class="literal">id</span> attribute using the browser’s developer tools is a common task in writing web scraping programs.</p>
+<h4 class="h2" id="calibre_link-385"><strong class="calibre2"><em class="calibre9">Viewing the Source HTML of a Web Page</em></strong></h4>
+<p class="noindent">You’ll need to look at the HTML source of the web pages that your programs will work with. To do this, right-click (or <small class="calibre11">CTRL</small>-click on macOS) any web page in your web browser, and select <strong class="calibre4">View Source</strong> or <strong class="calibre4">View page source</strong> to see the HTML text of the page (see <a href="#calibre_link-39" class="calibre6">Figure 12-3</a>). This is the text your browser actually receives. The browser knows how to display, or <em class="calibre7">render</em>, the web page from this HTML.</p>
+<div class="image1"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-841"></span><a id="calibre_link-39" class="calibre6"></a><img src="../images/000056.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 12-3: Viewing the source of a web page</em></p>
+<p class="indent">I highly recommend viewing the source HTML of some of your favorite sites. It’s fine if you don’t fully understand what you are seeing when you look at the source. You won’t need HTML mastery to write simple web scraping programs&mdash;after all, you won’t be writing your own websites. You just need enough knowledge to pick out data from an existing site.</p>
+<h4 class="h2" id="calibre_link-386"><strong class="calibre2"><em class="calibre9">Opening Your Browser’s Developer Tools</em></strong></h4>
+<p class="noindent">In addition to viewing a web page’s source, you can look through a page’s HTML using your browser’s developer tools. In Chrome and Internet Explorer for Windows, the developer tools are already installed, and you can press F12 to make them appear (see <a href="#calibre_link-40" class="calibre6">Figure 12-4</a>). Pressing F12 again will make the developer tools disappear. In Chrome, you can also bring up the developer tools by selecting <strong class="calibre4">View</strong> ▸ <strong class="calibre4">Developer</strong> ▸ <strong class="calibre4">Developer Tools</strong>. In macOS, pressing <img src="../images/000064.jpg" alt="image" class="calibre3" />-<small class="calibre11">OPTION</small>-I will open Chrome’s Developer Tools.</p>
+<div class="image1"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-971"></span><a id="calibre_link-40" class="calibre6"></a><img src="../images/000152.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 12-4: The Developer Tools window in the Chrome browser</em></p>
+<p class="indent">In Firefox, you can bring up the Web Developer Tools Inspector by pressing <small class="calibre11">CTRL-SHIFT-C</small> on Windows and Linux or by pressing <img src="../images/000064.jpg" alt="image" class="calibre3" /><small class="calibre11">-OPTION-C</small> on macOS. The layout is almost identical to Chrome’s developer tools.</p>
+<p class="indent">In Safari, open the Preferences window, and on the Advanced pane check the <strong class="calibre4">Show Develop menu in the menu bar</strong> option. After it has been enabled, you can bring up the developer tools by pressing <img src="../images/000064.jpg" alt="image" class="calibre3" /><small class="calibre11">-OPTION-I</small>.</p>
+<p class="indent">After enabling or installing the developer tools in your browser, you can right-click any part of the web page and select <strong class="calibre4">Inspect Element</strong> from the context menu to bring up the HTML responsible for that part of the page. This will be helpful when you begin to parse HTML for your web scraping programs.</p>
+<div class="sidebar">
+<p class="sidebart"><strong class="calibre4">DON’T USE REGULAR EXPRESSIONS TO PARSE HTML</strong></p>
+<p class="spara">Locating a specific piece of HTML in a string seems like a perfect case for regular expressions. However, I advise you against it. There are many different ways that HTML can be formatted and still be considered valid HTML, but trying to capture all these possible variations in a regular expression can be tedious and error prone. A module developed specifically for parsing HTML, such as <span class="literal1">bs4</span>, will be less likely to result in bugs.</p>
+<p class="sparai">You can find an extended argument for why you shouldn’t parse HTML with regular expressions at <em class="calibre7"><a href="https://stackoverflow.com/a/1732454/1893164/" class="calibre6">https://stackoverflow.com/a/1732454/1893164/</a></em>.</p>
+</div>
+<h4 class="h2" id="calibre_link-387"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-927" class="calibre1"></span><strong class="calibre2"><em class="calibre9">Using the Developer Tools to Find HTML Elements</em></strong></h4>
+<p class="noindent">Once your program has downloaded a web page using the <span class="literal">requests</span> module, you will have the page’s HTML content as a single string value. Now you need to figure out which part of the HTML corresponds to the information on the web page you’re interested in.</p>
+<p class="indent">This is where the browser’s developer tools can help. Say you want to write a program to pull weather forecast data from <em class="calibre7"><a href="https://weather.gov/" class="calibre6">https://weather.gov/</a></em>. Before writing any code, do a little research. If you visit the site and search for the 94105 ZIP code, the site will take you to a page showing the forecast for that area.</p>
+<p class="indent">What if you’re interested in scraping the weather information for that ZIP code? Right-click where it is on the page (or <small class="calibre11">CONTROL</small>-click on macOS) and select <strong class="calibre4">Inspect Element</strong> from the context menu that appears. This will bring up the Developer Tools window, which shows you the HTML that produces this particular part of the web page. <a href="#calibre_link-41" class="calibre6">Figure 12-5</a> shows the developer tools open to the HTML of the nearest forecast. Note that if the <em class="calibre7"><a href="https://weather.gov/" class="calibre6">https://weather.gov/</a></em> site changes the design of its web pages, you’ll need to repeat this process to inspect the new elements.</p>
+<div class="image1"><a id="calibre_link-41" class="calibre6"></a><img src="../images/000094.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 12-5: Inspecting the element that holds forecast text with the developer tools</em></p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-812"></span>From the developer tools, you can see that the HTML responsible for the forecast part of the web page is <span class="literal">&lt;div class="col-sm-10 forecast-text"&gt;Sunny, with a high near 64. West wind 11 to 16 mph, with gusts as high as 21 mph.&lt;/div&gt;</span>. This is exactly what you were looking for! It seems that the forecast information is contained inside a <span class="literal">&lt;div&gt;</span> element with the <span class="literal">forecast-text</span> CSS class. Right-click on this element in the browser’s developer console, and from the context menu that appears, select <strong class="calibre4">Copy</strong> ▸ <strong class="calibre4">CSS Selector</strong>. This will copy a string such as <span class="literal">'div.row-odd:nth-child(1) &gt; div:nth-child(2)'</span> to the clipboard. You can use this string for Beautiful Soup’s <span class="literal">select()</span> or Selenium’s <span class="literal">find_element_by_css_selector()</span> methods, as explained later in this chapter. Now that you know what you’re looking for, the Beautiful Soup module will help you find it in the string.</p>
+<h3 class="h1" id="calibre_link-388"><strong class="calibre2">Parsing HTML with the bs4 Module</strong></h3>
+<p class="noindent">Beautiful Soup is a module for extracting information from an HTML page (and is much better for this purpose than regular expressions). The Beautiful Soup module’s name is <span class="literal">bs4</span> (for Beautiful Soup, version 4). To install it, you will need to run <span class="literal">pip install --user beautifulsoup4</span> from the command line. (Check out <a href="#calibre_link-2" class="calibre6">Appendix A</a> for instructions on installing third-party modules.) While <span class="literal">beautifulsoup4</span> is the name used for installation, to import Beautiful Soup you run <span class="literal">import bs4</span>.</p>
+<p class="indent">For this chapter, the Beautiful Soup examples will <em class="calibre7">parse</em> (that is, analyze and identify the parts of) an HTML file on the hard drive. Open a new file editor tab in Mu, enter the following, and save it as <em class="calibre7">example.html</em>. Alternatively, download it from <em class="calibre7"><a href="https://nostarch.com/automatestuff2/" class="calibre6">https://nostarch.com/automatestuff2/</a></em>.</p>
+<p class="programs">&lt;!-- This is the example.html example file. --&gt;<br class="calibre5" /><br class="calibre5" />
+&lt;html&gt;&lt;head&gt;&lt;title&gt;The Website Title&lt;/title&gt;&lt;/head&gt;<br class="calibre5" />
+&lt;body&gt;<br class="calibre5" />
+&lt;p&gt;Download my &lt;strong&gt;Python&lt;/strong&gt; book from &lt;a href="https://<br class="calibre5" />
+inventwithpython.com"&gt;my website&lt;/a&gt;.&lt;/p&gt;<br class="calibre5" />
+&lt;p class="slogan"&gt;Learn Python the easy way!&lt;/p&gt;<br class="calibre5" />
+&lt;p&gt;By &lt;span id="author"&gt;Al Sweigart&lt;/span&gt;&lt;/p&gt;<br class="calibre5" />
+&lt;/body&gt;&lt;/html&gt;</p>
+<p class="indent">As you can see, even a simple HTML file involves many different tags and attributes, and matters quickly get confusing with complex websites. Thankfully, Beautiful Soup makes working with HTML much easier.</p>
+<h4 class="h2" id="calibre_link-389"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-825" class="calibre1"></span><strong class="calibre2"><em class="calibre9">Creating a BeautifulSoup Object from HTML</em></strong></h4>
+<p class="noindent">The <span class="literal">bs4.BeautifulSoup()</span> function needs to be called with a string containing the HTML it will parse. The <span class="literal">bs4.BeautifulSoup()</span> function returns a <span class="literal">BeautifulSoup</span> object. Enter the following into the interactive shell while your computer is connected to the internet:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import requests, bs4</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">res = requests.get('https://nostarch.com')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">res.raise_for_status()</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">noStarchSoup = bs4.BeautifulSoup(res.text, 'html.parser')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">type(noStarchSoup)</span><br class="calibre5" />
+&lt;class 'bs4.BeautifulSoup'&gt;</p>
+<p class="indent">This code uses <span class="literal">requests.get()</span> to download the main page from the No Starch Press website and then passes the <span class="literal">text</span> attribute of the response to <span class="literal">bs4.BeautifulSoup()</span>. The <span class="literal">BeautifulSoup</span> object that it returns is stored in a variable named <span class="literal">noStarchSoup</span>.</p>
+<p class="indent">You can also load an HTML file from your hard drive by passing a <span class="literal">File</span> object to <span class="literal">bs4.BeautifulSoup()</span> along with a second argument that tells Beautiful Soup which parser to use to analyze the HTML.</p>
+<p class="indent">Enter the following into the interactive shell (after making sure the <em class="calibre7">example.html</em> file is in the working directory):</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">exampleFile = open('example.html')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">exampleSoup = bs4.BeautifulSoup(exampleFile, 'html.parser')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">type(exampleSoup)</span><br class="calibre5" />
+&lt;class 'bs4.BeautifulSoup'&gt;</p>
+<p class="indent">The <span class="literal">'html.parser'</span> parser used here comes with Python. However, you can use the faster <span class="literal">'lxml'</span> parser if you install the third-party <span class="literal">lxml</span> module. Follow the instructions in <a href="#calibre_link-2" class="calibre6">Appendix A</a> to install this module by running <span class="literal">pip install --user lxml</span>. Forgetting to include this second argument will result in a <span class="literal">UserWarning: No parser was explicitly specified</span> warning.</p>
+<p class="indent">Once you have a <span class="literal">BeautifulSoup</span> object, you can use its methods to locate specific parts of an HTML document.</p>
+<h4 class="h2" id="calibre_link-390"><strong class="calibre2"><em class="calibre9">Finding an Element with the select() Method</em></strong></h4>
+<p class="noindent">You can retrieve a web page element from a <span class="literal">BeautifulSoup</span> object by calling the <span class="literal">select()</span>method and passing a string of a CSS <em class="calibre7">selector</em> for the element you are looking for. Selectors are like regular expressions: they specify a pattern to look for&mdash;in this case, in HTML pages instead of general text strings.</p>
+<p class="indent">A full discussion of CSS selector syntax is beyond the scope of this book (there’s a good selector tutorial in the resources at <em class="calibre7"><a href="https://nostarch.com/automatestuff2/" class="calibre6">https://nostarch.com/automatestuff2/</a></em>), but here’s a short introduction to selectors. <a href="#calibre_link-42" class="calibre6">Table 12-2</a> shows examples of the most common CSS selector patterns.</p>
+<p class="tabcap" id="calibre_link-42"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1084"></span><strong class="calibre4">Table 12-2:</strong> Examples of CSS Selectors</p>
+<table class="topbot-d">
+<colgroup class="calibre13">
+<col class="calibre18"></col>
+<col class="calibre18"></col>
+</colgroup>
+<thead class="calibre15">
+<tr class="calibre16">
+<td class="table-h"><p class="tab_th"><strong class="calibre4">Selector passed to the <span class="codestrong">select()</span> method</strong></p></td>
+<td class="table-h"><p class="tab_th"><strong class="calibre4">Will match . . .</strong></p></td>
+</tr>
+</thead>
+<tbody class="calibre17">
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">soup.select('div')</span></p></td>
+<td class="table-b"><p class="taba">All elements named <span class="literal">&lt;div&gt;</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">soup.select('#author')</span></p></td>
+<td class="table-v"><p class="taba">The element with an <span class="literal">id</span> attribute of <span class="literal">author</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">soup.select('.notice')</span></p></td>
+<td class="table-b"><p class="taba">All elements that use a CSS <span class="literal">class</span> attribute named <span class="literal">notice</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">soup.select('div span')</span></p></td>
+<td class="table-v"><p class="taba">All elements named <span class="literal">&lt;span&gt;</span> that are within an element named <span class="literal">&lt;div&gt;</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">soup.select('div &gt; span')</span></p></td>
+<td class="table-b"><p class="taba">All elements named <span class="literal">&lt;span&gt;</span> that are <em class="calibre7">directly</em> within an element named <span class="literal">&lt;div&gt;</span>, with no other element in between</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">soup.select('input[name]')</span></p></td>
+<td class="table-v"><p class="taba">All elements named <span class="literal">&lt;input&gt;</span> that have a <span class="literal">name</span> attribute with any value</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-ba"><p class="taba"><span class="literal">soup.select('input[type="button"]')</span></p></td>
+<td class="table-ba"><p class="taba">All elements named <span class="literal">&lt;input&gt;</span> that have an attribute named <span class="literal">type</span> with value <span class="literal">button</span></p></td>
+</tr>
+</tbody>
+</table>
+<p class="indent">The various selector patterns can be combined to make sophisticated matches. For example, <span class="literal">soup.select('p #author')</span> will match any element that has an <span class="literal">id</span> attribute of <span class="literal">author</span>, as long as it is also inside a <span class="literal">&lt;p&gt;</span> element. Instead of writing the selector yourself, you can also right-click on the element in your browser and select <strong class="calibre4">Inspect Element</strong>. When the browser’s developer console opens, right-click on the element’s HTML and select <strong class="calibre4">Copy</strong> ▸ <strong class="calibre4">CSS Selector</strong> to copy the selector string to the clipboard and paste it into your source code.</p>
+<p class="indent">The <span class="literal">select()</span> method will return a list of <span class="literal">Tag</span> objects, which is how Beautiful Soup represents an HTML element. The list will contain one <span class="literal">Tag</span> object for every match in the <span class="literal">BeautifulSoup</span> object’s HTML. Tag values can be passed to the <span class="literal">str()</span> function to show the HTML tags they represent. Tag values also have an <span class="literal">attrs</span> attribute that shows all the HTML attributes of the tag as a dictionary. Using the <em class="calibre7">example.html</em> file from earlier, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import bs4</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">exampleFile = open('example.html')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">exampleSoup = bs4.BeautifulSoup(exampleFile.read(), 'html.parser')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">elems = exampleSoup.select('#author')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">type(elems)</span> # elems is a list of Tag objects.<br class="calibre5" />
+&lt;class 'list'&gt;<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">len(elems)</span><br class="calibre5" />
+1<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">type(elems[0])</span><br class="calibre5" />
+&lt;class 'bs4.element.Tag'&gt;<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">str(elems[0])</span> # The Tag object as a string.<br class="calibre5" />
+'&lt;span id="author"&gt;Al Sweigart&lt;/span&gt;'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">elems[0].getText()</span><br class="calibre5" />
+'Al Sweigart'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">elems[0].attrs</span><br class="calibre5" />
+{'id': 'author'}</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-826"></span>This code will pull the element with <span class="literal">id="author"</span> out of our example HTML. We use <span class="literal">select('#author')</span> to return a list of all the elements with <span class="literal">id="author"</span>. We store this list of <span class="codestrong">Tag</span> objects in the variable <span class="literal">elems</span>, and <span class="literal">len(elems)</span> tells us there is one <span class="codestrong">Tag</span> object in the list; there was one match. Calling <span class="literal">getText()</span> on the element returns the element’s text, or inner HTML. The text of an element is the content between the opening and closing tags: in this case, <span class="literal">'Al Sweigart'</span>.</p>
+<p class="indent">Passing the element to <span class="literal">str()</span> returns a string with the starting and closing tags and the element’s text. Finally, <span class="literal">attrs</span> gives us a dictionary with the element’s attribute, <span class="literal">'id'</span>, and the value of the <span class="literal">id</span> attribute, <span class="literal">'author'</span>.</p>
+<p class="indent">You can also pull all the <span class="literal">&lt;p&gt;</span> elements from the <span class="literal">BeautifulSoup</span> object. Enter this into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">pElems = exampleSoup.select('p')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">str(pElems[0])</span><br class="calibre5" />
+'&lt;p&gt;Download my &lt;strong&gt;Python&lt;/strong&gt; book from &lt;a href="https://<br class="calibre5" />
+inventwithpython.com"&gt;my website&lt;/a&gt;.&lt;/p&gt;'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">pElems[0].getText()</span><br class="calibre5" />
+'Download my Python book from my website.'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">str(pElems[1])</span><br class="calibre5" />
+'&lt;p class="slogan"&gt;Learn Python the easy way!&lt;/p&gt;'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">pElems[1].getText()</span><br class="calibre5" />
+'Learn Python the easy way!'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">str(pElems[2])</span><br class="calibre5" />
+'&lt;p&gt;By &lt;span id="author"&gt;Al Sweigart&lt;/span&gt;&lt;/p&gt;'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">pElems[2].getText()</span><br class="calibre5" />
+'By Al Sweigart'</p>
+<p class="indent">This time, <span class="literal">select()</span> gives us a list of three matches, which we store in <span class="literal">pElems</span>. Using <span class="literal">str()</span> on <span class="literal">pElems[0]</span>, <span class="literal">pElems[1]</span>, and <span class="literal">pElems[2]</span> shows you each element as a string, and using <span class="literal">getText()</span> on each element shows you its text.</p>
+<h4 class="h2" id="calibre_link-391"><strong class="calibre2"><em class="calibre9">Getting Data from an Element’s Attributes</em></strong></h4>
+<p class="noindent">The <span class="literal">get()</span> method for <span class="literal">Tag</span> objects makes it simple to access attribute values from an element. The method is passed a string of an attribute name and returns that attribute’s value. Using <em class="calibre7">example.html</em>, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import bs4</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">soup = bs4.BeautifulSoup(open('example.html'), 'html.parser')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spanElem = soup.select('span')[0]</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">str(spanElem)</span><br class="calibre5" />
+'&lt;span id="author"&gt;Al Sweigart&lt;/span&gt;'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spanElem.get('id')</span><br class="calibre5" />
+'author'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spanElem.get('some_nonexistent_addr') == None</span><br class="calibre5" />
+True<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spanElem.attrs</span><br class="calibre5" />
+{'id': 'author'}</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1091"></span>Here we use <span class="literal">select()</span> to find any <span class="literal">&lt;span&gt;</span> elements and then store the first matched element in <span class="literal">spanElem</span>. Passing the attribute name <span class="literal">'id'</span> to <span class="literal">get()</span> returns the attribute’s value, <span class="literal">'author'</span>.</p>
+<h3 class="h1" id="calibre_link-392"><strong class="calibre2">Project: Opening All Search Results</strong></h3>
+<p class="noindent">Whenever I search a topic on Google, I don’t look at just one search result at a time. By middle-clicking a search result link (or clicking while holding <small class="calibre11">CTRL</small>), I open the first several links in a bunch of new tabs to read later. I search Google often enough that this workflow&mdash;opening my browser, searching for a topic, and middle-clicking several links one by one&mdash;is tedious. It would be nice if I could simply type a search term on the command line and have my computer automatically open a browser with all the top search results in new tabs. Let’s write a script to do this with the search results page for the Python Package Index at <em class="calibre7"><a href="https://pypi.org/" class="calibre6">https://pypi.org/</a></em>. A program like this can be adapted to many other websites, although the Google and DuckDuckGo often employ measures that make scraping their search results pages difficult.</p>
+<p class="indent">This is what your program does:</p>
+<ol class="calibre10">
+<li class="noindent1">Gets search keywords from the command line arguments</li>
+<li class="noindent1">Retrieves the search results page</li>
+<li class="noindent1">Opens a browser tab for each result</li>
+</ol>
+<p class="indent">This means your code will need to do the following:</p>
+<ol class="calibre10">
+<li class="noindent1">Read the command line arguments from <span class="literal">sys.argv</span>.</li>
+<li class="noindent1">Fetch the search result page with the <span class="literal">requests</span> module.</li>
+<li class="noindent1">Find the links to each search result.</li>
+<li class="noindent1">Call the <span class="literal">webbrowser.open()</span> function to open the web browser.</li>
+</ol>
+<p class="indent">Open a new file editor tab and save it as <em class="calibre7">searchpypi.py</em>.</p>
+<h4 class="h2" id="calibre_link-393"><strong class="calibre2"><em class="calibre9">Step 1: Get the Command Line Arguments and Request the Search Page</em></strong></h4>
+<p class="noindent">Before coding anything, you first need to know the URL of the search result page. By looking at the browser’s address bar after doing a search, you can see that the result page has a URL like <em class="calibre7">https://pypi.org/search/?q=&lt;SEARCH_TERM_HERE&gt;</em>. The <span class="literal">requests</span> module can download this page and then you can use Beautiful Soup to find the search result links in the HTML. Finally, you’ll use the <span class="literal">webbrowser</span> module to open those links in browser tabs.</p>
+<p class="indent">Make your code look like the following:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# searchpypi.py&nbsp;&nbsp;- Opens several search results.<br class="calibre5" /><br class="calibre5" />
+import requests, sys, webbrowser, bs4<br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1803"></span>print('Searching...')&nbsp;&nbsp;&nbsp;&nbsp;# display text while downloading the search result page<br class="calibre5" />
+res = requests.get('https://google.com/search?q=' 'https://pypi.org/search/?q='<br class="calibre5" />
++ ' '.join(sys.argv[1:]))<br class="calibre5" />
+res.raise_for_status()<br class="calibre5" /><br class="calibre5" />
+# TODO: Retrieve top search result links.<br class="calibre5" /><br class="calibre5" />
+# TODO: Open a browser tab for each result.</p>
+<p class="indent">The user will specify the search terms using command line arguments when they launch the program. These arguments will be stored as strings in a list in <span class="literal">sys.argv</span>.</p>
+<h4 class="h2" id="calibre_link-394"><strong class="calibre2"><em class="calibre9">Step 2: Find All the Results</em></strong></h4>
+<p class="noindent">Now you need to use Beautiful Soup to extract the top search result links from your downloaded HTML. But how do you figure out the right selector for the job? For example, you can’t just search for all <span class="literal">&lt;a&gt;</span> tags, because there are lots of links you don’t care about in the HTML. Instead, you must inspect the search result page with the browser’s developer tools to try to find a selector that will pick out only the links you want.</p>
+<p class="indent">After doing a search for <em class="calibre7">Beautiful Soup</em>, you can open the browser’s developer tools and inspect some of the link elements on the page. They can look complicated, something like pages of this: <span class="literal">&lt;a class="package-snippet" href="HYPERLINK "view-source:https://pypi.org/project/xml-parser/"/project/xml-parser/"&gt;</span>.</p>
+<p class="indent">It doesn’t matter that the element looks incredibly complicated. You just need to find the pattern that all the search result links have.</p>
+<p class="indent">Make your code look like the following:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# searchpypi.py - Opens several google results.<br class="calibre5" />
+import requests, sys, webbrowser, bs4<br class="calibre5" />
+--<span class="codeitalic1">snip</span>--<br class="calibre5" />
+<span class="codestrong1"># Retrieve top search result links.</span><br class="calibre5" />
+<span class="codestrong1">soup = bs4.BeautifulSoup(res.text, 'html.parser')</span><br class="calibre5" />
+<span class="codestrong1"># Open a browser tab for each result.</span><br class="calibre5" />
+<span class="codestrong1">linkElems = soup.select('.package-snippet')</span></p>
+<p class="indent">If you look at the <span class="literal">&lt;a&gt;</span> elements, though, the search result links all have <span class="literal">class="package-snippet"</span>. Looking through the rest of the HTML source, it looks like the <span class="literal">package-snippet</span> class is used only for search result links. You don’t have to know what the CSS class <span class="literal">package-snippet</span> is or what it does. You’re just going to use it as a marker for the <span class="literal">&lt;a&gt;</span> element you are looking for. You can create a <span class="literal">BeautifulSoup</span> object from the downloaded page’s HTML text and then use the selector <span class="literal">'.package-snippet'</span> to find all <span class="literal">&lt;a&gt;</span> elements that are within an element that has the <span class="literal">package-snippet</span> CSS class. Note that if the PyPI website changes its layout, you may need to update this program with a new CSS selector string to pass to <span class="literal">soup.select()</span>. The rest of the program will still be up to date.</p>
+<h4 class="h2" id="calibre_link-395"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1804" class="calibre1"></span><strong class="calibre2"><em class="calibre9">Step 3: Open Web Browsers for Each Result</em></strong></h4>
+<p class="noindent">Finally, we’ll tell the program to open web browser tabs for our results. Add the following to the end of your program:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# searchpypi.py - Opens several search results.<br class="calibre5" />
+import requests, sys, webbrowser, bs4<br class="calibre5" />
+--<span class="codeitalic1">snip</span>--<br class="calibre5" />
+# Open a browser tab for each result.<br class="calibre5" />
+linkElems = soup.select('.package-snippet')<br class="calibre5" />
+<span class="codestrong1">numOpen = min(5, len(linkElems))</span><br class="calibre5" />
+<span class="codestrong1">for i in range(numOpen):</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;urlToOpen = 'https://pypi.org' + linkElems[i].get('href')</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;print('Opening', urlToOpen)</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;webbrowser.open(urlToOpen)</span></p>
+<p class="indent">By default, you open the first five search results in new tabs using the <span class="literal">webbrowser</span> module. However, the user may have searched for something that turned up fewer than five results. The <span class="literal">soup.select()</span> call returns a list of all the elements that matched your <span class="literal">'.package-snippet'</span> selector, so the number of tabs you want to open is either <span class="literal">5</span> or the length of this list (whichever is smaller).</p>
+<p class="indent">The built-in Python function <span class="literal">min()</span> returns the smallest of the integer or float arguments it is passed. (There is also a built-in <span class="literal">max()</span> function that returns the largest argument it is passed.) You can use <span class="literal">min()</span> to find out whether there are fewer than five links in the list and store the number of links to open in a variable named <span class="literal">numOpen</span>. Then you can run through a <span class="literal">for</span> loop by calling <span class="literal">range(numOpen)</span>.</p>
+<p class="indent">On each iteration of the loop, you use <span class="literal">webbrowser.open()</span> to open a new tab in the web browser. Note that the <span class="literal">href</span> attribute’s value in the returned <span class="literal">&lt;a&gt;</span> elements do not have the initial <span class="literal">https://pypi.org</span> part, so you have to concatenate that to the <span class="literal">href</span> attribute’s string value.</p>
+<p class="indent">Now you can instantly open the first five PyPI search results for, say, <em class="calibre7">boring stuff</em> by running <span class="literal">searchpypi boring stuff</span> on the command line! (See <a href="#calibre_link-35" class="calibre6">Appendix B</a> for how to easily run programs on your operating system.)</p>
+<h4 class="h2" id="calibre_link-396"><strong class="calibre2"><em class="calibre9">Ideas for Similar Programs</em></strong></h4>
+<p class="noindent">The benefit of tabbed browsing is that you can easily open links in new tabs to peruse later. A program that automatically opens several links at once can be a nice shortcut to do the following:</p>
+<ul class="calibre8">
+<li class="noindent1">Open all the product pages after searching a shopping site such as Amazon.</li>
+<li class="noindent1">Open all the links to reviews for a single product.</li>
+<li class="noindent1">Open the result links to photos after performing a search on a photo site such as Flickr or Imgur.</li>
+</ul>
+<h3 class="h1" id="calibre_link-397"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-918" class="calibre1"></span><strong class="calibre2">Project: Downloading All XKCD Comics</strong></h3>
+<p class="noindent">Blogs and other regularly updating websites usually have a front page with the most recent post as well as a Previous button on the page that takes you to the previous post. Then that post will also have a Previous button, and so on, creating a trail from the most recent page to the first post on the site. If you wanted a copy of the site’s content to read when you’re not online, you could manually navigate over every page and save each one. But this is pretty boring work, so let’s write a program to do it instead.</p>
+<p class="indent">XKCD is a popular geek webcomic with a website that fits this structure (see <a href="#calibre_link-43" class="calibre6">Figure 12-6</a>). The front page at <em class="calibre7"><a href="https://xkcd.com/" class="calibre6">https://xkcd.com/</a></em> has a Prev button that guides the user back through prior comics. Downloading each comic by hand would take forever, but you can write a script to do this in a couple of minutes.</p>
+<div class="image1"><a id="calibre_link-43" class="calibre6"></a><img src="../images/000040.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 12-6: XKCD, “a webcomic of romance, sarcasm, math, and language”</em></p>
+<p class="indent">Here’s what your program does:</p>
+<ol class="calibre10">
+<li class="noindent1">Loads the XKCD home page</li>
+<li class="noindent1">Saves the comic image on that page</li>
+<li class="noindent1">Follows the Previous Comic link</li>
+<li class="noindent1">Repeats until it reaches the first comic</li>
+</ol>
+<p class="indent">This means your code will need to do the following:</p>
+<ol class="calibre10">
+<li class="noindent1">Download pages with the <span class="literal">requests</span> module.</li>
+<li class="noindent1">Find the URL of the comic image for a page using Beautiful Soup.</li>
+<li class="noindent1"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1805"></span>Download and save the comic image to the hard drive with <span class="literal">iter_content()</span>.</li>
+<li class="noindent1">Find the URL of the Previous Comic link, and repeat.</li></ol><p class="indent">Open a new file editor tab and save it as <em class="calibre7">downloadXkcd.py</em>.</p>
+<h4 class="h2" id="calibre_link-398"><strong class="calibre2"><em class="calibre9">Step 1: Design the Program</em></strong></h4>
+<p class="noindent">If you open the browser’s developer tools and inspect the elements on the page, you’ll find the following:</p>
+<ul class="calibre8">
+<li class="noindent1">The URL of the comic’s image file is given by the <span class="literal">href</span> attribute of an <span class="literal">&lt;img&gt;</span> element.</li>
+<li class="noindent1">The <span class="literal">&lt;img&gt;</span> element is inside a <span class="literal">&lt;div id="comic"&gt;</span> element.</li>
+<li class="noindent1">The Prev button has a <span class="literal">rel</span> HTML attribute with the value <span class="literal">prev</span>.</li>
+<li class="noindent1">The first comic’s Prev button links to the <em class="calibre7"><a href="https://xkcd.com/#" class="calibre6">https://xkcd.com/#</a></em> URL, indicating that there are no more previous pages.</li>
+</ul>
+<p class="indent">Make your code look like the following:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# downloadXkcd.py - Downloads every single XKCD comic.<br class="calibre5" /><br class="calibre5" />
+import requests, os, bs4<br class="calibre5" /><br class="calibre5" />
+url = 'https://xkcd.com'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# starting url<br class="calibre5" />
+os.makedirs('xkcd', exist_ok=True)&nbsp;&nbsp;&nbsp;&nbsp;# store comics in ./xkcd<br class="calibre5" />
+while not url.endswith('#'):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;# TODO: Download the page.<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;# TODO: Find the URL of the comic image.<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;# TODO: Download the image.<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;# TODO: Save the image to ./xkcd.<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;# TODO: Get the Prev button's url.<br class="calibre5" /><br class="calibre5" />
+print('Done.')</p>
+<p class="indent">You’ll have a <span class="literal">url</span> variable that starts with the value <span class="literal">'https://xkcd.com'</span> and repeatedly update it (in a <span class="literal">for</span> loop) with the URL of the current page’s Prev link. At every step in the loop, you’ll download the comic at <span class="literal">url</span>. You’ll know to end the loop when <span class="literal">url</span> ends with <span class="literal">'#'</span>.</p>
+<p class="indent">You will download the image files to a folder in the current working directory named <em class="calibre7">xkcd</em>. The call <span class="literal">os.makedirs()</span> ensures that this folder exists, and the <span class="literal">exist_ok=True</span> keyword argument prevents the function from <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1092"></span>throwing an exception if this folder already exists. The remaining code is just comments that outline the rest of your program.</p>
+<h4 class="h2" id="calibre_link-399"><strong class="calibre2"><em class="calibre9">Step 2: Download the Web Page</em></strong></h4>
+<p class="noindent">Let’s implement the code for downloading the page. Make your code look like the following:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# downloadXkcd.py - Downloads every single XKCD comic.<br class="calibre5" /><br class="calibre5" />
+import requests, os, bs4<br class="calibre5" /><br class="calibre5" />
+url = 'https://xkcd.com'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# starting url<br class="calibre5" />
+os.makedirs('xkcd', exist_ok=True)&nbsp;&nbsp;&nbsp;&nbsp;# store comics in ./xkcd<br class="calibre5" />
+while not url.endswith('#'):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="codestrong1"># Download the page.</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;print('Downloading page %s...' % url)</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;res = requests.get(url)</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;res.raise_for_status()</span><br class="calibre5" /><br class="calibre5" />
+&nbsp;<span class="codestrong1">&nbsp;&nbsp;&nbsp;soup = bs4.BeautifulSoup(res.text, 'html.parser')</span><br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;# TODO: Find the URL of the comic image.<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;# TODO: Download the image.<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;# TODO: Save the image to ./xkcd.<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;# TODO: Get the Prev button's url.<br class="calibre5" /><br class="calibre5" />
+print('Done.')</p>
+<p class="indent">First, print <span class="literal">url</span> so that the user knows which URL the program is about to download; then use the <span class="literal">requests</span> module’s <span class="literal">request.get()</span> function to download it. As always, you immediately call the <span class="literal">Response</span> object’s <span class="literal">raise_for_status()</span> method to throw an exception and end the program if something went wrong with the download. Otherwise, you create a <span class="literal">BeautifulSoup</span> object from the text of the downloaded page.</p>
+<h4 class="h2" id="calibre_link-400"><strong class="calibre2"><em class="calibre9">Step 3: Find and Download the Comic Image</em></strong></h4>
+<p class="noindent">Make your code look like the following:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# downloadXkcd.py - Downloads every single XKCD comic.<br class="calibre5" /><br class="calibre5" />
+import requests, os, bs4<br class="calibre5" /><br class="calibre5" />
+--<span class="codeitalic1">snip</span>--<br class="calibre5" /><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;# Find the URL of the comic image.</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;comicElem = soup.select('#comic img')</span><br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1093"></span><span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;if comicElem == []:</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('Could not find comic image.')</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;else:</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;comicUrl = 'https:' + comicElem[0].get('src')</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Download the image.</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('Downloading image %s...' % (comicUrl))</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;res = requests.get(comicUrl)</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;res.raise_for_status()</span><br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;# TODO: Save the image to ./xkcd.<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;# TODO: Get the Prev button's url.<br class="calibre5" /><br class="calibre5" />
+print('Done.')</p>
+<p class="indent">From inspecting the XKCD home page with your developer tools, you know that the <span class="literal">&lt;img&gt;</span> element for the comic image is inside a <span class="literal">&lt;div&gt;</span> element with the <span class="literal">id</span> attribute set to <span class="literal">comic</span>, so the selector <span class="literal">'#comic img'</span> will get you the correct <span class="literal">&lt;img&gt;</span> element from the <span class="literal">BeautifulSoup</span> object.</p>
+<p class="indent">A few XKCD pages have special content that isn’t a simple image file. That’s fine; you’ll just skip those. If your selector doesn’t find any elements, then <span class="literal">soup.select('#comic img')</span> will return a blank list. When that happens, the program can just print an error message and move on without downloading the image.</p>
+<p class="indent">Otherwise, the selector will return a list containing one <span class="literal">&lt;img&gt;</span> element. You can get the <span class="literal">src</span> attribute from this <span class="literal">&lt;img&gt;</span> element and pass it to <span class="literal">requests.get()</span> to download the comic’s image file.</p>
+<h4 class="h2" id="calibre_link-401"><strong class="calibre2"><em class="calibre9">Step 4: Save the Image and Find the Previous Comic</em></strong></h4>
+<p class="noindent">Make your code look like the following:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# downloadXkcd.py - Downloads every single XKCD comic.<br class="calibre5" /><br class="calibre5" />
+import requests, os, bs4<br class="calibre5" /><br class="calibre5" />
+--<span class="codeitalic1">snip</span>--<br class="calibre5" /><br class="calibre5" />
+&nbsp;<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Save the image to ./xkcd.</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;imageFile = open(os.path.join('xkcd', os.path.basename(comicUrl)),</span><br class="calibre5" />
+<span class="codestrong1">'wb')</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for chunk in res.iter_content(100000):</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;imageFile.write(chunk)</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;imageFile.close()</span><br class="calibre5" /><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;# Get the Prev button's url.</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;prevLink = soup.select('a[rel="prev"]')[0]</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;url = 'https://xkcd.com' + prevLink.get('href')</span><br class="calibre5" /><br class="calibre5" />
+print('Done.')</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1806"></span>At this point, the image file of the comic is stored in the <span class="literal">res</span> variable. You need to write this image data to a file on the hard drive.</p>
+<p class="indent">You’ll need a filename for the local image file to pass to <span class="literal">open()</span>. The <span class="literal">comicUrl</span> will have a value like <span class="literal">'https://imgs.xkcd.com/comics/heartbleed_explanation.png'</span>&mdash;which you might have noticed looks a lot like a file path. And in fact, you can call <span class="literal">os.path.basename()</span> with <span class="literal">comicUrl</span>, and it will return just the last part of the URL, <span class="literal">'heartbleed_explanation.png'</span>. You can use this as the filename when saving the image to your hard drive. You join this name with the name of your <span class="literal">xkcd</span> folder using <span class="literal">os.path.join()</span> so that your program uses backslashes (<span class="literal">\</span>) on Windows and forward slashes (<span class="literal">/</span>) on macOS and Linux. Now that you finally have the filename, you can call <span class="literal">open()</span> to open a new file in <span class="literal">'wb'</span> “write binary” mode.</p>
+<p class="indent">Remember from earlier in this chapter that to save files you’ve downloaded using <span class="literal">requests</span>, you need to loop over the return value of the <span class="literal">iter_content()</span> method. The code in the <span class="literal">for</span> loop writes out chunks of the image data (at most 100,000 bytes each) to the file and then you close the file. The image is now saved to your hard drive.</p>
+<p class="indent">Afterward, the selector <span class="literal">'a[rel="prev"]'</span> identifies the <span class="literal">&lt;a&gt;</span> element with the <span class="literal">rel</span> attribute set to <span class="literal">prev</span>, and you can use this <span class="literal">&lt;a&gt;</span> element’s <span class="literal">href</span> attribute to get the previous comic’s URL, which gets stored in <span class="literal">url</span>. Then the <span class="literal">while</span> loop begins the entire download process again for this comic.</p>
+<p class="indent">The output of this program will look like this:</p>
+<p class="programs">Downloading page https://xkcd.com...<br class="calibre5" />
+Downloading image https://imgs.xkcd.com/comics/phone_alarm.png...<br class="calibre5" />
+Downloading page https://xkcd.com/1358/...<br class="calibre5" />
+Downloading image https://imgs.xkcd.com/comics/nro.png...<br class="calibre5" />
+Downloading page https://xkcd.com/1357/...<br class="calibre5" />
+Downloading image https://imgs.xkcd.com/comics/free_speech.png...<br class="calibre5" />
+Downloading page https://xkcd.com/1356/...<br class="calibre5" />
+Downloading image https://imgs.xkcd.com/comics/orbital_mechanics.png...<br class="calibre5" />
+Downloading page https://xkcd.com/1355/...<br class="calibre5" />
+Downloading image https://imgs.xkcd.com/comics/airplane_message.png...<br class="calibre5" />
+Downloading page https://xkcd.com/1354/...<br class="calibre5" />
+Downloading image https://imgs.xkcd.com/comics/heartbleed_explanation.png...<br class="calibre5" />
+--<span class="codeitalic1">snip</span>--</p>
+<p class="indent">This project is a good example of a program that can automatically follow links in order to scrape large amounts of data from the web. You can learn about Beautiful Soup’s other features from its documentation at <em class="calibre7"><a href="https://www.crummy.com/software/BeautifulSoup/bs4/doc/" class="calibre6">https://www.crummy.com/software/BeautifulSoup/bs4/doc/</a>.</em></p>
+<h4 class="h2" id="calibre_link-402"><strong class="calibre2"><em class="calibre9">Ideas for Similar Programs</em></strong></h4>
+<p class="noindent">Downloading pages and following links are the basis of many web crawling programs. Similar programs could also do the following:</p>
+<ul class="calibre8">
+<li class="noindent1">Back up an entire site by following all of its links.</li>
+<li class="noindent1">Copy all the messages off a web forum.</li>
+<li class="noindent1">Duplicate the catalog of items for sale on an online store.</li>
+</ul>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-919"></span>The <span class="literal">requests</span> and <span class="literal">bs4</span> modules are great as long as you can figure out the URL you need to pass to <span class="literal">requests.get()</span>. However, sometimes this isn’t so easy to find. Or perhaps the website you want your program to navigate requires you to log in first. The <span class="literal">selenium</span> module will give your programs the power to perform such sophisticated tasks.</p>
+<h3 class="h1" id="calibre_link-403"><strong class="calibre2">Controlling the Browser with the selenium Module</strong></h3>
+<p class="noindent">The <span class="literal">selenium</span> module lets Python directly control the browser by programmatically clicking links and filling in login information, almost as though there were a human user interacting with the page. Using <span class="literal">selenium</span>, you can interact with web pages in a much more advanced way than with <span class="literal">requests</span> and <span class="literal">bs4</span>; but because it launches a web browser, it is a bit slower and hard to run in the background if, say, you just need to download some files from the web.</p>
+<p class="indent">Still, if you need to interact with a web page in a way that, say, depends on the JavaScript code that updates the page, you’ll need to use <span class="literal">selenium</span> instead of <span class="literal">requests</span>. That’s because major ecommerce websites such as Amazon almost certainly have software systems to recognize traffic that they suspect is a script harvesting their info or signing up for multiple free accounts. These sites may refuse to serve pages to you after a while, breaking any scripts you’ve made. The <span class="literal">selenium</span> module is much more likely to function on these sites long-term than <span class="literal">requests</span>.</p>
+<p class="indent">A major “tell” to websites that you’re using a script is the <em class="calibre7">user-agent</em> string, which identifies the web browser and is included in all HTTP requests. For example, the user-agent string for the <span class="literal">requests</span> module is something like <span class="literal">'python-requests/2.21.0'</span>. You can visit a site such as <em class="calibre7"><a href="https://www.whatsmyua.info/" class="calibre6">https://www.whatsmyua.info/</a></em> to see your user-agent string. Using <span class="literal">selenium</span>, you’re much more likely to “pass for human” because not only is Selenium’s user-agent is the same as a regular browser (for instance, <span class="literal">'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:65.0) Gecko/20100101 Firefox/65.0'</span>), but it has the same traffic patterns: a <span class="literal">selenium</span>-controlled browser will download images, advertisements, cookies, and privacy-invading trackers just like a regular browser. However, <span class="literal">selenium</span> can still be detected by websites, and major ticketing and ecommerce websites often block browsers controlled by <span class="literal">selenium</span> to prevent web scraping of their pages.</p>
+<h4 class="h2" id="calibre_link-404"><strong class="calibre2"><em class="calibre9">Starting a selenium-Controlled Browser</em></strong></h4>
+<p class="noindent">The following examples will show you how to control Firefox’s web browser. If you don’t already have Firefox, you can download it for free from <em class="calibre7"><a href="https://getfirefox.com/" class="calibre6">https://getfirefox.com/</a></em>. You can install <span class="literal">selenium</span> by running <span class="literal">pip install --user selenium</span> from a command line terminal. More information is available in <a href="#calibre_link-2" class="calibre6">Appendix A</a>.</p>
+<p class="indent">Importing the modules for <span class="literal">selenium</span> is slightly tricky. Instead of <span class="literal">import selenium</span>, you need to run <span class="literal">from selenium import webdriver</span>. (The exact reason why the <span class="literal">selenium</span> module is set up this way is beyond the scope of this book.) <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-972"></span>After that, you can launch the Firefox browser with <span class="literal">selenium</span>. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">from selenium import webdriver</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">browser = webdriver.Firefox()</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">type(browser)</span><br class="calibre5" />
+&lt;class 'selenium.webdriver.firefox.webdriver.WebDriver'&gt;<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">browser.get('https://inventwithpython.com')</span></p>
+<p class="indent">You’ll notice when <span class="literal">webdriver.Firefox()</span> is called, the Firefox web browser starts up. Calling <span class="literal">type()</span> on the value <span class="literal">webdriver.Firefox()</span> reveals it’s of the <span class="literal">WebDriver</span> data type. And calling <span class="literal">browser.get('https://inventwithpython.com')</span> directs the browser to <em class="calibre7"><a href="https://inventwithpython.com/" class="calibre6">https://inventwithpython.com/</a></em>. Your browser should look something like <a href="#calibre_link-44" class="calibre6">Figure 12-7</a>.</p>
+<div class="image1"><a id="calibre_link-44" class="calibre6"></a><img src="../images/000131.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 12-7: After we call <span class="literal1">webdriver.Firefox()</span> and <span class="literal1">get()</span> in Mu, the Firefox browser appears.</em></p>
+<p class="indent">If you encounter the error message “'geckodriver' executable needs to be in <span class="literal">PATH</span>.”, then you need to manually download the webdriver for Firefox before you can use <span class="literal">selenium</span> to control it. You can also control browsers other than Firefox if you install the webdriver for them.</p>
+<p class="indent">For Firefox, go to <em class="calibre7"><a href="https://github.com/mozilla/geckodriver/releases" class="calibre6">https://github.com/mozilla/geckodriver/releases</a></em> and download the geckodriver for your operating system. (“Gecko” is the name of the browser engine used in Firefox.) For example, on Windows you’ll want to download the <em class="calibre7">geckodriver-v0.24.0-win64.zip</em> link, and on macOS, you’ll want the <em class="calibre7">geckodriver-v0.24.0-macos.tar.gz</em> link. Newer versions will have slightly different links. The downloaded ZIP file will contain a <em class="calibre7">geckodriver.exe</em> (on Windows) or <em class="calibre7">geckodriver</em> (on macOS and Linux) file that you can put on your system <span class="literal">PATH</span>. <a href="#calibre_link-35" class="calibre6">Appendix B</a> has information about the system <span class="literal">PATH</span>, or you can learn more at <em class="calibre7"><a href="https://stackoverflow.com/q/40208051/1893164" class="calibre6">https://stackoverflow.com/q/40208051/1893164</a></em>.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1096"></span>For Chrome, go to <em class="calibre7"><a href="https://sites.google.com/a/chromium.org/chromedriver/downloads" class="calibre6">https://sites.google.com/a/chromium.org/chromedriver/downloads</a></em> and download the ZIP file for your operating system. This ZIP file will contain a <em class="calibre7">chromedriver.exe</em> (on Windows) or <em class="calibre7">chromedriver</em> (on macOS or Linux) file that you can put on your system <span class="literal">PATH</span>.</p>
+<p class="indent">Other major web browsers also have webdrivers available, and you can often find these by performing an internet search for “&lt;browser name&gt; webdriver”.</p>
+<p class="indent">If you still have problems opening up a new browser under the control of <span class="literal">selenium</span>, it may be because the current version of the browser is incompatible with the <span class="literal">selenium</span> module. One workaround is to install an older version of the web browser&mdash;or, more simply, an older version of the <span class="literal">selenium</span> module. You can find the list of <span class="literal">selenium</span> version numbers at <em class="calibre7"><a href="https://pypi.org/project/selenium/#history" class="calibre6">https://pypi.org/project/selenium/#history</a></em>. Unfortunately, the compatibility between versions of <span class="literal">selenium</span> and a browser sometimes breaks, and you may need to search the web for possible solutions. <a href="#calibre_link-2" class="calibre6">Appendix A</a> has more information about running pip to install a specific version of <span class="literal">selenium</span>. (For example, you might run <span class="literal">pip install --user -U selenium==3.14.1</span>.)</p>
+<h4 class="h2" id="calibre_link-405"><strong class="calibre2"><em class="calibre9">Finding Elements on the Page</em></strong></h4>
+<p class="noindent"><span class="literal">WebDriver</span> objects have quite a few methods for finding elements on a page. They are divided into the <span class="literal">find_element_*</span> and <span class="literal">find_elements_*</span> methods. The <span class="literal">find_element_*</span> methods return a single <span class="literal">WebElement</span> object, representing the first element on the page that matches your query. The <span class="literal">find_elements_*</span> methods return a list of <span class="literal">WebElement_*</span> objects for <em class="calibre7">every</em> matching element on the page.</p>
+<p class="indent"><a href="#calibre_link-45" class="calibre6">Table 12-3</a> shows several examples of <span class="literal">find_element_*</span> and <span class="literal">find_elements_*</span> methods being called on a <span class="literal">WebDriver</span> object that’s stored in the variable <span class="literal">browser</span>.</p>
+<p class="tabcap" id="calibre_link-45"><strong class="calibre4">Table 12-3:</strong> Selenium’s <span class="literal1">WebDriver</span> Methods for Finding Elements</p>
+<table class="topbot-d">
+<colgroup class="calibre13">
+<col class="calibre18"></col>
+<col class="calibre18"></col>
+</colgroup>
+<thead class="calibre15">
+<tr class="calibre16">
+<td class="table-h"><p class="tab_th"><strong class="calibre4">Method name</strong></p></td>
+<td class="table-h"><p class="tab_th"><span class="codestrong">WebElement</span> object/list returned</p></td>
+</tr>
+</thead>
+<tbody class="calibre17">
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">browser.find_element_by_class_name(</span><span class="codeitalic">name</span><span class="literal">)</span></p>
+<p class="noindent"><span class="literal">browser.find_elements_by_class_name(</span><span class="codeitalic">name</span><span class="literal">)</span></p></td>
+<td class="table-b"><p class="taba">Elements that use the CSS<br class="calibre5" />class <span class="codeitalic">name</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">browser.find_element_by_css_selector(</span><span class="codeitalic">selector</span><span class="literal">)</span><br class="calibre5" /><span class="literal">browser.find_elements_by_css_selector(</span><span class="codeitalic">selector</span><span class="literal">)</span></p></td>
+<td class="table-v"><p class="taba">Elements that match the CSS<br class="calibre5" /><span class="codeitalic">selector</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">browser.find_element_by_id(</span><span class="codeitalic">id</span><span class="literal">)</span></p>
+<p class="noindent"><span class="literal">browser.find_elements_by_id(</span><span class="codeitalic">id</span><span class="literal">)</span></p></td>
+<td class="table-b"><p class="taba">Elements with a matching <span class="codeitalic">id</span><br class="calibre5" />attribute value</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">browser.find_element_by_link_text(</span><span class="codeitalic">text</span><span class="literal">)</span></p>
+<p class="noindent"><span class="literal">browser.find_elements_by_link_text(</span><span class="codeitalic">text</span><span class="literal">)</span></p></td>
+<td class="table-v"><p class="taba"><span class="literal">&lt;a&gt;</span> elements that completely<br class="calibre5" />match the <span class="codeitalic">text</span> provided</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">browser.find_element_by_partial_link_text(</span><span class="codeitalic">text</span><span class="literal">)</span></p>
+<p class="noindent"><span class="literal">browser.find_elements_by_partial_link_text(</span><span class="codeitalic">text</span><span class="literal">)</span></p></td>
+<td class="table-b"><p class="taba"><span class="literal">&lt;a&gt;</span> elements that contain the<br class="calibre5" /><span class="codeitalic">text</span> provided</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">browser.find_element_by_name(</span><span class="codeitalic">name</span><span class="literal">)</span></p>
+<p class="noindent"><span class="literal">browser.find_elements_by_name(</span><span class="codeitalic">name</span><span class="literal">)</span></p></td>
+<td class="table-v"><p class="taba">Elements with a matching <span class="codeitalic">name</span><br class="calibre5" />attribute value</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-ba"><p class="taba"><span class="literal">browser.find_element_by_tag_name(</span><span class="codeitalic">name</span><span class="literal">)</span><br class="calibre5" /><span class="literal">browser.find_elements_by_tag_name(</span><span class="codeitalic">name</span><span class="literal">)</span></p></td>
+<td class="table-ba"><p class="taba">Elements with a matching tag <span class="codeitalic">name</span><br class="calibre5" />(case-insensitive; an <span class="literal">&lt;a&gt;</span> element is<br class="calibre5" />matched by <span class="literal">'a'</span> and <span class="literal">'A'</span>)</p></td>
+</tr>
+</tbody>
+</table>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-843"></span>Except for the <span class="literal">*_by_tag_name()</span> methods, the arguments to all the methods are case sensitive. If no elements exist on the page that match what the method is looking for, the <span class="literal">selenium</span> module raises a <span class="literal">NoSuchElement</span> exception. If you do not want this exception to crash your program, add <span class="literal">try</span> and <span class="literal">except</span> statements to your code.</p>
+<p class="indent">Once you have the <span class="literal">WebElement</span> object, you can find out more about it by reading the attributes or calling the methods in <a href="#calibre_link-46" class="calibre6">Table 12-4</a>.</p>
+<p class="tabcap" id="calibre_link-46"><strong class="calibre4">Table 12-4:</strong> <span class="literal1">WebElement</span> Attributes and Methods</p>
+<table class="topbot-d">
+<colgroup class="calibre13">
+<col class="calibre18"></col>
+<col class="calibre18"></col>
+</colgroup>
+<thead class="calibre15">
+<tr class="calibre16">
+<td class="table-h"><p class="tab_th"><strong class="calibre4">Attribute or method</strong></p></td>
+<td class="table-h"><p class="tab_th"><strong class="calibre4">Description</strong></p></td>
+</tr>
+</thead>
+<tbody class="calibre17">
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">tag_name</span></p></td>
+<td class="table-b"><p class="taba">The tag name, such as <span class="literal">'a'</span> for an <span class="literal">&lt;a&gt;</span> element</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">get_attribute(</span><span class="codeitalic">name</span><span class="literal">)</span></p></td>
+<td class="table-v"><p class="taba">The value for the element’s <span class="literal">name</span> attribute</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">text</span></p></td>
+<td class="table-b"><p class="taba">The text within the element, such as <span class="literal">'hello'</span> in <span class="literal">&lt;span&gt;hello &lt;/span&gt;</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">clear()</span></p></td>
+<td class="table-v"><p class="taba">For text field or text area elements, clears the text typed into it</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">is_displayed()</span></p></td>
+<td class="table-b"><p class="taba">Returns <span class="literal">True</span> if the element is visible; otherwise returns <span class="literal">False</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">is_enabled()</span></p></td>
+<td class="table-v"><p class="taba">For input elements, returns <span class="literal">True</span> if the element is enabled; otherwise returns <span class="literal">False</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">is_selected()</span></p></td>
+<td class="table-b"><p class="taba">For checkbox or radio button elements, returns <span class="literal">True</span> if the element is selected; otherwise returns <span class="literal">False</span></p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-va"><p class="taba"><span class="literal">location</span></p></td>
+<td class="table-va"><p class="taba">A dictionary with keys <span class="literal">'x'</span> and <span class="literal">'y'</span> for the position of the element in the page</p></td>
+</tr>
+</tbody>
+</table>
+<p class="indent">For example, open a new file editor tab and enter the following program:</p>
+<p class="programs">from selenium import webdriver<br class="calibre5" />
+browser = webdriver.Firefox()<br class="calibre5" />
+browser.get('https://inventwithpython.com')<br class="calibre5" />
+try:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;elem = browser.find_element_by_class_name(' cover-thumb')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('Found &lt;%s&gt; element with that class name!' % (elem.tag_name))<br class="calibre5" />
+except:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('Was not able to find an element with that name.')</p>
+<p class="indent">Here we open Firefox and direct it to a URL. On this page, we try to find elements with the class name <span class="literal">'bookcover'</span>, and if such an element is found, we print its tag name using the <span class="literal">tag_name</span> attribute. If no such element was found, we print a different message.</p>
+<p class="indent">This program will output the following:</p>
+<p class="programs">Found &lt;img&gt; element with that class name!</p>
+<p class="indent">We found an element with the class name <span class="literal">'bookcover'</span> and the tag name <span class="literal">'img'</span>.</p>
+<h4 class="h2" id="calibre_link-406"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-845" class="calibre1"></span><strong class="calibre2"><em class="calibre9">Clicking the Page</em></strong></h4>
+<p class="noindent"><span class="literal">WebElement</span> objects returned from the <span class="literal">find_element_*</span> and <span class="literal">find_elements_*</span> methods have a <span class="literal">click()</span> method that simulates a mouse click on that element. This method can be used to follow a link, make a selection on a radio button, click a Submit button, or trigger whatever else might happen when the element is clicked by the mouse. For example, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">from selenium import webdriver</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">browser = webdriver.Firefox()</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">browser.get('https://inventwithpython.com')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">linkElem = browser.find_element_by_link_text('Read Online for Free')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">type(linkElem)</span><br class="calibre5" />
+&lt;class 'selenium.webdriver.remote.webelement.FirefoxWebElement'&gt;<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">linkElem.click()</span> # follows the "Read Online for Free" link</p>
+<p class="indent">This opens Firefox to <em class="calibre7"><a href="https://inventwithpython.com/" class="calibre6">https://inventwithpython.com/</a></em>, gets the <span class="literal">WebElement</span> object for the <span class="literal">&lt;a&gt;</span> element with the text <em class="calibre7">Read It Online</em>, and then simulates clicking that <span class="literal">&lt;a&gt;</span> element. It’s just like if you clicked the link yourself; the browser then follows that link.</p>
+<h4 class="h2" id="calibre_link-407"><strong class="calibre2"><em class="calibre9">Filling Out and Submitting Forms</em></strong></h4>
+<p class="noindent">Sending keystrokes to text fields on a web page is a matter of finding the <span class="literal">&lt;input&gt;</span> or <span class="literal">&lt;textarea&gt;</span> element for that text field and then calling the <span class="literal">send_keys()</span>method. For example, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">from selenium import webdriver</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">browser = webdriver.Firefox()</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">browser.get('https://login.metafilter.com')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">userElem = browser.find_element_by_id('user_name)</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">userElem.send_keys('</span><span class="codeitalic1"><span class="codestrong1">your_real_username_here</span></span><span class="codestrong1">')</span><br class="calibre5" /><br class="calibre5" /><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">passwordElem = browser.find_element_by_id('user_pass')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">passwordElem.send_keys('</span><span class="codeitalic1"><span class="codestrong1">your_real_password_here</span></span><span class="codestrong1">')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">passwordElem.submit()</span></p>
+<p class="indent">As long as login page for MetaFilter hasn’t changed the <span class="literal">id</span> of the Username and Password text fields since this book was published, the previous code will fill in those text fields with the provided text. (You can always use the browser’s inspector to verify the <span class="literal">id</span>.) Calling the <span class="literal">submit()</span> method on any element will have the same result as clicking the Submit button for the form that element is in. (You could have just as easily called <span class="literal">emailElem.submit()</span>, and the code would have done the same thing.)</p>
+<div class="note">
+<p class="notet"><strong class="calibre2"><span class="notes">WARNING</span></strong></p>
+<p class="notep"><em class="calibre7">Avoid putting your passwords in source code whenever possible. It’s easy to accidentally leak your passwords to others when they are left unencrypted on your hard drive. If possible, have your program prompt users to enter their passwords from the keyboard using the</em> <span class="literal">pyinputplus.inputPassword()</span> <em class="calibre7">function described in <a href="#calibre_link-47" class="calibre6">Chapter 8</a>.</em></p>
+</div>
+<h4 class="h2" id="calibre_link-408"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1095" class="calibre1"></span><strong class="calibre2"><em class="calibre9">Sending Special Keys</em></strong></h4>
+<p class="noindent">The <span class="literal">selenium</span> module has a module for keyboard keys that are impossible to type into a string value, which function much like escape characters. These values are stored in attributes in the <span class="literal">selenium.webdriver.common.keys</span> module. Since that is such a long module name, it’s much easier to run <span class="literal">from selenium.webdriver.common.keys import Keys</span> at the top of your program; if you do, then you can simply write <span class="literal">Keys</span> anywhere you’d normally have to write <span class="literal">selenium.webdriver.common.keys</span>. <a href="#calibre_link-48" class="calibre6">Table 12-5</a> lists the commonly used <span class="literal">Keys</span> variables.</p>
+<p class="tabcap" id="calibre_link-48"><strong class="calibre4">Table 12-5:</strong> Commonly Used Variables in the <span class="literal1">selenium.webdriver.common.keys</span> Module</p>
+<table class="topbot-d">
+<colgroup class="calibre13">
+<col class="calibre18"></col>
+<col class="calibre18"></col>
+</colgroup>
+<thead class="calibre15">
+<tr class="calibre16">
+<td class="table-h"><p class="tab_th"><strong class="calibre4">Attributes</strong></p></td>
+<td class="table-h"><p class="tab_th"><strong class="calibre4">Meanings</strong></p></td>
+</tr>
+</thead>
+<tbody class="calibre17">
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">Keys.DOWN</span>, <span class="literal">Keys.UP</span>, <span class="literal">Keys.LEFT</span>, <span class="literal">Keys.RIGHT</span></p></td>
+<td class="table-b"><p class="taba">The keyboard arrow keys</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">Keys.ENTER</span>, <span class="literal">Keys.RETURN</span></p></td>
+<td class="table-v"><p class="taba">The <small class="calibre11">ENTER</small> and <small class="calibre11">RETURN</small> keys</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">Keys.HOME</span>, <span class="literal">Keys.END</span>, <span class="literal">Keys.PAGE_DOWN</span>, <span class="literal">Keys.PAGE_UP</span></p></td>
+<td class="table-b"><p class="taba">The <small class="calibre11">HOME</small>, <small class="calibre11">END</small>, <small class="calibre11">PAGEDOWN</small>, and <small class="calibre11">PAGEUP</small> keys</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">Keys.ESCAPE</span>, <span class="literal">Keys.BACK_SPACE</span>, <span class="literal">Keys.DELETE</span></p></td>
+<td class="table-v"><p class="taba">The <small class="calibre11">ESC</small>, <small class="calibre11">BACKSPACE</small>, and <small class="calibre11">DELETE</small> keys</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">Keys.F1</span>, <span class="literal">Keys.F2</span>, . . . , <span class="literal">Keys.F12</span></p></td>
+<td class="table-b"><p class="taba">The F1 to F12 keys at the top of the keyboard</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-va"><p class="taba"><span class="literal">Keys.TAB</span></p></td>
+<td class="table-va"><p class="taba">The <small class="calibre11">TAB</small> key</p></td>
+</tr>
+</tbody>
+</table>
+<p class="indent">For example, if the cursor is not currently in a text field, pressing the <small class="calibre11">HOME</small> and <small class="calibre11">END</small> keys will scroll the browser to the top and bottom of the page, respectively. Enter the following into the interactive shell, and notice how the <span class="literal">send_keys()</span> calls scroll the page:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">from selenium import webdriver</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">from selenium.webdriver.common.keys import Keys</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">browser = webdriver.Firefox()</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">browser.get('https://nostarch.com')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">htmlElem = browser.find_element_by_tag_name('html')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">htmlElem.send_keys(Keys.END)</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# scrolls to bottom<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">htmlElem.send_keys(Keys.HOME)</span>&nbsp;&nbsp;&nbsp;&nbsp;# scrolls to top</p>
+<p class="indent">The <span class="literal">&lt;html</span>&gt; tag is the base tag in HTML files: the full content of the HTML file is enclosed within the <span class="literal">&lt;html&gt;</span> and <span class="literal">&lt;/html&gt;</span> tags. Calling <span class="literal">browser.find_element_by_tag_name('html')</span> is a good place to send keys to the general web page. This would be useful if, for example, new content is loaded once you’ve scrolled to the bottom of the page.</p>
+<h4 class="h2" id="calibre_link-409"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-808" class="calibre1"></span><strong class="calibre2"><em class="calibre9">Clicking Browser Buttons</em></strong></h4>
+<p class="noindentb">The <span class="literal">selenium</span> module can simulate clicks on various browser buttons as well through the following methods:</p>
+<p class="hang"><span class="codestrong">browser.back()</span> Clicks the Back button.</p>
+<p class="hang"><span class="codestrong">browser.forward()</span> Clicks the Forward button.</p>
+<p class="hang"><span class="codestrong">browser.refresh()</span> Clicks the Refresh/Reload button.</p>
+<p class="hang"><span class="codestrong">browser.quit()</span> Clicks the Close Window button.</p>
+<h4 class="h2" id="calibre_link-410"><strong class="calibre2"><em class="calibre9">More Information on Selenium</em></strong></h4>
+<p class="noindent">Selenium can do much more beyond the functions described here. It can modify your browser’s cookies, take screenshots of web pages, and run custom JavaScript. To learn more about these features, you can visit the <span class="literal">selenium</span> documentation at <em class="calibre7"><a href="https://selenium-python.readthedocs.org/" class="calibre6">https://selenium-python.readthedocs.org/</a></em>.</p>
+<h3 class="h1" id="calibre_link-411"><strong class="calibre2">Summary</strong></h3>
+<p class="noindent">Most boring tasks aren’t limited to the files on your computer. Being able to programmatically download web pages will extend your programs to the internet. The <span class="literal">requests</span> module makes downloading straightforward, and with some basic knowledge of HTML concepts and selectors, you can utilize the <span class="literal">BeautifulSoup</span> module to parse the pages you download.</p>
+<p class="indent">But to fully automate any web-based tasks, you need direct control of your web browser through the <span class="literal">selenium</span> module. The <span class="literal">selenium</span> module will allow you to log in to websites and fill out forms automatically. Since a web browser is the most common way to send and receive information over the internet, this is a great ability to have in your programmer toolkit.</p>
+<h3 class="h1" id="calibre_link-412"><strong class="calibre2">Practice Questions</strong></h3>
+<p class="question"><a id="calibre_link-1379" href="#calibre_link-49" class="calibre6">1</a>. Briefly describe the differences between the <span class="literal">webbrowser</span>, <span class="literal">requests</span>, <span class="literal">bs4</span>, and <span class="literal">selenium</span> modules.</p>
+<p class="question"><a id="calibre_link-1380" href="#calibre_link-50" class="calibre6">2</a>. What type of object is returned by <span class="literal">requests.get()</span>? How can you access the downloaded content as a string value?</p>
+<p class="question"><a id="calibre_link-1381" href="#calibre_link-51" class="calibre6">3</a>. What <span class="literal">requests</span> method checks that the download worked?</p>
+<p class="question"><a id="calibre_link-1382" href="#calibre_link-52" class="calibre6">4</a>. How can you get the HTTP status code of a <span class="literal">requests</span> response?</p>
+<p class="question"><a id="calibre_link-1383" href="#calibre_link-53" class="calibre6">5</a>. How do you save a <span class="literal">requests</span> response to a file?</p>
+<p class="question"><a id="calibre_link-1384" href="#calibre_link-54" class="calibre6">6</a>. What is the keyboard shortcut for opening a browser’s developer tools?</p>
+<p class="question"><a id="calibre_link-1385" href="#calibre_link-55" class="calibre6">7</a>. How can you view (in the developer tools) the HTML of a specific element on a web page?</p>
+<p class="question"><a id="calibre_link-1386" href="#calibre_link-56" class="calibre6">8</a>. What is the CSS selector string that would find the element with an <span class="literal">id</span> attribute of <span class="literal">main</span>?</p>
+<p class="question"><a id="calibre_link-1387" href="#calibre_link-57" class="calibre6">9</a>. <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1807"></span>What is the CSS selector string that would find the elements with a CSS class of <span class="literal">highlight</span>?</p>
+<p class="question1"><a id="calibre_link-1388" href="#calibre_link-58" class="calibre6">10</a>. What is the CSS selector string that would find all the <span class="literal">&lt;div&gt;</span> elements inside another <span class="literal">&lt;div&gt;</span> element?</p>
+<p class="question1"><a id="calibre_link-1389" href="#calibre_link-59" class="calibre6">11</a>. What is the CSS selector string that would find the <span class="literal">&lt;button&gt;</span> element with a <span class="literal">value</span> attribute set to <span class="literal">favorite</span>?</p>
+<p class="question1"><a id="calibre_link-1390" href="#calibre_link-60" class="calibre6">12</a>. Say you have a Beautiful Soup <span class="literal">Tag</span> object stored in the variable <span class="literal">spam</span> for the element <span class="literal">&lt;div&gt;Hello, world!&lt;/div&gt;</span>. How could you get a string <span class="literal">'Hello, world!'</span> from the <span class="literal">Tag</span> object?</p>
+<p class="question1"><a id="calibre_link-1391" href="#calibre_link-61" class="calibre6">13</a>. How would you store all the attributes of a Beautiful Soup <span class="literal">Tag</span> object in a variable named <span class="literal">linkElem</span>?</p>
+<p class="question1"><a id="calibre_link-1392" href="#calibre_link-62" class="calibre6">14</a>. Running <span class="literal">import selenium</span> doesn’t work. How do you properly import the <span class="literal">selenium</span> module?</p>
+<p class="question1"><a id="calibre_link-1393" href="#calibre_link-63" class="calibre6">15</a>. What’s the difference between the <span class="literal">find_element_*</span> and <span class="literal">find_elements_*</span> methods?</p>
+<p class="question1"><a id="calibre_link-1394" href="#calibre_link-64" class="calibre6">16</a>. What methods do Selenium’s <span class="literal">WebElement</span> objects have for simulating mouse clicks and keyboard keys?</p>
+<p class="question1"><a id="calibre_link-1395" href="#calibre_link-65" class="calibre6">17</a>. You could call <span class="literal">send_keys(Keys.ENTER)</span> on the Submit button’s <span class="literal">WebElement</span> object, but what is an easier way to submit a form with <span class="literal">selenium</span>?</p>
+<p class="question1"><a id="calibre_link-1396" href="#calibre_link-66" class="calibre6">18</a>. How can you simulate clicking a browser’s Forward, Back, and Refresh buttons with <span class="literal">selenium</span>?</p>
+<h3 class="h1" id="calibre_link-413"><strong class="calibre2">Practice Projects</strong></h3>
+<p class="noindent">For practice, write programs to do the following tasks.</p>
+<h4 class="h2" id="calibre_link-414"><strong class="calibre2"><em class="calibre9">Command Line Emailer</em></strong></h4>
+<p class="noindent">Write a program that takes an email address and string of text on the command line and then, using <span class="literal">selenium</span>, logs in to your email account and sends an email of the string to the provided address. (You might want to set up a separate email account for this program.)</p>
+<p class="indent">This would be a nice way to add a notification feature to your programs. You could also write a similar program to send messages from a Facebook or Twitter account.</p>
+<h4 class="h2" id="calibre_link-415"><strong class="calibre2"><em class="calibre9">Image Site Downloader</em></strong></h4>
+<p class="noindent">Write a program that goes to a photo-sharing site like Flickr or Imgur, searches for a category of photos, and then downloads all the resulting images. You could write a program that works with any photo site that has a search feature.</p>
+<h4 class="h2" id="calibre_link-416"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1808" class="calibre1"></span><strong class="calibre2"><em class="calibre9">2048</em></strong></h4>
+<p class="noindent"><em class="calibre7">2048</em> is a simple game where you combine tiles by sliding them up, down, left, or right with the arrow keys. You can actually get a fairly high score by repeatedly sliding in an up, right, down, and left pattern over and over again. Write a program that will open the game at <em class="calibre7"><a href="https://gabrielecirulli.github.io/2048/" class="calibre6">https://gabrielecirulli.github.io/2048/</a></em> and keep sending up, right, down, and left keystrokes to automatically play the game.</p>
+<h4 class="h2" id="calibre_link-417"><strong class="calibre2"><em class="calibre9">Link Verification</em></strong></h4>
+<p class="noindent">Write a program that, given the URL of a web page, will attempt to download every linked page on the page. The program should flag any pages that have a 404 “Not Found” status code and print them out as broken links.<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1809"></span></p>
+</div>
+
+<div><center><a href="../chapter11"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="../chapter13"><img src="/images/next.png" /></a></center></div>
+
+
+{% endblock %}

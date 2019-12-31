@@ -1,0 +1,679 @@
+{% extends "secondeditionbase.html" %}
+{% set title = 'Automate the Boring Stuff with Python' %}
+{% block content %}
+
+
+<div><center><a href="../chapter19"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="../appendixa"><img src="/images/next.png" /></a></center></div>
+
+
+<div class="calibre" id="calibre_link-1627">
+<h2 class="h2b" id="calibre_link-634"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-995" class="calibre1"></span><strong class="calibre2"><span class="big">20</span><br class="calibre12" />CONTROLLING THE KEYBOARD AND MOUSE WITH GUI AUTOMATION</strong></h2>
+<div class="image"><img src="../images/000071.jpg" alt="Image" class="calibre3" /></div>
+<p class="noindent">Knowing various Python modules for editing spreadsheets, downloading files, and launching programs is useful, but sometimes there just aren’t any modules for the applications you need to work with. The ultimate tools for automating tasks on your computer are pro&shy;grams you write that directly control the keyboard and mouse. These programs can control other applications by sending them virtual keystrokes and mouse clicks, just as if you were sitting at your computer and interacting with the applications yourself.</p>
+<p class="indent">This technique is known as <em class="calibre7">graphical user interface automation</em>, or <em class="calibre7">GUI automation</em> for short. With GUI automation, your programs can do anything that a human user sitting at the computer can do, except spill coffee on the keyboard. Think of GUI automation as programming a robotic arm. You can program the robotic arm to type at your keyboard and move your mouse for you. This technique is particularly useful for tasks that involve a lot of mindless clicking or filling out of forms.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-994"></span>Some companies sell innovative (and pricey) “automation solutions,” usually marketed as <em class="calibre7">robotic process automation</em> <em class="calibre7">(RPA)</em>. These products are effectively no different than the Python scripts you can make yourself with the <span class="literal">pyautogui</span> module, which has functions for simulating mouse movements, button clicks, and mouse wheel scrolls. This chapter covers only a subset of PyAutoGUI’s features; you can find the full documentation at <em class="calibre7"><a href="https://pyautogui.readthedocs.io/" class="calibre6">https://pyautogui.readthedocs.io/</a></em>.</p>
+<h3 class="h1" id="calibre_link-635"><strong class="calibre2">Installing the pyautogui Module</strong></h3>
+<p class="noindent">The <span class="literal">pyautogui</span> module can send virtual keypresses and mouse clicks to Windows, macOS, and Linux. Windows and macOS users can simply use pip to install PyAutoGUI. However, Linux users will first have to install some software that PyAutoGUI depends on. Open a terminal window and enter the following commands:</p>
+<ul class="calibre8">
+<li class="noindent1"><span class="literal">sudo apt-get install scrot</span></li>
+<li class="noindent1"><span class="literal">sudo apt-get install python3-tk</span></li>
+<li class="noindent1"><span class="literal">sudo apt-get install python3-dev</span></li>
+</ul>
+<p class="indent">To install PyAutoGUI, run <span class="literal">pip install --user pyautogui</span>. Don’t use <span class="literal">sudo</span> with <span class="literal">pip</span>; you may install modules to the Python installation that the operating system uses, causing conflicts with any scripts that rely on its original configuration. However, you should use the <span class="literal">sudo</span> command when installing applications with <span class="literal">apt-get</span>.</p>
+<p class="indent"><a href="#calibre_link-2" class="calibre6">Appendix A</a> has complete information on installing third-party modules. To test whether PyAutoGUI has been installed correctly, run <span class="codestrong">import pyautogui</span> from the interactive shell and check for any error messages.</p>
+<div class="note">
+<p class="notet"><strong class="calibre2"><span class="notes">WARNING</span></strong></p>
+<p class="notep"><em class="calibre7">Don’t save your program as</em> pyautogui.py<em class="calibre7">. When you run <span class="codeitalic">import pyautogui</span>, Python will import your program instead of the PyAutoGUI and you’ll get error messages like <span class="codeitalic">AttributeError: module 'pyautogui' has no attribute 'click'</span>.</em></p>
+</div>
+<h3 class="h1" id="calibre_link-636"><strong class="calibre2">Setting Up Accessibility Apps on macOS</strong></h3>
+<p class="noindent">As a security measure, macOS doesn’t normally let programs control the mouse or keyboard. To make PyAutoGUI work on macOS, you must set the program running your Python script to be an accessibility application. Without this step, your PyAutoGUI function calls will have no effect.</p>
+<p class="indent">Whether you run your Python programs from Mu, IDLE, or the Terminal, have that application open. Then open the System Preferences and go to the Accessibility tab. The currently open applications will appear under the “Allow the apps below to control your computer” label. Check <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-963"></span>Mu, IDLE, Terminal, or whichever app you use to run your Python scripts. You’ll be prompted to enter your password to confirm these changes.</p>
+<h3 class="h1" id="calibre_link-637"><strong class="calibre2">Staying on Track</strong></h3>
+<p class="noindent">Before you jump into a GUI automation, you should know how to escape problems that may arise. Python can move your mouse and type keystrokes at an incredible speed. In fact, it might be too fast for other programs to keep up with. Also, if something goes wrong but your program keeps moving the mouse around, it will be hard to tell what exactly the program is doing or how to recover from the problem. Like the enchanted brooms from Disney’s <em class="calibre7">The Sorcerer’s Apprentice</em>, which kept filling&mdash;and then overfilling&mdash;Mickey’s tub with water, your program could get out of control even though it’s following your instructions perfectly. Stopping the program can be difficult if the mouse is moving around on its own, preventing you from clicking the Mu Editor window to close it. Fortunately, there are several ways to prevent or recover from GUI automation problems.</p>
+<h4 class="h2" id="calibre_link-638"><strong class="calibre2"><em class="calibre9">Pauses and Fail-Safes</em></strong></h4>
+<p class="noindent">If your program has a bug and you’re unable to use the keyboard and mouse to shut it down, you can use PyAutoGUI’s fail-safe feature. Quickly slide the mouse to one of the four corners of the screen. Every PyAutoGUI function call has a 10th-of-a-second delay after performing its action to give you enough time to move the mouse to a corner. If PyAutoGUI then finds that the mouse cursor is in a corner, it raises the <span class="literal">pyautogui.FailSafeException</span> exception. Non-PyAutoGUI instructions will not have this 10th-of-a-second delay.</p>
+<p class="indent">If you find yourself in a situation where you need to stop your PyAutoGUI program, just slam the mouse toward a corner to stop it.</p>
+<h4 class="h2" id="calibre_link-639"><strong class="calibre2"><em class="calibre9">Shutting Down Everything by Logging Out</em></strong></h4>
+<p class="noindent">Perhaps the simplest way to stop an out-of-control GUI automation program is to log out, which will shut down all running programs. On Windows and Linux, the logout hotkey is <small class="calibre11">CTRL</small>-<small class="calibre11">ALT</small>-<small class="calibre11">DEL</small>. On macOS, it is <img src="../images/000064.jpg" alt="image" class="calibre3" />-<small class="calibre11">SHIFT</small>-<small class="calibre11">OPTION</small>-Q. By logging out, you’ll lose any unsaved work, but at least you won’t have to wait for a full reboot of the computer.</p>
+<h3 class="h1" id="calibre_link-640"><strong class="calibre2">Controlling Mouse Movement</strong></h3>
+<p class="noindent">In this section, you’ll learn how to move the mouse and track its position on the screen using PyAutoGUI, but first you need to understand how PyAutoGUI works with coordinates.</p>
+<p class="indent">The mouse functions of PyAutoGUI use x- and y-coordinates. <a href="#calibre_link-1628" class="calibre6">Figure 20-1</a> shows the coordinate system for the computer screen; it’s similar to the coordinate system used for images, discussed in <a href="#calibre_link-608" class="calibre6">Chapter 19</a>. The <em class="calibre7">origin</em>, where <em class="calibre7">x</em> <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-861"></span>and <em class="calibre7">y</em> are both zero, is at the upper-left corner of the screen. The x-coordinates increase going to the right, and the y-coordinates increase going down. All coordinates are positive integers; there are no negative coordinates.</p>
+<div class="image1"><a id="calibre_link-1628" class="calibre6"></a><img src="../images/000125.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 20-1: The coordinates of a computer screen with 1920×1080 resolution</em></p>
+<p class="indent">Your <em class="calibre7">resolution</em> is how many pixels wide and tall your screen is. If your screen’s resolution is set to 1920×1080, then the coordinate for the upper-left corner will be (0, 0), and the coordinate for the bottom-right corner will be (1919, 1079).</p>
+<p class="indent">The <span class="literal">pyautogui.size()</span> function returns a two-integer tuple of the screen’s width and height in pixels. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import pyautogui</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">wh =</span> <span class="codestrong1">pyautogui.size()</span> # Obtain the screen resolution.<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">wh</span><br class="calibre5" />
+Size(width=1920, height=1080)<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">wh[0]</span><br class="calibre5" />
+1920<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">wh.width</span><br class="calibre5" />
+1920</p>
+<p class="indent">The <span class="literal">pyautogui.size()</span> function returns <span class="literal">(1920, 1080)</span> on a computer with a 1920×1080 resolution; depending on your screen’s resolution, your return value may be different. The <span class="literal">Size</span> object returned by <span class="literal">size()</span> is a named tuple. <em class="calibre7">Named tuples</em> have numeric indexes, like regular tuples, and attribute names, like objects: both <span class="literal">wh[0]</span> and <span class="literal">wh.width</span> evaluate to the width of the screen. (Named tuples are beyond the scope of this book. Just remember that you can use them the same way you use tuples.)</p>
+<h4 class="h2" id="calibre_link-641"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-991" class="calibre1"></span><strong class="calibre2"><em class="calibre9">Moving the Mouse</em></strong></h4>
+<p class="noindent">Now that you understand screen coordinates, let’s move the mouse. The <span class="literal">pyautogui.moveTo()</span> function will instantly move the mouse cursor to a specified position on the screen. Integer values for the x- and y-coordinates make up the function’s first and second arguments, respectively. An optional <span class="literal">duration</span> integer or float keyword argument specifies the number of seconds it should take to move the mouse to the destination. If you leave it out, the default is <span class="literal">0</span> for instantaneous movement. (All of the <span class="literal">duration</span> keyword arguments in PyAutoGUI functions are optional.) Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import pyautogui</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">for i in range(10):</span> # Move mouse in a square.<br class="calibre5" />
+<span class="codestrong1">...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pyautogui.moveTo(100, 100, duration=0.25)</span><br class="calibre5" />
+<span class="codestrong1">...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pyautogui.moveTo(200, 100, duration=0.25)</span><br class="calibre5" />
+<span class="codestrong1">...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pyautogui.moveTo(200, 200, duration=0.25)</span><br class="calibre5" />
+<span class="codestrong1">...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pyautogui.moveTo(100, 200, duration=0.25)</span></p>
+<p class="indent">This example moves the mouse cursor clockwise in a square pattern among the four coordinates provided a total of 10 times. Each movement takes a quarter of a second, as specified by the <span class="literal">duration=0.25</span> keyword argument. If you hadn’t passed a third argument to any of the <span class="literal">pyautogui.moveTo()</span> calls, the mouse cursor would have instantly teleported from point to point.</p>
+<p class="indent">The <span class="literal">pyautogui.move()</span> function moves the mouse cursor <em class="calibre7">relative to its current position</em>. The following example moves the mouse in the same square pattern, except it begins the square from wherever the mouse happens to be on the screen when the code starts running:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import pyautogui</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">for i in range(10):</span><br class="calibre5" />
+<span class="codestrong1">...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pyautogui.move(100, 0, duration=0.25)&nbsp;&nbsp;&nbsp;</span># right<br class="calibre5" />
+<span class="codestrong1">...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pyautogui.move(0, 100, duration=0.25)&nbsp;&nbsp;&nbsp;</span># down<br class="calibre5" />
+<span class="codestrong1">...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pyautogui.move(-100, 0, duration=0.25)&nbsp;&nbsp;</span># left<br class="calibre5" />
+<span class="codestrong1">...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pyautogui.move(0, -100, duration=0.25)&nbsp;&nbsp;</span># up</p>
+<p class="indent">The <span class="literal">pyautogui.move()</span> function also takes three arguments: how many pixels to move horizontally to the right, how many pixels to move vertically downward, and (optionally) how long it should take to complete the movement. A negative integer for the first or second argument will cause the mouse to move left or upward, respectively.</p>
+<h4 class="h2" id="calibre_link-642"><strong class="calibre2"><em class="calibre9">Getting the Mouse Position</em></strong></h4>
+<p class="noindent">You can determine the mouse’s current position by calling the <span class="literal">pyautogui.position()</span> function, which will return a <span class="literal">Point</span> named tuple of the mouse cursor’s <em class="calibre7">x</em> and <em class="calibre7">y</em> positions at the time of the function call. Enter the following into the interactive shell, moving the mouse around after each call:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">pyautogui.position()</span> # Get current mouse position.<br class="calibre5" />
+Point(x=311, y=622)<br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-844"></span>&gt;&gt;&gt; <span class="codestrong1">pyautogui.position()</span> # Get current mouse position again.<br class="calibre5" />
+Point(x=377, y=481)<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">p =</span> <span class="codestrong1">pyautogui.position()</span> # And again.<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">p</span><br class="calibre5" />
+Point(x=1536, y=637)<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">p[0]</span> # The x-coordinate is at index 0.<br class="calibre5" />
+1536<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">p.x</span> # The x-coordinate is also in the x attribute.<br class="calibre5" />
+1536</p>
+<p class="indent">Of course, your return values will vary depending on where your mouse cursor is.</p>
+<h3 class="h1" id="calibre_link-643"><strong class="calibre2">Controlling Mouse Interaction</strong></h3>
+<p class="noindent">Now that you know how to move the mouse and figure out where it is on the screen, you’re ready to start clicking, dragging, and scrolling.</p>
+<h4 class="h2" id="calibre_link-644"><strong class="calibre2"><em class="calibre9">Clicking the Mouse</em></strong></h4>
+<p class="noindent">To send a virtual mouse click to your computer, call the <span class="literal">pyautogui.click()</span> method. By default, this click uses the left mouse button and takes place wherever the mouse cursor is currently located. You can pass x- and y-coordinates of the click as optional first and second arguments if you want it to take place somewhere other than the mouse’s current position.</p>
+<p class="indent">If you want to specify which mouse button to use, include the <span class="literal">button</span> keyword argument, with a value of <span class="literal">'left'</span>, <span class="literal">'middle'</span>, or <span class="literal">'right'</span>. For example, <span class="literal">pyautogui.click(100, 150, button='left')</span> will click the left mouse button at the coordinates (100, 150), while <span class="literal">pyautogui.click(200, 250, button='right')</span> will perform a right-click at (200, 250).</p>
+<p class="indent">Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import pyautogui</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">pyautogui.click(10, 5)</span> # Move mouse to (10, 5) and click.</p>
+<p class="indent">You should see the mouse pointer move to near the top-left corner of your screen and click once. A full “click” is defined as pushing a mouse button down and then releasing it back up without moving the cursor. You can also perform a click by calling <span class="literal">pyautogui.mouseDown()</span>, which only pushes the mouse button down, and <span class="literal">pyautogui.mouseUp()</span>, which only releases the button. These functions have the same arguments as <span class="literal">click()</span>, and in fact, the <span class="literal">click()</span> function is just a convenient wrapper around these two function calls.</p>
+<p class="indent">As a further convenience, the <span class="literal">pyautogui.doubleClick()</span> function will perform two clicks with the left mouse button, while the <span class="literal">pyautogui.rightClick()</span> and <span class="literal">pyautogui.middleClick()</span> functions will perform a click with the right and middle mouse buttons, respectively.</p>
+<h4 class="h2" id="calibre_link-645"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-920" class="calibre1"></span><strong class="calibre2"><em class="calibre9">Dragging the Mouse</em></strong></h4>
+<p class="noindent"><em class="calibre7">Dragging</em> means moving the mouse while holding down one of the mouse buttons. For example, you can move files between folders by dragging the folder icons, or you can move appointments around in a calendar app.</p>
+<p class="indent">PyAutoGUI provides the <span class="literal">pyautogui.dragTo()</span> and <span class="literal">pyautogui.drag()</span> functions to drag the mouse cursor to a new location or a location relative to its current one. The arguments for <span class="literal">dragTo()</span> and <span class="literal">drag()</span> are the same as <span class="literal">moveTo()</span> and <span class="literal">move()</span>: the x-coordinate/horizontal movement, the y-coordinate/vertical movement, and an optional duration of time. (macOS does not drag correctly when the mouse moves too quickly, so passing a <span class="literal">duration</span> keyword argument is recommended.)</p>
+<p class="indent">To try these functions, open a graphics-drawing application such as MS Paint on Windows, Paintbrush on macOS, or GNU Paint on Linux. (If you don’t have a drawing application, you can use the online one at <em class="calibre7"><a href="https://sumopaint.com/" class="calibre6">https://sumopaint.com/</a></em>.) I will use PyAutoGUI to draw in these applications.</p>
+<p class="indent">With the mouse cursor over the drawing application’s canvas and the Pencil or Brush tool selected, enter the following into a new file editor window and save it as <em class="calibre7">spiralDraw.py</em>:</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;import pyautogui, time<br class="calibre5" />
+<span class="ent">?</span> time.sleep(5)<br class="calibre5" />
+<span class="ent">?</span> pyautogui.click()&nbsp;&nbsp;&nbsp;&nbsp;# Click to make the window active.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;distance = 300<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;change = 20<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;while distance &gt; 0:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">?</span> pyautogui.drag(distance, 0, duration=0.2)&nbsp;&nbsp;&nbsp;# Move right.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">?</span> distance = distance &ndash; change<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">?</span> pyautogui.drag(0, distance, duration=0.2)&nbsp;&nbsp;&nbsp;# Move down.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">?</span> pyautogui.drag(-distance, 0, duration=0.2)&nbsp;&nbsp;# Move left.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;distance = distance &ndash; change<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pyautogui.drag(0, -distance, duration=0.2)&nbsp;&nbsp;# Move up.</p>
+<p class="indent">When you run this program, there will be a five-second delay <span class="ent">?</span> for you to move the mouse cursor over the drawing program’s window with the Pencil or Brush tool selected. Then <em class="calibre7">spiralDraw.py</em> will take control of the mouse and click to make the drawing program’s window active <span class="ent">?</span>. The <em class="calibre7">active window</em> is the window that currently accepts keyboard input, and the actions you take&mdash;like typing or, in this case, dragging the mouse&mdash;will affect that window. The active window is also known as the <em class="calibre7">focused</em> or <em class="calibre7">foreground window</em>. Once the drawing program is active, <em class="calibre7">spiralDraw.py</em> draws a square spiral pattern like the one on the left of <a href="#calibre_link-1629" class="calibre6">Figure 20-2</a>. While you can also create a square spiral image by using the Pillow module discussed in <a href="#calibre_link-608" class="calibre6">Chapter 19</a>, creating the image by controlling the mouse to draw it in MS Paint lets you make use of this program’s various brush styles, like in <a href="#calibre_link-1629" class="calibre6">Figure 20-2</a> on the right, as well as other advanced features, like gradients or the fill bucket. You can preselect the brush settings yourself (or have your Python code select these settings) and then run the spiral-drawing program.</p>
+<div class="image1"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-990"></span><a id="calibre_link-1629" class="calibre6"></a><img src="../images/000073.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 20-2: The results from the <span class="literal1">pyautogui.drag()</span> example, drawn with MS Paint’s different brushes</em></p>
+<p class="indent">The <span class="literal">distance</span> variable starts at <span class="literal">200</span>, so on the first iteration of the <span class="literal">while</span> loop, the first <span class="literal">drag()</span> call drags the cursor 200 pixels to the right, taking 0.2 seconds <span class="ent">?</span>. <span class="literal">distance</span> is then decreased to 195 <span class="ent">?</span>, and the second <span class="literal">drag()</span> call drags the cursor 195 pixels down <span class="ent">?</span>. The third <span class="literal">drag()</span> call drags the cursor &ndash;195 horizontally (195 to the left) <span class="ent">?</span>, <span class="literal">distance</span> is decreased to 190, and the last <span class="literal">drag()</span> call drags the cursor 190 pixels up. On each iteration, the mouse is dragged right, down, left, and up, and <span class="literal">distance</span> is slightly smaller than it was in the previous iteration. By looping over this code, you can move the mouse cursor to draw a square spiral.</p>
+<p class="indent">You could draw this spiral by hand (or rather, by mouse), but you’d have to work slowly to be so precise. PyAutoGUI can do it in a few seconds!</p>
+<div class="note">
+<p class="notet"><strong class="calibre2"><span class="notes">NOTE</span></strong></p>
+<p class="notep"><em class="calibre7">At the time of this writing, PyAutoGUI can’t send mouse clicks or keystrokes to certain programs, such as antivirus software (to prevent viruses from disabling the software) or video games on Windows (which use a different method of receiving mouse and keyboard input). You can check the online documentation at</em> <a href="https://pyautogui.readthedocs.io/" class="calibre6">https://pyautogui.readthedocs.io/</a> <em class="calibre7">to see if these features have been added.</em></p>
+</div>
+<h4 class="h2" id="calibre_link-646"><strong class="calibre2"><em class="calibre9">Scrolling the Mouse</em></strong></h4>
+<p class="noindent">The final PyAutoGUI mouse function is <span class="literal">scroll()</span>, which you pass an integer argument for how many units you want to scroll the mouse up or down. The size of a unit varies for each operating system and application, so you’ll have to experiment to see exactly how far it scrolls in your particular situation. <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-992"></span>The scrolling takes place at the mouse cursor’s current position. Passing a positive integer scrolls up, and passing a negative integer scrolls down. Run the following in Mu Editor’s interactive shell while the mouse cursor is over the Mu Editor window:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">pyautogui.scroll(200)</span></p>
+<p class="indent">You’ll see Mu scroll upward if the mouse cursor is over a text field that can be scrolled up.</p>
+<h3 class="h1" id="calibre_link-647"><strong class="calibre2">Planning Your Mouse Movements</strong></h3>
+<p class="noindent">One of the difficulties of writing a program that will automate clicking the screen is finding the x- and y-coordinates of the things you’d like to click. The <span class="literal">pyautogui.mouseInfo()</span> function can help you with this.</p>
+<p class="indent">The <span class="literal">pyautogui.mouseInfo()</span> function is meant to be called from the interactive shell, rather than as part of your program. It launches a small application named MouseInfo that’s included with PyAutoGUI. The window for the application looks like <a href="#calibre_link-1630" class="calibre6">Figure 20-3</a>.</p>
+<div class="image1"><a id="calibre_link-1630" class="calibre6"></a><img src="../images/000019.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 20-3: The MouseInfo application’s window</em></p>
+<p class="indent">Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; import pyautogui<br class="calibre5" />
+&gt;&gt;&gt; pyautogui.mouseInfo()</p>
+<p class="indent">This makes the MouseInfo window appear. This window gives you information about the mouse’s cursor current position, as well the color of the pixel underneath the mouse cursor, as a three-integer RGB tuple and as a hex value. The color itself appears in the color box in the window.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-996"></span>To help you record this coordinate or pixel information, you can click one of the eight Copy or Log buttons. The Copy All, Copy XY, Copy RGB, and Copy RGB Hex buttons will copy their respective information to the clipboard. The Log All, Log XY, Log RGB, and Log RGB Hex buttons will write their respective information to the large text field in the window. You can save the text in this log text field by clicking the Save Log button.</p>
+<p class="indent">By default, the 3 Sec. Button Delay checkbox is checked, causing a three-second delay between clicking a Copy or Log button and the copying or logging taking place. This gives you a short amount of time in which to click the button and then move the mouse into your desired position. It may be easier to uncheck this box, move the mouse into position, and press the F1 to F8 keys to copy or log the mouse position. You can look at the Copy and Log menus at the top of the MouseInfo window to find out which key maps to which buttons.</p>
+<p class="indent">For example, uncheck the 3 Sec. Button Delay, then move the mouse around the screen while pressing the F6 button, and notice how the x- and y-coordinates of the mouse are recorded in the large text field in the middle of the window. You can later use these coordinates in your PyAutoGUI scripts.</p>
+<p class="indent">For more information on MouseInfo, review the complete documentation at <em class="calibre7"><a href="https://mouseinfo.readthedocs.io/" class="calibre6">https://mouseinfo.readthedocs.io/</a></em>.</p>
+<h3 class="h1" id="calibre_link-648"><strong class="calibre2">Working with the Screen</strong></h3>
+<p class="noindent">Your GUI automation programs don’t have to click and type blindly. PyAutoGUI has screenshot features that can create an image file based on the current contents of the screen. These functions can also return a Pillow <span class="literal">Image</span> object of the current screen’s appearance. If you’ve been skipping around in this book, you’ll want to read <a href="#calibre_link-530" class="calibre6">Chapter 17</a> and install the <span class="literal">pillow</span> module before continuing with this section.</p>
+<p class="indent">On Linux computers, the <span class="literal">scrot</span> program needs to be installed to use the screenshot functions in PyAutoGUI. In a Terminal window, run <strong class="calibre4">sudo apt-get install scrot</strong> to install this program. If you’re on Windows or macOS, skip this step and continue with the section.</p>
+<h4 class="h2" id="calibre_link-649"><strong class="calibre2"><em class="calibre9">Getting a Screenshot</em></strong></h4>
+<p class="noindent">To take screenshots in Python, call the <span class="literal">pyautogui.screenshot()</span> function. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import pyautogui</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">im = pyautogui.screenshot()</span></p>
+<p class="indent">The <span class="literal">im</span> variable will contain the <span class="literal">Image</span> object of the screenshot. You can now call methods on the <span class="literal">Image</span> object in the <span class="literal">im</span> variable, just like any other <span class="literal">Image</span> object. <a href="#calibre_link-608" class="calibre6">Chapter 19</a> has more information about <span class="literal">Image</span> objects.</p>
+<h4 class="h2" id="calibre_link-650"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1062" class="calibre1"></span><strong class="calibre2"><em class="calibre9">Analyzing the Screenshot</em></strong></h4>
+<p class="noindent">Say that one of the steps in your GUI automation program is to click a gray button. Before calling the <span class="literal">click()</span> method, you could take a screenshot and look at the pixel where the script is about to click. If it’s not the same gray as the gray button, then your program knows something is wrong. Maybe the window moved unexpectedly, or maybe a pop-up dialog has blocked the button. At this point, instead of continuing&mdash;and possibly wreaking havoc by clicking the wrong thing&mdash;your program can “see” that it isn’t clicking the right thing and stop itself.</p>
+<p class="indent">You can obtain the RGB color value of a particular pixel on the screen with the <span class="literal">pixel()</span> function. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import pyautogui</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">pyautogui.pixel((0, 0))</span><br class="calibre5" />
+(176, 176, 175)<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">pyautogui.pixel((50, 200))</span><br class="calibre5" />
+(130, 135, 144)</p>
+<p class="indent">Pass <span class="literal">pixel()</span> a tuple of coordinates, like (0, 0) or (50, 200), and it’ll tell you the color of the pixel at those coordinates in your image. The return value from <span class="literal">pixel()</span> is an RGB tuple of three integers for the amount of red, green, and blue in the pixel. (There is no fourth value for alpha, because screenshot images are fully opaque.)</p>
+<p class="indent">PyAutoGUI’s <span class="literal">pixelMatchesColor()</span> function will return <span class="literal">True</span> if the pixel at the given x- and y-coordinates on the screen matches the given color. The first and second arguments are integers for the x- and y-coordinates, and the third argument is a tuple of three integers for the RGB color the screen pixel must match. Enter the following into the interactive shell:</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">import pyautogui</span><br class="calibre5" />
+<span class="ent">?</span> &gt;&gt;&gt; <span class="codestrong1">pyautogui.pixel((50, 200))</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;(130, 135, 144)<br class="calibre5" />
+<span class="ent">?</span> &gt;&gt;&gt; <span class="codestrong1">pyautogui.pixelMatchesColor(50, 200, (130, 135, 144))</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;True<br class="calibre5" />
+<span class="ent">?</span> &gt;&gt;&gt; <span class="codestrong1">pyautogui.pixelMatchesColor(50, 200, (255, 135, 144))</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;False</p>
+<p class="indent">After using <span class="literal">pixel()</span> to get an RGB tuple for the color of a pixel at specific coordinates <span class="ent">?</span>, pass the same coordinates and RGB tuple to <span class="literal">pixelMatchesColor()</span> <span class="ent">?</span>, which should return <span class="literal">True</span>. Then change a value in the RGB tuple and call <span class="literal">pixelMatchesColor()</span> again for the same coordinates <span class="ent">?</span>. This should return <span class="literal">false</span>. This method can be useful to call whenever your GUI automation programs are about to call <span class="literal">click()</span>. Note that the color at the given coordinates must <em class="calibre7">exactly</em> match. If it is even slightly different&mdash;for example, <span class="literal">(255, 255, 254)</span> instead of <span class="literal">(255, 255, 255)</span>&mdash;then <span class="literal">pixelMatchesColor()</span> will return <span class="literal">False</span>.</p>
+<h3 class="h1" id="calibre_link-651"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-993" class="calibre1"></span><strong class="calibre2">Image Recognition</strong></h3>
+<p class="noindent">But what if you do not know beforehand where PyAutoGUI should click? You can use image recognition instead. Give PyAutoGUI an image of what you want to click, and let it figure out the coordinates.</p>
+<p class="indent">For example, if you have previously taken a screenshot to capture the image of a Submit button in <em class="calibre7">submit.png</em>, the <span class="literal">locateOnScreen()</span> function will return the coordinates where that image is found. To see how <span class="literal">locateOnScreen()</span> works, try taking a screenshot of a small area on your screen; then save the image and enter the following into the interactive shell, replacing <span class="literal">'submit.png'</span> with the filename of your screenshot:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import pyautogui</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">b = pyautogui.locateOnScreen('submit.png')</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">b</span><br class="calibre5" />
+Box(left=643, top=745, width=70, height=29)<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">b[0]</span><br class="calibre5" />
+643<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">b.left</span><br class="calibre5" />
+643</p>
+<p class="indent">The <span class="literal">Box</span> object is a named tuple that <span class="literal">locateOnScreen()</span> returns and has the x-coordinate of the left edge, the y-coordinate of the top edge, the width, and the height for the first place on the screen the image was found. If you’re trying this on your computer with your own screenshot, your return value will be different from the one shown here.</p>
+<p class="indent">If the image cannot be found on the screen, <span class="literal">locateOnScreen()</span> returns <span class="literal">None</span>. Note that the image on the screen must match the provided image perfectly in order to be recognized. If the image is even a pixel off, <span class="literal">locateOnScreen()</span> raises an <span class="literal">ImageNotFoundException</span> exception. If you’ve changed your screen resolution, images from previous screenshots might not match the images on your current screen. You can change the scaling in the display settings of your operating system, as shown in <a href="#calibre_link-1631" class="calibre6">Figure 20-4</a>.</p>
+<div class="image1"><a id="calibre_link-1631" class="calibre6"></a><img src="../images/000113.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 20-4: The scale display settings in Windows 10 (left) and macOS (right)</em></p>
+<p class="indent">If the image can be found in several places on the screen, <span class="literal">locateAllOnScreen()</span> will return a <span class="literal">Generator</span> object. Generators are beyond the scope of this book, <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1874"></span>but you can pass them to <span class="literal">list()</span> to return a list of four-integer tuples. There will be one four-integer tuple for each location where the image is found on the screen. Continue the interactive shell example by entering the following (and replacing <span class="literal">'submit.png'</span> with your own image filename):</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">list(pyautogui.locateAllOnScreen('submit.png'))</span><br class="calibre5" />
+[(643, 745, 70, 29), (1007, 801, 70, 29)]</p>
+<p class="indent">Each of the four-integer tuples represents an area on the screen. In the example above, the image appears in two locations. If your image is only found in one area, then using <span class="literal">list()</span> and <span class="literal">locateAllOnScreen()</span> returns a list containing just one tuple.</p>
+<p class="indent">Once you have the four-integer tuple for the specific image you want to select, you can click the center of this area by passing the tuple to <span class="literal">click()</span>. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">pyautogui.click((643, 745, 70, 29))</span></p>
+<p class="indent">As a shortcut, you can also pass the image filename directly to the <span class="literal">click()</span> function:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">pyautogui.click('submit.png')</span></p>
+<p class="indent">The <span class="literal">moveTo()</span> and <span class="literal">dragTo()</span> functions also accept image filename arguments. Remember <span class="literal">locateOnScreen()</span> raises an exception if it can’t find the image on the screen, so you should call it from inside a <span class="literal">try</span> statement:</p>
+<p class="programs">try:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;location = pyautogui.locateOnScreen('submit.png')<br class="calibre5" />
+except:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('Image could not be found.')</p>
+<p class="indent">Without the <span class="literal">try</span> and <span class="literal">except</span> statements, the uncaught exception would crash your program. Since you can’t be sure that your program will always find the image, it’s a good idea to use the <span class="literal">try</span> and <span class="literal">except</span> statements when calling <span class="literal">locateOnScreen()</span>.</p>
+<h3 class="h1" id="calibre_link-652"><strong class="calibre2">Getting Window Information</strong></h3>
+<p class="noindent">Image recognition is a fragile way to find things on the screen; if a single pixel is a different color, then <span class="literal">pyautogui.locateOnScreen()</span> won’t find the image. If you need to find where a particular window is on the screen, it’s faster and more reliable to use PyAutoGUI’s window features.</p>
+<div class="note">
+<p class="notet"><strong class="calibre2"><span class="notes">NOTE</span></strong></p>
+<p class="notep"><em class="calibre7">As of version 0.9.46, PyAutoGUI’s window features work only on Windows, not on macOS or Linux. These features come from PyAutoGUI’s inclusion of the PyGetWindow module.</em></p>
+</div>
+<h4 class="h2" id="calibre_link-653"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1875" class="calibre1"></span><strong class="calibre2"><em class="calibre9">Obtaining the Active Window</em></strong></h4>
+<p class="noindent">The active window on your screen is the window currently in the foreground and accepting keyboard input. If you’re currently writing code in the Mu Editor, the Mu Editor’s window is the active window. Of all the windows on your screen, only one will be active at a time.</p>
+<p class="indent">In the interactive shell, call the <span class="literal">pyautogui.getActiveWindow()</span> function to get a <span class="literal">Window</span> object (technically a <span class="literal">Win32Window</span> object when run on Windows).</p>
+<p class="indent">Once you have that <span class="literal">Window</span> object, you can retrieve any of the object’s attributes, which describe its size, position, and title:</p>
+<p class="hang"><span class="codestrong">left, right, top, bottom</span> A single integer for the x- or y-coordinate of the window’s side</p>
+<p class="hang"><span class="codestrong">topleft, topright, bottomleft, bottomright</span> A named tuple of two integers for the (x, y) coordinates of the window’s corner</p>
+<p class="hang"><span class="codestrong">midleft, midright, midleft, midright</span> A named tuple of two integers for the (x, y) coordinate of the middle of the window’s side</p>
+<p class="hang"><span class="codestrong">width, height</span> A single integer for one of the window’s dimensions, in pixels</p>
+<p class="hang"><span class="codestrong">size</span> A named tuple of two integers for the (width, height) of the window</p>
+<p class="hang"><span class="codestrong">area</span> A single integer representing the area of the window, in pixels</p>
+<p class="hang"><span class="codestrong">center</span> A named tuple of two integers for the (x, y) coordinate of the window’s center</p>
+<p class="hang"><span class="codestrong">centerx, centery</span> A single integer for the x- or y-coordinate of the window’s center</p>
+<p class="hang"><span class="codestrong">box</span> A named tuple of four integers for the (left, top, width, height) measurements of the window</p>
+<p class="hang"><span class="codestrong">title</span> A string of the text in the title bar at the top of the window</p>
+<p class="indent">To get the window’s position, size, and title information from the <span class="literal">window</span> object, for example, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import pyautogui</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">fw = pyautogui.getActiveWindow()</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">fw</span><br class="calibre5" />
+Win32Window(hWnd=2034368)<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">str(fw)</span><br class="calibre5" />
+'&lt;Win32Window left="500", top="300", width="2070", height="1208", title="Mu 1.0.1 &ndash; test1.py"&gt;'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">fw.title</span><br class="calibre5" />
+'Mu 1.0.1 &ndash; test1.py'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">fw.size</span><br class="calibre5" />
+(2070, 1208)<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">fw.left, fw.top, fw.right, fw.bottom</span><br class="calibre5" />
+(500, 300, 2070, 1208)<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">fw.topleft</span><br class="calibre5" />
+(256, 144)<br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-981"></span>&gt;&gt;&gt; <span class="codestrong1">fw.area</span><br class="calibre5" />
+2500560<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">pyautogui.click(fw.left + 10, fw.top + 20)</span></p>
+<p class="indent">You can now use these attributes to calculate precise coordinates within a window. If you know that a button you want to click is always 10 pixels to the right of and 20 pixels down from the window’s top-left corner, and the window’s top-left corner is at screen coordinates (300, 500), then calling <span class="literal">pyautogui.click(310, 520)</span> (or <span class="literal">pyautogui.click(fw.left + 10, fw.top + 20)</span> if <span class="literal">fw</span> contains the <span class="literal">Window</span> object for the window) will click the button. This way, you won’t have to rely on the slower, less reliable <span class="literal">locateOnScreen()</span> function to find the button for you.</p>
+<h4 class="h2" id="calibre_link-654"><strong class="calibre2"><em class="calibre9">Other Ways of Obtaining Windows</em></strong></h4>
+<p class="noindent">While <span class="literal">getActiveWindow()</span> is useful for obtaining the window that is active at the time of the function call, you’ll need to use some other function to obtain <span class="literal">Window</span> objects for the other windows on the screen.</p>
+<p class="indent">The following four functions return a list of <span class="literal">Window</span> objects. If they’re unable to find any windows, they return an empty list:</p>
+<p class="hang"><span class="codestrong">pyautogui.getAllWindows()</span> Returns a list of <span class="literal">Window</span> objects for every visible window on the screen.</p>
+<p class="hang"><span class="codestrong">pyautogui.getWindowsAt(x, y)</span> Returns a list of <span class="literal">Window</span> objects for every visible window that includes the point (x, y).</p>
+<p class="hang"><span class="codestrong">pyautogui.getWindowsWithTitle(title)</span> Returns a list of <span class="literal">Window</span> objects for every visible window that includes the string <span class="literal">title</span> in its title bar.</p>
+<p class="hang"><span class="codestrong">pyautogui.getActiveWindow()</span> Returns the <span class="literal">Window</span> object for the window that is currently receiving keyboard focus.</p>
+<p class="indent">PyAutoGUI also has a <span class="literal">pyautogui.getAllTitles()</span> function, which returns a list of strings of every visible window.</p>
+<h4 class="h2" id="calibre_link-655"><strong class="calibre2"><em class="calibre9">Manipulating Windows</em></strong></h4>
+<p class="noindent">Windows attributes can do more than just tell you the size and position of the window. You can also set their values in order to resize or move the window. For example, enter the following into the interactive shell:</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">import pyautogui</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">fw = pyautogui.getActiveWindow()</span><br class="calibre5" />
+<span class="ent">?</span> &gt;&gt;&gt; <span class="codestrong1">fw.width</span> # Gets the current width of the window.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;1669<br class="calibre5" />
+<span class="ent">?</span> &gt;&gt;&gt; <span class="codestrong1">fw.topleft</span> # Gets the current position of the window.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;(174, 153)<br class="calibre5" />
+<span class="ent">?</span> &gt;&gt;&gt; <span class="codestrong1">fw.width = 1000</span> # Resizes the width.<br class="calibre5" />
+<span class="ent">?</span> &gt;&gt;&gt; <span class="codestrong1">fw.topleft = (800, 400)</span> # Moves the window.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1876"></span>First, we use the <span class="literal">Window</span> object’s attributes to find out information about the window’s size <span class="ent">?</span> and position <span class="ent">?</span>. After calling these functions in Mu Editor, the window should move <span class="ent">?</span> and become narrower <span class="ent">?</span>, as in <a href="#calibre_link-1632" class="calibre6">Figure 20-5</a>.</p>
+<div class="image1"><a id="calibre_link-1632" class="calibre6"></a><img src="../images/000058.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 20-5: The Mu Editor window before (top) and after (bottom) using the <span class="literal1">Window</span> object attributes to move and resize it</em></p>
+<p class="indent">You can also find out and change the window’s minimized, maximized, and activated states. Try entering the following into the interactive shell:</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">import pyautogui</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">fw = pyautogui.getActiveWindow()</span><br class="calibre5" />
+<span class="ent">?</span> &gt;&gt;&gt; <span class="codestrong1">fw.isMaximized</span> # Returns True if window is maximized.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;False<br class="calibre5" />
+<span class="ent">?</span> &gt;&gt;&gt; <span class="codestrong1">fw.isMinimized</span> # Returns True if window is minimized.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-775"></span>False<br class="calibre5" />
+<span class="ent">?</span> &gt;&gt;&gt; <span class="codestrong1">fw.isActive</span> # Returns True if window is the active window.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;True<br class="calibre5" />
+<span class="ent">?</span> &gt;&gt;&gt; <span class="codestrong1">fw.maximize()</span> # Maximizes the window.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">fw.isMaximized</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;True<br class="calibre5" />
+<span class="ent">?</span> &gt;&gt;&gt; <span class="codestrong1">fw.restore()</span> # Undoes a minimize/maximize action.<br class="calibre5" />
+<span class="ent">?</span> &gt;&gt;&gt; <span class="codestrong1">fw.minimize()</span> # Minimizes the window.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; <span class="codestrong1">import time</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; # Wait 5 seconds while you activate a different window:<br class="calibre5" />
+<span class="ent">?</span> &gt;&gt;&gt; <span class="codestrong1">time.sleep(5); fw.activate()</span><br class="calibre5" />
+<span class="ent">?</span> &gt;&gt;&gt; <span class="codestrong1">fw.close()</span> # This will close the window you're typing in.</p>
+<p class="indent">The <span class="literal">isMaximized</span> <span class="ent">?</span>, <span class="literal">isMinimized</span> <span class="ent">?</span>, and <span class="literal">isActive</span> <span class="ent">?</span> attributes contain Boolean values that indicate whether the window is currently in that state. The <span class="literal">maximize()</span> <span class="ent">?</span>, <span class="literal">minimize()</span> <span class="ent">?</span>, <span class="literal">activate()</span> <span class="ent">?</span>, and <span class="literal">restore()</span> <span class="ent">?</span> methods change the window’s state. After you maximize or minimize the window with <span class="literal">maximize()</span> or <span class="literal">minimize()</span>, the <span class="literal">restore()</span> method will restore the window to its former size and position.</p>
+<p class="indent">The <span class="literal">close()</span> method <span class="ent">?</span> will close a window. Be careful with this method, as it may bypass any message dialogs asking you to save your work before quitting the application.</p>
+<p class="indent">The complete documentation for PyAutoGUI’s window-controlling feature can be found at <em class="calibre7"><a href="https://pyautogui.readthedocs.io/" class="calibre6">https://pyautogui.readthedocs.io/</a></em>. You can also use these features separately from PyAutoGUI with the PyGetWindow module, documented at <em class="calibre7"><a href="https://pygetwindow.readthedocs.io/" class="calibre6">https://pygetwindow.readthedocs.io/</a></em>.</p>
+<h3 class="h1" id="calibre_link-656"><strong class="calibre2">Controlling the Keyboard</strong></h3>
+<p class="noindent">PyAutoGUI also has functions for sending virtual keypresses to your computer, which enables you to fill out forms or enter text into applications.</p>
+<h4 class="h2" id="calibre_link-657"><strong class="calibre2"><em class="calibre9">Sending a String from the Keyboard</em></strong></h4>
+<p class="noindent">The <span class="literal">pyautogui.write()</span> function sends virtual keypresses to the computer. What these keypresses do depends on what window is active and what text field has focus. You may want to first send a mouse click to the text field you want in order to ensure that it has focus.</p>
+<p class="indent">As a simple example, let’s use Python to automatically type the words <em class="calibre7">Hello, world!</em> into a file editor window. First, open a new file editor window and position it in the upper-left corner of your screen so that PyAutoGUI will click in the right place to bring it into focus. Next, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">pyautogui.click(100, 200); pyautogui.write('Hello, world!')</span></p>
+<p class="indent">Notice how placing two commands on the same line, separated by a semicolon, keeps the interactive shell from prompting you for input between running the two instructions. This prevents you from <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-988"></span>accidentally bringing a new window into focus between the <span class="literal">click()</span> and <span class="literal">write()</span> calls, which would mess up the example.</p>
+<p class="indent">Python will first send a virtual mouse click to the coordinates (100, 200), which should click the file editor window and put it in focus. The <span class="literal">write()</span> call will send the text <em class="calibre7">Hello, world!</em> to the window, making it look like <a href="#calibre_link-1633" class="calibre6">Figure 20-6</a>. You now have code that can type for you!</p>
+<div class="image1"><a id="calibre_link-1633" class="calibre6"></a><img src="../images/000001.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 20-6: Using PyAutogGUI to click the file editor window and type</em> Hello, world! <em class="calibre7">into it</em></p>
+<p class="indent">By default, the <span class="literal">write()</span> function will type the full string instantly. However, you can pass an optional second argument to add a short pause between each character. This second argument is an integer or float value of the number of seconds to pause. For example, <span class="literal">pyautogui.write('Hello, world!', 0.25)</span> will wait a quarter-second after typing <em class="calibre7">H</em>, another quarter-second after <em class="calibre7">e</em>, and so on. This gradual typewriter effect may be useful for slower applications that can’t process keystrokes fast enough to keep up with PyAutoGUI.</p>
+<p class="indent">For characters such as <em class="calibre7">A</em> or <em class="calibre7">!</em>, PyAutoGUI will automatically simulate holding down the <small class="calibre11">SHIFT</small> key as well.</p>
+<h4 class="h2" id="calibre_link-658"><strong class="calibre2"><em class="calibre9">Key Names</em></strong></h4>
+<p class="noindent">Not all keys are easy to represent with single text characters. For example, how do you represent <small class="calibre11">SHIFT</small> or the left arrow key as a single character? In PyAutoGUI, these keyboard keys are represented by short string values instead: <span class="literal">'esc'</span> for the <small class="calibre11">ESC</small> key or <span class="literal">'enter'</span> for the <small class="calibre11">ENTER</small> key.</p>
+<p class="indent">Instead of a single string argument, a list of these keyboard key strings can be passed to <span class="literal">write()</span>. For example, the following call presses the A key, then the B key, then the left arrow key twice, and finally the X and Y keys:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">pyautogui.write(['a', 'b', 'left', 'left', 'X', 'Y'])</span></p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-989"></span>Because pressing the left arrow key moves the keyboard cursor, this will output <em class="calibre7">XYab</em>. <a href="#calibre_link-1634" class="calibre6">Table 20-1</a> lists the PyAutoGUI keyboard key strings that you can pass to <span class="literal">write()</span> to simulate pressing any combination of keys.</p>
+<p class="indent">You can also examine the <span class="literal">pyautogui.KEYBOARD_KEYS</span> list to see all possible keyboard key strings that PyAutoGUI will accept. The <span class="literal">'shift'</span> string refers to the left <small class="calibre11">SHIFT</small> key and is equivalent to <span class="literal">'shiftleft'</span>. The same applies for <span class="literal">'ctrl'</span>, <span class="literal">'alt'</span>, and <span class="literal">'win'</span> strings; they all refer to the left-side key.</p>
+<p class="tabcap" id="calibre_link-1634"><strong class="calibre4">Table 20-1:</strong> <span class="literal1">PyKeyboard</span> Attributes</p>
+<table class="topbot-d">
+<colgroup class="calibre13">
+<col class="calibre18"></col>
+<col class="calibre18"></col>
+</colgroup>
+<thead class="calibre15">
+<tr class="calibre16">
+<td class="table-h"><p class="tab_th"><strong class="calibre4">Keyboard key string</strong></p></td>
+<td class="table-h"><p class="tab_th"><strong class="calibre4">Meaning</strong></p></td>
+</tr>
+</thead>
+<tbody class="calibre17">
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">'a'</span>, <span class="literal">'b'</span>, <span class="literal">'c'</span>, <span class="literal">'A'</span>, <span class="literal">'B'</span>, <span class="literal">'C'</span>, <span class="literal">'1'</span>, <span class="literal">'2'</span>, <span class="literal">'3'</span>, <span class="literal">'!'</span>, <span class="literal">'@'</span>, <span class="literal">'#'</span>, and so on</p></td>
+<td class="table-b"><p class="taba">The keys for single characters</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">'enter'</span> (or <span class="literal">'return'</span> or <span class="literal">'\n'</span>)</p></td>
+<td class="table-v"><p class="taba">The <small class="calibre11">ENTER</small> key</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">'esc'</span></p></td>
+<td class="table-b"><p class="taba">The <small class="calibre11">ESC</small> key</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">'shiftleft'</span>, <span class="literal">'shiftright'</span></p></td>
+<td class="table-v"><p class="taba">The left and right <small class="calibre11">SHIFT</small> keys</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">'altleft'</span>, <span class="literal">'altright'</span></p></td>
+<td class="table-b"><p class="taba">The left and right <small class="calibre11">ALT</small> keys</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">'ctrlleft'</span>, <span class="literal">'ctrlright'</span></p></td>
+<td class="table-v"><p class="taba">The left and right <small class="calibre11">CTRL</small> keys</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">'tab'</span> (or <span class="literal">'\t'</span>)</p></td>
+<td class="table-b"><p class="taba">The <small class="calibre11">TAB</small> key</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">'backspace'</span>, <span class="literal">'delete'</span></p></td>
+<td class="table-v"><p class="taba">The <small class="calibre11">BACKSPACE</small> and <small class="calibre11">DELETE</small> keys</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">'pageup'</span>, <span class="literal">'pagedown'</span></p></td>
+<td class="table-b"><p class="taba">The <small class="calibre11">PAGE UP</small> and <small class="calibre11">PAGE DOWN</small> keys</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">'home'</span>, <span class="literal">'end'</span></p></td>
+<td class="table-v"><p class="taba">The <small class="calibre11">HOME</small> and <small class="calibre11">END</small> keys</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">'up'</span>, <span class="literal">'down'</span>, <span class="literal">'left'</span>, <span class="literal">'right'</span></p></td>
+<td class="table-b"><p class="taba">The up, down, left, and right arrow keys</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">'f1'</span>, <span class="literal">'f2'</span>, <span class="literal">'f3'</span>, and so on</p></td>
+<td class="table-v"><p class="taba">The F1 to F12 keys</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">'volumemute'</span>, <span class="literal">'volumedown'</span>, <span class="literal">'volumeup'</span></p></td>
+<td class="table-b"><p class="taba">The mute, volume down, and volume up keys (some keyboards do not have these keys, but your operating system will still be able to understand these simulated keypresses)</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">'pause'</span></p></td>
+<td class="table-v"><p class="taba">The <small class="calibre11">PAUSE</small> key</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">'capslock'</span>, <span class="literal">'numlock'</span>, <span class="literal">'scrolllock'</span></p></td>
+<td class="table-b"><p class="taba">The <small class="calibre11">CAPS LOCK</small>, <small class="calibre11">NUM LOCK</small>, and <small class="calibre11">SCROLL LOCK</small> keys</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">'insert'</span></p></td>
+<td class="table-v"><p class="taba">The <small class="calibre11">INS</small> or <small class="calibre11">INSERT</small> key</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">'printscreen'</span></p></td>
+<td class="table-b"><p class="taba">The <small class="calibre11">PRTSC</small> or <small class="calibre11">PRINT SCREEN</small> key</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-v"><p class="taba"><span class="literal">'winleft'</span>, <span class="literal">'winright'</span></p></td>
+<td class="table-v"><p class="taba">The left and right <small class="calibre11">WIN</small> keys (on Windows)</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-b"><p class="taba"><span class="literal">'command'</span></p></td>
+<td class="table-b"><p class="taba">The Command (<img src="../images/000064.jpg" alt="image" class="calibre3" />) key (on macOS)</p></td>
+</tr>
+<tr class="calibre16">
+<td class="table-va"><p class="taba"><span class="literal">'option'</span></p></td>
+<td class="table-va"><p class="taba">The <small class="calibre11">OPTION</small> key (on macOS)</p></td>
+</tr>
+</tbody>
+</table>
+<h4 class="h2" id="calibre_link-659"><strong class="calibre2"><em class="calibre9">Pressing and Releasing the Keyboard</em></strong></h4>
+<p class="noindent">Much like the <span class="literal">mouseDown()</span> and <span class="literal">mouseUp()</span> functions, <span class="literal">pyautogui.keyDown()</span> and <span class="literal">pyautogui.keyUp()</span> will send virtual keypresses and releases to the computer. They are passed a keyboard key string (see <a href="#calibre_link-1634" class="calibre6">Table 20-1</a>) for their argument. For convenience, PyAutoGUI provides the <span class="literal">pyautogui.press()</span> function, which calls both of these functions to simulate a complete keypress.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-987"></span>Run the following code, which will type a dollar sign character (obtained by holding the <small class="calibre11">SHIFT</small> key and pressing 4):</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">pyautogui.keyDown('shift'); pyautogui.press('4'); pyautogui.keyUp('shift')</span></p>
+<p class="indent">This line presses down <small class="calibre11">SHIFT</small>, presses (and releases) 4, and then releases <small class="calibre11">SHIFT</small>. If you need to type a string into a text field, the <span class="literal">write()</span> function is more suitable. But for applications that take single-key commands, the <span class="literal">press()</span> function is the simpler approach.</p>
+<h4 class="h2" id="calibre_link-660"><strong class="calibre2"><em class="calibre9">Hotkey Combinations</em></strong></h4>
+<p class="noindent">A <em class="calibre7">hotkey</em> or <em class="calibre7">shortcut</em> is a combination of keypresses to invoke some application function. The common hotkey for copying a selection is <small class="calibre11">CTRL</small>-C (on Windows and Linux) or <img src="../images/000064.jpg" alt="image" class="calibre3" />-C (on macOS). The user presses and holds the <small class="calibre11">CTRL</small> key, then presses the C key, and then releases the C and <small class="calibre11">CTRL</small> keys. To do this with PyAutoGUI’s <span class="literal">keyDown()</span> and <span class="literal">keyUp()</span> functions, you would have to enter the following:</p>
+<p class="programs">pyautogui.keyDown('ctrl')<br class="calibre5" />
+pyautogui.keyDown('c')<br class="calibre5" />
+pyautogui.keyUp('c')<br class="calibre5" />
+pyautogui.keyUp('ctrl')</p>
+<p class="indent">This is rather complicated. Instead, use the <span class="literal">pyautogui.hotkey()</span> function, which takes multiple keyboard key string arguments, presses them in order, and releases them in the reverse order. For the <small class="calibre11">CTRL</small>-C example, the code would simply be as follows:</p>
+<p class="programs">pyautogui.hotkey('ctrl', 'c')</p>
+<p class="indent">This function is especially useful for larger hotkey combinations. In Word, the <small class="calibre11">CTRL</small>-<small class="calibre11">ALT</small>-<small class="calibre11">SHIFT</small>-S hotkey combination displays the Style pane. Instead of making eight different function calls (four <span class="literal">keyDown()</span> calls and four <span class="literal">keyUp()</span> calls), you can just call <span class="literal">hotkey('ctrl', 'alt', 'shift', 's')</span>.</p>
+<h3 class="h1" id="calibre_link-661"><strong class="calibre2">Setting Up Your GUI Automation Scripts</strong></h3>
+<p class="noindent">GUI automation scripts are a great way to automate the boring stuff, but your scripts can also be finicky. If a window is in the wrong place on a desktop or some pop-up appears unexpectedly, your script could be clicking on the wrong things on the screen. Here are some tips for setting up your GUI automation scripts:</p>
+<ul class="calibre8">
+<li class="noindent1">Use the same screen resolution each time you run the script so that the position of windows doesn’t change.</li>
+<li class="noindent1">The application window that your script clicks should be maximized so that its buttons and menus are in the same place each time you run the script.</li>
+<li class="noindent1"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-872"></span>Add generous pauses while waiting for content to load; you don’t want your script to begin clicking before the application is ready.</li>
+<li class="noindent1">Use <span class="literal">locateOnScreen()</span> to find buttons and menus to click, rather than relying on XY coordinates. If your script can’t find the thing it needs to click, stop the program rather than let it continue blindly clicking.</li>
+<li class="noindent1">Use <span class="literal">getWindowsWithTitle()</span> to ensure that the application window you think your script is clicking on exists, and use the <span class="literal">activate()</span> method to put that window in the foreground.</li>
+<li class="noindent1">Use the <span class="literal">logging</span> module from <a href="#calibre_link-349" class="calibre6">Chapter 11</a> to keep a log file of what your script has done. This way, if you have to stop your script halfway through a process, you can change it to pick up from where it left off.</li>
+<li class="noindent1">Add as many checks as you can to your script. Think about how it could fail if an unexpected pop-up window appears or if your computer loses its internet connection.</li>
+<li class="noindent1">You may want to supervise the script when it first begins to ensure that it’s working correctly.</li>
+</ul>
+<p class="indent">You might also want to put a pause at the start of your script so the user can set up the window the script will click on. PyAutoGUI has a <span class="literal">sleep()</span> function that acts identically to <span class="literal">time.sleep()</span> (it just frees you from having to also add <span class="literal">import time</span> to your scripts). There is also a <span class="literal">countdown()</span> function that prints numbers counting down to give the user a visual indication that the script will continue soon. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import pyautogui</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">pyautogui.sleep(3)</span> # Pauses the program for 3 seconds.<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">pyautogui.countdown(10)</span> # Counts down over 10 seconds.<br class="calibre5" />
+10 9 8 7 6 5 4 3 2 1<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">print('Starting in ', end=''); pyautogui.countdown(3)</span><br class="calibre5" />
+Starting in 3 2 1</p>
+<p class="indent">These tips can help make your GUI automation scripts easier to use and more able to recover from unforeseen circumstances.</p>
+<h3 class="h1" id="calibre_link-662"><strong class="calibre2">Review of the PyAutoGUI Functions</strong></h3>
+<p class="noindent">Since this chapter covered many different functions, here is a quick summary reference:</p>
+<p class="hang"><span class="codestrong">moveTo(</span><span class="codestrongitalic">x</span><span class="codestrong">,</span> <span class="codestrongitalic">y</span><span class="codestrong">)</span> Moves the mouse cursor to the given <span class="codeitalic">x</span> and <span class="codeitalic">y</span> coordinates.</p>
+<p class="hang"><span class="codestrong">move(</span><span class="codestrongitalic">xOffset</span><span class="codestrong">,</span> <span class="codestrongitalic">yOffset</span><span class="codestrong">)</span> Moves the mouse cursor relative to its current position.</p>
+<p class="hang"><span class="codestrong">dragTo(</span><span class="codestrongitalic">x</span><span class="codestrong">,</span> <span class="codestrongitalic">y</span><span class="codestrong">)</span> Moves the mouse cursor while the left button is held down.</p>
+<p class="hang"><span class="codestrong">drag(</span><span class="codestrongitalic">xOffset</span><span class="codestrong">,</span> <span class="codestrongitalic">yOffset</span><span class="codestrong">)</span> Moves the mouse cursor relative to its current position while the left button is held down.</p>
+<p class="hang"><span class="codestrong">click(</span><span class="codestrongitalic">x</span><span class="codestrong">,</span> <span class="codestrongitalic">y</span><span class="codestrong">,</span> <span class="codestrongitalic">button</span><span class="codestrong">)</span> Simulates a click (left button by default).</p>
+<p class="hang"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1071"></span><span class="codestrong">rightClick()</span> Simulates a right-button click.</p>
+<p class="hang"><span class="codestrong">middleClick()</span> Simulates a middle-button click.</p>
+<p class="hang"><span class="codestrong">doubleClick()</span> Simulates a double left-button click.</p>
+<p class="hang"><span class="codestrong">mouseDown(</span><span class="codestrongitalic">x</span><span class="codestrong">,</span> <span class="codestrongitalic">y</span><span class="codestrong">,</span> <span class="codestrongitalic">button</span><span class="codestrong">)</span> Simulates pressing down the given button at the position <span class="codeitalic">x</span>, <span class="codeitalic">y</span>.</p>
+<p class="hang"><span class="codestrong">mouseUp(</span><span class="codestrongitalic">x</span><span class="codestrong">,</span> <span class="codestrongitalic">y</span><span class="codestrong">,</span> <span class="codestrongitalic">button</span><span class="codestrong">)</span> Simulates releasing the given button at the position <span class="codeitalic">x</span>, <span class="codeitalic">y</span>.</p>
+<p class="hang"><span class="codestrong">scroll(</span><span class="codestrongitalic">units</span><span class="codestrong">)</span> Simulates the scroll wheel. A positive argument scrolls up; a negative argument scrolls down.</p>
+<p class="hang"><span class="codestrong">write(</span><span class="codestrongitalic">message</span><span class="codestrong">)</span> Types the characters in the given message string.</p>
+<p class="hang"><span class="codestrong">write([</span><span class="codestrongitalic">key1</span><span class="codestrong">,</span> <span class="codestrongitalic">key2</span><span class="codestrong">,</span> <span class="codestrongitalic">key3</span><span class="codestrong">])</span> Types the given keyboard key strings.</p>
+<p class="hang"><span class="codestrong">press(</span><span class="codestrongitalic">key</span><span class="codestrong">)</span> Presses the given keyboard key string.</p>
+<p class="hang"><span class="codestrong">keyDown(</span><span class="codestrongitalic">key</span><span class="codestrong">)</span> Simulates pressing down the given keyboard key.</p>
+<p class="hang"><span class="codestrong">keyUp(</span><span class="codestrongitalic">key</span><span class="codestrong">)</span> Simulates releasing the given keyboard key.</p>
+<p class="hang"><span class="codestrong">hotkey([</span><span class="codestrongitalic">key1</span><span class="codestrong">,</span> <span class="codestrongitalic">key2</span><span class="codestrong">,</span> <span class="codestrongitalic">key3</span><span class="codestrong">])</span> Simulates pressing the given keyboard key strings down in order and then releasing them in reverse order.</p>
+<p class="hang"><span class="codestrong">screenshot()</span> Returns a screenshot as an <span class="literal">Image</span> object. (See <a href="#calibre_link-608" class="calibre6">Chapter 19</a> for information on <span class="literal">Image</span> objects.)</p>
+<p class="hang"><span class="codestrong">getActiveWindow(), getAllWindows(), getWindowsAt()</span>, <strong class="calibre4">and</strong> <span class="codestrong">getWindowsWithTitle()</span> These functions return Window objects that can resize and reposition application windows on the desktop.</p>
+<p class="hang"><span class="codestrong">getAllTitles()</span> Returns a list of strings of the title bar text of every window on the desktop.</p>
+<div class="sidebar">
+<p class="sidebart"><strong class="calibre4">CAPTCHAS AND COMPUTER ETHICS</strong></p>
+<p class="spara">“Completely Automated Public Turing test to tell Computers and Humans Apart” or “captchas” are those small tests that ask you to type the letters in a distorted picture or click on photos of fire hydrants. These are tests that are easy, if annoying, for humans to pass but nearly impossible for software to solve. After reading this chapter, you can see how easy it is to write a script that could, say, sign up for billions of free email accounts or flood users with harassing messages. Captchas mitigate this by requiring a step that only a human can pass.</p>
+<p class="sparai">However not all websites implement captchas, and these can be vulnerable to abuse by unethical programmers. Learning to code is a powerful and exciting skill, and you may be tempted to misuse this power for personal gain or even just to show off. But just as an unlocked door isn’t justification for trespass, the responsibility for your programs falls upon you, the programmer. There is nothing clever about circumventing systems to cause harm, invade privacy, or gain unfair advantage. I hope that my efforts in writing this book enable you to become your most productive self, rather than a mercenary one.</p>
+</div>
+<h3 class="h1" id="calibre_link-663"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-804" class="calibre1"></span><strong class="calibre2">Project: Automatic Form Filler</strong></h3>
+<p class="noindent">Of all the boring tasks, filling out forms is the most dreaded of chores. It’s only fitting that now, in the final chapter project, you will slay it. Say you have a huge amount of data in a spreadsheet, and you have to tediously retype it into some other application’s form interface&mdash;with no intern to do it for you. Although some applications will have an Import feature that will allow you to upload a spreadsheet with the information, sometimes it seems that there is no other way than mindlessly clicking and typing for hours on end. You’ve come this far in this book; you know that <em class="calibre7">of course</em> must be a way to automate this boring task.</p>
+<p class="indent">The form for this project is a Google Docs form that you can find at <em class="calibre7"><a href="https://autbor.com/form" class="calibre6">https://autbor.com/form</a></em>. It looks like <a href="#calibre_link-1635" class="calibre6">Figure 20-7</a>.</p>
+<div class="image1"><a id="calibre_link-1635" class="calibre6"></a><img src="../images/000096.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 20-7: The form used for this project</em></p>
+<p class="indent">At a high level, here’s what your program should do:</p>
+<ol class="calibre10">
+<li class="noindent1"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1877"></span>Click the first text field of the form.</li>
+<li class="noindent1">Move through the form, typing information into each field.</li>
+<li class="noindent1">Click the Submit button.</li>
+<li class="noindent1">Repeat the process with the next set of data.</li>
+</ol>
+<p class="indent">This means your code will need to do the following:</p>
+<ol class="calibre10">
+<li class="noindent1">Call <span class="literal">pyautogui.click()</span> to click the form and Submit button.</li>
+<li class="noindent1">Call <span class="literal">pyautogui.write()</span> to enter text into the fields.</li>
+<li class="noindent1">Handle the <span class="literal">KeyboardInterrupt</span> exception so the user can press <small class="calibre11">CTRL</small>-C to quit.</li>
+</ol>
+<p class="indent">Open a new file editor window and save it as <em class="calibre7">formFiller.py</em>.</p>
+<h4 class="h2" id="calibre_link-664"><strong class="calibre2"><em class="calibre9">Step 1: Figure Out the Steps</em></strong></h4>
+<p class="noindent">Before writing code, you need to figure out the exact keystrokes and mouse clicks that will fill out the form once. The application launched by calling <span class="literal">pyautogui.mouseInfo()</span> can help you figure out specific mouse coordinates. You need to know only the coordinates of the first text field. After clicking the first field, you can just press <small class="calibre11">TAB</small> to move focus to the next field. This will save you from having to figure out the x- and y-coordinates to click for every field.</p>
+<p class="indent">Here are the steps for entering data into the form:</p>
+<ol class="calibre10">
+<li class="noindent1">Put the keyboard focus on the Name field so that pressing keys types text into the field.</li>
+<li class="noindent1">Type a name and then press <small class="calibre11">TAB</small>.</li>
+<li class="noindent1">Type a greatest fear and then press <small class="calibre11">TAB</small>.</li>
+<li class="noindent1">Press the down arrow key the correct number of times to select the wizard power source: once for <em class="calibre7">wand</em>, twice for <em class="calibre7">amulet</em>, three times for <em class="calibre7">crystal ball</em>, and four times for <em class="calibre7">money</em>. Then press <small class="calibre11">TAB</small>. (Note that on macOS, you will have to press the down arrow key one more time for each option. For some browsers, you may need to press <small class="calibre11">ENTER</small> as well.)</li>
+<li class="noindent1">Press the right arrow key to select the answer to the RoboCop question. Press it once for <em class="calibre7">2</em>, twice for <em class="calibre7">3</em>, three times for <em class="calibre7">4</em>, or four times for <em class="calibre7">5</em> or just press the spacebar to select <em class="calibre7">1</em> (which is highlighted by default). Then press <small class="calibre11">TAB</small>.</li>
+<li class="noindent1">Type an additional comment and then press <small class="calibre11">TAB</small>.</li>
+<li class="noindent1">Press <small class="calibre11">ENTER</small> to “click” the Submit button.</li>
+<li class="noindent1">After submitting the form, the browser will take you to a page where you will need to follow a link to return to the form page.</li>
+</ol>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1878"></span>Different browsers on different operating systems might work slightly differently from the steps given here, so check that these keystroke combinations work for your computer before running your program.</p>
+<h4 class="h2" id="calibre_link-665"><strong class="calibre2"><em class="calibre9">Step 2: Set Up Coordinates</em></strong></h4>
+<p class="noindent">Load the example form you downloaded (<a href="#calibre_link-1635" class="calibre6">Figure 20-7</a>) in a browser by going to <em class="calibre7"><a href="https://autbor.com/form" class="calibre6">https://autbor.com/form</a></em>.</p>
+<p class="indent">Make your source code look like the following:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# formFiller.py - Automatically fills in the form.<br class="calibre5" />
+<br class="calibre5" />
+import pyautogui, time<br class="calibre5" />
+<br class="calibre5" />
+# TODO: Give the user a chance to kill the script.<br class="calibre5" />
+<br class="calibre5" />
+# TODO: Wait until the form page has loaded.<br class="calibre5" />
+<br class="calibre5" />
+# TODO: Fill out the Name Field.<br class="calibre5" />
+<br class="calibre5" />
+# TODO: Fill out the Greatest Fear(s) field.<br class="calibre5" />
+<br class="calibre5" />
+# TODO: Fill out the Source of Wizard Powers field.<br class="calibre5" />
+<br class="calibre5" />
+# TODO: Fill out the RoboCop field.<br class="calibre5" />
+<br class="calibre5" />
+# TODO: Fill out the Additional Comments field.<br class="calibre5" />
+<br class="calibre5" />
+# TODO: Click Submit.<br class="calibre5" />
+<br class="calibre5" />
+# TODO: Wait until form page has loaded.<br class="calibre5" />
+<br class="calibre5" />
+# TODO: Click the Submit another response link.</p>
+<p class="indent">Now you need the data you actually want to enter into this form. In the real world, this data might come from a spreadsheet, a plaintext file, or a website, and it would require additional code to load into the program. But for this project, you’ll just hardcode all this data in a variable. Add the following to your program:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# formFiller.py - Automatically fills in the form.<br class="calibre5" />
+<br class="calibre5" />
+--<span class="codeitalic1">snip</span>--<br class="calibre5" />
+<br class="calibre5" />
+<span class="codestrong1">formData = [{'name': 'Alice', 'fear': 'eavesdroppers', 'source': 'wand',</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'robocop': 4, 'comments': 'Tell Bob I said hi.'},</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{'name': 'Bob', 'fear': 'bees', 'source': 'amulet', 'robocop': 4,</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'comments': 'n/a'},</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="codestrong1">&nbsp;&nbsp;{'name': 'Carol', 'fear': 'puppets', 'source': 'crystal ball',</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'robocop': 1, 'comments': 'Please take the puppets out of the</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break room.'},</span><br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1054"></span><span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{'name': 'Alex Murphy', 'fear': 'ED-209', 'source': 'money',</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'robocop': 5, 'comments': 'Protect the innocent. Serve the public</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trust. Uphold the law.'},</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]</span><br class="calibre5" />
+<br class="calibre5" />
+--<span class="codeitalic1">snip</span>--</p>
+<p class="indent">The <span class="literal">formData</span> list contains four dictionaries for four different names. Each dictionary has names of text fields as keys and responses as values. The last bit of setup is to set PyAutoGUI’s <span class="literal">PAUSE</span> variable to wait half a second after each function call. Also, remind the user to click on the browser to make it the active window. Add the following to your program after the <span class="literal">formData</span> assignment statement:</p>
+<p class="programs">pyautogui.PAUSE = 0.5<br class="calibre5" />
+print('Ensure that the browser window is active and the form is loaded!')</p>
+<h4 class="h2" id="calibre_link-666"><strong class="calibre2"><em class="calibre9">Step 3: Start Typing Data</em></strong></h4>
+<p class="noindent">A <span class="literal">for</span> loop will iterate over each of the dictionaries in the <span class="literal">formData</span> list, passing the values in the dictionary to the PyAutoGUI functions that will virtually type in the text fields.</p>
+<p class="indent">Add the following code to your program:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# formFiller.py - Automatically fills in the form.<br class="calibre5" />
+<br class="calibre5" />
+--<span class="codeitalic1">snip</span>--<br class="calibre5" />
+<br class="calibre5" />
+<span class="codestrong1">for person in formData:</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;# Give the user a chance to kill the script.</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;print('&gt;&gt;&gt; 5-SECOND PAUSE TO LET USER PRESS CTRL-C &lt;&lt;&lt;')</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;</span><span class="ent">?</span> <span class="codestrong1">time.sleep(5)</span><br class="calibre5" />
+<br class="calibre5" />
+--<span class="codeitalic1">snip</span>--</p>
+<p class="indent">As a small safety feature, the script has a five-second pause <span class="ent">?</span> that gives the user a chance to hit <small class="calibre11">CTRL</small>-C (or move the mouse cursor to the upper-left corner of the screen to raise the <span class="literal">FailSafeException</span> exception) to shut the program down in case it’s doing something unexpected. After the code that waits to give the page time to load, add the following:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# formFiller.py - Automatically fills in the form.<br class="calibre5" />
+<br class="calibre5" />
+--<span class="codeitalic1">snip</span>--<br class="calibre5" />
+<br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;</span><span class="ent">?</span> <span class="codestrong1">print('Entering %s info...' % (person['name']))</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;</span><span class="ent">?</span> <span class="codestrong1">pyautogui.write(['\t', '\t'])</span><br class="calibre5" />
+<br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Fill out the Name field.</span><br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1879"></span><span class="codestrong1">&nbsp;&nbsp;</span><span class="ent">?</span> <span class="codestrong1">pyautogui.write(person['name'] + '\t')</span><br class="calibre5" />
+<br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Fill out the Greatest Fear(s) field.</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;</span><span class="ent">?</span> <span class="codestrong1">pyautogui.write(person['fear'] + '\t')</span><br class="calibre5" />
+<br class="calibre5" />
+--<span class="codeitalic1">snip</span>--</p>
+<p class="indent">We add an occasional <span class="literal">print()</span> call to display the program’s status in its Terminal window to let the user know what’s going on <span class="ent">?</span>.</p>
+<p class="indent">Since the form has had time to load, call <span class="literal">pyautogui.write(['\t', '\t'])</span> to press <small class="calibre11">TAB</small> twice and put the Name field into focus <span class="ent">?</span>. Then call <span class="literal">write()</span> again to enter the string in <span class="literal">person['name']</span> <span class="ent">?</span>. The <span class="literal">'\t'</span> character is added to the end of the string passed to <span class="literal">write()</span> to simulate pressing <small class="calibre11">TAB</small>, which moves the keyboard focus to the next field, Greatest Fear(s). Another call to <span class="literal">write()</span> will type the string in <span class="literal">person['fear']</span> into this field and then tab to the next field in the form <span class="ent">?</span>.</p>
+<h4 class="h2" id="calibre_link-667"><strong class="calibre2"><em class="calibre9">Step 4: Handle Select Lists and Radio Buttons</em></strong></h4>
+<p class="noindent">The drop-down menu for the “wizard powers” question and the radio buttons for the RoboCop field are trickier to handle than the text fields. To click these options with the mouse, you would have to figure out the x- and y-coordinates of each possible option. It’s easier to use the keyboard arrow keys to make a selection instead.</p>
+<p class="indent">Add the following to your program:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# formFiller.py - Automatically fills in the form.<br class="calibre5" />
+<br class="calibre5" />
+--<span class="codeitalic1">snip</span>--<br class="calibre5" />
+<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="codestrong1"># Fill out the Source of Wizard Powers field.</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;</span><span class="ent">?</span> <span class="codestrong1">if person['source'] == 'wand':</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="ent">?</span> <span class="codestrong1">pyautogui.write(['down', '\t']</span> <span class="codestrong1">, 0.5)</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="codestrong1">elif person['source'] == 'amulet':</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pyautogui.write(['down', 'down', '\t']</span> <span class="codestrong1">, 0.5)</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif person['source'] == 'crystal ball':</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pyautogui.write(['down', 'down', 'down', '\t']</span> <span class="codestrong1">, 0.5)</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif person['source'] == 'money':</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pyautogui.write(['down', 'down', 'down', 'down', '\t']</span> <span class="codestrong1">, 0.5)</span><br class="calibre5" />
+<br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Fill out the RoboCop field.</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;</span><span class="ent">?</span> <span class="codestrong1">if person['robocop'] == 1:</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="ent">?</span> <span class="codestrong1">pyautogui.write([' ', '\t']</span> <span class="codestrong1">, 0.5)</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif person['robocop'] == 2:</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pyautogui.write(['right', '\t']</span> <span class="codestrong1">, 0.5)</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif person['robocop'] == 3:</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pyautogui.write(['right', 'right', '\t']</span> <span class="codestrong1">, 0.5)</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif person['robocop'] == 4:</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pyautogui.write(['right', 'right', 'right', '\t']</span> <span class="codestrong1">, 0.5)</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif person['robocop'] == 5:</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pyautogui.write(['right', 'right', 'right', 'right', '\t']</span> <span class="codestrong1">, 0.5)</span><br class="calibre5" />
+<br class="calibre5" />
+--<span class="codeitalic1">snip</span>--</p>
+<p class="indent">Once the drop-down menu has focus (remember that you wrote code to simulate pressing <small class="calibre11">TAB</small> after filling out the Greatest Fear(s) field), pressing the down arrow key will move to the next item in the selection list. Depending on the value in <span class="literal">person['source']</span>, your program should send a <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1880"></span>number of down arrow keypresses before tabbing to the next field. If the value at the <span class="literal">'source'</span> key in this user’s dictionary is <span class="literal">'wand'</span> <span class="ent">?</span>, we simulate pressing the down arrow key once (to select <em class="calibre7">Wand</em>) and pressing <small class="calibre11">TAB</small> <span class="ent">?</span>. If the value at the <span class="literal">'source'</span> key is <span class="literal">'amulet'</span>, we simulate pressing the down arrow key twice and pressing <small class="calibre11">TAB</small>, and so on for the other possible answers. The <span class="literal">0.5</span> argument in these <span class="literal">write()</span> calls add a half-second pause in between each key so that our program doesn’t move too fast for the form.</p>
+<p class="indent">The radio buttons for the RoboCop question can be selected with the right arrow keys&mdash;or, if you want to select the first choice <span class="ent">?</span>, by just pressing the spacebar <span class="ent">?</span>.</p>
+<h4 class="h2" id="calibre_link-668"><strong class="calibre2"><em class="calibre9">Step 5: Submit the Form and Wait</em></strong></h4>
+<p class="noindent">You can fill out the Additional Comments field with the <span class="literal">write()</span> function by passing <span class="literal">person['comments']</span> as an argument. You can type an additional <span class="literal">'\t'</span> to move the keyboard focus to the next field or the Submit button. Once the Submit button is in focus, calling <span class="literal">pyautogui.press('enter')</span> will simulate pressing the <small class="calibre11">ENTER</small> key and submit the form. After submitting the form, your program will wait five seconds for the next page to load.</p>
+<p class="indent">Once the new page has loaded, it will have a <em class="calibre7">Submit another response</em> link that will direct the browser to a new, empty form page. You stored the coordinates of this link as a tuple in <span class="literal">submitAnotherLink</span> in step 2, so pass these coordinates to <span class="literal">pyautogui.click()</span> to click this link.</p>
+<p class="indent">With the new form ready to go, the script’s outer <span class="literal">for</span> loop can continue to the next iteration and enter the next person’s information into the form.</p>
+<p class="indent">Complete your program by adding the following code:</p>
+<p class="programs">#! python3<br class="calibre5" />
+# formFiller.py - Automatically fills in the form.<br class="calibre5" />
+<br class="calibre5" />
+--<span class="codeitalic1">snip</span>--<br class="calibre5" />
+<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="codestrong1"># Fill out the Additional Comments field.</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;pyautogui.write(person['comments'] + '\t')</span><br class="calibre5" />
+<br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;# "Click" Submit button by pressing Enter.</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;time.sleep(0.5) # Wait for the button to activate.</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;pyautogui.press('enter')</span><br class="calibre5" />
+<br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;# Wait until form page has loaded.</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;print('Submitted form.')</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;time.sleep(5)</span><br class="calibre5" />
+<br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;# Click the Submit another response link.</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;pyautogui.click(submitAnotherLink[0], submitAnotherLink[1])</span></p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-805"></span>Once the main <span class="literal">for</span> loop has finished, the program will have plugged in the information for each person. In this example, there are only four people to enter. But if you had <em class="calibre7">4,000</em> people, then writing a program to do this would save you a lot of time and typing!</p>
+<h3 class="h1" id="calibre_link-669"><strong class="calibre2">Displaying Message Boxes</strong></h3>
+<p class="noindent">The programs you’ve been writing so far all tend to use plaintext output (with the <span class="literal">print()</span> function) and input (with the <span class="literal">input()</span> function). However, PyAutoGUI programs will use your entire desktop as its playground. The text-based window that your program runs in, whether it’s Mu or a Terminal window, will probably be lost as your PyAutoGUI program clicks and interacts with other windows. This can make getting input and output from the user hard if the Mu or Terminal windows get hidden under other windows.</p>
+<p class="indent">To solve this, PyAutoGUI offers pop-up message boxes to provide notifications to the user and receive input from them. There are four message box functions:</p>
+<p class="hang"><span class="codestrong">pyautogui.alert(text)</span> Displays <span class="literal">text</span> and has a single OK button.</p>
+<p class="hang"><span class="literal">pyautogui.confirm(text)</span> Displays <span class="literal">text</span> and has OK and Cancel buttons, returning either <span class="literal">'OK'</span> or <span class="literal">'Cancel'</span> depending on the button clicked.</p>
+<p class="hang"><span class="codestrong">pyautogui.prompt(text)</span> Displays <span class="literal">text</span> and has a text field for the user to type in, which it returns as a string.</p>
+<p class="hang"><span class="codestrong">pyautogui.password(text)</span> Is the same as <span class="literal">prompt()</span>, but displays asterisks so the user can enter sensitive information such as a password.</p>
+<p class="indent">These functions also have an optional second parameter that accepts a string value to use as the title in the title bar of the message box. The functions won’t return until the user has clicked a button on them, so they can also be used to introduce pauses into your PyAutoGUI programs. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import pyautogui</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">pyautogui.alert('This is a message.', 'Important')</span><br class="calibre5" />
+'OK'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">pyautogui.confirm('Do you want to continue?')</span> # Click Cancel<br class="calibre5" />
+'Cancel'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">pyautogui.prompt("What is your cat's name?")</span><br class="calibre5" />
+'Zophie'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">pyautogui.password('What is the password?')</span><br class="calibre5" />
+'hunter2'</p>
+<p class="indent">The pop-up message boxes that these lines produce look like <a href="#calibre_link-1636" class="calibre6">Figure 20-8</a>.</p>
+<div class="image1"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1881"></span><a id="calibre_link-1636" class="calibre6"></a><img src="../images/000043.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 20-8: From top left to bottom right, the windows created by <span class="literal1">alert()</span>, <span class="literal1">confirm()</span>, <span class="literal1">prompt()</span>, and <span class="literal1">password()</span></em></p>
+<p class="indent">These functions can be used to provide notifications or ask the user questions while the rest of the program interacts with the computer through the mouse and keyboard. The full online documentation can be found at <em class="calibre7"><a href="https://pymsgbox.readthedocs.io" class="calibre6">https://pymsgbox.readthedocs.io</a></em>.</p>
+<h3 class="h1" id="calibre_link-670"><strong class="calibre2">Summary</strong></h3>
+<p class="noindent">GUI automation with the <span class="literal">pyautogui</span> module allows you to interact with applications on your computer by controlling the mouse and keyboard. While this approach is flexible enough to do anything that a human user can do, the downside is that these programs are fairly blind to what they are clicking or typing. When writing GUI automation programs, try to ensure that they will crash quickly if they’re given bad instructions. Crashing is annoying, but it’s much better than the program continuing in error.</p>
+<p class="indent">You can move the mouse cursor around the screen and simulate mouse clicks, keystrokes, and keyboard shortcuts with PyAutoGUI. The <span class="literal">pyautogui</span> module can also check the colors on the screen, which can provide your GUI automation program with enough of an idea of the screen contents to know whether it has gotten offtrack. You can even give PyAutoGUI a screenshot and let it figure out the coordinates of the area you want to click.</p>
+<p class="indent">You can combine all of these PyAutoGUI features to automate any mindlessly repetitive task on your computer. In fact, it can be downright hypnotic to watch the mouse cursor move on its own and to see text appear on the screen automatically. Why not spend the time you saved by sitting back and watching your program do all your work for you? There’s a certain satisfaction that comes from seeing how your cleverness has saved you from the boring stuff.</p>
+<h3 class="h1" id="calibre_link-671"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1882" class="calibre1"></span><strong class="calibre2">Practice Questions</strong></h3>
+<p class="question"><a id="calibre_link-1473" href="#calibre_link-1637" class="calibre6">1</a>. How can you trigger PyAutoGUI’s fail-safe to stop a program?</p>
+<p class="question"><a id="calibre_link-1474" href="#calibre_link-1638" class="calibre6">2</a>. What function returns the current <span class="literal">resolution()</span>?</p>
+<p class="question"><a id="calibre_link-1475" href="#calibre_link-1639" class="calibre6">3</a>. What function returns the coordinates for the mouse cursor’s current position?</p>
+<p class="question"><a id="calibre_link-1476" href="#calibre_link-1640" class="calibre6">4</a>. What is the difference between <span class="literal">pyautogui.moveTo()</span> and <span class="literal">pyautogui.move()</span>?</p>
+<p class="question"><a id="calibre_link-1477" href="#calibre_link-1641" class="calibre6">5</a>. What functions can be used to drag the mouse?</p>
+<p class="question"><a id="calibre_link-1478" href="#calibre_link-1642" class="calibre6">6</a>. What function call will type out the characters of <span class="literal">"Hello, world!"</span>?</p>
+<p class="question"><a id="calibre_link-1479" href="#calibre_link-1643" class="calibre6">7</a>. How can you do keypresses for special keys such as the keyboard’s left arrow key?</p>
+<p class="question"><a id="calibre_link-1480" href="#calibre_link-1644" class="calibre6">8</a>. How can you save the current contents of the screen to an image file named <em class="calibre7">screenshot.png</em>?</p>
+<p class="question"><a id="calibre_link-1481" href="#calibre_link-1645" class="calibre6">9</a>. What code would set a two-second pause after every PyAutoGUI function call?</p>
+<p class="question1"><a id="calibre_link-1482" href="#calibre_link-1646" class="calibre6">10</a>. If you want to automate clicks and keystrokes inside a web browser, should you use PyAutoGUI or Selenium?</p>
+<p class="question1"><a id="calibre_link-1483" href="#calibre_link-1647" class="calibre6">11</a>. What makes PyAutoGUI error-prone?</p>
+<p class="question1"><a id="calibre_link-1484" href="#calibre_link-1648" class="calibre6">12</a>. How can you find the size of every window on the screen that includes the text <span class="literal">Notepad</span> in its title?</p>
+<p class="question1"><a id="calibre_link-1485" href="#calibre_link-1649" class="calibre6">13</a>. How can you make, say, the Firefox browser active and in front of every other window on the screen?</p>
+<h3 class="h1" id="calibre_link-672"><strong class="calibre2">Practice Projects</strong></h3>
+<p class="noindent">For practice, write programs that do the following.</p>
+<h4 class="h2" id="calibre_link-673"><strong class="calibre2"><em class="calibre9">Looking Busy</em></strong></h4>
+<p class="noindent">Many instant messaging programs determine whether you are idle, or away from your computer, by detecting a lack of mouse movement over some period of time&mdash;say, 10 minutes. Maybe you’re away from your computer but don’t want others to see your instant messenger status go into idle mode. Write a script to nudge your mouse cursor slightly every 10 seconds. The nudge should be small and infrequent enough so that it won’t get in the way if you do happen to need to use your computer while the script is running.</p>
+<h4 class="h2" id="calibre_link-674"><strong class="calibre2"><em class="calibre9">Using the Clipboard to Read a Text Field</em></strong></h4>
+<p class="noindent">While you can send keystrokes to an application’s text fields with <span class="literal">pyautogui.write()</span>, you can’t use PyAutoGUI alone to read the text already inside a text field. This is where the Pyperclip module can help. You can use PyAutoGUI to obtain the window for a text editor such as Mu or Notepad, <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1883"></span>bring it to the front of the screen by clicking on it, click inside the text field, and then send the <small class="calibre11">CTRL</small>-A or <img src="../images/000064.jpg" alt="image" class="calibre3" />-A hotkey to “select all” and <small class="calibre11">CTRL</small>-C or <img src="../images/000064.jpg" alt="image" class="calibre3" />-C hotkey to “copy to clipboard.” Your Python script can then read the clipboard text by running <span class="literal">import pyperclip</span> and <span class="literal">pyperclip.paste()</span>.</p>
+<p class="indent">Write a program that follows this procedure for copying the text from a window’s text fields. Use <span class="literal">pyautogui.getWindowsWithTitle('Notepad')</span> (or whichever text editor you choose) to obtain a Window object. The <span class="literal">top</span> and <span class="literal">left</span> attributes of this Window object can tell you where this window is, while the <span class="literal">activate()</span> method will ensure it is at the front of the screen. You can then click the main text field of the text editor by adding, say, <span class="literal">100</span> or <span class="literal">200</span> pixels to the <span class="literal">top</span> and <span class="literal">left</span> attribute values with <span class="literal">pyautogui.click()</span> to put the keyboard focus there. Call <span class="literal">pyautogui.hotkey('ctrl', 'a')</span> and <span class="literal">pyautogui.hotkey('ctrl', 'c')</span> to select all the text and copy it to the clipboard. Finally, call <span class="literal">pyperclip.paste()</span> to retrieve the text from the clipboard and paste it into your Python program. From there, you can use this string however you want, but just pass it to <span class="literal">print()</span> for now.</p>
+<p class="indent">Note that the window functions of PyAutoGUI only work on Windows as of PyAutoGUI version 1.0.0, and not on macOS or Linux.</p>
+<h4 class="h2" id="calibre_link-675"><strong class="calibre2"><em class="calibre9">Instant Messenger Bot</em></strong></h4>
+<p class="noindent">Google Talk, Skype, Yahoo Messenger, AIM, and other instant messaging applications often use proprietary protocols that make it difficult for others to write Python modules that can interact with these programs. But even these proprietary protocols can’t stop you from writing a GUI automation tool.</p>
+<p class="indent">The Google Talk application has a search bar that lets you enter a username on your friend list and open a messaging window when you press <small class="calibre11">ENTER</small>. The keyboard focus automatically moves to the new window. Other instant messenger applications have similar ways to open new message windows. Write a program that will automatically send out a notification message to a select group of people on your friend list. Your program may have to deal with exceptional cases, such as friends being offline, the chat window appearing at different coordinates on the screen, or confirmation boxes that interrupt your messaging. Your program will have to take screenshots to guide its GUI interaction and adopt ways of detecting when its virtual keystrokes aren’t being sent.</p>
+<div class="note">
+<p class="notet"><strong class="calibre2"><span class="notes">NOTE</span></strong></p>
+<p class="notep"><em class="calibre7">You may want to set up some fake test accounts so that you don’t accidentally spam your real friends while writing this program.</em></p>
+</div>
+<h4 class="h2" id="calibre_link-676"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1884" class="calibre1"></span><strong class="calibre2"><em class="calibre9">Game-Playing Bot Tutorial</em></strong></h4>
+<p class="noindent">There is a great tutorial titled “How to Build a Python Bot That Can Play Web Games” that you can find a link to at <em class="calibre7"><a href="https://nostarch.com/automatestuff2/" class="calibre6">https://nostarch.com/automatestuff2/</a></em>. This tutorial explains how to create a GUI automation program in Python that plays a Flash game called Sushi Go Round. The game involves clicking the correct ingredient buttons to fill customers’ sushi orders. The faster you fill orders without mistakes, the more points you get. This is a perfectly suited task for a GUI automation program&mdash;and a way to cheat to a high score! The tutorial covers many of the same topics that this chapter covers but also includes descriptions of PyAutoGUI’s basic image recognition features. The source code for this bot is at <em class="calibre7"><a href="https://github.com/asweigart/sushigoroundbot/" class="calibre6">https://github.com/asweigart/sushigoroundbot/</a></em> and a video of the bot playing the game is at <em class="calibre7"><a href="https://youtu.be/lfk_T6VKhTE" class="calibre6">https://youtu.be/lfk_T6VKhTE</a></em>.<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1885"></span></p>
+</div>
+
+<div><center><a href="../chapter19"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="../appendixa"><img src="/images/next.png" /></a></center></div>
+
+{% endblock %}

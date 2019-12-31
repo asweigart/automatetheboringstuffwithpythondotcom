@@ -1,0 +1,331 @@
+{% extends "secondeditionbase.html" %}
+{% set title = 'Automate the Boring Stuff with Python' %}
+{% block content %}
+
+
+
+<div><center><a href="../appendixb"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a></center></div>
+
+<div class="calibre" id="calibre_link-1249">
+<h2 class="h2b" id="calibre_link-685"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1888" class="calibre1"></span><strong class="calibre2"><span class="big">C</span><br class="calibre12" />ANSWERS TO THE PRACTICE QUESTIONS</strong></h2>
+<div class="image"><img src="../images/000119.jpg" alt="Image" class="calibre3" /></div>
+<p class="noindent">This appendix contains the answers to the practice problems at the end of each chapter. I highly recommend that you take the time to work through these problems. Programming is more than memorizing syntax and a list of function names. As when learning a foreign language, the more practice you put into it, the more you will get out of it. There are many websites with practice programming problems as well. You can find a list of these at <em class="calibre7"><a href="https://nostarch.com/automatestuff2/" class="calibre6">https://nostarch.com/automatestuff2/</a></em>.</p>
+<p class="indent">When it comes to the practice projects, there is no one correct program. As long as your program performs what the project asks for, you can consider it correct. However, if you want to see examples of completed projects, they are available in the “Download the files used in the book” link at <em class="calibre7"><a href="https://nostarch.com/automatestuff2/" class="calibre6">https://nostarch.com/automatestuff2/</a></em>.</p>
+<h3 class="h1" id="calibre_link-686"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1889" class="calibre1"></span><strong class="calibre2">Chapter 1</strong></h3>
+<p class="question"><a id="calibre_link-1657" href="#calibre_link-1250" class="calibre6">1</a>. The operators are <span class="literal">+</span>, <span class="literal">-</span>, <span class="literal">*</span>, and <span class="literal">/</span>. The values are <span class="literal">'hello'</span>, <span class="literal">-88.8</span>, and <span class="literal">5</span>.</p>
+<p class="question"><a id="calibre_link-1658" href="#calibre_link-1251" class="calibre6">2</a>. The variable is <span class="literal">spam</span>; the string is <span class="literal">'spam'</span>. Strings always start and end with quotes.</p>
+<p class="question"><a id="calibre_link-1659" href="#calibre_link-1252" class="calibre6">3</a>. The three data types introduced in this chapter are integers, floating-point numbers, and strings.</p>
+<p class="question"><a id="calibre_link-1660" href="#calibre_link-1253" class="calibre6">4</a>. An expression is a combination of values and operators. All expressions evaluate (that is, reduce) to a single value.</p>
+<p class="question"><a id="calibre_link-1661" href="#calibre_link-1254" class="calibre6">5</a>. An expression evaluates to a single value. A statement does not.</p>
+<p class="question"><a id="calibre_link-1662" href="#calibre_link-1255" class="calibre6">6</a>. The <span class="literal">bacon</span> variable is set to <span class="literal">20</span>. The <span class="literal">bacon + 1</span> expression does not reassign the value in <span class="literal">bacon</span> (that would need an assignment statement: <span class="literal">bacon = bacon + 1</span>).</p>
+<p class="question"><a id="calibre_link-1663" href="#calibre_link-1256" class="calibre6">7</a>. Both expressions evaluate to the string <span class="literal">'spamspamspam'</span>.</p>
+<p class="question"><a id="calibre_link-1664" href="#calibre_link-1257" class="calibre6">8</a>. Variable names cannot begin with a number.</p>
+<p class="question"><a id="calibre_link-1665" href="#calibre_link-1258" class="calibre6">9</a>. The <span class="literal">int()</span>, <span class="literal">float()</span>, and <span class="literal">str(</span>) functions will evaluate to the integer, floating-point number, and string versions of the value passed to them.</p>
+<p class="question1"><a id="calibre_link-1666" href="#calibre_link-1259" class="calibre6">10</a>. The expression causes an error because <span class="literal">99</span> is an integer, and only strings can be concatenated to other strings with the <span class="literal">+</span> operator. The correct way is <span class="literal">I have eaten ' + str(99) + ' burritos.'</span>.</p>
+<h3 class="h1" id="calibre_link-687"><strong class="calibre2">Chapter 2</strong></h3>
+<p class="question"><a id="calibre_link-1550" href="#calibre_link-1260" class="calibre6">1</a>. <span class="literal">True</span> and <span class="literal">False</span>, using capital <em class="calibre7">T</em> and <em class="calibre7">F</em>, with the rest of the word in lowercase</p>
+<p class="question"><a id="calibre_link-1551" href="#calibre_link-1261" class="calibre6">2</a>. <span class="literal">and</span>, <span class="literal">or</span>, and <span class="literal">not</span></p>
+<p class="question"><a id="calibre_link-1552" href="#calibre_link-1262" class="calibre6">3</a>. <span class="literal">True and True</span> is <span class="literal">True</span>.</p>
+<p class="question-para"><span class="literal">True and False</span> is <span class="literal">False</span>.</p>
+<p class="question-para"><span class="literal">False and True</span> is <span class="literal">False</span>.</p>
+<p class="question-para"><span class="literal">False and False</span> is <span class="literal">False</span>.</p>
+<p class="question-para"><span class="literal">True or True</span> is <span class="literal">True</span>.</p>
+<p class="question-para"><span class="literal">True or False</span> is <span class="literal">True</span>.</p>
+<p class="question-para"><span class="literal">False or True</span> is <span class="literal">True</span>.</p>
+<p class="question-para"><span class="literal">False or False</span> is <span class="literal">False</span>.</p>
+<p class="question-para"><span class="literal">not True</span> is <span class="literal">False</span>.</p>
+<p class="question-para"><span class="literal">not False</span> is <span class="literal">True</span>.</p>
+<p class="question"><a id="calibre_link-1553" href="#calibre_link-1263" class="calibre6">4</a>. <span class="literal">False</span></p>
+<p class="question-para"><span class="literal">False</span></p>
+<p class="question-para"><span class="literal">True</span></p>
+<p class="question-para"><span class="literal">False</span></p>
+<p class="question-para"><span class="literal">False</span></p>
+<p class="question-para"><span class="literal">True</span></p>
+<p class="question"><a id="calibre_link-1554" href="#calibre_link-1264" class="calibre6">5</a>. <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1890"></span><span class="literal">==</span>, <span class="literal">!=</span>, <span class="literal">&lt;</span>, <span class="literal">&gt;</span>, <span class="literal">&lt;=</span>, and <span class="literal">&gt;=</span></p>
+<p class="question"><a id="calibre_link-1555" href="#calibre_link-1265" class="calibre6">6</a>. <span class="literal">==</span> is the equal to operator that compares two values and evaluates to a Boolean, while <span class="literal">=</span> is the assignment operator that stores a value in a variable.</p>
+<p class="question"><a id="calibre_link-1556" href="#calibre_link-1266" class="calibre6">7</a>. A condition is an expression used in a flow control statement that evaluates to a Boolean value.</p>
+<p class="question"><a id="calibre_link-1557" href="#calibre_link-1267" class="calibre6">8</a>. The three blocks are everything inside the <span class="literal">if</span> statement and the lines <span class="literal">print('bacon')</span> and <span class="literal">print('ham')</span>.</p>
+<p class="programs1">print('eggs')<br class="calibre5" />
+if spam &gt; 5:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('bacon')<br class="calibre5" />
+else:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('ham')<br class="calibre5" />
+print('spam')</p>
+<p class="question"><a id="calibre_link-1558" href="#calibre_link-1268" class="calibre6">9</a>. The code:</p>
+<p class="programs1">if spam == 1:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('Hello')<br class="calibre5" />
+elif spam == 2:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('Howdy')<br class="calibre5" />
+else:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('Greetings!')</p>
+<p class="question1"><a id="calibre_link-1559" href="#calibre_link-1269" class="calibre6">10</a>. Press <small class="calibre11">CTRL-C</small> to stop a program stuck in an infinite loop.</p>
+<p class="question1"><a id="calibre_link-1560" href="#calibre_link-1270" class="calibre6">11</a>. The <span class="literal">break</span> statement will move the execution outside and just after a loop. The <span class="literal">continue</span> statement will move the execution to the start of the loop.</p>
+<p class="question1"><a id="calibre_link-1561" href="#calibre_link-1271" class="calibre6">12</a>. They all do the same thing. The <span class="literal">range(10)</span> call ranges from <span class="literal">0</span> up to (but not including) <span class="literal">10</span>, <span class="literal">range(0, 10)</span> explicitly tells the loop to start at <span class="literal">0</span>, and <span class="literal">range(0, 10, 1)</span> explicitly tells the loop to increase the variable by <span class="literal">1</span> on each iteration.</p>
+<p class="question1"><a id="calibre_link-1562" href="#calibre_link-1272" class="calibre6">13</a>. The code:</p>
+<p class="programs1">for i in range(1, 11):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print(i)</p>
+<p class="question-para">and:</p>
+<p class="programs1">i = 1<br class="calibre5" />
+while i &lt;= 10:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print(i)<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;i = i + 1</p>
+<p class="question1"><a id="calibre_link-1563" href="#calibre_link-1273" class="calibre6">14</a>. This function can be called with <span class="literal">spam.bacon()</span>.</p>
+<h3 class="h1" id="calibre_link-688"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1891" class="calibre1"></span><strong class="calibre2">Chapter 3</strong></h3>
+<p class="question"><a id="calibre_link-1215" href="#calibre_link-1274" class="calibre6">1</a>. Functions reduce the need for duplicate code. This makes programs shorter, easier to read, and easier to update.</p>
+<p class="question"><a id="calibre_link-1216" href="#calibre_link-1275" class="calibre6">2</a>. The code in a function executes when the function is called, not when the function is defined.</p>
+<p class="question"><a id="calibre_link-1217" href="#calibre_link-1276" class="calibre6">3</a>. The <span class="literal">def</span> statement defines (that is, creates) a function.</p>
+<p class="question"><a id="calibre_link-1218" href="#calibre_link-1277" class="calibre6">4</a>. A function consists of the <span class="literal">def</span> statement and the code in its <span class="literal">def</span> clause. A function call is what moves the program execution into the function, and the function call evaluates to the function’s return value.</p>
+<p class="question"><a id="calibre_link-1219" href="#calibre_link-1278" class="calibre6">5</a>. There is one global scope, and a local scope is created whenever a function is called.</p>
+<p class="question"><a id="calibre_link-1220" href="#calibre_link-1279" class="calibre6">6</a>. When a function returns, the local scope is destroyed, and all the variables in it are forgotten.</p>
+<p class="question"><a id="calibre_link-1221" href="#calibre_link-1280" class="calibre6">7</a>. A return value is the value that a function call evaluates to. Like any value, a return value can be used as part of an expression.</p>
+<p class="question"><a id="calibre_link-1222" href="#calibre_link-1281" class="calibre6">8</a>. If there is no return statement for a function, its return value is <span class="literal">None</span>.</p>
+<p class="question"><a id="calibre_link-1223" href="#calibre_link-1282" class="calibre6">9</a>. A <span class="literal">global</span> statement will force a variable in a function to refer to the global variable.</p>
+<p class="question1"><a id="calibre_link-1224" href="#calibre_link-1283" class="calibre6">10</a>. The data type of <span class="literal">None</span> is <span class="literal">NoneType</span>.</p>
+<p class="question1"><a id="calibre_link-1225" href="#calibre_link-1284" class="calibre6">11</a>. That <span class="literal">import</span> statement imports a module named <span class="literal">areallyourpetsnamederic</span>. (This isn’t a real Python module, by the way.)</p>
+<p class="question1"><a id="calibre_link-1226" href="#calibre_link-1285" class="calibre6">12</a>. This function could be called with <span class="literal">spam.bacon()</span>.</p>
+<p class="question1"><a id="calibre_link-1227" href="#calibre_link-1286" class="calibre6">13</a>. Place the line of code that might cause an error in a <span class="literal">try</span> clause.</p>
+<p class="question1"><a id="calibre_link-1228" href="#calibre_link-1287" class="calibre6">14</a>. The code that could potentially cause an error goes in the <span class="literal">try</span> clause. The code that executes if an error happens goes in the <span class="literal">except</span> clause.</p>
+<h3 class="h1" id="calibre_link-689"><strong class="calibre2">Chapter 4</strong></h3>
+<p class="question"><a id="calibre_link-722" href="#calibre_link-1288" class="calibre6">1</a>. The empty list value, which is a list value that contains no items. This is similar to how <span class="literal">''</span> is the empty string value.</p>
+<p class="question"><a id="calibre_link-723" href="#calibre_link-1289" class="calibre6">2</a>. <span class="literal">spam[2] = 'hello'</span> (Notice that the third value in a list is at index <span class="literal">2</span> because the first index is <span class="literal">0</span>.)</p>
+<p class="question"><a id="calibre_link-724" href="#calibre_link-1290" class="calibre6">3</a>. <span class="literal">'d'</span> (Note that <span class="literal">'3' * 2</span> is the string <span class="literal">'33'</span>, which is passed to <span class="literal">int()</span> before being divided by <span class="literal">11</span>. This eventually evaluates to <span class="literal">3</span>. Expressions can be used wherever values are used.)</p>
+<p class="question"><a id="calibre_link-725" href="#calibre_link-1291" class="calibre6">4</a>. <span class="literal">'d'</span> (Negative indexes count from the end.)</p>
+<p class="question"><a id="calibre_link-726" href="#calibre_link-1292" class="calibre6">5</a>. <span class="literal">['a', 'b']</span></p>
+<p class="question"><a id="calibre_link-727" href="#calibre_link-1293" class="calibre6">6</a>. <span class="literal">1</span></p>
+<p class="question"><a id="calibre_link-728" href="#calibre_link-1294" class="calibre6">7</a>. <span class="literal">[3.14, 'cat', 11, 'cat', True, 99]</span></p>
+<p class="question"><a id="calibre_link-729" href="#calibre_link-1295" class="calibre6">8</a>. <span class="literal">[3.14, 11, 'cat', True]</span></p>
+<p class="question"><a id="calibre_link-730" href="#calibre_link-1296" class="calibre6">9</a>. <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1892"></span>The operator for list concatenation is <span class="literal">+</span>, while the operator for replication is <span class="literal">*</span>. (This is the same as for strings.)</p>
+<p class="question1"><a id="calibre_link-731" href="#calibre_link-1297" class="calibre6">10</a>. While <span class="literal">append()</span> will add values only to the end of a list, <span class="literal">insert()</span> can add them anywhere in the list.</p>
+<p class="question1"><a id="calibre_link-732" href="#calibre_link-1298" class="calibre6">11</a>. The <span class="literal">del</span> statement and the <span class="literal">remove()</span> list method are two ways to remove values from a list.</p>
+<p class="question1"><a id="calibre_link-733" href="#calibre_link-1299" class="calibre6">12</a>. Both lists and strings can be passed to <span class="literal">len()</span>, have indexes and slices, be used in <span class="literal">for</span> loops, be concatenated or replicated, and be used with the <span class="literal">in</span> and <span class="literal">not in</span> operators.</p>
+<p class="question1"><a id="calibre_link-734" href="#calibre_link-1300" class="calibre6">13</a>. Lists are mutable; they can have values added, removed, or changed. Tuples are immutable; they cannot be changed at all. Also, tuples are written using parentheses, <span class="literal">(</span> and <span class="literal">)</span>, while lists use the square brackets, <span class="literal">[</span> and <span class="literal">]</span>.</p>
+<p class="question1"><a id="calibre_link-735" href="#calibre_link-1301" class="calibre6">14</a>. <span class="literal">(42,)</span> (The trailing comma is mandatory.)</p>
+<p class="question1"><a id="calibre_link-736" href="#calibre_link-1302" class="calibre6">15</a>. The <span class="literal">tuple()</span> and <span class="literal">list()</span> functions, respectively</p>
+<p class="question1"><a id="calibre_link-737" href="#calibre_link-1303" class="calibre6">16</a>. They contain references to list values.</p>
+<p class="question1"><a id="calibre_link-738" href="#calibre_link-1304" class="calibre6">17</a>. The <span class="literal">copy.copy()</span> function will do a shallow copy of a list, while the <span class="literal">copy.deepcopy()</span> function will do a deep copy of a list. That is, only <span class="literal">copy.deepcopy()</span> will duplicate any lists inside the list.</p>
+<h3 class="h1" id="calibre_link-690"><strong class="calibre2">Chapter 5</strong></h3>
+<p class="question"><a id="calibre_link-1134" href="#calibre_link-1305" class="calibre6">1</a>. Two curly brackets: <span class="literal">{}</span></p>
+<p class="question"><a id="calibre_link-1135" href="#calibre_link-1306" class="calibre6">2</a>. <span class="literal">{'foo': 42}</span></p>
+<p class="question"><a id="calibre_link-1136" href="#calibre_link-1307" class="calibre6">3</a>. The items stored in a dictionary are unordered, while the items in a list are ordered.</p>
+<p class="question"><a id="calibre_link-1137" href="#calibre_link-1308" class="calibre6">4</a>. You get a <span class="literal">KeyError</span> error.</p>
+<p class="question"><a id="calibre_link-1138" href="#calibre_link-1309" class="calibre6">5</a>. There is no difference. The <span class="literal">in</span> operator checks whether a value exists as a key in the dictionary.</p>
+<p class="question"><a id="calibre_link-1139" href="#calibre_link-1310" class="calibre6">6</a>. The <span class="literal">'cat' in spam</span> checks whether there is a <span class="literal">'cat'</span> key in the dictionary, while <span class="literal">'cat' in spam.values()</span> checks whether there is a value <span class="literal">'cat'</span> for one of the keys in <span class="literal">spam</span>.</p>
+<p class="question"><a id="calibre_link-1140" href="#calibre_link-1311" class="calibre6">7</a>. <span class="literal">spam.setdefault('color', 'black')</span></p>
+<p class="question"><a id="calibre_link-1141" href="#calibre_link-1312" class="calibre6">8</a>. <span class="literal">pprint.pprint()</span></p>
+<h3 class="h1" id="calibre_link-691"><strong class="calibre2">Chapter 6</strong></h3>
+<p class="question"><a id="calibre_link-1616" href="#calibre_link-1313" class="calibre6">1</a>. Escape characters represent characters in string values that would otherwise be difficult or impossible to type into code.</p>
+<p class="question"><a id="calibre_link-1617" href="#calibre_link-1314" class="calibre6">2</a>. <span class="literal">\n</span> is a newline; <span class="literal">\t</span> is a tab.</p>
+<p class="question"><a id="calibre_link-1618" href="#calibre_link-1315" class="calibre6">3</a>. The <span class="literal">\\</span> escape character will represent a backslash character.</p>
+<p class="question"><a id="calibre_link-1619" href="#calibre_link-1316" class="calibre6">4</a>. <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1893"></span>The single quote in <span class="literal">Howl's</span> is fine because you’ve used double quotes to mark the beginning and end of the string.</p>
+<p class="question"><a id="calibre_link-1620" href="#calibre_link-1317" class="calibre6">5</a>. Multiline strings allow you to use newlines in strings without the <span class="literal">\n</span> escape character.</p>
+<p class="question"><a id="calibre_link-1621" href="#calibre_link-1318" class="calibre6">6</a>. The expressions evaluate to the following:</p>
+<ul class="calibre8">
+<li class="noindent1"><span class="literal">'e'</span></li>
+<li class="noindent1"><span class="literal">'Hello'</span></li>
+<li class="noindent1"><span class="literal">'Hello'</span></li>
+<li class="noindent1"><span class="literal">'lo, world!</span></li>
+</ul>
+<p class="question"><a id="calibre_link-1622" href="#calibre_link-1319" class="calibre6">7</a>. The expressions evaluate to the following:</p>
+<ul class="calibre8">
+<li class="noindent1"><span class="literal">'HELLO'</span></li>
+<li class="noindent1"><span class="literal">True</span></li>
+<li class="noindent1"><span class="literal">'hello'</span></li>
+</ul>
+<p class="question"><a id="calibre_link-1623" href="#calibre_link-1320" class="calibre6">8</a>. The expressions evaluate to the following:</p>
+<ul class="calibre8">
+<li class="noindent1"><span class="literal">['Remember,', 'remember,', 'the', 'fifth', 'of', 'November.']</span></li>
+<li class="noindent1"><span class="literal">'There-can-be-only-one.'</span></li>
+</ul>
+<p class="question"><a id="calibre_link-1624" href="#calibre_link-1321" class="calibre6">9</a>. The <span class="literal">rjust()</span>, <span class="literal">ljust()</span>, and <span class="literal">center()</span> string methods, respectively</p>
+<p class="question1"><a id="calibre_link-1625" href="#calibre_link-1322" class="calibre6">10</a>. The <span class="literal">lstrip()</span> and <span class="literal">rstrip()</span> methods remove whitespace from the left and right ends of a string, respectively.</p>
+<h3 class="h1" id="calibre_link-692"><strong class="calibre2">Chapter 7</strong></h3>
+<p class="question"><a id="calibre_link-1145" href="#calibre_link-1323" class="calibre6">1</a>. The <span class="literal">re.compile()</span> function returns <span class="literal">Regex</span> objects.</p>
+<p class="question"><a id="calibre_link-1146" href="#calibre_link-1324" class="calibre6">2</a>. Raw strings are used so that backslashes do not have to be escaped.</p>
+<p class="question"><a id="calibre_link-1147" href="#calibre_link-1325" class="calibre6">3</a>. The <span class="literal">search()</span> method returns <span class="literal">Match</span> objects.</p>
+<p class="question"><a id="calibre_link-1148" href="#calibre_link-1326" class="calibre6">4</a>. The <span class="literal">group()</span> method returns strings of the matched text.</p>
+<p class="question"><a id="calibre_link-1149" href="#calibre_link-1327" class="calibre6">5</a>. Group <span class="literal">0</span> is the entire match, group <span class="literal">1</span> covers the first set of parentheses, and group <span class="literal">2</span> covers the second set of parentheses.</p>
+<p class="question"><a id="calibre_link-1150" href="#calibre_link-1328" class="calibre6">6</a>. Periods and parentheses can be escaped with a backslash: <span class="literal">\.</span>, <span class="literal">\(</span>, and <span class="literal">\)</span>.</p>
+<p class="question"><a id="calibre_link-1151" href="#calibre_link-1329" class="calibre6">7</a>. If the regex has no groups, a list of strings is returned. If the regex has groups, a list of tuples of strings is returned.</p>
+<p class="question"><a id="calibre_link-1152" href="#calibre_link-1330" class="calibre6">8</a>. The <span class="literal">|</span> character signifies matching “either, or” between two groups.</p>
+<p class="question"><a id="calibre_link-1153" href="#calibre_link-1331" class="calibre6">9</a>. The <span class="literal">?</span> character can either mean “match zero or one of the preceding group” or be used to signify non-greedy matching.</p>
+<p class="question1"><a id="calibre_link-1154" href="#calibre_link-1332" class="calibre6">10</a>. The <span class="literal">+</span> matches one or more. The <span class="literal">*</span> matches zero or more.</p>
+<p class="question1"><a id="calibre_link-1155" href="#calibre_link-1333" class="calibre6">11</a>. The <span class="literal">{3}</span> matches exactly three instances of the preceding group. The <span class="literal">{3,5}</span> matches between three and five instances.</p>
+<p class="question1"><a id="calibre_link-1156" href="#calibre_link-1334" class="calibre6">12</a>. The <span class="literal">\d</span>, <span class="literal">\w</span>, and <span class="literal">\s</span> shorthand character classes match a single digit, word, or space character, respectively.</p>
+<p class="question1"><a id="calibre_link-1157" href="#calibre_link-1335" class="calibre6">13</a>. The <span class="literal">\D</span>, <span class="literal">\W</span>, and <span class="literal">\S</span> shorthand character classes match a single character that is not a digit, word, or space character, respectively.</p>
+<p class="question1"><a id="calibre_link-1158" href="#calibre_link-1336" class="calibre6">14</a>. <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1894"></span>The <span class="literal">.*</span> performs a greedy match, and the <span class="literal">.*?</span> performs a non-greedy match.</p>
+<p class="question1"><a id="calibre_link-1159" href="#calibre_link-1337" class="calibre6">15</a>. Either <span class="literal">[0-9a-z]</span> or <span class="literal">[a-z0-9]</span></p>
+<p class="question1"><a id="calibre_link-1160" href="#calibre_link-1338" class="calibre6">16</a>. Passing <span class="literal">re.I</span> or <span class="literal">re.IGNORECASE</span> as the second argument to <span class="literal">re.compile()</span> will make the matching case insensitive.</p>
+<p class="question1"><a id="calibre_link-1161" href="#calibre_link-1339" class="calibre6">17</a>. The <span class="literal">.</span> character normally matches any character except the newline character. If <span class="literal">re.DOTALL</span> is passed as the second argument to <span class="literal">re.compile()</span>, then the dot will also match newline characters.</p>
+<p class="question1"><a id="calibre_link-1162" href="#calibre_link-1340" class="calibre6">18</a>. The <span class="literal">sub()</span> call will return the string <span class="literal">'X drummers, X pipers, five rings, X hens'</span>.</p>
+<p class="question1"><a id="calibre_link-1163" href="#calibre_link-1341" class="calibre6">19</a>. The <span class="literal">re.VERBOSE</span> argument allows you to add whitespace and comments to the string passed to <span class="literal">re.compile()</span>.</p>
+<p class="question1"><a id="calibre_link-1164" href="#calibre_link-1342" class="calibre6">20</a>. <span class="literal">re.compile(r'^\d{1,3}(,\d{3})*$')</span> will create this regex, but other regex strings can produce a similar regular expression.</p>
+<p class="question1"><a id="calibre_link-1165" href="#calibre_link-1343" class="calibre6">21</a>. <span class="literal">re.compile(r'[A-Z][a-z]*\sWatanabe')</span></p>
+<p class="question1"><a id="calibre_link-1166" href="#calibre_link-1344" class="calibre6">22</a>. <span class="literal">re.compile(r'(Alice|Bob|Carol)\s(eats|pets|throws)\s(apples|cats|baseballs)\.', re.IGNORECASE)</span></p>
+<h3 class="h1" id="calibre_link-693"><strong class="calibre2">Chapter 8</strong></h3>
+<p class="question"><a id="calibre_link-1098" href="#calibre_link-1345" class="calibre6">1</a>. No. PyInputPlus is a third-party module and doesn’t come with the Python Standard Library.</p>
+<p class="question"><a id="calibre_link-1099" href="#calibre_link-1346" class="calibre6">2</a>. This optionally makes your code shorter to type: you can type <span class="literal">pyip.inputStr()</span> instead of <span class="literal">pyinputplus.inputStr()</span>.</p>
+<p class="question"><a id="calibre_link-1100" href="#calibre_link-1347" class="calibre6">3</a>. The <span class="literal">inputInt()</span> function returns an int value, while the <span class="literal">inputFloat()</span> function returns a float value. This is the difference between returning <span class="literal">4</span> and <span class="literal">4.0</span>.</p>
+<p class="question"><a id="calibre_link-1101" href="#calibre_link-1348" class="calibre6">4</a>. Call <span class="literal">pyip.inputint(min=0, max=99)</span>.</p>
+<p class="question"><a id="calibre_link-1102" href="#calibre_link-1349" class="calibre6">5</a>. A list of regex strings that are either explicitly allowed or denied</p>
+<p class="question"><a id="calibre_link-1103" href="#calibre_link-1350" class="calibre6">6</a>. The function will raise <span class="literal">RetryLimitException</span>.</p>
+<p class="question"><a id="calibre_link-1104" href="#calibre_link-1351" class="calibre6">7</a>. The function returns the value <span class="literal">'hello'</span>.</p>
+<h3 class="h1" id="calibre_link-694"><strong class="calibre2">Chapter 9</strong></h3>
+<p class="question"><a id="calibre_link-1179" href="#calibre_link-1352" class="calibre6">1</a>. Relative paths are relative to the current working directory.</p>
+<p class="question"><a id="calibre_link-1180" href="#calibre_link-1353" class="calibre6">2</a>. Absolute paths start with the root folder, such as <em class="calibre7">/</em> or <em class="calibre7">C:\</em>.</p>
+<p class="question"><a id="calibre_link-1181" href="#calibre_link-1354" class="calibre6">3</a>. On Windows, it evaluates to <span class="literal">WindowsPath('C:/Users/Al')</span>. On other operating systems, it evaluates to a different kind of <span class="literal">Path</span> object but with the same path.</p>
+<p class="question"><a id="calibre_link-1182" href="#calibre_link-1355" class="calibre6">4</a>. The expression <span class="literal">'C:/Users' / 'Al'</span> results in an error, since you can’t use the <span class="literal">/</span> operator to join two strings.</p>
+<p class="question"><a id="calibre_link-1183" href="#calibre_link-1356" class="calibre6">5</a>. The <span class="literal">os.getcwd()</span> function returns the current working directory. The <span class="literal">os.chdir()</span> function <em class="calibre7">changes</em> the current working directory.</p>
+<p class="question"><a id="calibre_link-1184" href="#calibre_link-1357" class="calibre6">6</a>. <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1895"></span>The <span class="literal">.</span> folder is the current folder, and <span class="literal">..</span> is the parent folder.</p>
+<p class="question"><a id="calibre_link-1185" href="#calibre_link-1358" class="calibre6">7</a>. <em class="calibre7">C:\bacon\eggs</em> is the dir name, while <em class="calibre7">spam.txt</em> is the base name.</p>
+<p class="question"><a id="calibre_link-1186" href="#calibre_link-1359" class="calibre6">8</a>. The string <span class="literal">'r'</span> for read mode, <span class="literal">'w'</span> for write mode, and <span class="literal">'a'</span> for append mode</p>
+<p class="question"><a id="calibre_link-1187" href="#calibre_link-1360" class="calibre6">9</a>. An existing file opened in write mode is erased and completely overwritten.</p>
+<p class="question1"><a id="calibre_link-1188" href="#calibre_link-1361" class="calibre6">10</a>. The <span class="literal">read()</span> method returns the file’s entire contents as a single string value. The <span class="literal">readlines()</span> method returns a list of strings, where each string is a line from the file’s contents.</p>
+<p class="question1"><a id="calibre_link-1189" href="#calibre_link-1362" class="calibre6">11</a>. A shelf value resembles a dictionary value; it has keys and values, along with <span class="literal">keys()</span> and <span class="literal">values()</span> methods that work similarly to the dictionary methods of the same names.</p>
+<h3 class="h1" id="calibre_link-695"><strong class="calibre2">Chapter 10</strong></h3>
+<p class="question"><a id="calibre_link-1515" href="#calibre_link-1363" class="calibre6">1</a>. The <span class="literal">shutil.copy()</span> function will copy a single file, while <span class="literal">shutil.copytree()</span> will copy an entire folder, along with all its contents.</p>
+<p class="question"><a id="calibre_link-1516" href="#calibre_link-1364" class="calibre6">2</a>. The <span class="literal">shutil.move()</span> function is used for renaming files as well as moving them.</p>
+<p class="question"><a id="calibre_link-1517" href="#calibre_link-1365" class="calibre6">3</a>. The <span class="literal">send2trash</span> functions will move a file or folder to the recycle bin, while <span class="literal">shutil</span> functions will permanently delete files and folders.</p>
+<p class="question"><a id="calibre_link-1518" href="#calibre_link-1366" class="calibre6">4</a>. The <span class="literal">zipfile.ZipFile()</span> function is equivalent to the <span class="literal">open()</span> function; the first argument is the filename, and the second argument is the mode to open the ZIP file in (read, write, or append).</p>
+<h3 class="h1" id="calibre_link-696"><strong class="calibre2">Chapter 11</strong></h3>
+<p class="question"><a id="calibre_link-1199" href="#calibre_link-1367" class="calibre6">1</a>. <span class="literal">assert spam &gt;= 10, 'The spam variable is less than 10.'</span></p>
+<p class="question"><a id="calibre_link-1200" href="#calibre_link-1368" class="calibre6">2</a>. Either <span class="literal">assert eggs.lower() != bacon.lower() 'The eggs and bacon variables are the same!'</span> or <span class="literal">assert eggs.upper() != bacon.upper(), 'The eggs and bacon variables are the same!'</span></p>
+<p class="question"><a id="calibre_link-1201" href="#calibre_link-1369" class="calibre6">3</a>. <span class="literal">assert False, 'This assertion always triggers.'</span></p>
+<p class="question"><a id="calibre_link-1202" href="#calibre_link-1370" class="calibre6">4</a>. To be able to call <span class="literal">logging.debug()</span>, you must have these two lines at the start of your program:</p>
+<p class="programs1">import logging<br class="calibre5" />
+logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s -<br class="calibre5" />
+%(levelname)s -&nbsp;&nbsp;%(message)s')</p>
+<p class="question"><a id="calibre_link-1203" href="#calibre_link-1371" class="calibre6">5</a>. <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1896"></span>To be able to send logging messages to a file named <em class="calibre7">programLog.txt</em> with <span class="literal">logging.debug()</span>, you must have these two lines at the start of your program:</p>
+<p class="programs1">import logging<br class="calibre5" />
+&gt;&gt;&gt; logging.basicConfig(filename='programLog.txt', level=logging.DEBUG,<br class="calibre5" />
+format=' %(asctime)s -&nbsp;&nbsp;%(levelname)s -&nbsp;&nbsp;%(message)s')</p>
+<p class="question"><a id="calibre_link-1204" href="#calibre_link-1372" class="calibre6">6</a>. DEBUG, INFO, WARNING, ERROR, and CRITICAL</p>
+<p class="question"><a id="calibre_link-1205" href="#calibre_link-1373" class="calibre6">7</a>. <span class="literal">logging.disable(logging.CRITICAL)</span></p>
+<p class="question"><a id="calibre_link-1206" href="#calibre_link-1374" class="calibre6">8</a>. You can disable logging messages without removing the logging function calls. You can selectively disable lower-level logging messages. You can create logging messages. Logging messages provides a timestamp.</p>
+<p class="question"><a id="calibre_link-1207" href="#calibre_link-1375" class="calibre6">9</a>. The Step In button will move the debugger into a function call. The Step Over button will quickly execute the function call without stepping into it. The Step Out button will quickly execute the rest of the code until it steps out of the function it currently is in.</p>
+<p class="question1"><a id="calibre_link-1208" href="#calibre_link-1376" class="calibre6">10</a>. After you click Continue, the debugger will stop when it has reached the end of the program or a line with a breakpoint.</p>
+<p class="question1"><a id="calibre_link-1209" href="#calibre_link-1377" class="calibre6">11</a>. A breakpoint is a setting on a line of code that causes the debugger to pause when the program execution reaches the line.</p>
+<p class="question1"><a id="calibre_link-1210" href="#calibre_link-1378" class="calibre6">12</a>. To set a breakpoint in Mu, click the line number to make a red dot appear next to it.</p>
+<h3 class="h1" id="calibre_link-697"><strong class="calibre2">Chapter 12</strong></h3>
+<p class="question"><a id="calibre_link-49" href="#calibre_link-1379" class="calibre6">1</a>. The <span class="literal">webbrowser</span> module has an <span class="literal">open()</span> method that will launch a web browser to a specific URL, and that’s it. The <span class="literal">requests</span> module can download files and pages from the web. The <span class="literal">BeautifulSoup</span> module parses HTML. Finally, the <span class="literal">selenium</span> module can launch and control a browser.</p>
+<p class="question"><a id="calibre_link-50" href="#calibre_link-1380" class="calibre6">2</a>. The <span class="literal">requests.get()</span> function returns a <span class="literal">Response</span> object, which has a <span class="literal">text</span> attribute that contains the downloaded content as a string.</p>
+<p class="question"><a id="calibre_link-51" href="#calibre_link-1381" class="calibre6">3</a>. The <span class="literal">raise_for_status()</span> method raises an exception if the download had problems and does nothing if the download succeeded.</p>
+<p class="question"><a id="calibre_link-52" href="#calibre_link-1382" class="calibre6">4</a>. The <span class="literal">status_code</span> attribute of the <span class="literal">Response</span> object contains the HTTP status code.</p>
+<p class="question"><a id="calibre_link-53" href="#calibre_link-1383" class="calibre6">5</a>. After opening the new file on your computer in <span class="literal">'wb'</span> “write binary” mode, use a <span class="literal">for</span> loop that iterates over the <span class="literal">Response</span> object’s <span class="literal">iter_content()</span> method to write out chunks to the file. Here’s an example:</p>
+<p class="programs1">saveFile = open('filename.html', 'wb')<br class="calibre5" />
+for chunk in res.iter_content(100000):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;saveFile.write(chunk)</p>
+<p class="question"><a id="calibre_link-54" href="#calibre_link-1384" class="calibre6">6</a>. <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1897"></span>F12 brings up the developer tools in Chrome. Pressing <small class="calibre11">CTRL-SHIFT-C</small> (on Windows and Linux) or <img src="../images/000064.jpg" alt="image" class="calibre3" /><small class="calibre11">-OPTION-C</small> (on OS X) brings up the developer tools in Firefox.</p>
+<p class="question"><a id="calibre_link-55" href="#calibre_link-1385" class="calibre6">7</a>. Right-click the element in the page and select <strong class="calibre4">Inspect Element</strong> from the menu.</p>
+<p class="question"><a id="calibre_link-56" href="#calibre_link-1386" class="calibre6">8</a>. <span class="literal">'#main'</span></p>
+<p class="question"><a id="calibre_link-57" href="#calibre_link-1387" class="calibre6">9</a>. <span class="literal">'.highlight'</span></p>
+<p class="question1"><a id="calibre_link-58" href="#calibre_link-1388" class="calibre6">10</a>. <span class="literal">'div div'</span></p>
+<p class="question1"><a id="calibre_link-59" href="#calibre_link-1389" class="calibre6">11</a>. <span class="literal">'button[value="favorite"]'</span></p>
+<p class="question1"><a id="calibre_link-60" href="#calibre_link-1390" class="calibre6">12</a>. <span class="literal">spam.getText()</span></p>
+<p class="question1"><a id="calibre_link-61" href="#calibre_link-1391" class="calibre6">13</a>. <span class="literal">linkElem.attrs</span></p>
+<p class="question1"><a id="calibre_link-62" href="#calibre_link-1392" class="calibre6">14</a>. The <span class="literal">selenium</span> module is imported with <span class="literal">from selenium import webdriver</span>.</p>
+<p class="question1"><a id="calibre_link-63" href="#calibre_link-1393" class="calibre6">15</a>. The <span class="literal">find_element_*</span> methods return the first matching element as a <span class="literal">WebElement</span> object. The <span class="literal">find_elements_*</span> methods return a list of all matching elements as <span class="literal">WebElement</span> objects.</p>
+<p class="question1"><a id="calibre_link-64" href="#calibre_link-1394" class="calibre6">16</a>. The <span class="literal">click()</span> and <span class="literal">send_keys()</span> methods simulate mouse clicks and keyboard keys, respectively.</p>
+<p class="question1"><a id="calibre_link-65" href="#calibre_link-1395" class="calibre6">17</a>. Calling the <span class="literal">submit()</span> method on any element within a form submits the form.</p>
+<p class="question1"><a id="calibre_link-66" href="#calibre_link-1396" class="calibre6">18</a>. The <span class="literal">forward()</span>, <span class="literal">back()</span>, and <span class="literal">refresh()</span> <span class="literal">WebDriver</span> object methods simulate these browser buttons.</p>
+<h3 class="h1" id="calibre_link-698"><strong class="calibre2">Chapter 13</strong></h3>
+<p class="question"><a id="calibre_link-1588" href="#calibre_link-1397" class="calibre6">1</a>. The <span class="literal">openpyxl.load_workbook()</span> function returns a <span class="literal">Workbook</span> object.</p>
+<p class="question"><a id="calibre_link-1589" href="#calibre_link-1398" class="calibre6">2</a>. The <span class="literal">sheetnames</span> attribute contains a <span class="literal">Worksheet</span> object.</p>
+<p class="question"><a id="calibre_link-1590" href="#calibre_link-1399" class="calibre6">3</a>. Run <span class="literal">wb['Sheet1']</span>.</p>
+<p class="question"><a id="calibre_link-1591" href="#calibre_link-1400" class="calibre6">4</a>. Use <span class="literal">wb.active</span>.</p>
+<p class="question"><a id="calibre_link-1592" href="#calibre_link-1401" class="calibre6">5</a>. <span class="literal">sheet['C5'].value</span> or <span class="literal">sheet.cell(row=5, column=3).value</span></p>
+<p class="question"><a id="calibre_link-1593" href="#calibre_link-1402" class="calibre6">6</a>. <span class="literal">sheet['C5'] = 'Hello'</span> or <span class="literal">sheet.cell(row=5, column=3).value = 'Hello'</span></p>
+<p class="question"><a id="calibre_link-1594" href="#calibre_link-1403" class="calibre6">7</a>. <span class="literal">cell.row</span> and <span class="literal">cell.column</span></p>
+<p class="question"><a id="calibre_link-1595" href="#calibre_link-1404" class="calibre6">8</a>. They hold the highest column and row with values in the sheet, respectively, as integer values.</p>
+<p class="question"><a id="calibre_link-1596" href="#calibre_link-1405" class="calibre6">9</a>. <span class="literal">openpyxl.cell.column_index_from_string('M')</span></p>
+<p class="question1"><a id="calibre_link-1597" href="#calibre_link-1406" class="calibre6">10</a>. <span class="literal">openpyxl.cell.get_column_letter(14)</span></p>
+<p class="question1"><a id="calibre_link-1598" href="#calibre_link-1407" class="calibre6">11</a>. <span class="literal">sheet['A1':'F1']</span></p>
+<p class="question1"><a id="calibre_link-1599" href="#calibre_link-1408" class="calibre6">12</a>. <span class="literal">wb.save('example.xlsx')</span></p>
+<p class="question1"><a id="calibre_link-1600" href="#calibre_link-1409" class="calibre6">13</a>. A formula is set the same way as any value. Set the cell’s <span class="literal">value</span> attribute to a string of the formula text. Remember that formulas begin with the = sign.</p>
+<p class="question1"><a id="calibre_link-1601" href="#calibre_link-1410" class="calibre6">14</a>. When calling <span class="literal">load_workbook()</span>, pass <span class="literal">True</span> for the <span class="literal">data_only</span> keyword argument.</p>
+<p class="question1"><a id="calibre_link-1602" href="#calibre_link-1411" class="calibre6">15</a>. <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1898"></span><span class="literal">sheet.row_dimensions[5].height = 100</span></p>
+<p class="question1"><a id="calibre_link-1603" href="#calibre_link-1412" class="calibre6">16</a>. <span class="literal">sheet.column_dimensions['C'].hidden = True</span></p>
+<p class="question1"><a id="calibre_link-1604" href="#calibre_link-1413" class="calibre6">17</a>. Freeze panes are rows and columns that will always appear on the screen. They are useful for headers.</p>
+<p class="question1"><a id="calibre_link-1605" href="#calibre_link-1414" class="calibre6">18</a>. <span class="literal">openpyxl.chart.Reference()</span>, <span class="literal">openpyxl.chart.Series()</span>, <span class="literal">openpyxl.chart.BarChart()</span>, <span class="literal">chartObj.append(seriesObj)</span>, and <span class="literal">add_chart()</span></p>
+<h3 class="h1" id="calibre_link-699"><strong class="calibre2">Chapter 14</strong></h3>
+<p class="question"><a id="calibre_link-1239" href="#calibre_link-1415" class="calibre6">1</a>. To access Google Sheets, you need a credentials file, a token file for Google Sheets, and a token file for Google Drive.</p>
+<p class="question"><a id="calibre_link-1240" href="#calibre_link-1416" class="calibre6">2</a>. EZSheets has <span class="literal">ezsheets.Spreadsheet</span> and <span class="literal">ezsheets.Sheet</span> objects.</p>
+<p class="question"><a id="calibre_link-1241" href="#calibre_link-1417" class="calibre6">3</a>. Call the <span class="literal">downloadAsExcel()</span> <span class="literal">Spreadsheet</span> method.</p>
+<p class="question"><a id="calibre_link-1242" href="#calibre_link-1418" class="calibre6">4</a>. Call the <span class="literal">ezsheets.upload()</span> function and pass the filename of the Excel file.</p>
+<p class="question"><a id="calibre_link-1243" href="#calibre_link-1419" class="calibre6">5</a>. Access <span class="literal">ss['Students']['B2']</span>.</p>
+<p class="question"><a id="calibre_link-1244" href="#calibre_link-1420" class="calibre6">6</a>. Call <span class="literal">ezsheets.getColumnLetterOf(999)</span>.</p>
+<p class="question"><a id="calibre_link-1245" href="#calibre_link-1421" class="calibre6">7</a>. Access the <span class="literal">rowCount</span> and <span class="literal">columnCount</span> properties of the <span class="literal">Sheet</span> object.</p>
+<p class="question"><a id="calibre_link-1246" href="#calibre_link-1422" class="calibre6">8</a>. Call the <span class="literal">delete()</span> <span class="literal">Sheet</span> method. This is only permanent if you pass the <span class="literal">permanent=True</span> keyword argument.</p>
+<p class="question"><a id="calibre_link-1247" href="#calibre_link-1423" class="calibre6">9</a>. The <span class="literal">createSpreadsheet()</span> function and <span class="literal">createSheet()</span> <span class="literal">Spreadsheet</span> method will create <span class="literal">Spreadsheet</span> and <span class="literal">Sheet</span> objects, respectively.</p>
+<p class="question1"><a id="calibre_link-1248" href="#calibre_link-1424" class="calibre6">10</a>. EZSheets will throttle your method calls.</p>
+<h3 class="h1" id="calibre_link-700"><strong class="calibre2">Chapter 15</strong></h3>
+<p class="question"><a id="calibre_link-15" href="#calibre_link-1425" class="calibre6">1</a>. A <span class="literal">File</span> object returned from <span class="literal">open()</span></p>
+<p class="question"><a id="calibre_link-16" href="#calibre_link-1426" class="calibre6">2</a>. Read-binary (<span class="literal">'rb'</span>) for <span class="literal">PdfFileReader()</span> and write-binary (<span class="literal">'wb'</span>) for <span class="literal">PdfFileWriter()</span></p>
+<p class="question"><a id="calibre_link-17" href="#calibre_link-1427" class="calibre6">3</a>. Calling <span class="literal">getPage(4)</span> will return a <span class="literal">Page</span> object for <a href="#calibre_link-18" class="calibre6">page 5</a>, since page 0 is the first page.</p>
+<p class="question"><a id="calibre_link-19" href="#calibre_link-1428" class="calibre6">4</a>. The <span class="literal">numPages</span> variable stores an integer of the number of pages in the <span class="literal">PdfFileReader</span> object.</p>
+<p class="question"><a id="calibre_link-20" href="#calibre_link-1429" class="calibre6">5</a>. Call <span class="literal">decrypt('swordfish')</span>.</p>
+<p class="question"><a id="calibre_link-21" href="#calibre_link-1430" class="calibre6">6</a>. The <span class="literal">rotateClockwise()</span> and <span class="literal">rotateCounterClockwise()</span> methods. The degrees to rotate is passed as an integer argument.</p>
+<p class="question"><a id="calibre_link-22" href="#calibre_link-1431" class="calibre6">7</a>. <span class="literal">docx.Document('demo.docx')</span></p>
+<p class="question"><a id="calibre_link-23" href="#calibre_link-1432" class="calibre6">8</a>. A document contains multiple paragraphs. A paragraph begins on a new line and contains multiple runs. Runs are contiguous groups of characters within a paragraph.</p>
+<p class="question"><a id="calibre_link-24" href="#calibre_link-1433" class="calibre6">9</a>. Use <span class="literal">doc.paragraphs</span>.</p>
+<p class="question1"><a id="calibre_link-25" href="#calibre_link-1434" class="calibre6">10</a>. A <span class="literal">Run</span> object has these variables (<em class="calibre7">not</em> a Paragraph).</p>
+<p class="question1"><a id="calibre_link-26" href="#calibre_link-1435" class="calibre6">11</a>. <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1899"></span><span class="literal">True</span> always makes the <span class="literal">Run</span> object bolded and <span class="literal">False</span> makes it always not bolded, no matter what the style’s bold setting is. <span class="literal">None</span> will make the <span class="literal">Run</span> object just use the style’s bold setting.</p>
+<p class="question1"><a id="calibre_link-27" href="#calibre_link-1436" class="calibre6">12</a>. Call the <span class="literal">docx.Document()</span> function.</p>
+<p class="question1"><a id="calibre_link-28" href="#calibre_link-1437" class="calibre6">13</a>. <span class="literal">doc.add_paragraph('Hello there!')</span></p>
+<p class="question1"><a id="calibre_link-29" href="#calibre_link-1438" class="calibre6">14</a>. The integers <span class="literal">0</span>, <span class="literal">1</span>, <span class="literal">2</span>, <span class="literal">3</span>, and <span class="literal">4</span></p>
+<h3 class="h1" id="calibre_link-701"><strong class="calibre2">Chapter 16</strong></h3>
+<p class="question"><a id="calibre_link-1567" href="#calibre_link-1439" class="calibre6">1</a>. In Excel, spreadsheets can have values of data types other than strings; cells can have different fonts, sizes, or color settings; cells can have varying widths and heights; adjacent cells can be merged; and you can embed images and charts.</p>
+<p class="question"><a id="calibre_link-1568" href="#calibre_link-1440" class="calibre6">2</a>. You pass a <span class="literal">File</span> object, obtained from a call to <span class="literal">open()</span>.</p>
+<p class="question"><a id="calibre_link-1569" href="#calibre_link-1441" class="calibre6">3</a>. <span class="literal">File</span> objects need to be opened in read-binary (<span class="literal">'rb'</span>) for <span class="literal">reader</span> objects and write-binary (<span class="literal">'wb'</span>) for <span class="literal">writer</span> objects.</p>
+<p class="question"><a id="calibre_link-1570" href="#calibre_link-1442" class="calibre6">4</a>. The <span class="literal">writerow()</span> method</p>
+<p class="question"><a id="calibre_link-1571" href="#calibre_link-1443" class="calibre6">5</a>. The <span class="literal">delimiter</span> argument changes the string used to separate cells in a row. The <span class="literal">lineterminator</span> argument changes the string used to separate rows.</p>
+<p class="question"><a id="calibre_link-1572" href="#calibre_link-1444" class="calibre6">6</a>. <span class="literal">json.loads()</span></p>
+<p class="question"><a id="calibre_link-1573" href="#calibre_link-1445" class="calibre6">7</a>. <span class="literal">json.dumps()</span></p>
+<h3 class="h1" id="calibre_link-702"><strong class="calibre2">Chapter 17</strong></h3>
+<p class="question"><a id="calibre_link-1524" href="#calibre_link-1446" class="calibre6">1</a>. A reference moment that many date and time programs use. The moment is January 1, 1970, UTC.</p>
+<p class="question"><a id="calibre_link-1525" href="#calibre_link-1447" class="calibre6">2</a>. <span class="literal">time.time()</span></p>
+<p class="question"><a id="calibre_link-1526" href="#calibre_link-1448" class="calibre6">3</a>. <span class="literal">time.sleep(5)</span></p>
+<p class="question"><a id="calibre_link-1527" href="#calibre_link-1449" class="calibre6">4</a>. It returns the closest integer to the argument passed. For example, <span class="literal">round(2.4)</span> returns <span class="literal">2</span>.</p>
+<p class="question"><a id="calibre_link-1528" href="#calibre_link-1450" class="calibre6">5</a>. A <span class="literal">datetime</span> object represents a specific moment in time. A <span class="literal">timedelta</span> object represents a duration of time.</p>
+<p class="question"><a id="calibre_link-1529" href="#calibre_link-1451" class="calibre6">6</a>. Run <span class="literal">datetime.datetime(2019, 1, 7).weekday()</span>, which returns <span class="literal">0</span>. This means Monday, as the <span class="literal">datetime</span> module uses <span class="literal">0</span> for Monday, <span class="literal">1</span> for Tuesday, and so on up to <span class="literal">6</span> for Sunday.</p>
+<p class="question"><a id="calibre_link-1530" href="#calibre_link-1452" class="calibre6">7</a>. <span class="literal">threadObj = threading.Thread(target=spam) threadObj.start()</span></p>
+<p class="question"><a id="calibre_link-1531" href="#calibre_link-1453" class="calibre6">8</a>. Make sure that code running in one thread does not read or write the same variables as code running in another thread.</p>
+<h3 class="h1" id="calibre_link-703"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1900" class="calibre1"></span><strong class="calibre2">Chapter 18</strong></h3>
+<p class="question"><a id="calibre_link-1117" href="#calibre_link-1454" class="calibre6">1</a>. SMTP and IMAP, respectively</p>
+<p class="question"><a id="calibre_link-1118" href="#calibre_link-1455" class="calibre6">2</a>. <span class="literal">smtplib.SMTP()</span>, <span class="literal">smtpObj.ehlo()</span>, <span class="literal">smptObj.starttls()</span>, and <span class="literal">smtpObj.login()</span></p>
+<p class="question"><a id="calibre_link-1119" href="#calibre_link-1456" class="calibre6">3</a>. <span class="literal">imapclient.IMAPClient()</span> and <span class="literal">imapObj.login()</span></p>
+<p class="question"><a id="calibre_link-1120" href="#calibre_link-1457" class="calibre6">4</a>. A list of strings of IMAP keywords, such as <span class="literal">'BEFORE &lt;date&gt;'</span>, <span class="literal">'FROM &lt;string&gt;'</span>, or <span class="literal">'SEEN'</span></p>
+<p class="question"><a id="calibre_link-1121" href="#calibre_link-1458" class="calibre6">5</a>. Assign the variable <span class="literal">imaplib._MAXLINE</span> a large integer value, such as <span class="literal">10000000</span>.</p>
+<p class="question"><a id="calibre_link-1122" href="#calibre_link-1459" class="calibre6">6</a>. The <span class="literal">pyzmail</span> module reads downloaded emails.</p>
+<p class="question"><a id="calibre_link-1123" href="#calibre_link-1460" class="calibre6">7</a>. The <em class="calibre7">credentials.json</em> and <em class="calibre7">token.json</em> files tell the EZGmail module which Google account to use when accessing Gmail.</p>
+<p class="question"><a id="calibre_link-1124" href="#calibre_link-1461" class="calibre6">8</a>. A message represents a single email, while a back-and-forth conversation involving multiple emails is a thread.</p>
+<p class="question"><a id="calibre_link-1125" href="#calibre_link-1462" class="calibre6">9</a>. Include the <span class="literal">'has:attachment'</span> text in the string you pass to <span class="literal">search()</span>.</p>
+<p class="question1"><a id="calibre_link-1126" href="#calibre_link-1463" class="calibre6">10</a>. You will need the Twilio account SID number, the authentication token number, and your Twilio phone number.</p>
+<h3 class="h1" id="calibre_link-704"><strong class="calibre2">Chapter 19</strong></h3>
+<p class="question"><a id="calibre_link-1503" href="#calibre_link-1464" class="calibre6">1</a>. An RGBA value is a tuple of 4 integers, each ranging from 0 to 255. The four integers correspond to the amount of red, green, blue, and alpha (transparency) in the color.</p>
+<p class="question"><a id="calibre_link-1504" href="#calibre_link-1465" class="calibre6">2</a>. A function call to <span class="literal">ImageColor.getcolor('CornflowerBlue', 'RGBA')</span> will return <span class="literal">(100, 149, 237, 255)</span>, the RGBA value for that color.</p>
+<p class="question"><a id="calibre_link-1505" href="#calibre_link-1466" class="calibre6">3</a>. A box tuple is a tuple value of four integers: the left-edge x-coordinate, the top-edge y-coordinate, the width, and the height, respectively.</p>
+<p class="question"><a id="calibre_link-1506" href="#calibre_link-1467" class="calibre6">4</a>. <span class="literal">Image.open('zophie.png')</span></p>
+<p class="question"><a id="calibre_link-1507" href="#calibre_link-1468" class="calibre6">5</a>. <span class="literal">imageObj.size</span> is a tuple of two integers, the width and the height.</p>
+<p class="question"><a id="calibre_link-1508" href="#calibre_link-1469" class="calibre6">6</a>. <span class="literal">imageObj.crop((0, 50, 50, 50))</span>. Notice that you are passing a box tuple to <span class="literal">crop()</span>, not four separate integer arguments.</p>
+<p class="question"><a id="calibre_link-1509" href="#calibre_link-1470" class="calibre6">7</a>. Call the <span class="literal">imageObj.save('new_filename.png')</span> method of the <span class="literal">Image</span> object.</p>
+<p class="question"><a id="calibre_link-1510" href="#calibre_link-1471" class="calibre6">8</a>. The <span class="literal">ImageDraw</span> module contains code to draw on images.</p>
+<p class="question"><a id="calibre_link-1511" href="#calibre_link-1472" class="calibre6">9</a>. <span class="literal">ImageDraw</span> objects have shape-drawing methods such as <span class="literal">point()</span>, <span class="literal">line()</span>, or <span class="literal">rectangle()</span>. They are returned by passing the <span class="literal">Image</span> object to the <span class="literal">ImageDraw.Draw()</span> function.</p>
+<h3 class="h1" id="calibre_link-705"><strong class="calibre2">Chapter 20</strong></h3>
+<p class="question"><a id="calibre_link-1637" href="#calibre_link-1473" class="calibre6">1</a>. Move the mouse to the upper-left corner of the screen, that is, the (0, 0) coordinates.</p>
+<p class="question"><a id="calibre_link-1638" href="#calibre_link-1474" class="calibre6">2</a>. <span class="literal">pyautogui.size()</span> returns a tuple with two integers, for the width and height of the screen.</p>
+<p class="question"><a id="calibre_link-1639" href="#calibre_link-1475" class="calibre6">3</a>. <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1901"></span><span class="literal">pyautogui.position()</span> returns a tuple with two integers, for the x- and y-coordinates of the mouse cursor.</p>
+<p class="question"><a id="calibre_link-1640" href="#calibre_link-1476" class="calibre6">4</a>. The <span class="literal">moveTo()</span> function moves the mouse to absolute coordinates on the screen, while the <span class="literal">move()</span> function moves the mouse relative to the mouse’s current position.</p>
+<p class="question"><a id="calibre_link-1641" href="#calibre_link-1477" class="calibre6">5</a>. <span class="literal">pyautogui.dragTo()</span> and <span class="literal">pyautogui.drag()</span></p>
+<p class="question"><a id="calibre_link-1642" href="#calibre_link-1478" class="calibre6">6</a>. <span class="literal">pyautogui.typewrite('Hello, world!')</span></p>
+<p class="question"><a id="calibre_link-1643" href="#calibre_link-1479" class="calibre6">7</a>. Either pass a list of keyboard key strings to <span class="literal">pyautogui.write()</span> (such as <span class="literal">'left'</span>) or pass a single keyboard key string to <span class="literal">pyautogui.press()</span>.</p>
+<p class="question"><a id="calibre_link-1644" href="#calibre_link-1480" class="calibre6">8</a>. <span class="literal">pyautogui.screenshot('screenshot.png')</span></p>
+<p class="question"><a id="calibre_link-1645" href="#calibre_link-1481" class="calibre6">9</a>. <span class="literal">pyautogui.PAUSE = 2</span></p>
+<p class="question1"><a id="calibre_link-1646" href="#calibre_link-1482" class="calibre6">10</a>. You should use Selenium for controlling a web browser instead of PyAutoGUI.</p>
+<p class="question1"><a id="calibre_link-1647" href="#calibre_link-1483" class="calibre6">11</a>. PyAutoGUI clicks and types blindly and cannot easily find out if it’s clicking and typing into the correct windows. Unexpected pop-up windows or errors can throw the script off track and require you to shut it down.</p>
+<p class="question1"><a id="calibre_link-1648" href="#calibre_link-1484" class="calibre6">12</a>. Call the <span class="literal">pyautogui.getWindowsWithTitle('Notepad')</span> function.</p>
+<p class="question1"><a id="calibre_link-1649" href="#calibre_link-1485" class="calibre6">13</a>. Run <span class="literal">w = pyatuogui.getWindowsWithTitle('Firefox')</span>, and then run <span class="literal">w.activate()</span>.</p>
+</div>
+
+<div><center><a href="../appendixb"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a></center></div>
+
+{% endblock %}

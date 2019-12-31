@@ -1,0 +1,423 @@
+{% extends "secondeditionbase.html" %}
+{% set title = 'Automate the Boring Stuff with Python' %}
+{% block content %}
+
+<div><center><a href="../chapter4"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="../chapter6"><img src="/images/next.png" /></a></center></div>
+
+<div class="calibre" id="calibre_link-1127">
+<h2 class="h2b" id="calibre_link-190"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-745" class="calibre1"></span><strong class="calibre2"><span class="big">5</span><br class="calibre12" />DICTIONARIES AND STRUCTURING DATA</strong></h2>
+<div class="image"><img src="../images/000063.jpg" alt="Image" class="calibre3" /></div>
+<p class="noindent">In this chapter, I will cover the dictionary data type, which provides a flexible way to access and organize data. Then, combining dictionaries with your knowledge of lists from the previous chapter, you’ll learn how to create a data structure to model a tic-tac-toe board.</p>
+<h3 class="h1" id="calibre_link-191"><strong class="calibre2">The Dictionary Data Type</strong></h3>
+<p class="noindent">Like a list, a <em class="calibre7">dictionary</em> is a mutable collection of many values. But unlike indexes for lists, indexes for dictionaries can use many different data types, not just integers. Indexes for dictionaries are called <em class="calibre7">keys</em>, and a key with its associated value is called a <em class="calibre7">key-value pair</em>.</p>
+<p class="indent">In code, a dictionary is typed with braces, <span class="literal">{}</span>. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">myCat = {'size': 'fat', 'color': 'gray', 'disposition': 'loud'}</span></p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-910"></span>This assigns a dictionary to the <span class="literal">myCat</span> variable. This dictionary’s keys are <span class="literal">'size'</span>, <span class="literal">'color'</span>, and <span class="literal">'disposition'</span>. The values for these keys are <span class="literal">'fat'</span>, <span class="literal">'gray'</span>, and <span class="literal">'loud'</span>, respectively. You can access these values through their keys:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">myCat['size']</span><br class="calibre5" />
+'fat'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'My cat has ' + myCat['color'] + ' fur.'</span><br class="calibre5" />
+'My cat has gray fur.'</p>
+<p class="indent">Dictionaries can still use integer values as keys, just like lists use integers for indexes, but they do not have to start at <span class="literal">0</span> and can be any number.</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">spam = {12345: 'Luggage Combination', 42: 'The Answer'}</span></p>
+<h4 class="h2" id="calibre_link-192"><strong class="calibre2"><em class="calibre9">Dictionaries vs. Lists</em></strong></h4>
+<p class="noindent">Unlike lists, items in dictionaries are unordered. The first item in a list named <span class="literal">spam</span> would be <span class="literal">spam[0]</span>. But there is no “first” item in a dictionary. While the order of items matters for determining whether two lists are the same, it does not matter in what order the key-value pairs are typed in a dictionary. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">spam = ['cats', 'dogs', 'moose']</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">bacon = ['dogs', 'moose', 'cats']</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spam == bacon</span><br class="calibre5" />
+False<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">eggs = {'name': 'Zophie', 'species': 'cat', 'age': '8'}</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ham = {'species': 'cat', 'age': '8', 'name': 'Zophie'}</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">eggs == ham</span><br class="calibre5" />
+True</p>
+<p class="indent">Because dictionaries are not ordered, they can’t be sliced like lists.</p>
+<p class="indent">Trying to access a key that does not exist in a dictionary will result in a <span class="literal">KeyError</span> error message, much like a list’s “out-of-range” <span class="literal">IndexError</span> error message. Enter the following into the interactive shell, and notice the error message that shows up because there is no <span class="literal">'color'</span> key:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">spam = {'name': 'Zophie', 'age': 7}</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spam['color']</span><br class="calibre5" />
+Traceback (most recent call last):<br class="calibre5" />
+&nbsp;&nbsp;File "&lt;pyshell#1&gt;", line 1, in &lt;module&gt;<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;spam['color']<br class="calibre5" />
+KeyError: 'color'</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1742"></span>Though dictionaries are not ordered, the fact that you can have arbitrary values for the keys allows you to organize your data in powerful ways. Say you wanted your program to store data about your friends’ birthdays. You can use a dictionary with the names as keys and the birthdays as values. Open a new file editor window and enter the following code. Save it as <em class="calibre7">birthdays.py</em>.</p>
+<p class="programs"><span class="ent">➊</span> birthdays = {'Alice': 'Apr 1', 'Bob': 'Dec 12', 'Carol': 'Mar 4'}<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;while True:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('Enter a name: (blank to quit)')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name = input()<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if name == '':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➋</span> if name in birthdays:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➌</span> print(birthdays[name] + ' is the birthday of ' + name)<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('I do not have birthday information for ' + name)<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('What is their birthday?')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bday = input()<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➍</span> birthdays[name] = bday<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('Birthday database updated.')</p>
+<p class="indent">You can view the execution of this program at <em class="calibre7"><a href="https://autbor.com/bdaydb" class="calibre6">https://autbor.com/bdaydb</a></em>. You create an initial dictionary and store it in <span class="literal">birthdays</span> <span class="ent">➊</span>. You can see if the entered name exists as a key in the dictionary with the <span class="literal">in</span> keyword <span class="ent">➋</span>, just as you did for lists. If the name is in the dictionary, you access the associated value using square brackets <span class="ent">➌</span>; if not, you can add it using the same square bracket syntax combined with the assignment operator <span class="ent">➍</span>.</p>
+<p class="indent">When you run this program, it will look like this:</p>
+<p class="programs">Enter a name: (blank to quit)<br class="calibre5" />
+<span class="codestrong1">Alice</span><br class="calibre5" />
+Apr 1 is the birthday of Alice<br class="calibre5" />
+Enter a name: (blank to quit)<br class="calibre5" />
+<span class="codestrong1">Eve</span><br class="calibre5" />
+I do not have birthday information for Eve<br class="calibre5" />
+What is their birthday?<br class="calibre5" />
+<span class="codestrong1">Dec 5</span><br class="calibre5" />
+Birthday database updated.<br class="calibre5" />
+Enter a name: (blank to quit)<br class="calibre5" />
+<span class="codestrong1">Eve</span><br class="calibre5" />
+Dec 5 is the birthday of Eve<br class="calibre5" />
+Enter a name: (blank to quit)</p>
+<p class="indent">Of course, all the data you enter in this program is forgotten when the program terminates. You’ll learn how to save data to files on the hard drive in <a href="#calibre_link-32" class="calibre6">Chapter 9</a>.</p>
+<div class="sidebar">
+<p class="sidebart"><strong class="calibre4">ORDERED DICTIONARIES IN PYTHON 3.7</strong></p>
+<p class="spara">While they’re still not ordered and have no “first” key-value pair, dictionaries in Python 3.7 and later will remember the insertion order of their key-value pairs if you create a sequence value from them. For example, notice the order of items in the lists made from the <span class="literal1">eggs</span> and <span class="literal1">ham</span> dictionaries matches the order in which they were entered:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">eggs = {'name': 'Zophie', 'species': 'cat', 'age': '8'}</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">list(eggs)</span><br class="calibre5" />
+['name', 'species', 'age']<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">ham = {'species': 'cat', 'age': '8', 'name': 'Zophie'}</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">list(ham)</span><br class="calibre5" />
+['species', 'age', 'name']</p>
+<p class="sparai">The dictionaries are still unordered, as you can’t access items in them using integer indexes like <span class="literal1">eggs[0]</span> or <span class="literal1">ham[2]</span>. You shouldn’t rely on this behavior, as dictionaries in older versions of Python don’t remember the insertion order of key-value pairs. For example, notice how the list doesn’t match the insertion order of the dictionary’s key-value pairs when I run this code in Python 3.5:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">spam = {}</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spam['first key'] = 'value'</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spam['second key'] = 'value'</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spam['third key'] = 'value'</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">list(spam)</span><br class="calibre5" />
+['first key', 'third key', 'second key']</p>
+</div>
+<h4 class="h2" id="calibre_link-193"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-793" class="calibre1"></span><strong class="calibre2"><em class="calibre9">The keys(), values(), and items() Methods</em></strong></h4>
+<p class="noindent">There are three dictionary methods that will return list-like values of the dictionary’s keys, values, or both keys and values: <span class="literal">keys()</span>, <span class="literal">values()</span>, and <span class="literal">items()</span>. The values returned by these methods are not true lists: they cannot be modified and do not have an <span class="literal">append()</span> method. But these data types (<span class="literal">dict_keys</span>, <span class="literal">dict_values</span>, and <span class="literal">dict_items</span>, respectively) <em class="calibre7">can</em> be used in <span class="literal">for</span> loops. To see how these methods work, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">spam = {'color': 'red', 'age': 42}</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">for v in spam.values():</span><br class="calibre5" />
+...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="codestrong1">print(v)</span><br class="calibre5" />
+<br class="calibre5" />
+red<br class="calibre5" />
+42</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1033"></span>Here, a <span class="literal">for</span> loop iterates over each of the values in the <span class="literal">spam</span> dictionary. A <span class="literal">for</span> loop can also iterate over the keys or both keys and values:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">for k in spam.keys():</span><br class="calibre5" />
+...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="codestrong1">print(k)</span><br class="calibre5" />
+<br class="calibre5" />
+color<br class="calibre5" />
+age<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">for i in spam.items():</span><br class="calibre5" />
+...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="codestrong1">print(i)</span><br class="calibre5" />
+<br class="calibre5" />
+('color', 'red')<br class="calibre5" />
+('age', 42)</p>
+<p class="indent">When you use the <span class="literal">keys()</span>, <span class="literal">values()</span>, and <span class="literal">items()</span> methods, a <span class="literal">for</span> loop can iterate over the keys, values, or key-value pairs in a dictionary, respectively. Notice that the values in the <span class="literal">dict_items</span> value returned by the <span class="literal">items()</span> method are tuples of the key and value.</p>
+<p class="indent">If you want a true list from one of these methods, pass its list-like return value to the <span class="literal">list()</span> function. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">spam = {'color': 'red', 'age': 42}</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spam.keys()</span><br class="calibre5" />
+dict_keys(['color', 'age'])<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">list(spam.keys())</span><br class="calibre5" />
+['color', 'age']</p>
+<p class="indent">The <span class="literal">list(spam.keys())</span> line takes the <span class="literal">dict_keys</span> value returned from <span class="literal">keys()</span> and passes it to <span class="literal">list()</span>, which then returns a list value of <span class="literal">['color', 'age']</span>.</p>
+<p class="indent">You can also use the multiple assignment trick in a <span class="literal">for</span> loop to assign the key and value to separate variables. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">spam = {'color': 'red', 'age': 42}</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">for k, v in spam.items():</span><br class="calibre5" />
+<span class="codestrong1">...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('Key: ' + k + ' Value: ' + str(v))</span><br class="calibre5" />
+<br class="calibre5" />
+Key: age Value: 42<br class="calibre5" />
+Key: color Value: red</p>
+<h4 class="h2" id="calibre_link-194"><strong class="calibre2"><em class="calibre9">Checking Whether a Key or Value Exists in a Dictionary</em></strong></h4>
+<p class="noindent">Recall from the previous chapter that the <span class="literal">in</span> and <span class="literal">not in</span> operators can check whether a value exists in a list. You can also use these operators to see whether a certain key or value exists in a dictionary. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">spam = {'name': 'Zophie', 'age': 7}</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'name' in spam.keys()</span><br class="calibre5" />
+True<br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-909"></span>&gt;&gt;&gt; <span class="codestrong1">'Zophie' in spam.values()</span><br class="calibre5" />
+True<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'color' in spam.keys()</span><br class="calibre5" />
+False<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'color' not in spam.keys()</span><br class="calibre5" />
+True<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'color' in spam</span><br class="calibre5" />
+False</p>
+<p class="indent">In the previous example, notice that <span class="literal">'color' in spam</span> is essentially a shorter version of writing <span class="literal">'color' in spam.keys()</span>. This is always the case: if you ever want to check whether a value is (or isn’t) a key in the dictionary, you can simply use the <span class="literal">in</span> (or <span class="literal">not in</span>) keyword with the dictionary value itself.</p>
+<h4 class="h2" id="calibre_link-195"><strong class="calibre2"><em class="calibre9">The get() Method</em></strong></h4>
+<p class="noindent">It’s tedious to check whether a key exists in a dictionary before accessing that key’s value. Fortunately, dictionaries have a <span class="literal">get()</span> method that takes two arguments: the key of the value to retrieve and a fallback value to return if that key does not exist.</p>
+<p class="indent">Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">picnicItems = {'apples': 5, 'cups': 2}</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'I am bringing ' + str(picnicItems.get('cups', 0)) + ' cups.'</span><br class="calibre5" />
+'I am bringing 2 cups.'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'I am bringing ' + str(picnicItems.get('eggs', 0)) + ' eggs.'</span><br class="calibre5" />
+'I am bringing 0 eggs.'</p>
+<p class="indent">Because there is no <span class="literal">'eggs'</span> key in the <span class="literal">picnicItems</span> dictionary, the default value <span class="literal">0</span> is returned by the <span class="literal">get()</span> method. Without using <span class="literal">get()</span>, the code would have caused an error message, such as in the following example:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">picnicItems = {'apples': 5, 'cups': 2}</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">'I am bringing ' + str(picnicItems['eggs']) + ' eggs.'</span><br class="calibre5" />
+Traceback (most recent call last):<br class="calibre5" />
+&nbsp;&nbsp;File "&lt;pyshell#34&gt;", line 1, in &lt;module&gt;<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;'I am bringing ' + str(picnicItems['eggs']) + ' eggs.'<br class="calibre5" />
+KeyError: 'eggs'</p>
+<h4 class="h2" id="calibre_link-196"><strong class="calibre2"><em class="calibre9">The setdefault() Method</em></strong></h4>
+<p class="noindent">You’ll often have to set a value in a dictionary for a certain key only if that key does not already have a value. The code looks something like this:</p>
+<p class="programs">spam = {'name': 'Pooka', 'age': 5}<br class="calibre5" />
+if 'color' not in spam:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;spam['color'] = 'black'</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1041"></span>The <span class="literal">setdefault()</span> method offers a way to do this in one line of code. The first argument passed to the method is the key to check for, and the second argument is the value to set at that key if the key does not exist. If the key does exist, the <span class="literal">setdefault()</span> method returns the key’s value. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">spam = {'name': 'Pooka', 'age': 5}</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spam.setdefault('color', 'black')</span><br class="calibre5" />
+'black'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spam</span><br class="calibre5" />
+{'color': 'black', 'age': 5, 'name': 'Pooka'}<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spam.setdefault('color', 'white')</span><br class="calibre5" />
+'black'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">spam</span><br class="calibre5" />
+{'color': 'black', 'age': 5, 'name': 'Pooka'}</p>
+<p class="indent">The first time <span class="literal">setdefault()</span> is called, the dictionary in <span class="literal">spam</span> changes to <span class="literal">{'color': 'black', 'age': 5, 'name': 'Pooka'}</span>. The method returns the value <span class="literal">'black'</span> because this is now the value set for the key <span class="literal">'color'</span>. When <span class="literal">spam.setdefault('color', 'white')</span> is called next, the value for that key is <em class="calibre7">not</em> changed to <span class="literal">'white'</span>, because <span class="literal">spam</span> already has a key named <span class="literal">'color'</span>.</p>
+<p class="indent">The <span class="literal">setdefault()</span> method is a nice shortcut to ensure that a key exists. Here is a short program that counts the number of occurrences of each letter in a string. Open the file editor window and enter the following code, saving it as <em class="calibre7">characterCount.py</em>:</p>
+<p class="programs">message = 'It was a bright cold day in April, and the clocks were striking<br class="calibre5" />
+thirteen.'<br class="calibre5" />
+count = {}<br class="calibre5" /><br class="calibre5" />
+for character in message:<br class="calibre5" />
+<span class="ent">➊</span> count.setdefault(character, 0)<br class="calibre5" />
+<span class="ent">➋</span> count[character] = count[character] + 1<br class="calibre5" /><br class="calibre5" />
+print(count)&nbsp;&nbsp;&nbsp;&nbsp;</p>
+<p class="indent">You can view the execution of this program at <em class="calibre7"><a href="https://autbor.com/setdefault" class="calibre6">https://autbor.com/setdefault</a></em>. The program loops over each character in the <span class="literal">message</span> variable’s string, counting how often each character appears. The <span class="literal">setdefault()</span> method call <span class="ent">➊</span> ensures that the key is in the <span class="literal">count</span> dictionary (with a default value of <span class="literal">0</span>) so the program doesn’t throw a <span class="literal">KeyError</span> error when <span class="literal">count[character] = count[character] + 1</span> is executed <span class="ent">➋</span>. When you run this program, the output will look like this:</p>
+<p class="programs">{' ': 13, ',': 1, '.': 1, 'A': 1, 'I': 1, 'a': 4, 'c': 3, 'b': 1, 'e': 5, 'd': 3, 'g': 2,<br class="calibre5" />
+'i': 6, 'h': 3, 'k': 2, 'l': 3, 'o': 2, 'n': 4, 'p': 1, 's': 3, 'r': 5, 't': 6, 'w': 2, 'y': 1}</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1050"></span>From the output, you can see that the lowercase letter <em class="calibre7">c</em> appears 3 times, the space character appears 13 times, and the uppercase letter <em class="calibre7">A</em> appears 1 time. This program will work no matter what string is inside the <span class="literal">message</span> variable, even if the string is millions of characters long!</p>
+<h3 class="h1" id="calibre_link-197"><strong class="calibre2">Pretty Printing</strong></h3>
+<p class="noindent">If you import the <span class="literal">pprint</span> module into your programs, you’ll have access to the <span class="literal">pprint()</span> and <span class="literal">pformat()</span> functions that will “pretty print” a dictionary’s values. This is helpful when you want a cleaner display of the items in a dictionary than what <span class="literal">print()</span> provides. Modify the previous <em class="calibre7">characterCount.py</em> program and save it as <em class="calibre7">prettyCharacterCount.py</em>.</p>
+<p class="programs"><span class="codestrong1">import pprint</span><br class="calibre5" />
+message = 'It was a bright cold day in April, and the clocks were striking<br class="calibre5" />
+thirteen.'<br class="calibre5" />
+count = {}<br class="calibre5" /><br class="calibre5" />
+for character in message:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;count.setdefault(character, 0)<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;count[character] = count[character] + 1<br class="calibre5" /><br class="calibre5" />
+<span class="codestrong1">pprint.pprint</span>(count)</p>
+<p class="indent">You can view the execution of this program at <em class="calibre7"><a href="https://autbor.com/pprint/" class="calibre6">https://autbor.com/pprint/</a></em>. This time, when the program is run, the output looks much cleaner, with the keys sorted.</p>
+<p class="programs">{' ': 13,<br class="calibre5" />
+&nbsp;',': 1,<br class="calibre5" />
+&nbsp;'.': 1,<br class="calibre5" />
+&nbsp;'A': 1,<br class="calibre5" />
+&nbsp;'I': 1,<br class="calibre5" />
+&nbsp;<span class="codeitalic1">--snip--</span><br class="calibre5" />
+&nbsp;'t': 6,<br class="calibre5" />
+&nbsp;'w': 2,<br class="calibre5" />
+&nbsp;'y': 1}</p>
+<p class="indent">The <span class="literal">pprint.pprint()</span> function is especially helpful when the dictionary itself contains nested lists or dictionaries.</p>
+<p class="indent">If you want to obtain the prettified text as a string value instead of displaying it on the screen, call <span class="literal">pprint.pformat()</span> instead. These two lines are equivalent to each other:</p>
+<p class="programs">pprint.pprint(someDictionaryValue)<br class="calibre5" />
+print(pprint.pformat(someDictionaryValue))</p>
+<h3 class="h1" id="calibre_link-198"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-788" class="calibre1"></span><strong class="calibre2">Using Data Structures to Model Real-World Things</strong></h3>
+<p class="noindent">Even before the internet, it was possible to play a game of chess with someone on the other side of the world. Each player would set up a chessboard at their home and then take turns mailing a postcard to each other describing each move. To do this, the players needed a way to unambiguously describe the state of the board and their moves.</p>
+<p class="indent">In <em class="calibre7">algebraic chess notation</em>, the spaces on the chessboard are identified by a number and letter coordinate, as in <a href="#calibre_link-1128" class="calibre6">Figure 5-1</a>.</p>
+<div class="image1"><a id="calibre_link-1128" class="calibre6"></a><img src="../images/000006.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 5-1: The coordinates of a chessboard in algebraic chess notation</em></p>
+<p class="indent">The chess pieces are identified by letters: <em class="calibre7">K</em> for king, <em class="calibre7">Q</em> for queen, <em class="calibre7">R</em> for rook, <em class="calibre7">B</em> for bishop, and <em class="calibre7">N</em> for knight. Describing a move uses the letter of the piece and the coordinates of its destination. A pair of these moves describes what happens in a single turn (with white going first); for instance, the notation <em class="calibre7">2. Nf3 Nc6</em> indicates that white moved a knight to f3 and black moved a knight to c6 on the second turn of the game.</p>
+<p class="indent">There’s a bit more to algebraic notation than this, but the point is that you can unambiguously describe a game of chess without needing to be in front of a chessboard. Your opponent can even be on the other side of the world! In fact, you don’t even need a physical chess set if you have a good memory: you can just read the mailed chess moves and update boards you have in your imagination.</p>
+<p class="indent">Computers have good memories. A program on a modern computer can easily store billions of strings like <span class="literal">'2. Nf3 Nc6'</span>. This is how computers can play chess without having a physical chessboard. They model data to represent a chessboard, and you can write code to work with this model.</p>
+<p class="indent">This is where lists and dictionaries can come in. For example, the dictionary <span class="literal">{'1h': 'bking', '6c': 'wqueen', '2g': 'bbishop', '5h': 'bqueen', '3e': 'wking'}</span> could represent the chess board in <a href="#calibre_link-1129" class="calibre6">Figure 5-2</a>.</p>
+<div class="image1"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1087"></span><a id="calibre_link-1129" class="calibre6"></a><img src="../images/000101.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 5-2: A chess board modeled by the dictionary</em> '1h': 'bking', '6c': 'wqueen', '2g': 'bbishop', '5h': 'bqueen', '3e': 'wking'}</p>
+<p class="indent">But for another example, you’ll use a game that’s a little simpler than chess: tic-tac-toe.</p>
+<h4 class="h2" id="calibre_link-199"><strong class="calibre2"><em class="calibre9">A Tic-Tac-Toe Board</em></strong></h4>
+<p class="noindent">A tic-tac-toe board looks like a large hash symbol (#) with nine slots that can each contain an <em class="calibre7">X</em>, an <em class="calibre7">O</em>, or a blank. To represent the board with a dictionary, you can assign each slot a string-value key, as shown in <a href="#calibre_link-1130" class="calibre6">Figure 5-3</a>.</p>
+<div class="image1"><a id="calibre_link-1130" class="calibre6"></a><img src="../images/000048.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 5-3: The slots of a tic-tac-toe board with their corresponding keys</em></p>
+<p class="indent">You can use string values to represent what’s in each slot on the board: <span class="literal">'X'</span>, <span class="literal">'O'</span>, or <span class="literal">' '</span> (a space). Thus, you’ll need to store nine strings. You can use a dictionary of values for this. The string value with the key <span class="literal">'top-R'</span> can represent the top-right corner, the string value with the key <span class="literal">'low-L'</span> can represent the bottom-left corner, the string value with the key <span class="literal">'mid-M'</span> can represent the middle, and so on.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1743"></span>This dictionary is a data structure that represents a tic-tac-toe board. Store this board-as-a-dictionary in a variable named <span class="literal">theBoard</span>. Open a new file editor window, and enter the following source code, saving it as <em class="calibre7">ticTacToe.py</em>:</p>
+<p class="programs">theBoard = {'top-L': ' ', 'top-M': ' ', 'top-R': ' ',<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'mid-L': ' ', 'mid-M': ' ', 'mid-R': ' ',<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'low-L': ' ', 'low-M': ' ', 'low-R': ' '}</p>
+<p class="indent">The data structure stored in the <span class="literal">theBoard</span> variable represents the tic-tac-toe board in <a href="#calibre_link-1131" class="calibre6">Figure 5-4</a>.</p>
+<div class="image1"><a id="calibre_link-1131" class="calibre6"></a><img src="../images/000141.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 5-4: An empty tic-tac-toe board</em></p>
+<p class="indent">Since the value for every key in <span class="literal">theBoard</span> is a single-space string, this dictionary represents a completely clear board. If player X went first and chose the middle space, you could represent that board with this dictionary:</p>
+<p class="programs">theBoard = {'top-L': ' ', 'top-M': ' ', 'top-R': ' ',<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'mid-L': ' ', 'mid-M': 'X', 'mid-R': ' ',<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'low-L': ' ', 'low-M': ' ', 'low-R': ' '}</p>
+<p class="indent">The data structure in <span class="literal">theBoard</span> now represents the tic-tac-toe board in <a href="#calibre_link-1132" class="calibre6">Figure 5-5</a>.</p>
+<div class="image1"><a id="calibre_link-1132" class="calibre6"></a><img src="../images/000084.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 5-5: The first move</em></p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1744"></span>A board where player O has won by placing <em class="calibre7">O</em>s across the top might look like this:</p>
+<p class="programs">theBoard = {'top-L': 'O', 'top-M': 'O', 'top-R': 'O',<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'mid-L': 'X', 'mid-M': 'X', 'mid-R': ' ',<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'low-L': ' ', 'low-M': ' ', 'low-R': 'X'}</p>
+<p class="indent">The data structure in <span class="literal">theBoard</span> now represents the tic-tac-toe board in <a href="#calibre_link-1133" class="calibre6">Figure 5-6</a>.</p>
+<div class="image1"><a id="calibre_link-1133" class="calibre6"></a><img src="../images/000020.jpg" alt="image" class="calibre3" /></div>
+<p class="figcap"><em class="calibre7">Figure 5-6: Player O wins.</em></p>
+<p class="indent">Of course, the player sees only what is printed to the screen, not the contents of variables. Let’s create a function to print the board dictionary onto the screen. Make the following addition to <em class="calibre7">ticTacToe.py</em> (new code is in bold):</p>
+<p class="programs">theBoard = {'top-L': ' ', 'top-M': ' ', 'top-R': ' ',<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'mid-L': ' ', 'mid-M': ' ', 'mid-R': ' ',<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'low-L': ' ', 'low-M': ' ', 'low-R': ' '}<br class="calibre5" />
+<span class="codestrong1">def printBoard(board):</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;print(board['top-L'] + '|' + board['top-M'] + '|' + board['top-R'])</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;print('-+-+-')</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;print(board['mid-L'] + '|' + board['mid-M'] + '|' + board['mid-R'])</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;print('-+-+-')</span><br class="calibre5" />
+<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;print(board['low-L'] + '|' + board['low-M'] + '|' + board['low-R'])</span><br class="calibre5" />
+<span class="codestrong1">printBoard(theBoard)</span></p>
+<p class="indent">You can view the execution of this program at <em class="calibre7"><a href="https://autbor.com/tictactoe1/" class="calibre6">https://autbor.com/tictactoe1/</a></em>. When you run this program, <span class="literal">printBoard()</span> will print out a blank tic-tac-toe board.</p>
+<p class="programs">&nbsp;| |<br class="calibre5" />
+-+-+-<br class="calibre5" />
+&nbsp;| |<br class="calibre5" />
+-+-+-<br class="calibre5" />
+&nbsp;| |</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1745"></span>The <span class="literal">printBoard()</span> function can handle any tic-tac-toe data structure you pass it. Try changing the code to the following:</p>
+<p class="programs">theBoard = <span class="codestrong1">{'top-L': 'O', 'top-M': 'O', 'top-R': 'O', 'mid-L': 'X', 'mid-M':</span><br class="calibre5" />
+<span class="codestrong1">'X', 'mid-R': ' ', 'low-L': ' ', 'low-M': ' ', 'low-R': 'X'}</span><br class="calibre5" /><br class="calibre5" />
+def printBoard(board):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print(board['top-L'] + '|' + board['top-M'] + '|' + board['top-R'])<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('-+-+-')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print(board['mid-L'] + '|' + board['mid-M'] + '|' + board['mid-R'])<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('-+-+-')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print(board['low-L'] + '|' + board['low-M'] + '|' + board['low-R'])<br class="calibre5" />
+printBoard(theBoard)</p>
+<p class="indent">You can view the execution of this program at <em class="calibre7"><a href="https://autbor.com/tictactoe2/" class="calibre6">https://autbor.com/tictactoe2/</a></em>. Now when you run this program, the new board will be printed to the screen.</p>
+<p class="programs">O|O|O<br class="calibre5" />
+-+-+-<br class="calibre5" />
+X|X|&nbsp;&nbsp;<br class="calibre5" />
+-+-+-<br class="calibre5" />
+&nbsp;| |X</p>
+<p class="indent">Because you created a data structure to represent a tic-tac-toe board and wrote code in <span class="literal">printBoard()</span> to interpret that data structure, you now have a program that “models” the tic-tac-toe board. You could have organized your data structure differently (for example, using keys like <span class="literal">'TOP-LEFT'</span> instead of <span class="literal">'top-L'</span>), but as long as the code works with your data structures, you will have a correctly working program.</p>
+<p class="indent">For example, the <span class="literal">printBoard()</span> function expects the tic-tac-toe data structure to be a dictionary with keys for all nine slots. If the dictionary you passed was missing, say, the <span class="literal">'mid-L'</span> key, your program would no longer work.</p>
+<p class="programs">O|O|O<br class="calibre5" />
+-+-+-<br class="calibre5" />
+Traceback (most recent call last):<br class="calibre5" />
+&nbsp;&nbsp;File "ticTacToe.py", line 10, in &lt;module&gt;<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;printBoard(theBoard)<br class="calibre5" />
+&nbsp;&nbsp;File "ticTacToe.py", line 6, in printBoard<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print(board['mid-L'] + '|' + board['mid-M'] + '|' + board['mid-R'])<br class="calibre5" />
+KeyError: 'mid-L'</p>
+<p class="indent">Now let’s add code that allows the players to enter their moves. Modify the <em class="calibre7">ticTacToe.py</em> program to look like this:</p>
+<p class="programs">theBoard = <span class="codestrong1">{'top-L': ' ', 'top-M': ' ', 'top-R': ' ', 'mid-L': ' ', 'mid-M':</span><br class="calibre5" />
+<span class="codestrong1">' ', 'mid-R': ' ', 'low-L': ' ', 'low-M': ' ', 'low-R': ' '}</span><br class="calibre5" /><br class="calibre5" />
+def printBoard(board):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print(board['top-L'] + '|' + board['top-M'] + '|' + board['top-R'])<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('-+-+-')<br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1746"></span>&nbsp;&nbsp;&nbsp;&nbsp;print(board['mid-L'] + '|' + board['mid-M'] + '|' + board['mid-R'])<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('-+-+-')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print(board['low-L'] + '|' + board['low-M'] + '|' + board['low-R'])<br class="calibre5" />
+<span class="codestrong1">turn = 'X'</span><br class="calibre5" />
+<span class="codestrong1">for i in range(9):</span><br class="calibre5" />
+&nbsp;&nbsp;<span class="ent">➊</span> <span class="codestrong1">printBoard(theBoard)</span><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="codestrong1">print('Turn for ' + turn + '. Move on which space?')</span><br class="calibre5" />
+&nbsp;&nbsp;<span class="ent">➋</span> <span class="codestrong1">move = input()</span><br class="calibre5" />
+&nbsp;&nbsp;<span class="ent">➌</span> <span class="codestrong1">theBoard[move] = turn</span><br class="calibre5" />
+&nbsp;&nbsp;<span class="ent">➍</span> <span class="codestrong1">if turn == 'X':</span><br class="calibre5" />
+&nbsp;<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;turn = 'O'</span><br class="calibre5" />
+&nbsp;<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;else:</span><br class="calibre5" />
+&nbsp;<span class="codestrong1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;turn = 'X'</span><br class="calibre5" />
+&nbsp;printBoard(theBoard)</p>
+<p class="indent">You can view the execution of this program at <em class="calibre7"><a href="https://autbor.com/tictactoe3/" class="calibre6">https://autbor.com/tictactoe3/</a></em>. The new code prints out the board at the start of each new turn <span class="ent">➊</span>, gets the active player’s move <span class="ent">➋</span>, updates the game board accordingly <span class="ent">➌</span>, and then swaps the active player <span class="ent">➍</span> before moving on to the next turn.</p>
+<p class="indent">When you run this program, it will look something like this:</p>
+<p class="programs">&nbsp;| |<br class="calibre5" />
+-+-+-<br class="calibre5" />
+&nbsp;| |<br class="calibre5" />
+-+-+-<br class="calibre5" />
+&nbsp;| |<br class="calibre5" />
+Turn for X. Move on which space?<br class="calibre5" />
+<span class="codestrong1">mid-M</span><br class="calibre5" />
+&nbsp;| |<br class="calibre5" />
+-+-+-<br class="calibre5" />
+&nbsp;|X|&nbsp;&nbsp;<br class="calibre5" />
+-+-+-<br class="calibre5" />
+&nbsp;| |<br class="calibre5" /><br class="calibre5" />
+<span class="codeitalic1">--snip--</span><br class="calibre5" /><br class="calibre5" />
+O|O|X<br class="calibre5" />
+-+-+-<br class="calibre5" />
+X|X|O<br class="calibre5" />
+-+-+-<br class="calibre5" />
+O| |X<br class="calibre5" />
+Turn for X. Move on which space?<br class="calibre5" />
+<span class="codestrong1">low-M</span><br class="calibre5" />
+O|O|X<br class="calibre5" />
+-+-+-<br class="calibre5" />
+X|X|O<br class="calibre5" />
+-+-+-<br class="calibre5" />
+O|X|X</p>
+<p class="indent">This isn’t a complete tic-tac-toe game&mdash;for instance, it doesn’t ever check whether a player has won&mdash;but it’s enough to see how data structures can be used in programs.</p>
+<div class="note">
+<p class="notet"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-911" class="calibre1"></span><strong class="calibre2"><span class="notes">NOTE</span></strong></p>
+<p class="notep"><em class="calibre7">If you are curious, the source code for a complete tic-tac-toe program is described in the resources available from</em> <a href="https://nostarch.com/automatestuff2/" class="calibre6">https://nostarch.com/automatestuff2/</a>.</p>
+</div>
+<h4 class="h2" id="calibre_link-200"><strong class="calibre2"><em class="calibre9">Nested Dictionaries and Lists</em></strong></h4>
+<p class="noindent">Modeling a tic-tac-toe board was fairly simple: the board needed only a single dictionary value with nine key-value pairs. As you model more complicated things, you may find you need dictionaries and lists that contain other dictionaries and lists. Lists are useful to contain an ordered series of values, and dictionaries are useful for associating keys with values. For example, here’s a program that uses a dictionary that contains other dictionaries of what items guests are bringing to a picnic. The <span class="literal">totalBrought()</span> function can read this data structure and calculate the total number of an item being brought by all the guests.</p>
+<p class="programs">allGuests = {'Alice': {'apples': 5, 'pretzels': 12},<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Bob': {'ham sandwiches': 3, 'apples': 2},<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Carol': {'cups': 3, 'apple pies': 1}}<br class="calibre5" />
+<br class="calibre5" />
+def totalBrought(guests, item):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;numBrought = 0<br class="calibre5" />
+&nbsp;&nbsp;<span class="ent">➊</span> for k, v in guests.items():<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ent">➋</span> numBrought = numBrought + v.get(item, 0)<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return numBrought<br class="calibre5" /><br class="calibre5" />
+print('Number of things being brought:')<br class="calibre5" />
+print(' - Apples&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + str(totalBrought(allGuests, 'apples')))<br class="calibre5" />
+print(' - Cups&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + str(totalBrought(allGuests, 'cups')))<br class="calibre5" />
+print(' - Cakes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + str(totalBrought(allGuests, 'cakes')))<br class="calibre5" />
+print(' - Ham Sandwiches ' + str(totalBrought(allGuests, 'ham sandwiches')))<br class="calibre5" />
+print(' - Apple Pies&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + str(totalBrought(allGuests, 'apple pies')))</p>
+<p class="indent">You can view the execution of this program at <em class="calibre7"><a href="https://autbor.com/guestpicnic/" class="calibre6">https://autbor.com/guestpicnic/</a></em>. Inside the <span class="literal">totalBrought()</span> function, the <span class="literal">for</span> loop iterates over the key-value pairs in <span class="literal">guests</span> <span class="ent">➊</span>. Inside the loop, the string of the guest’s name is assigned to <span class="literal">k</span>, and the dictionary of picnic items they’re bringing is assigned to <span class="literal">v</span>. If the item parameter exists as a key in this dictionary, its value (the quantity) is added to <span class="literal">numBrought</span> <span class="ent">➋</span>. If it does not exist as a key, the <span class="literal">get()</span> method returns <span class="literal">0</span> to be added to <span class="literal">numBrought</span>.</p>
+<p class="indent">The output of this program looks like this:</p>
+<p class="programs">&nbsp;Number of things being brought:<br class="calibre5" />
+&nbsp;- Apples 7<br class="calibre5" />
+&nbsp;- Cups 3<br class="calibre5" />
+&nbsp;- Cakes 0<br class="calibre5" />
+&nbsp;- Ham Sandwiches 3<br class="calibre5" />
+&nbsp;- Apple Pies 1</p>
+<p class="indent">This may seem like such a simple thing to model that you wouldn’t need to bother with writing a program to do it. But realize that this same <span class="literal">totalBrought()</span> function could easily handle a dictionary that contains <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1747"></span>thousands of guests, each bringing <em class="calibre7">thousands</em> of different picnic items. Then having this information in a data structure along with the <span class="literal">totalBrought()</span> function would save you a lot of time!</p>
+<p class="indent">You can model things with data structures in whatever way you like, as long as the rest of the code in your program can work with the data model correctly. When you first begin programming, don’t worry so much about the “right” way to model data. As you gain more experience, you may come up with more efficient models, but the important thing is that the data model works for your program’s needs.</p>
+<h3 class="h1" id="calibre_link-201"><strong class="calibre2">Summary</strong></h3>
+<p class="noindent">You learned all about dictionaries in this chapter. Lists and dictionaries are values that can contain multiple values, including other lists and dictionaries. Dictionaries are useful because you can map one item (the key) to another (the value), as opposed to lists, which simply contain a series of values in order. Values inside a dictionary are accessed using square brackets just as with lists. Instead of an integer index, dictionaries can have keys of a variety of data types: integers, floats, strings, or tuples. By organizing a program’s values into data structures, you can create representations of real-world objects. You saw an example of this with a tic-tac-toe board.</p>
+<h3 class="h1" id="calibre_link-202"><strong class="calibre2">Practice Questions</strong></h3>
+<p class="question"><a id="calibre_link-1305" href="#calibre_link-1134" class="calibre6">1</a>. What does the code for an empty dictionary look like?</p>
+<p class="question"><a id="calibre_link-1306" href="#calibre_link-1135" class="calibre6">2</a>. What does a dictionary value with a key <span class="literal">'foo'</span> and a value <span class="literal">42</span> look like?</p>
+<p class="question"><a id="calibre_link-1307" href="#calibre_link-1136" class="calibre6">3</a>. What is the main difference between a dictionary and a list?</p>
+<p class="question"><a id="calibre_link-1308" href="#calibre_link-1137" class="calibre6">4</a>. What happens if you try to access <span class="literal">spam['foo']</span> if <span class="literal">spam</span> is <span class="literal">{'bar': 100}</span>?</p>
+<p class="question"><a id="calibre_link-1309" href="#calibre_link-1138" class="calibre6">5</a>. If a dictionary is stored in <span class="literal">spam</span>, what is the difference between the expressions <span class="literal">'cat' in spam</span> and <span class="literal">'cat' in spam.keys()</span>?</p>
+<p class="question"><a id="calibre_link-1310" href="#calibre_link-1139" class="calibre6">6</a>. If a dictionary is stored in <span class="literal">spam</span>, what is the difference between the expressions <span class="literal">'cat' in spam</span> and <span class="literal">'cat' in spam.values()</span>?</p>
+<p class="question"><a id="calibre_link-1311" href="#calibre_link-1140" class="calibre6">7</a>. What is a shortcut for the following code?</p>
+<p class="programs1">if 'color' not in spam:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;spam['color'] = 'black'</p>
+<p class="question"><a id="calibre_link-1312" href="#calibre_link-1141" class="calibre6">8</a>. What module and function can be used to “pretty print” dictionary values?</p>
+<h3 class="h1" id="calibre_link-203"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1748" class="calibre1"></span><strong class="calibre2">Practice Projects</strong></h3>
+<p class="noindent">For practice, write programs to do the following tasks.</p>
+<h4 class="h2" id="calibre_link-204"><strong class="calibre2"><em class="calibre9">Chess Dictionary Validator</em></strong></h4>
+<p class="noindent">In this chapter, we used the dictionary value <span class="literal">{'1h': 'bking', '6c': 'wqueen', '2g': 'bbishop', '5h': 'bqueen', '3e': 'wking'}</span> to represent a chess board. Write a function named <span class="literal">isValidChessBoard()</span> that takes a dictionary argument and returns <span class="literal">True</span> or <span class="literal">False</span> depending on if the board is valid.</p>
+<p class="indent">A valid board will have exactly one black king and exactly one white king. Each player can only have at most 16 pieces, at most 8 pawns, and all pieces must be on a valid space from <span class="literal">'1a'</span> to <span class="literal">'8h';</span> that is, a piece can’t be on space <span class="literal">'9z'</span>. The piece names begin with either a <span class="literal">'w'</span> or <span class="literal">'b'</span> to represent white or black, followed by <span class="literal">'pawn'</span>, <span class="literal">'knight'</span>, <span class="literal">'bishop'</span>, <span class="literal">'rook'</span>, <span class="literal">'queen'</span>, or <span class="literal">'king'</span>. This function should detect when a bug has resulted in an improper chess board.</p>
+<h4 class="h2" id="calibre_link-205"><strong class="calibre2"><em class="calibre9">Fantasy Game Inventory</em></strong></h4>
+<p class="noindent">You are creating a fantasy video game. The data structure to model the player’s inventory will be a dictionary where the keys are string values describing the item in the inventory and the value is an integer value detailing how many of that item the player has. For example, the dictionary value <span class="literal">{'rope': 1, 'torch': 6, 'gold coin': 42, 'dagger': 1, 'arrow': 12}</span> means the player has 1 rope, 6 torches, 42 gold coins, and so on.</p>
+<p class="indent">Write a function named <span class="literal">displayInventory()</span> that would take any possible “inventory” and display it like the following:</p>
+<p class="programs">Inventory:<br class="calibre5" />
+12 arrow<br class="calibre5" />
+42 gold coin<br class="calibre5" />
+1 rope<br class="calibre5" />
+6 torch<br class="calibre5" />
+1 dagger<br class="calibre5" />
+Total number of items: 62</p>
+<p class="indent">Hint: You can use a <span class="literal">for</span> loop to loop through all the keys in a dictionary.</p>
+<p class="programs"># inventory.py<br class="calibre5" />
+stuff = {'rope': 1, 'torch': 6, 'gold coin': 42, 'dagger': 1, 'arrow': 12}<br class="calibre5" /><br class="calibre5" />
+def displayInventory(inventory):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print("Inventory:")<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;item_total = 0<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;for k, v in inventory.items():<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# FILL THIS PART IN<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print("Total number of items: " + str(item_total))<br class="calibre5" /><br class="calibre5" />
+displayInventory(stuff)</p>
+<h4 class="h2" id="calibre_link-206"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1749" class="calibre1"></span><strong class="calibre2"><em class="calibre9">List to Dictionary Function for Fantasy Game Inventory</em></strong></h4>
+<p class="noindent">Imagine that a vanquished dragon’s loot is represented as a list of strings like this:</p>
+<p class="programs">dragonLoot = ['gold coin', 'dagger', 'gold coin', 'gold coin', 'ruby']</p>
+<p class="indent">Write a function named <span class="literal">addToInventory(inventory, addedItems)</span>, where the <span class="literal">inventory</span> parameter is a dictionary representing the player’s inventory (like in the previous project) and the <span class="literal">addedItems</span> parameter is a list like <span class="literal">dragonLoot</span>. The <span class="literal">addToInventory()</span> function should return a dictionary that represents the updated inventory. Note that the <span class="literal">addedItems</span> list can contain multiples of the same item. Your code could look something like this:</p>
+<p class="programs">def addToInventory(inventory, addedItems):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;# your code goes here<br class="calibre5" /><br class="calibre5" />
+inv = {'gold coin': 42, 'rope': 1}<br class="calibre5" />
+dragonLoot = ['gold coin', 'dagger', 'gold coin', 'gold coin', 'ruby']<br class="calibre5" />
+inv = addToInventory(inv, dragonLoot)<br class="calibre5" />
+displayInventory(inv)</p>
+<p class="indent">The previous program (with your <span class="literal">displayInventory()</span> function from the previous project) would output the following:</p>
+<p class="programs">Inventory:<br class="calibre5" />
+45 gold coin<br class="calibre5" />
+1 rope<br class="calibre5" />
+1 ruby<br class="calibre5" />
+1 dagger<br class="calibre5" /><br class="calibre5" />
+Total number of items: 48</p>
+</div>
+
+
+<div><center><a href="../chapter4"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="../chapter6"><img src="/images/next.png" /></a></center></div>
+
+{% endblock %}

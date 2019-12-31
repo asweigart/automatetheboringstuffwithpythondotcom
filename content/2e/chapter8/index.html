@@ -1,0 +1,329 @@
+{% extends "secondeditionbase.html" %}
+{% set title = 'Automate the Boring Stuff with Python' %}
+{% block content %}
+
+<div><center><a href="../chapter7"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="../chapter9"><img src="/images/next.png" /></a></center></div>
+
+<div class="calibre" id="calibre_link-1097">
+<h2 class="h2b" id="calibre_link-47"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1015" class="calibre1"></span><strong class="calibre2"><span class="big">8</span><br class="calibre12" />INPUT VALIDATION</strong></h2>
+<div class="image"><img src="../images/000031.jpg" alt="Image" class="calibre3" /></div>
+<p class="noindent"><em class="calibre7">Input validation</em> code checks that values entered by the user, such as text from the <span class="literal">input()</span> function, are formatted correctly. For example, if you want users to enter their ages, your code shouldn’t accept nonsensical answers such as negative numbers (which are outside the range of acceptable integers) or words (which are the wrong data type). Input validation can also prevent bugs or security vulnerabilities. If you implement a <span class="literal">withdrawFromAccount()</span> function that takes an argument for the amount to subtract from an account, you need to ensure the amount is a positive number. If the <span class="literal">withdrawFromAccount()</span> function subtracts a negative number from the account, the “withdrawal” will end up adding money!</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1072"></span>Typically, we perform input validation by repeatedly asking the user for input until they enter valid text, as in the following example:</p>
+<p class="programs">while True:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;print('Enter your age:')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;age = input()<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;try:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;age = int(age)<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;except:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('Please use numeric digits.')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;if age &lt; 1:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('Please enter a positive number.')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;break<br class="calibre5" /><br class="calibre5" />
+print(f'Your age is {age}.')</p>
+<p class="indent">When you run this program, the output could look like this:</p>
+<p class="programs">Enter your age:<br class="calibre5" />
+<span class="codestrong1">five</span><br class="calibre5" />
+Please use numeric digits.<br class="calibre5" />
+Enter your age:<br class="calibre5" />
+<span class="codestrong1">-2</span><br class="calibre5" />
+Please enter a positive number.<br class="calibre5" />
+Enter your age:<br class="calibre5" />
+<span class="codestrong1">30</span><br class="calibre5" />
+Your age is 30.</p>
+<p class="indent">When you run this code, you’ll be prompted for your age until you enter a valid one. This ensures that by the time the execution leaves the <span class="literal">while</span> loop, the <span class="literal">age</span> variable will contain a valid value that won’t crash the program later on.</p>
+<p class="indent">However, writing input validation code for every <span class="literal">input()</span> call in your program quickly becomes tedious. Also, you may miss certain cases and allow invalid input to pass through your checks. In this chapter, you’ll learn how to use the third-party PyInputPlus module for input validation.</p>
+<h3 class="h1" id="calibre_link-277"><strong class="calibre2">The PyInputPlus Module</strong></h3>
+<p class="noindent">PyInputPlus contains functions similar to <span class="literal">input()</span> for several kinds of data: numbers, dates, email addresses, and more. If the user ever enters invalid input, such as a badly formatted date or a number that is outside of an intended range, PyInputPlus will reprompt them for input just like our code in the previous section did. PyInputPlus also has other useful features like a limit for the number of times it reprompts users and a timeout if users are required to respond within a time limit.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1011"></span>PyInputPlus is not a part of the Python Standard Library, so you must install it separately using Pip. To install PyInputPlus, run <span class="literal">pip install --user pyinputplus</span> from the command line. <a href="#calibre_link-2" class="calibre6">Appendix A</a> has complete instructions for installing third-party modules. To check if PyInputPlus installed correctly, import it in the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import pyinputplus</span></p>
+<p class="indent">If no errors appear when you import the module, it has been successfully installed.</p>
+<p class="indentb">PyInputPlus has several functions for different kinds of input:</p>
+<p class="hang"><span class="codestrong">inputStr()</span> Is like the built-in <span class="literal">input()</span> function but has the general PyInputPlus features. You can also pass a custom validation function to it</p>
+<p class="hang"><span class="codestrong">inputNum()</span> Ensures the user enters a number and returns an int or float, depending on if the number has a decimal point in it</p>
+<p class="hang"><span class="codestrong">inputChoice()</span> Ensures the user enters one of the provided choices</p>
+<p class="hang"><span class="codestrong">inputMenu()</span> Is similar to <span class="literal">inputChoice()</span>, but provides a menu with numbered or lettered options</p>
+<p class="hang"><span class="codestrong">inputDatetime()</span> Ensures the user enters a date and time</p>
+<p class="hang"><span class="codestrong">inputYesNo()</span> Ensures the user enters a “yes” or “no” response</p>
+<p class="hang"><span class="codestrong">inputBool()</span> Is similar to <span class="literal">inputYesNo()</span>, but takes a “True” or “False” response and returns a Boolean value</p>
+<p class="hang"><span class="codestrong">inputEmail()</span> Ensures the user enters a valid email address</p>
+<p class="hang"><span class="codestrong">inputFilepath()</span> Ensures the user enters a valid file path and filename, and can optionally check that a file with that name exists</p>
+<p class="hang"><span class="codestrong">inputPassword()</span> Is like the built-in <span class="literal">input()</span>, but displays * characters as the user types so that passwords, or other sensitive information, aren’t displayed on the screen</p>
+<p class="indentt">These functions will automatically reprompt the user for as long as they enter invalid input:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import pyinputplus as pyip</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">response = pyip.inputNum()</span><br class="calibre5" />
+<span class="codestrong1">five</span><br class="calibre5" />
+'five' is not a number.<br class="calibre5" />
+<span class="codestrong1">42</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">response</span><br class="calibre5" />
+42</p>
+<p class="indent">The <span class="literal">as pyip</span> code in the <span class="literal">import</span> statement saves us from typing <span class="literal">pyinputplus</span> each time we want to call a PyInputPlus function. Instead we can use the shorter <span class="literal">pyip</span> name. If you take a look at the example, you see that unlike <span class="literal">input()</span>, these functions return an <span class="literal">int</span> or <span class="literal">float</span> value: <span class="literal">42</span> and <span class="literal">3.14</span> instead of the strings <span class="literal">'42'</span> and <span class="literal">'3.14'</span>.</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1013"></span>Just as you can pass a string to <span class="literal">input()</span> to provide a prompt, you can pass a string to a PyInputPlus function’s <span class="literal">prompt</span> keyword argument to display a prompt:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">response = input('Enter a number: ')</span><br class="calibre5" />
+Enter a number: <span class="codestrong1">42</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">response</span><br class="calibre5" />
+'42'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">import pyinputplus as pyip</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">response = pyip.inputInt(prompt='Enter a number: ')</span><br class="calibre5" />
+Enter a number: <span class="codestrong1">cat</span><br class="calibre5" />
+'cat' is not an integer.<br class="calibre5" />
+Enter a number: <span class="codestrong1">42</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">response</span><br class="calibre5" />
+42</p>
+<p class="indent">Use Python’s <span class="literal">help()</span> function to find out more about each of these functions. For example, <span class="literal">help(pyip.inputChoice)</span> displays help information for the <span class="literal">inputChoice()</span> function. Complete documentation can be found at <em class="calibre7"><a href="https://pyinputplus.readthedocs.io/" class="calibre6">https://pyinputplus.readthedocs.io/</a></em>.</p>
+<p class="indent">Unlike Python’s built-in <span class="literal">input()</span>, PyInputPlus functions have several additional features for input validation, as shown in the next section.</p>
+<h4 class="h2" id="calibre_link-278"><strong class="calibre2"><em class="calibre9">The min, max, greaterThan, and lessThan Keyword Arguments</em></strong></h4>
+<p class="noindent">The <span class="literal">inputNum()</span>, <span class="literal">inputInt()</span>, and <span class="literal">inputFloat()</span> functions, which accept int and float numbers, also have <span class="literal">min</span>, <span class="literal">max</span>, <span class="literal">greaterThan</span>, and <span class="literal">lessThan</span> keyword arguments for specifying a range of valid values. For example, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import pyinputplus as pyip</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">response = pyip.inputNum('Enter num: ', min=4)</span><br class="calibre5" />
+Enter num:<span class="codestrong1">3</span><br class="calibre5" />
+Input must be at minimum 4.<br class="calibre5" />
+Enter num:<span class="codestrong1">4</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">response</span><br class="calibre5" />
+4<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">response = pyip.inputNum('Enter num: ', greaterThan=4)</span><br class="calibre5" />
+Enter num: <span class="codestrong1">4</span><br class="calibre5" />
+Input must be greater than 4.<br class="calibre5" />
+Enter num: <span class="codestrong1">5</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">response</span><br class="calibre5" />
+5<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">response = pyip.inputNum('&gt;', min=4, lessThan=6)</span><br class="calibre5" />
+Enter num: <span class="codestrong1">6</span><br class="calibre5" />
+Input must be less than 6.<br class="calibre5" />
+Enter num: <span class="codestrong1">3</span><br class="calibre5" />
+Input must be at minimum 4.<br class="calibre5" />
+Enter num: <span class="codestrong1">4</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">response</span><br class="calibre5" />
+4</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1775"></span>These keyword arguments are optional, but if supplied, the input cannot be less than the <span class="literal">min</span> argument or greater than the <span class="literal">max</span> argument (though the input can be equal to them). Also, the input must be greater than the <span class="literal">greaterThan</span> and less than the <span class="literal">lessThan</span> arguments (that is, the input cannot be equal to them).</p>
+<h4 class="h2" id="calibre_link-279"><strong class="calibre2"><em class="calibre9">The blank Keyword Argument</em></strong></h4>
+<p class="noindent">By default, blank input isn’t allowed unless the <span class="literal">blank</span> keyword argument is set to <span class="literal">True</span>:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import pyinputplus as pyip</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">response = pyip.inputNum('Enter num: ')</span><br class="calibre5" />
+Enter num:<span class="codeitalic1">(blank input entered here)</span><br class="calibre5" />
+Blank values are not allowed.<br class="calibre5" />
+Enter num: <span class="codestrong1">42</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">response</span><br class="calibre5" />
+42<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">response = pyip.inputNum(blank=True)</span><br class="calibre5" />
+<span class="codeitalic1">(blank input entered here)</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">response</span><br class="calibre5" />
+''</p>
+<p class="indent">Use <span class="literal">blank=True</span> if you’d like to make input optional so that the user doesn’t need to enter anything.</p>
+<h4 class="h2" id="calibre_link-280"><strong class="calibre2"><em class="calibre9">The limit, timeout, and default Keyword Arguments</em></strong></h4>
+<p class="noindent">By default, the PyInputPlus functions will continue to ask the user for valid input forever (or for as long as the program runs). If you’d like a function to stop asking the user for input after a certain number of tries or a certain amount of time, you can use the <span class="literal">limit</span> and <span class="literal">timeout</span> keyword arguments. Pass an integer for the <span class="literal">limit</span> keyword argument to determine how many attempts a PyInputPlus function will make to receive valid input before giving up, and pass an integer for the <span class="literal">timeout</span> keyword argument to determine how many seconds the user has to enter valid input before the PyInputPlus function gives up.</p>
+<p class="indent">If the user fails to enter valid input, these keyword arguments will cause the function to raise a <span class="literal">RetryLimitException</span> or <span class="literal">TimeoutException</span>, respectively. For example, enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import pyinputplus as pyip</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">response = pyip.inputNum(limit=2)</span><br class="calibre5" />
+<span class="codestrong1">blah</span><br class="calibre5" />
+'blah' is not a number.<br class="calibre5" />
+Enter num: <span class="codestrong1">number</span><br class="calibre5" />
+'number' is not a number.<br class="calibre5" />
+Traceback (most recent call last):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="codeitalic1">--snip--</span><br class="calibre5" />
+pyinputplus.RetryLimitException<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">response = pyip.inputNum(timeout=10)</span><br class="calibre5" />
+<span class="codestrong1">42</span> <span class="codeitalic1">(entered after 10 seconds of waiting)</span><br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1776"></span>Traceback (most recent call last):<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="codeitalic1">--snip--</span><br class="calibre5" />
+pyinputplus.TimeoutException</p>
+<p class="indent">When you use these keyword arguments and also pass a <span class="literal">default</span> keyword argument, the function returns the default value instead of raising an exception. Enter the following into the interactive shell:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">response = pyip.inputNum(limit=2, default='N/A')</span><br class="calibre5" />
+<span class="codestrong1">hello</span><br class="calibre5" />
+'hello' is not a number.<br class="calibre5" />
+<span class="codestrong1">world</span><br class="calibre5" />
+'world' is not a number.<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">response</span><br class="calibre5" />
+'N/A'</p>
+<p class="indent">Instead of raising <span class="literal">RetryLimitException</span>, the <span class="literal">inputNum()</span> function simply returns the string <span class="literal">'N/A'</span>.</p>
+<h4 class="h2" id="calibre_link-281"><strong class="calibre2"><em class="calibre9">The allowRegexes and blockRegexes Keyword Arguments</em></strong></h4>
+<p class="noindent">You can also use regular expressions to specify whether an input is allowed or not. The <span class="literal">allowRegexes</span> and <span class="literal">blockRegexes</span> keyword arguments take a list of regular expression strings to determine what the PyInputPlus function will accept or reject as valid input. For example, enter the following code into the interactive shell so that <span class="literal">inputNum()</span> will accept Roman numerals in addition to the usual numbers:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import pyinputplus as pyip</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">response = pyip.inputNum(allowRegexes=[r'(I|V|X|L|C|D|M)+', r'zero'])</span><br class="calibre5" />
+<span class="codestrong1">XLII</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">response</span><br class="calibre5" />
+'XLII'<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">response = pyip.inputNum(allowRegexes=[r'(i|v|x|l|c|d|m)+', r'zero'])</span><br class="calibre5" />
+<span class="codestrong1">xlii</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">response</span><br class="calibre5" />
+'xlii'</p>
+<p class="indent">Of course, this regex affects only what letters the <span class="literal">inputNum()</span> function will accept from the user; the function will still accept Roman numerals with invalid ordering such as <span class="literal">'XVX'</span> or <span class="literal">'MILLI'</span> because the <span class="literal">r'(I|V|X|L|C|D|M)+'</span> regular expression accepts those strings.</p>
+<p class="indent">You can also specify a list of regular expression strings that a PyInputPlus function won’t accept by using the <span class="literal">blockRegexes</span> keyword argument. Enter the following into the interactive shell so that <span class="literal">inputNum()</span> won’t accept even numbers:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import pyinputplus as pyip</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">response = pyip.inputNum(blockRegexes=[r'[02468]$'])</span><br class="calibre5" />
+<span class="codestrong1">42</span><br class="calibre5" />
+This response is invalid.<br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1012"></span><span class="codestrong1">44</span><br class="calibre5" />
+This response is invalid.<br class="calibre5" />
+<span class="codestrong1">43</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">response</span><br class="calibre5" />
+43</p>
+<p class="indent">If you specify both an <span class="literal">allowRegexes</span> and <span class="literal">blockRegexes</span> argument, the allow list overrides the block list. For example, enter the following into the interactive shell, which allows <span class="literal">'caterpillar'</span> and <span class="literal">'category'</span> but blocks anything else that has the word <span class="literal">'cat'</span> in it:</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import pyinputplus as pyip</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">response = pyip.inputStr(allowRegexes=[r'caterpillar', 'category'],</span><br class="calibre5" />
+<span class="codestrong1">blockRegexes=[r'cat'])</span><br class="calibre5" />
+<span class="codestrong1">cat</span><br class="calibre5" />
+This response is invalid.<br class="calibre5" />
+<span class="codestrong1">catastrophe</span><br class="calibre5" />
+This response is invalid.<br class="calibre5" />
+<span class="codestrong1">category</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">response</span><br class="calibre5" />
+'category'</p>
+<p class="indent">The PyInputPlus module’s functions can save you from writing tedious input validation code yourself. But there’s more to the PyInputPlus module than what has been detailed here. You can examine its full documentation online at <em class="calibre7"><a href="https://pyinputplus.readthedocs.io/" class="calibre6">https://pyinputplus.readthedocs.io/</a></em>.</p>
+<h4 class="h2" id="calibre_link-282"><strong class="calibre2"><em class="calibre9">Passing a Custom Validation Function to inputCustom()</em></strong></h4>
+<p class="noindent">You can write a function to perform your own custom validation logic by passing the function to <span class="literal">inputCustom()</span>. For example, say you want the user to enter a series of digits that adds up to 10. There is no <span class="literal">pyinputplus.inputAddsUpToTen()</span> function, but you can create your own function that:</p>
+<ul class="calibre8">
+<li class="noindent1">Accepts a single string argument of what the user entered</li>
+<li class="noindent1">Raises an exception if the string fails validation</li>
+<li class="noindent1">Returns <span class="literal">None</span> (or has no <span class="literal">return</span> statement) if <span class="literal">inputCustom()</span> should return the string unchanged</li>
+<li class="noindent1">Returns a non-<span class="literal">None</span> value if <span class="literal">inputCustom()</span> should return a different string from the one the user entered</li>
+<li class="noindent1">Is passed as the first argument to <span class="literal">inputCustom()</span></li>
+</ul>
+<p class="indent">For example, we can create our own <span class="literal">addsUpToTen()</span> function, and then pass it to <span class="literal">inputCustom()</span>. Note that the function call looks like <span class="literal">inputCustom(addsUpToTen)</span> and not <span class="literal">inputCustom(addsUpToTen())</span> because we are passing the <span class="literal">addsUpToTen()</span> function itself to <span class="literal">inputCustom()</span>, not calling <span class="literal">addsUpToTen()</span> and passing its return value.</p>
+<p class="programs">&gt;&gt;&gt; <span class="codestrong1">import pyinputplus as pyip</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">def addsUpToTen(numbers):</span><br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1001"></span>...&nbsp;&nbsp;&nbsp;<span class="codestrong1">numbersList = list(numbers)</span><br class="calibre5" />
+...&nbsp;&nbsp;&nbsp;<span class="codestrong1">for i, digit in enumerate(numbersList):</span><br class="calibre5" />
+...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="codestrong1">numbersList[i] = int(digit)</span><br class="calibre5" />
+...&nbsp;&nbsp;&nbsp;<span class="codestrong1">if sum(numbersList) != 10:</span><br class="calibre5" />
+...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="codestrong1">raise Exception('The digits must add up to 10, not %s.' %</span><br class="calibre5" />
+<span class="codestrong1">(sum(numbersList)))</span><br class="calibre5" />
+...&nbsp;&nbsp;&nbsp;<span class="codestrong1">return int(numbers)</span> # Return an int form of numbers.<br class="calibre5" />
+...<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">response =</span> <span class="codestrong1">pyip.inputCustom(addsUpToTen)</span> # No parentheses after<br class="calibre5" />
+addsUpToTen here.<br class="calibre5" />
+<span class="codestrong1">123</span><br class="calibre5" />
+The digits must add up to 10, not 6.<br class="calibre5" />
+<span class="codestrong1">1235</span><br class="calibre5" />
+The digits must add up to 10, not 11.<br class="calibre5" />
+<span class="codestrong1">1234</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">response</span> # inputStr() returned an int, not a string.<br class="calibre5" />
+1234<br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">response =</span> <span class="codestrong1">pyip.inputCustom(addsUpToTen)</span><br class="calibre5" />
+<span class="codestrong1">hello</span><br class="calibre5" />
+invalid literal for int() with base 10: 'h'<br class="calibre5" />
+<span class="codestrong1">55</span><br class="calibre5" />
+&gt;&gt;&gt; <span class="codestrong1">response</span></p>
+<p class="indent">The <span class="literal">inputCustom()</span> function also supports the general PyInputPlus features, such as the <span class="literal">blank</span>, <span class="literal">limit</span>, <span class="literal">timeout</span>, <span class="literal">default</span>, <span class="literal">allowRegexes</span>, and <span class="literal">blockRegexes</span> keyword arguments. Writing your own custom validation function is useful when it’s otherwise difficult or impossible to write a regular expression for valid input, as in the “adds up to 10” example.</p>
+<h3 class="h1" id="calibre_link-283"><strong class="calibre2">Project: How to Keep an Idiot Busy for Hours</strong></h3>
+<p class="noindent">Let’s use PyInputPlus to create a simple program that does the following:</p>
+<ol class="calibre10">
+<li class="noindent1">Ask the user if they’d like to know how to keep an idiot busy for hours.</li>
+<li class="noindent1">If the user answers no, quit.</li>
+<li class="noindent1">If the user answers yes, go to Step 1.</li>
+</ol>
+<p class="indent">Of course, we don’t know if the user will enter something besides “yes” or “no,” so we need to perform input validation. It would also be convenient for the user to be able to enter “y” or “n” instead of the full words. PyInputPlus’s <span class="literal">inputYesNo()</span> function will handle this for us and, no matter what case the user enters, return a lowercase <span class="literal">'yes'</span> or <span class="literal">'no'</span> string value.</p>
+<p class="indent">When you run this program, it should look like the following:</p>
+<p class="programs">Want to know how to keep an idiot busy for hours?<br class="calibre5" />
+<span class="codestrong1">sure</span><br class="calibre5" />
+'sure' is not a valid yes/no response.<br class="calibre5" />
+Want to know how to keep an idiot busy for hours?<br class="calibre5" />
+<span class="codestrong1">yes</span><br class="calibre5" />
+Want to know how to keep an idiot busy for hours?<br class="calibre5" />
+<span class="codestrong1">y</span><br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1002"></span>Want to know how to keep an idiot busy for hours?<br class="calibre5" />
+<span class="codestrong1">Yes</span><br class="calibre5" />
+Want to know how to keep an idiot busy for hours?<br class="calibre5" />
+<span class="codestrong1">YES</span><br class="calibre5" />
+Want to know how to keep an idiot busy for hours?<br class="calibre5" />
+<span class="codestrong1">YES!!!!!!</span><br class="calibre5" />
+'YES!!!!!!' is not a valid yes/no response.<br class="calibre5" />
+Want to know how to keep an idiot busy for hours?<br class="calibre5" />
+<span class="codestrong1">TELL ME HOW TO KEEP AN IDIOT BUSY FOR HOURS.</span><br class="calibre5" />
+'TELL ME HOW TO KEEP AN IDIOT BUSY FOR HOURS.' is not a valid yes/no response.<br class="calibre5" />
+Want to know how to keep an idiot busy for hours?<br class="calibre5" />
+<span class="codestrong1">no</span><br class="calibre5" />
+Thank you. Have a nice day.</p>
+<p class="indent">Open a new file editor tab and save it as <em class="calibre7">idiot.py</em>. Then enter the following code:</p>
+<p class="programs"><span class="codestrong1">import pyinputplus as pyip</span></p>
+<p class="indent">This imports the PyInputPlus module. Since <span class="literal">pyinputplus</span> is a bit much to type, we’ll use the name <span class="literal">pyip</span> for short.</p>
+<p class="programs">while True:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;prompt = 'Want to know how to keep an idiot busy for hours?\n'<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;response = pyip.inputYesNo(prompt)</p>
+<p class="indent">Next, <span class="literal">while True:</span> creates an infinite loop that continues to run until it encounters a <span class="literal">break</span> statement. In this loop, we call <span class="literal">pyip.inputYesNo()</span> to ensure that this function call won’t return until the user enters a valid answer.</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;&nbsp;if response == 'no':<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break</p>
+<p class="indent">The <span class="literal">pyip.inputYesNo()</span> call is guaranteed to only return either the string <span class="literal">yes</span> or the string <span class="literal">no</span>. If it returned <span class="literal">no</span>, then our program breaks out of the infinite loop and continues to the last line, which thanks the user:</p>
+<p class="programs">print('Thank you. Have a nice day.')</p>
+<p class="indent">Otherwise, the loop iterates once again.</p>
+<p class="indent">You can also make use of the <span class="literal">inputYesNo()</span> function in non-English languages by passing <span class="literal">yesVal</span> and <span class="literal">noVal</span> keyword arguments. For example, the Spanish version of this program would have these two lines:</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;&nbsp;prompt = '¿Quieres saber cómo mantener ocupado a un idiota durante horas?\n'<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;response = pyip.inputYesNo(prompt, yesVal='sí', noVal='no')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;if response == 'sí':</p>
+<p class="indent">Now the user can enter either <span class="literal">sí</span> or <span class="literal">s</span> (in lower- or uppercase) instead of <span class="literal">yes</span> or <span class="literal">y</span> for an affirmative answer.</p>
+<h3 class="h1" id="calibre_link-284"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1047" class="calibre1"></span><strong class="calibre2">Project: Multiplication Quiz</strong></h3>
+<p class="noindent">PyInputPlus’s features can be useful for creating a timed multiplication quiz. By setting the <span class="literal">allowRegexes</span>, <span class="literal">blockRegexes</span>, <span class="literal">timeout</span>, and <span class="literal">limit</span> keyword argument to <span class="literal">pyip.inputStr()</span>, you can leave most of the implementation to PyInputPlus. The less code you need to write, the faster you can write your programs. Let’s create a program that poses 10 multiplication problems to the user, where the valid input is the problem’s correct answer. Open a new file editor tab and save the file as <em class="calibre7">multiplicationQuiz.py</em>.</p>
+<p class="indent">First, we’ll import <span class="literal">pyinputplus</span>, <span class="literal">random</span>, and <span class="literal">time</span>. We’ll keep track of how many questions the program asks and how many correct answers the user gives with the variables <span class="literal">numberOfQuestions</span> and <span class="literal">correctAnswers</span>. A <span class="literal">for</span> loop will repeatedly pose a random multiplication problem 10 times:</p>
+<p class="programs">import pyinputplus as pyip<br class="calibre5" />
+import random, time<br class="calibre5" /><br class="calibre5" />
+numberOfQuestions = 10<br class="calibre5" />
+correctAnswers = 0<br class="calibre5" />
+for questionNumber in range(numberOfQuestions):</p>
+<p class="indent">Inside the <span class="literal">for</span> loop, the program will pick two single-digit numbers to multiply. We’ll use these numbers to create a <span class="literal">#Q: N × N =</span> prompt for the user, where <span class="literal">Q</span> is the question number (1 to 10) and <span class="literal">N</span> are the two numbers to multiply.</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;&nbsp;# Pick two random numbers:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;num1 = random.randint(0, 9)<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;num2 = random.randint(0, 9)<br class="calibre5" /><br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;prompt = '#%s: %s x %s = ' % (questionNumber, num1, num2)</p>
+<p class="indent">The <span class="literal">pyip.inputStr()</span> function will handle most of the features of this quiz program. The argument we pass for <span class="literal">allowRegexes</span> is a list with the regex string <span class="literal">'^%s$'</span>, where <span class="literal">%s</span> is replaced with the correct answer. The <span class="literal">^</span> and <span class="literal">%</span> characters ensure that the answer begins and ends with the correct number, though PyInputPlus trims any whitespace from the start and end of the user’s response first just in case they inadvertently pressed the spacebar before or after their answer. The argument we pass for <span class="literal">blocklistRegexes</span> is a list with <span class="literal">('.*', 'Incorrect!')</span>. The first string in the tuple is a regex that matches every possible string. Therefore, if the user response doesn’t match the correct answer, the program will reject any other answer they provide. In that case, the <span class="literal">'Incorrect!'</span> string is displayed and the user is prompted to answer again. Additionally, passing <span class="literal">8</span> for <span class="literal">timeout</span> and <span class="literal">3</span> for <span class="literal">limit</span> will ensure that the user only has 8 seconds and 3 tries to provide a correct answer:</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;&nbsp;try:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Right answers are handled by allowRegexes.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Wrong answers are handled by blockRegexes, with a custom message.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pyip.inputStr(prompt, allowRegexes=['^%s$' % (num1 * num2)],<br class="calibre5" />
+<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1048"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;blockRegexes=[('.*', 'Incorrect!')],<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timeout=8, limit=3)</p>
+<p class="indent">If the user answers after the 8-second timeout has expired, even if they answer correctly, <span class="literal">pyip.inputStr()</span> raises a <span class="literal">TimeoutException</span> exception. If the user answers incorrectly more than 3 times, it raises a <span class="literal">RetryLimitException</span> exception. Both of these exception types are in the PyInputPlus module, so <span class="literal">pyip.</span> needs to prepend them:</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;&nbsp;except pyip.TimeoutException:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('Out of time!')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;except pyip.RetryLimitException:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('Out of tries!')</p>
+<p class="indent">Remember that, just like how <span class="literal">else</span> blocks can follow an <span class="literal">if</span> or <span class="literal">elif</span> block, they can optionally follow the last <span class="literal">except</span> block. The code inside the following <span class="literal">else</span> block will run if no exception was raised in the <span class="literal">try</span> block. In our case, that means the code runs if the user entered the correct answer:</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;&nbsp;else:<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# This block runs if no exceptions were raised in the try block.<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('Correct!')<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;correctAnswers += 1</p>
+<p class="indent">No matter which of the three messages, “Out of time!”, “Out of tries!”, or “Correct!”, displays, let’s place a 1-second pause at the end of the <span class="literal">for</span> loop to give the user time to read it. After the program has asked 10 questions and the <span class="literal">for</span> loop continues, let’s show the user how many correct answers they made:</p>
+<p class="programs">&nbsp;&nbsp;&nbsp;&nbsp;time.sleep(1) # Brief pause to let user see the result.<br class="calibre5" />
+print('Score: %s / %s' % (correctAnswers, numberOfQuestions))</p>
+<p class="indent">PyInputPlus is flexible enough that you can use it in a wide variety of programs that take keyboard input from the user, as demonstrated by the programs in this chapter.</p>
+<h3 class="h1" id="calibre_link-285"><strong class="calibre2">Summary</strong></h3>
+<p class="noindent">It’s easy to forget to write input validation code, but without it, your programs will almost certainly have bugs. The values you expect users to enter and the values they actually enter can be completely different, and your programs need to be robust enough to handle these exceptional cases. You can use regular expressions to create your own input validation code, but for common cases, it’s easier to use an existing module, such as PyInputPlus. You can import the module with <span class="literal">import pyinputplus as pyip</span> so that you can enter a shorter name when calling the module’s functions.</p>
+<p class="indent">PyInputPlus has functions for entering a variety of input, including strings, numbers, dates, yes/no, <span class="literal">True</span>/<span class="literal">False</span>, emails, and files. While <span class="literal">input()</span> <span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1777"></span>always returns a string, these functions return the value in an appropriate data type. The <span class="literal">inputChoice()</span> function allow you to select one of several pre-selected options, while <span class="literal">inputMenu()</span> also adds numbers or letters for quick selection.</p>
+<p class="indent">All of these functions have the following standard features: stripping whitespace from the sides, setting timeout and retry limits with the <span class="literal">timeout</span> and <span class="literal">limit</span> keyword arguments, and passing lists of regular expression strings to <span class="literal">allowRegexes</span> or <span class="literal">blockRegexes</span> to include or exclude particular responses. You'll no longer need to write your own tedious while loops that check for valid input and reprompt the user.</p>
+<p class="indent">If none of the PyInputPlus module’s, functions fit your needs, but you’d still like the other features that PyInputPlus provides, you can call <span class="literal">inputCustom()</span> and pass your own custom validation function for PyInputPlus to use. The documentation at <em class="calibre7"><a href="https://pyinputplus.readthedocs.io/en/latest/" class="calibre6">https://pyinputplus.readthedocs.io/en/latest/</a></em> has a complete listing of PyInputPlus’s functions and additional features. There’s far more in the PyInputPlus online documentation than what was described in this chapter. There’s no use in reinventing the wheel, and learning to use this module will save you from having to write and debug code for yourself.</p>
+<p class="indent">Now that you have expertise manipulating and validating text, it’s time to learn how to read from and write to files on your computer’s hard drive.</p>
+<h3 class="h1" id="calibre_link-286"><strong class="calibre2">Practice Questions</strong></h3>
+<p class="question"><a id="calibre_link-1345" href="#calibre_link-1098" class="calibre6">1</a>. Does PyInputPlus come with the Python Standard Library?</p>
+<p class="question"><a id="calibre_link-1346" href="#calibre_link-1099" class="calibre6">2</a>. Why is PyInputPlus commonly imported with <span class="literal">import pyinputplus as pyip</span>?</p>
+<p class="question"><a id="calibre_link-1347" href="#calibre_link-1100" class="calibre6">3</a>. What is the difference between <span class="literal">inputInt()</span> and <span class="literal">inputFloat()</span>?</p>
+<p class="question"><a id="calibre_link-1348" href="#calibre_link-1101" class="calibre6">4</a>. How can you ensure that the user enters a whole number between <span class="literal">0</span> and <span class="literal">99</span> using PyInputPlus?</p>
+<p class="question"><a id="calibre_link-1349" href="#calibre_link-1102" class="calibre6">5</a>. What is passed to the <span class="literal">allowRegexes</span> and <span class="literal">blockRegexes</span> keyword arguments?</p>
+<p class="question"><a id="calibre_link-1350" href="#calibre_link-1103" class="calibre6">6</a>. What does <span class="literal">inputStr(limit=3)</span> do if blank input is entered three times?</p>
+<p class="question"><a id="calibre_link-1351" href="#calibre_link-1104" class="calibre6">7</a>. What does <span class="literal">inputStr(limit=3, default='hello')</span> do if blank input is entered three times?</p>
+<h3 class="h1" id="calibre_link-287"><strong class="calibre2">Practice Projects</strong></h3>
+<p class="noindent">For practice, write programs to do the following tasks.</p>
+<h4 class="h2" id="calibre_link-288"><strong class="calibre2"><em class="calibre9">Sandwich Maker</em></strong></h4>
+<p class="noindent">Write a program that asks users for their sandwich preferences. The program should use PyInputPlus to ensure that they enter valid input, such as:</p>
+<ul class="calibre8">
+<li class="noindent1">Using <span class="literal">inputMenu()</span> for a bread type: wheat, white, or sourdough.</li>
+<li class="noindent1">Using <span class="literal">inputMenu()</span> for a protein type: chicken, turkey, ham, or tofu.</li>
+<li class="noindent1"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1778"></span>Using <span class="literal">inputYesNo()</span> to ask if they want cheese.</li>
+<li class="noindent1">If so, using <span class="literal">inputMenu()</span> to ask for a cheese type: cheddar, Swiss, or mozzarella.</li>
+<li class="noindent1">Using <span class="literal">inputYesNo()</span> to ask if they want mayo, mustard, lettuce, or tomato.</li>
+<li class="noindent1">Using <span class="literal">inputInt()</span> to ask how many sandwiches they want. Make sure this number is 1 or more.</li>
+</ul>
+<p class="indent">Come up with prices for each of these options, and have your program display a total cost after the user enters their selection.</p>
+<h4 class="h2" id="calibre_link-289"><strong class="calibre2"><em class="calibre9">Write Your Own Multiplication Quiz</em></strong></h4>
+<p class="noindent">To see how much PyInputPlus is doing for you, try re-creating the multiplication quiz project on your own without importing it. This program will prompt the user with 10 multiplication questions, ranging from 0 × 0 to 9 × 9. You’ll need to implement the following features:</p>
+<ul class="calibre8">
+<li class="noindent1">If the user enters the correct answer, the program displays “Correct!” for 1 second and moves on to the next question.</li>
+<li class="noindent1">The user gets three tries to enter the correct answer before the program moves on to the next question.</li>
+<li class="noindent1">Eight seconds after first displaying the question, the question is marked as incorrect even if the user enters the correct answer after the 8-second limit.</li>
+</ul>
+<p class="indent">Compare your code to the code using PyInputPlus in “<a href="#calibre_link-284" class="calibre6">Project: Multiplication Quiz</a>” on <a href="#calibre_link-1047" class="calibre6">page 196</a>.<span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-1779"></span></p>
+</div>
+
+<div><center><a href="../chapter7"><img src="/images/prev.png" /></a><a href="/#toc"><img src="/images/toc.png" /></a><a href="../chapter9"><img src="/images/next.png" /></a></center></div>
+
+
+{% endblock %}
