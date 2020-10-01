@@ -1,4 +1,4 @@
-automatetheboringstuffwithpythondotcom
+automate the boring stuff with python.com
 ======================================
 
 Source for the AutomateTheBoringStuff.com website.
@@ -9,6 +9,6 @@ Source for the AutomateTheBoringStuff.com website.
 * `content` - HTML pages used with the templates
 * `templates` - Jinja2 templates
 * `static` - HTML, images, and other static files
-* `output` - The complete website is put here after running `generateSite.py`
+* `output` - The complete website is put here after running on `generateSite.py`
 * `generateSite.py` - A Python 3 script that produces the files to put on the site
-* `runServer.py` - A Python 3 script to run a web server on localhost:8000 to preview the site locally
+* `runServer.py` - A Python 3 script to run a web server on localhost:8000 to preview the site locally by which we can know our errors if any
