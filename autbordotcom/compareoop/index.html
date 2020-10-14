@@ -1,0 +1,72 @@
+
+<script type="text/javascript" src="dojo.js"></script>
+<script type="text/javascript" src="diffview.js"></script>
+<link rel="stylesheet" type="text/css" href="diffview.css"/>
+<script type="text/javascript" src="difflib.js"></script>
+
+<script type="text/javascript">
+//<![CDATA[
+var $ = dojo.byId;
+dojo.require("dojo.io");
+var url = window.location.toString().split("#")[0];
+
+// Array.indexOf method
+if (!Array.prototype.indexOf)
+{
+  Array.prototype.indexOf = function(elt /*, from*/)
+  {
+    var len = this.length >>> 0;
+
+    var from = Number(arguments[1]) || 0;
+    from = (from < 0)
+         ? Math.ceil(from)
+         : Math.floor(from);
+    if (from < 0)
+      from += len;
+
+    for (; from < len; from++)
+    {
+      if (from in this &&
+          this[from] === elt)
+        return from;
+    }
+    return -1;
+  };
+}
+
+var nonOOPttt = "# A non-OOP Tic-Tac-Toe game.\r\n# By Al Sweigart al@inventwithpython.com\r\n\r\n# Setting up constants:\r\nALL_SPACES = (\'1\', \'2\', \'3\', \'4\', \'5\', \'6\', \'7\', \'8\', \'9\')\r\nX, O, BLANK = \'X\', \'O\', \' \'\r\n\r\ndef main():\r\n    \"\"\"Runs a game of Tic-Tac-Toe.\"\"\"\r\n    print(\'Welcome to Tic-Tac-Toe!\')\r\n    gameBoard = getNewBoard()\r\n    turn, nextTurn = X, O\r\n\r\n    while True:\r\n        drawBoard(gameBoard)\r\n        move = getPlayerMove(gameBoard, turn)\r\n        setSpace(gameBoard, move, turn)\r\n\r\n        if isWinner(gameBoard, turn):\r\n            drawBoard(gameBoard)\r\n            print(turn + \' has won the game!\')\r\n            break\r\n        elif isBoardFull(gameBoard):\r\n            drawBoard(gameBoard)\r\n            print(\'The game is a tie!\')\r\n            break\r\n\r\n        turn, nextTurn = nextTurn, turn\r\n\r\ndef getNewBoard():\r\n    \"\"\"Create a new, blank tic-tac-toe board.\"\"\"\r\n    board = {}\r\n    for space in ALL_SPACES:\r\n        board[space] = BLANK\r\n    return board\r\n\r\ndef drawBoard(board):\r\n    \"\"\"Display a text-representation of the board.\"\"\"\r\n    print(f\'\'\'\r\n        {board[\'7\']}|{board[\'8\']}|{board[\'9\']}  7 8 9\r\n        -+-+-\r\n        {board[\'4\']}|{board[\'5\']}|{board[\'6\']}  4 5 6\r\n        -+-+-\r\n        {board[\'1\']}|{board[\'2\']}|{board[\'3\']}  1 2 3\'\'\')\r\n\r\ndef isWinner(board, mark):\r\n    \"\"\"Return True if mark is a winner on board.\"\"\"\r\n    bo, m = board, mark # Shorter names for \"syntactic sugar\".\r\n    # Check for 3 marks across the 3 rows, 3 columns, and 2 diagonals.\r\n    return ((bo[\'7\'] == m and bo[\'8\'] == m and bo[\'9\'] == m) or\r\n            (bo[\'4\'] == m and bo[\'5\'] == m and bo[\'6\'] == m) or\r\n            (bo[\'1\'] == m and bo[\'2\'] == m and bo[\'3\'] == m) or\r\n            (bo[\'7\'] == m and bo[\'4\'] == m and bo[\'1\'] == m) or\r\n            (bo[\'8\'] == m and bo[\'5\'] == m and bo[\'2\'] == m) or\r\n            (bo[\'9\'] == m and bo[\'6\'] == m and bo[\'3\'] == m) or\r\n            (bo[\'7\'] == m and bo[\'5\'] == m and bo[\'3\'] == m) or\r\n            (bo[\'9\'] == m and bo[\'5\'] == m and bo[\'1\'] == m))\r\n\r\ndef getPlayerMove(board, player):\r\n    \"\"\"Let the player type in their move.\"\"\"\r\n    space = None\r\n    while space not in ALL_SPACES or not board[space] == BLANK:\r\n        print(f\'What is {player}\\\'s move? (1-9)\')\r\n        space = input().upper()\r\n    return space\r\n\r\ndef isBoardFull(board):\r\n    \"\"\"Return True if every space on the board has been taken.\"\"\"\r\n    for space in ALL_SPACES:\r\n        if board[space] == BLANK:\r\n            return False\r\n    return True\r\n\r\ndef setSpace(board, space, mark):\r\n    \"\"\"Sets the space on the board to mark.\"\"\"\r\n    board[space] = mark\r\n\r\nif __name__ == \'__main__\':\r\n    main() # Call main() if this module is run, but not when imported.\r\n";
+
+var OOPttt = "# An object-oriented Tic-Tac-Toe game.\r\n# By Al Sweigart al@inventwithpython.com\r\n\r\n# Setting up constants:\r\nALL_SPACES = (\'1\', \'2\', \'3\', \'4\', \'5\', \'6\', \'7\', \'8\', \'9\')\r\nX, O, BLANK = \'X\', \'O\', \' \'\r\n\r\ndef main():\r\n    \"\"\"Runs a game of Tic-Tac-Toe.\"\"\"\r\n    print(\'Welcome to Tic-Tac-Toe!\')\r\n    gameBoard = TicTacToeBoard()\r\n    turn, nextTurn = X, O\r\n\r\n    while True:\r\n        gameBoard.drawBoard()\r\n        move = gameBoard.getPlayerMove(turn)\r\n        gameBoard.setSpace(move, turn)\r\n\r\n        if gameBoard.isWinner(turn):\r\n            gameBoard.drawBoard()\r\n            print(turn + \' has won the game!\')\r\n            break\r\n        elif gameBoard.isBoardFull():\r\n            gameBoard.draw()\r\n            print(\'The game is a tie!\')\r\n            break\r\n\r\n        turn, nextTurn = nextTurn, turn\r\n\r\nclass TicTacToeBoard:\r\n    def __init__(self):\r\n        \"\"\"Create a new, blank tic-tac-toe board.\"\"\"\r\n        self._spaces = {}\r\n        for space in ALL_SPACES:\r\n            self._spaces[space] = BLANK\r\n\r\n    def drawBoard(self):\r\n        \"\"\"Display a text-representation of the board.\"\"\"\r\n        print(f\'\'\'\r\n          {self._spaces[\'7\']}|{self._spaces[\'8\']}|{self._spaces[\'9\']}  7 8 9\r\n          -+-+-\r\n          {self._spaces[\'4\']}|{self._spaces[\'5\']}|{self._spaces[\'6\']}  4 5 6\r\n          -+-+-\r\n          {self._spaces[\'1\']}|{self._spaces[\'2\']}|{self._spaces[\'3\']}  1 2 3\'\'\')\r\n\r\n    def isWinner(self, mark):\r\n        \"\"\"Return True if mark is a winner on this TicTacToeBoard.\"\"\"\r\n        bo, m = self._spaces, mark # Shorter names for \"syntactic sugar\".\r\n        # Check for 3 marks across the 3 rows, 3 columns, and 2 diagonals.\r\n        return ((bo[\'7\'] == m and bo[\'8\'] == m and bo[\'9\'] == m) or\r\n                (bo[\'4\'] == m and bo[\'5\'] == m and bo[\'6\'] == m) or\r\n                (bo[\'1\'] == m and bo[\'2\'] == m and bo[\'3\'] == m) or\r\n                (bo[\'7\'] == m and bo[\'4\'] == m and bo[\'1\'] == m) or\r\n                (bo[\'8\'] == m and bo[\'5\'] == m and bo[\'2\'] == m) or\r\n                (bo[\'9\'] == m and bo[\'6\'] == m and bo[\'3\'] == m) or\r\n                (bo[\'7\'] == m and bo[\'5\'] == m and bo[\'3\'] == m) or\r\n                (bo[\'9\'] == m and bo[\'5\'] == m and bo[\'1\'] == m))\r\n\r\n    def getPlayerMove(self, player):\r\n        \"\"\"Let the player type in their move.\"\"\"\r\n        space = None\r\n        while space not in ALL_SPACES or not self._spaces[space] == BLANK:\r\n            print(f\'What is {player}\\\'s move? (1-9)\')\r\n            space = input().upper()\r\n        return space\r\n\r\n    def isBoardFull(self):\r\n        \"\"\"Return True if every space on the board has been taken.\"\"\"\r\n        for space in ALL_SPACES:\r\n            if self._spaces[space] == BLANK:\r\n                return False\r\n        return True\r\n\r\n    def setSpace(self, space, mark):\r\n        \"\"\"Sets the space on the board to mark.\"\"\"\r\n        self._spaces[space] = mark\r\n\r\nif __name__ == \'__main__\':\r\n    main() # Call main() if this module is run, but not when imported.\r\n";
+
+
+function diffUsingJS() {
+  //var base = difflib.stringAsLines($("baseText").value);
+  var base = difflib.stringAsLines(nonOOPttt);
+  var newtxt = difflib.stringAsLines(OOPttt);
+  var sm = new difflib.SequenceMatcher(base, newtxt);
+  var opcodes = sm.get_opcodes();
+  var diffoutputdiv = $("diffoutput");
+  while (diffoutputdiv.firstChild) diffoutputdiv.removeChild(diffoutputdiv.firstChild);
+  //var contextSize = $("contextSize").value;
+  //contextSize = contextSize ? contextSize : null;
+  diffoutputdiv.appendChild(diffview.buildView({ baseTextLines:base,
+                           newTextLines:newtxt,
+                           opcodes:opcodes,
+                           baseTextName:"Tic-Tac-Toe Non-OOP",
+                           newTextName:"Tic-Tac-Toe OOP",
+                           contextSize:null, // I've removed the contextSize field from the form.
+                           viewType: 0 }));
+  window.location = url + "#diff";
+}
+
+function onPageLoad() {
+  diffUsingJS();
+}
+
+dojo.addOnLoad(onPageLoad);
+</script>
+
+
+<a name="diff"> </a>
+<div id="diffoutput" style="width:100%"> </div>
+
