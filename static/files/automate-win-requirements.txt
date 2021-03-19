@@ -10,5 +10,5 @@ pyzmail36==1.0.4
 twilio
 ezgmail
 ezsheets
-pillow==7.2.0
+pillow==8.1.1
 pyautogui
