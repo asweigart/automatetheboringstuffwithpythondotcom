@@ -1,3 +1,12 @@
+/**
+ * janson => Source Sans Pro
+ * trade gothic => Source Sans Pro
+ * arial unicode => Source Sans Pro
+ * ubuntu mono => ubuntu mono via google fonts
+ *
+ * link to font collection: https://fonts.google.com/share?selection.family=DM%20Serif%20Display%7CSource%20Sans%20Pro:ital,wght@0,400;0,700;1,400%7CUbuntu%20Mono:ital,wght@0,400;0,700;1,400;1,700
+ */
+
 body {
     font-family: Georgia, serif;
     font-size: 1.2em;
@@ -62,7 +71,7 @@ h3 {
 
 .author {
     display: block;
-    font-family: "TradeGothicLTStd";
+    font-family: 'Source Sans Pro', sans-serif;
     font-size: 1.29167em;
     line-height: 1.2;
     margin-bottom: 0.5em;
@@ -91,7 +100,7 @@ h3 {
     border-top-style: solid;
     border-top-width: 0.1em;
     display: block;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     margin-bottom: 1em;
     margin-top: 1em;
     padding-bottom: 1em;
@@ -115,7 +124,7 @@ h3 {
     border-top-style: solid;
     border-top-width: 0.1em;
     display: block;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     margin-bottom: 1em;
     margin-top: 1em;
     padding-bottom: 1em;
@@ -125,7 +134,7 @@ h3 {
     }
 .box1-d {
     display: block;
-    font-family: "TradeGothicLTStd";
+    font-family: 'Source Sans Pro', sans-serif;
     font-size: 1.29167em;
     line-height: 1.2;
     margin-bottom: 0.5em;
@@ -136,7 +145,7 @@ h3 {
     }
 .boxtitle-d {
     display: block;
-    font-family: "TradeGothicLTStd";
+    font-family: 'Source Sans Pro', sans-serif;
     font-size: 1.29167em;
     line-height: 1.2;
     margin-bottom: 0.5em;
@@ -147,7 +156,7 @@ h3 {
     }
 .bq {
     display: block;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     margin-bottom: 0.5em;
     margin-left: 2em;
     margin-right: 2em;
@@ -288,7 +297,7 @@ h3 {
     }
 .caps {
     display: block;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     font-size: 1.29167em;
     line-height: 1.2;
     margin-bottom: 0.1em;
@@ -299,7 +308,7 @@ h3 {
     }
 .capsa {
     display: block;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     margin-bottom: 0.1em;
     margin-left: 0;
     margin-right: 0;
@@ -307,32 +316,32 @@ h3 {
     text-align: justify
     }
 .codeitalic {
-    font-family: "UbuntuMono";
+    font-family: 'Ubuntu Mono', monospace;
     font-size: 0.83333em;
     font-style: italic
     }
 .codeitalic1 {
-    font-family: "UbuntuMono";
+    font-family: 'Ubuntu Mono', monospace;
     font-style: italic
     }
 .codestrong {
-    font-family: "UbuntuMono";
+    font-family: 'Ubuntu Mono', monospace;
     font-size: 0.83333em;
     font-weight: bold
     }
 .codestrong1 {
-    font-family: "UbuntuMono";
+    font-family: 'Ubuntu Mono', monospace;
     font-weight: bold
     }
 .codestrongitalic {
-    font-family: "UbuntuMono";
+    font-family: 'Ubuntu Mono', monospace;
     font-size: 0.83333em;
     font-style: italic;
     font-weight: bold
     }
 .copy {
     display: block;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     font-size: 0.83333em;
     margin-bottom: 0.8em;
     margin-left: 0;
@@ -341,7 +350,7 @@ h3 {
     }
 .copy1 {
     display: block;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     font-size: 0.83333em;
     margin-bottom: 0.1em;
     margin-left: 0;
@@ -350,7 +359,7 @@ h3 {
     }
 .copy2 {
     display: block;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     font-size: 0.83333em;
     margin-bottom: 0.1em;
     margin-left: 0;
@@ -359,7 +368,7 @@ h3 {
     }
 .ded {
     display: block;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     margin-bottom: 1em;
     margin-left: 0;
     margin-right: 0;
@@ -368,7 +377,7 @@ h3 {
     }
 .edition {
     display: block;
-    font-family: "TradeGothicLTStd";
+    font-family: 'Source Sans Pro', sans-serif;
     font-size: 1.29167em;
     font-weight: bold;
     line-height: 1.2;
@@ -379,8 +388,7 @@ h3 {
     text-align: center
     }
 .ent {
-    font-family: "ArialUnicodeMS";
-    src: url(OEBPS/fonts/ARIALUNI.ttf)
+    font-family: 'Source Sans Pro', sans-serif;
     }
 .f {
     font-size: 0.83333em;
@@ -388,7 +396,7 @@ h3 {
     }
 .figcap {
     display: block;
-    font-family: "TradeGothicLTStd";
+    font-family: 'Source Sans Pro', sans-serif;
     font-size: 0.83333em;
     margin-bottom: 1em;
     margin-left: 0;
@@ -399,7 +407,7 @@ h3 {
     }
 .footnote {
     display: block;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     margin-bottom: 0.2em;
     margin-left: 0;
     margin-right: 0;
@@ -408,7 +416,7 @@ h3 {
     }
 .h {
     display: block;
-    font-family: "TradeGothicLTStd";
+    font-family: 'Source Sans Pro', sans-serif;
     font-size: 2em;
     font-weight: bold;
     line-height: 1.2;
@@ -420,7 +428,7 @@ h3 {
     }
 .h1 {
     display: block;
-    font-family: "TradeGothicLTStd";
+    font-family: 'Source Sans Pro', sans-serif;
     font-size: 1.29167em;
     font-weight: bold;
     line-height: 1.2;
@@ -432,7 +440,7 @@ h3 {
     }
 .h2 {
     display: block;
-    font-family: "TradeGothicLTStd";
+    font-family: 'Source Sans Pro', sans-serif;
     font-size: 1.29167em;
     font-weight: bold;
     line-height: 1.2;
@@ -444,7 +452,7 @@ h3 {
     }
 .h2a {
     display: block;
-    font-family: "TradeGothicLTStd";
+    font-family: 'Source Sans Pro', sans-serif;
     font-size: 1.66667em;
     font-weight: bold;
     line-height: 1.2;
@@ -456,7 +464,7 @@ h3 {
     }
 .h2b {
     display: block;
-    font-family: "TradeGothicLTStd";
+    font-family: 'Source Sans Pro', sans-serif;
     font-size: 1.66667em;
     font-weight: bold;
     line-height: 1.2;
@@ -468,7 +476,7 @@ h3 {
     }
 .h2c {
     display: block;
-    font-family: "TradeGothicLTStd";
+    font-family: 'Source Sans Pro', sans-serif;
     font-size: 1.66667em;
     font-weight: bold;
     line-height: 1.2;
@@ -482,7 +490,7 @@ h3 {
     background-color: #000;
     color: #fff;
     display: block;
-    font-family: "TradeGothicLTStd";
+    font-family: 'Source Sans Pro', sans-serif;
     font-size: 1.29167em;
     line-height: 1.2;
     margin-bottom: 0.3em;
@@ -497,7 +505,7 @@ h3 {
     }
 .h3c {
     display: block;
-    font-family: "TradeGothicLTStd";
+    font-family: 'Source Sans Pro', sans-serif;
     font-size: 1.29167em;
     font-weight: bold;
     line-height: 1.2;
@@ -509,7 +517,7 @@ h3 {
     }
 .hang {
     display: block;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     margin-bottom: 0.3em;
     margin-left: 1.5em;
     margin-right: 0;
@@ -518,7 +526,7 @@ h3 {
     }
 .hangt {
     display: block;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     margin-bottom: 0.3em;
     margin-left: 1.5em;
     margin-right: 0;
@@ -587,7 +595,7 @@ h3 {
     }
 .indent {
     display: block;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     margin-bottom: 0.2em;
     margin-left: 0;
     margin-right: 0;
@@ -597,7 +605,7 @@ h3 {
     }
 .indentb {
     display: block;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     margin-bottom: 1em;
     margin-left: 0;
     margin-right: 0;
@@ -607,7 +615,7 @@ h3 {
     }
 .indentt {
     display: block;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     margin-bottom: 0.1em;
     margin-left: 0;
     margin-right: 0;
@@ -617,7 +625,7 @@ h3 {
     }
 .indexmain {
     display: block;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     margin-bottom: 0.1em;
     margin-left: 4.3em;
     margin-right: 0;
@@ -627,7 +635,7 @@ h3 {
     }
 .indexsub {
     display: block;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     margin-bottom: 0.1em;
     margin-left: 4.5em;
     margin-right: 0;
@@ -637,7 +645,7 @@ h3 {
     }
 .indexsubsub {
     display: block;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     margin-bottom: 0.1em;
     margin-left: 4.5em;
     margin-right: 0;
@@ -646,11 +654,11 @@ h3 {
     text-indent: -1.5em
     }
 .literal {
-    font-family: "UbuntuMono";
+    font-family: 'Ubuntu Mono', monospace;
     font-size: 0.83333em
     }
 .literal1 {
-    font-family: "UbuntuMono";
+    font-family: 'Ubuntu Mono', monospace;
     font-size: 0.9em
     }
 .middle {
@@ -662,7 +670,7 @@ h3 {
     }
 .noindent {
     display: block;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     margin-bottom: 0.1em;
     margin-left: 0;
     margin-right: 0;
@@ -671,7 +679,7 @@ h3 {
     }
 .noindent1 {
     display: list-item;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     margin-bottom: 0.1em;
     margin-left: 0;
     margin-top: 0.2em;
@@ -679,7 +687,7 @@ h3 {
     }
 .noindent2 {
     display: block;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     margin-bottom: 0.1em;
     margin-left: 0;
     margin-right: 0;
@@ -688,7 +696,7 @@ h3 {
     }
 .noindentb {
     display: block;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     margin-bottom: 0.8em;
     margin-left: 0;
     margin-right: 0;
@@ -697,7 +705,7 @@ h3 {
     }
 .noindentt {
     display: block;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     margin-bottom: 0.2em;
     margin-left: 0;
     margin-right: 0;
@@ -729,7 +737,7 @@ h3 {
     }
 .notep {
     display: block;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     margin-bottom: 0.1em;
     margin-left: 0.5em;
     margin-right: 0.5em;
@@ -747,7 +755,7 @@ h3 {
     }
 .notet {
     display: block;
-    font-family: "TradeGothicLTStd";
+    font-family: 'Source Sans Pro', sans-serif;
     font-size: 1.29167em;
     line-height: 1.2;
     margin-bottom: 0.5em;
@@ -763,7 +771,7 @@ h3 {
     border-top-style: solid;
     border-top-width: 0.1em;
     display: block;
-    font-family: "UbuntuMono";
+    font-family: 'Ubuntu Mono', monospace;
     font-size: 0.83333em;
     margin-bottom: 0.8em;
     margin-left: 0;
@@ -783,7 +791,7 @@ h3 {
     border-top-style: solid;
     border-top-width: 0.1em;
     display: block;
-    font-family: "UbuntuMono";
+    font-family: 'Ubuntu Mono', monospace;
     font-size: 0.83333em;
     margin-bottom: 0.8em;
     margin-left: 2em;
@@ -797,7 +805,7 @@ h3 {
     }
 .programsc {
     display: block;
-    font-family: "UbuntuMono";
+    font-family: 'Ubuntu Mono', monospace;
     font-size: 0.83333em;
     margin-bottom: 0.8em;
     margin-left: 0.1em;
@@ -811,7 +819,7 @@ h3 {
     }
 .pub1 {
     display: block;
-    font-family: "TradeGothicLTStd";
+    font-family: 'Source Sans Pro', sans-serif;
     margin-bottom: 0.5em;
     margin-left: 0;
     margin-right: 0;
@@ -820,7 +828,7 @@ h3 {
     }
 .question {
     display: block;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     margin-bottom: 0.1em;
     margin-left: 1.5em;
     margin-right: 0;
@@ -829,7 +837,7 @@ h3 {
     }
 .question-para {
     display: block;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     margin-bottom: 0.1em;
     margin-left: 1.5em;
     margin-right: 0;
@@ -838,7 +846,7 @@ h3 {
     }
 .question1 {
     display: block;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     margin-bottom: 0.1em;
     margin-left: 1.5em;
     margin-right: 0;
@@ -870,7 +878,7 @@ h3 {
     }
 .sidebart {
     display: block;
-    font-family: "TradeGothicLTStd";
+    font-family: 'Source Sans Pro', sans-serif;
     font-size: 1em;
     font-weight: bold;
     margin-bottom: 0.5em;
@@ -881,7 +889,7 @@ h3 {
     }
 .spara {
     display: block;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     font-size: 0.83333em;
     margin-bottom: 0.3em;
     margin-left: 0;
@@ -891,7 +899,7 @@ h3 {
     }
 .sparai {
     display: block;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     font-size: 0.83333em;
     margin-bottom: 0.3em;
     margin-left: 0;
@@ -902,7 +910,7 @@ h3 {
     }
 .subtitle {
     display: block;
-    font-family: "TradeGothicLTStd";
+    font-family: 'Source Sans Pro', sans-serif;
     font-size: 1.66667em;
     font-weight: bold;
     line-height: 1.2;
@@ -914,7 +922,7 @@ h3 {
     }
 .tab_th {
     display: block;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     margin-bottom: 0.1em;
     margin-left: 0;
     margin-right: 0;
@@ -924,7 +932,7 @@ h3 {
     }
 .taba {
     display: block;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     margin-bottom: 0.1em;
     margin-left: 0;
     margin-right: 0;
@@ -933,7 +941,7 @@ h3 {
     }
 .tabcap {
     display: block;
-    font-family: "TradeGothicLTStd";
+    font-family: 'Source Sans Pro', sans-serif;
     font-size: 0.83333em;
     margin-bottom: 0.4em;
     margin-left: 0;
@@ -948,7 +956,7 @@ h3 {
     border-bottom-style: solid;
     border-bottom-width: 0;
     display: table-cell;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     margin-bottom: 0.1em;
     margin-left: 0;
     margin-top: 0.1em;
@@ -965,7 +973,7 @@ h3 {
     border-bottom-style: solid;
     border-bottom-width: 0.15em;
     display: table-cell;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     margin-bottom: 0.1em;
     margin-left: 0;
     margin-top: 0.1em;
@@ -985,7 +993,7 @@ h3 {
     border-top-style: solid;
     border-top-width: 0.15em;
     display: table-cell;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     margin-bottom: 0.1em;
     margin-left: 0;
     margin-top: 0.1em;
@@ -999,7 +1007,7 @@ h3 {
 .table-v {
     background-color: #D1D3D4;
     display: table-cell;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     margin-bottom: 0.1em;
     margin-left: 0;
     margin-top: 0.1em;
@@ -1016,7 +1024,7 @@ h3 {
     border-bottom-style: solid;
     border-bottom-width: 0.15em;
     display: table-cell;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     margin-bottom: 0.1em;
     margin-left: 0;
     margin-top: 0.1em;
@@ -1029,7 +1037,7 @@ h3 {
     }
 .tocchap {
     display: block;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     font-weight: bold;
     margin-bottom: 0.3em;
     margin-left: 0;
@@ -1039,7 +1047,7 @@ h3 {
     }
 .tocchapa {
     display: block;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     margin-bottom: 0.3em;
     margin-left: 0;
     margin-right: 0;
@@ -1048,7 +1056,7 @@ h3 {
     }
 .tocpart {
     display: block;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     font-weight: bold;
     margin-bottom: 0.1em;
     margin-left: 0;
@@ -1058,7 +1066,7 @@ h3 {
     }
 .tocsec {
     display: block;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     margin-bottom: 0.1em;
     margin-left: 0;
     margin-right: 0;
@@ -1067,7 +1075,7 @@ h3 {
     }
 .tocsec1 {
     display: block;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     margin-bottom: 0.1em;
     margin-left: 5.5em;
     margin-right: 0;
@@ -1080,7 +1088,7 @@ h3 {
     border-collapse: collapse;
     border-spacing: 2px;
     display: table;
-    font-family: "JansonTextLTStd";
+    font-family: 'DM Serif Display', serif;
     margin-bottom: 1.5em;
     margin-left: 0;
     margin-top: 0.5em;
@@ -1094,82 +1102,3 @@ h3 {
     margin-bottom: 5pt;
     margin-top: 5pt
     }
-@font-face {
-    font-family: "TradeGothicLTStd";
-    src: url(OEBPS/fonts/TradeGothicLTStd.otf);
-    font-style: normal;
-    font-weight: normal
-    }
-@font-face {
-    font-family: "TradeGothicLTStd";
-    src: url(OEBPS/fonts/TradeGothicLTStd-Obl.otf);
-    font-style: italic;
-    font-weight: normal
-    }
-@font-face {
-    font-family: "TradeGothicLTStd";
-    src: url(OEBPS/fonts/TradeGothicLTStd-Bold.otf);
-    font-style: normal;
-    font-weight: bold
-    }
-@font-face {
-    font-family: "TradeGothicLTStd";
-    src: url(OEBPS/fonts/TradeGothicLTStd-BoldObl.otf);
-    font-style: italic;
-    font-weight: bold
-    }
-@font-face {
-    font-family: "JansonTextLTStd";
-    src: url(OEBPS/fonts/JansonTextLTStd-Bold.otf);
-    font-style: normal;
-    font-weight: bold
-    }
-@font-face {
-    font-family: "JansonTextLTStd";
-    src: url(OEBPS/fonts/JansonTextLTStd-BoldItalic.otf);
-    font-style: italic;
-    font-weight: bold
-    }
-@font-face {
-    font-family: "JansonTextLTStd";
-    src: url(OEBPS/fonts/JansonTextLTStd-Italic.otf);
-    font-style: italic;
-    font-weight: normal
-    }
-@font-face {
-    font-family: "JansonTextLTStd";
-    src: url(OEBPS/fonts/JansonTextLTStd-Roman.otf);
-    font-style: normal;
-    font-weight: normal
-    }
-@font-face {
-    font-family: "ArialUnicodeMS";
-    src: url(OEBPS/fonts/ARIALUNI.ttf);
-    font-style: normal;
-    font-weight: normal
-    }
-@font-face {
-    font-family: "UbuntuMono";
-    src: url(OEBPS/fonts/UbuntuMono-Regular.ttf);
-    font-style: normal;
-    font-weight: normal
-    }
-@font-face {
-    font-family: "UbuntuMono";
-    src: url(OEBPS/fonts/UbuntuMono-Bold.ttf);
-    font-style: normal;
-    font-weight: bold
-    }
-@font-face {
-    font-family: "UbuntuMono";
-    src: url(OEBPS/fonts/UbuntuMono-Italic.ttf);
-    font-style: italic;
-    font-weight: normal
-    }
-@font-face {
-    font-family: "UbuntuMono";
-    src: url(OEBPS/fonts/UbuntuMono-BoldItalic.ttf);
-    font-style: italic;
-    font-weight: bold
-    }
-
