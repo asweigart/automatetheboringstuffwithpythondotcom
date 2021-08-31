@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% set title = 'Automate the Boring Stuff with Python' %}
 {% block content %}
-				
+
 <article id="post-126" class="post-126 page type-page status-publish hentry">
 	<header class="entry-header">
 		<h1 class="entry-title">Chapter 12 &#8211; Working with Excel Spreadsheets</h1>	</header><!-- .entry-header -->
@@ -839,7 +839,7 @@ PRICE_UPDATES = {'Garlic': 3.07,
    --<span class="calibre1"><em class="literal3">snip</em></span>--
 
    <span class="calibre1"><strong class="literal"># Loop through the rows and update the prices.</strong></span>
-&#x2776; <span class="calibre1"><strong class="literal">for rowNum in range(2, sheet.max_row):  # skip the first row</strong></span>
+&#x2776; <span class="calibre1"><strong class="literal">for rowNum in range(2, sheet.max_row + 1):  # skip the first row</strong></span>
 &#x2777;     <span class="calibre1"><strong class="literal">produceName = sheet.cell(row=rowNum, column=1).value</strong></span>
 &#x2778;     <span class="calibre1"><strong class="literal">if produceName in PRICE_UPDATES:</strong></span>
            <span class="calibre1"><strong class="literal">sheet.cell(row=rowNum, column=2).value = PRICE_UPDATES[produceName]</strong></span>
@@ -1581,5 +1581,5 @@ PRICE_UPDATES = {'Garlic': 3.07,
 			</div><!-- .entry-content -->
 </article><!-- #post-## -->
 
-				
+
 {% endblock %}
