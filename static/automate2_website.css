@@ -13,6 +13,7 @@ a {
 }
 
 h1 {
+    font-size: 28.8px; /* Make this the same size as h2 so "Automate the Boring Stuff with Python" on the main page doesn't wrap. */
     font-family: sans-serif;
     font-variant: small-caps;
 }
@@ -307,25 +308,25 @@ h3 {
     text-align: justify
     }
 .codeitalic {
-    font-family: "UbuntuMono";
+    font-family: monospace;
     font-size: 0.83333em;
     font-style: italic
     }
 .codeitalic1 {
-    font-family: "UbuntuMono";
+    font-family: monospace;
     font-style: italic
     }
 .codestrong {
-    font-family: "UbuntuMono";
+    font-family: monospace;
     font-size: 0.83333em;
     font-weight: bold
     }
 .codestrong1 {
-    font-family: "UbuntuMono";
+    font-family: monospace;
     font-weight: bold
     }
 .codestrongitalic {
-    font-family: "UbuntuMono";
+    font-family: monospace;
     font-size: 0.83333em;
     font-style: italic;
     font-weight: bold
@@ -646,11 +647,11 @@ h3 {
     text-indent: -1.5em
     }
 .literal {
-    font-family: "UbuntuMono";
+    font-family: monospace;
     font-size: 0.83333em
     }
 .literal1 {
-    font-family: "UbuntuMono";
+    font-family: monospace;
     font-size: 0.9em
     }
 .middle {
@@ -763,7 +764,7 @@ h3 {
     border-top-style: solid;
     border-top-width: 0.1em;
     display: block;
-    font-family: "UbuntuMono";
+    font-family: monospace;
     font-size: 0.83333em;
     margin-bottom: 0.8em;
     margin-left: 0;
@@ -783,7 +784,7 @@ h3 {
     border-top-style: solid;
     border-top-width: 0.1em;
     display: block;
-    font-family: "UbuntuMono";
+    font-family: monospace;
     font-size: 0.83333em;
     margin-bottom: 0.8em;
     margin-left: 2em;
@@ -797,7 +798,7 @@ h3 {
     }
 .programsc {
     display: block;
-    font-family: "UbuntuMono";
+    font-family: monospace;
     font-size: 0.83333em;
     margin-bottom: 0.8em;
     margin-left: 0.1em;
