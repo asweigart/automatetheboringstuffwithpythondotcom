@@ -548,7 +548,7 @@ for word in message.split():<br class="calibre5" />
 &nbsp;&nbsp;&nbsp;&nbsp;# Separate the non-letters at the end of this word:<br class="calibre5" />
 &nbsp;&nbsp;&nbsp;&nbsp;suffixNonLetters = ''<br class="calibre5" />
 &nbsp;&nbsp;&nbsp;&nbsp;while not word[-1].isalpha():<br class="calibre5" />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;suffixNonLetters += word[-1]<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;suffixNonLetters = word[-1] + suffixNonLetters<br class="calibre5" />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;word = word[:-1]<br class="calibre5" /><br class="calibre5" />
 &nbsp;&nbsp;&nbsp;&nbsp;# Remember if the word was in uppercase or title case.<br class="calibre5" />
 &nbsp;&nbsp;&nbsp;&nbsp;wasUpper = word.isupper()<br class="calibre5" />
@@ -595,7 +595,7 @@ for word in message.split():<br class="calibre5" />
 <p class="programs">&nbsp;&nbsp;&nbsp;&nbsp;# Separate the non-letters at the end of this word:<br class="calibre5" />
 &nbsp;&nbsp;&nbsp;&nbsp;suffixNonLetters = ''<br class="calibre5" />
 &nbsp;&nbsp;&nbsp;&nbsp;while not word[-1].isalpha():<br class="calibre5" />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;suffixNonLetters += word[-1]<br class="calibre5" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;suffixNonLetters = word[-1] + suffixNonLetters<br class="calibre5" />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;word = word[:-1]</p>
 <p class="indent">A loop that calls <span class="literal">isalpha()</span> on the first character in the word will determine if we should remove a character from a word and concatenate it to the end of <span class="literal">prefixNonLetters</span>. If the entire word is made of non-letter characters, like <span class="literal">'4,000'</span>, we can simply append it to the <span class="literal">pigLatin</span> list and continue to the next word to translate. We also need to save the non-letters at the end of the <span class="literal">word</span> string. This code is similar to the previous loop.</p>
 <p class="indent">Next, we’ll make sure the program remembers if the word was in uppercase or title case so we can restore it after translating the word to Pig Latin:</p>
