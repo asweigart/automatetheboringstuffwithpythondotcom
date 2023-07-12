@@ -167,7 +167,7 @@ n8BITMIME\nSTARTTLS\nENHANCEDSTATUSCODES\nCHUNKING')<br class="calibre5" />
 </tr>
 <tr class="calibre16">
 <td class="table-v"><p class="taba">AT&amp;T</p></td>
-<td class="table-v"><p class="taba"><em class="calibre7"><a href="http://smpt.mail.att.net" class="calibre6">smpt.mail.att.net</a></em> (port 465)</p></td>
+<td class="table-v"><p class="taba"><em class="calibre7"><a href="http://smtp.mail.att.net" class="calibre6">smtp.mail.att.net</a></em> (port 465)</p></td>
 </tr>
 <tr class="calibre16">
 <td class="table-b"><p class="taba">Comcast</p></td>
@@ -182,11 +182,11 @@ n8BITMIME\nSTARTTLS\nENHANCEDSTATUSCODES\nCHUNKING')<br class="calibre5" />
 </tr>
 </tbody>
 </table>
-<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-926"></span>Once you have the domain name and port information for your email provider, create an <span class="literal">SMTP</span> object by calling <span class="literal">smptlib.SMTP()</span>, passing the domain name as a string argument, and passing the port as an integer argument. The <span class="literal">SMTP</span> object represents a connection to an SMTP mail server and has methods for sending emails. For example, the following call creates an <span class="literal">SMTP</span> object for connecting to an imaginary email server:</p>
+<p class="indent"><span {http://www.idpf.org/2007/ops}type="pagebreak" id="calibre_link-926"></span>Once you have the domain name and port information for your email provider, create an <span class="literal">SMTP</span> object by calling <span class="literal">smtplib.SMTP()</span>, passing the domain name as a string argument, and passing the port as an integer argument. The <span class="literal">SMTP</span> object represents a connection to an SMTP mail server and has methods for sending emails. For example, the following call creates an <span class="literal">SMTP</span> object for connecting to an imaginary email server:</p>
 <p class="programs">&gt;&gt;&gt; <span class="codestrong1">smtpObj = smtplib.SMTP('smtp.example.com', 587)</span><br class="calibre5" />
 &gt;&gt;&gt; <span class="codestrong1">type(smtpObj)</span><br class="calibre5" />
 &lt;class 'smtplib.SMTP'&gt;</p>
-<p class="indent">Entering <span class="literal">type(smtpObj)</span> shows you that there’s an <span class="literal">SMTP</span> object stored in <span class="literal">smtpObj</span>. You’ll need this <span class="literal">SMTP</span> object in order to call the methods that log you in and send emails. If the <span class="literal">smptlib.SMTP()</span> call is not successful, your SMTP server might not support TLS on port 587. In this case, you will need to create an <span class="literal">SMTP</span> object using <span class="literal">smtplib.SMTP_SSL()</span> and port 465 instead.</p>
+<p class="indent">Entering <span class="literal">type(smtpObj)</span> shows you that there’s an <span class="literal">SMTP</span> object stored in <span class="literal">smtpObj</span>. You’ll need this <span class="literal">SMTP</span> object in order to call the methods that log you in and send emails. If the <span class="literal">smtplib.SMTP()</span> call is not successful, your SMTP server might not support TLS on port 587. In this case, you will need to create an <span class="literal">SMTP</span> object using <span class="literal">smtplib.SMTP_SSL()</span> and port 465 instead.</p>
 <p class="programs">&gt;&gt;&gt; <span class="codestrong1">smtpObj = smtplib.SMTP_SSL('smtp.example.com', 465)</span></p>
 <div class="note">
 <p class="notet"><strong class="calibre2"><span class="notes">NOTE</span></strong></p>
