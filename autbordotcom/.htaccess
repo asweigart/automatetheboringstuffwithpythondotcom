@@ -1,6 +1,9 @@
 RewriteEngine on
 RewriteRule ^examples$ https://www.reddit.com/r/Python/comments/34982z/what_cool_program_to_automate_a_daily_task_did/ [L]
 
+RewriteRule ^boringcoin https://docs.google.com/spreadsheets/d/1sVCG1b3pfOAzuaFItLj4I8aN8kjvVDO0S78SIP1KNZQ/edit?usp=sharing [L]
+RewriteRule ^examplegs https://docs.google.com/spreadsheets/d/1TzOJxhNKr15tzdZxTqtQ3EmDP6em_elnbtmZIcyu8vI/ [L]
+
 RewriteRule ^billiondollarmistake https://www.infoq.com/presentations/Null-References-The-Billion-Dollar-Mistake-Tony-Hoare/ [L]
 RewriteRule ^zophie.png$ https://automatetheboringstuff.com/src/zophie.png [L]
 RewriteRule ^excelSpreadsheets.zip$  [L]

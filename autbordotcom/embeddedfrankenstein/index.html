@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frankenstein</title>
+    <style>
+        /* Style for the container to use flex layout */
+        .container {
+            display: flex;
+            height: 100vh;
+            width: 100%;
+        }
+
+        /* Styling for the iframes */
+        iframe {
+            height: 100%;
+            border: none;
+        }
+
+        .left-iframe {
+            flex: 7;  /* 70% of the space */
+        }
+
+        .right-iframe {
+            flex: 3;  /* 30% of the space */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- Left iframe -->
+        <iframe class="left-iframe" src="frankenstein.html"></iframe>
+
+        <!-- Right iframe -->
+        <iframe class="right-iframe" src="ads.html"></iframe>
+    </div>
+
+</body>
+
+</html>
