@@ -39,7 +39,7 @@ WHITE_SQUARE = '||'
 BLACK_SQUARE = '  '
 
 
-def print_chess_board(board):
+def print_chessboard(board):
     squares = []
     is_white_square = True
     for y in '87654321':
@@ -58,7 +58,7 @@ def print_chess_board(board):
     print(BOARD_TEMPLATE.format(*squares))
 
 def print_help():
-    print('Interactive Chess Board')
+    print('Interactive Chessboard')
     print('by Al Sweigart al@inventwithpython.com')
     print()
     print('Pieces:')
@@ -68,9 +68,9 @@ def print_help():
     print('  move e2 e4 - Moves the piece at e2 to e4.')
     print('  remove e2 - Removes the piece at e2.')
     print('  set e2 wP - Sets square e2 to a white pawn.')
-    print('  reset - Reset pieces back to their starting squares.')
-    print('  clear - Clear the entire board.')
-    print('  fill wP - Fill entire board with white pawns.')
+    print('  reset - Resets pieces back to their starting squares.')
+    print('  clear - Clears the entire board.')
+    print('  fill wP - Fills entire board with white pawns.')
     print('  help - Show this help information.')
     print('  quit - Quits the program.')
 
@@ -78,7 +78,7 @@ def print_help():
 main_board = copy.copy(STARTING_PIECES)
 print_help()
 while True:
-    print_chess_board(main_board)
+    print_chessboard(main_board)
     response = input('> ').split()
 
     if response[0] == 'move':
