@@ -1,4 +1,4 @@
-# Downloads every single XKCD comic.
+# Downloads every single XKCD comic
 
 import requests, os, bs4
 

@@ -1,5 +1,6 @@
-#! python3
-# Resizes all images in current working directory so that they would fit in a 300x300 square. Also adds the catlogo.png to the lower-right corner.
+# https://autbor.com/resizeAndAddLogo.py - Resizes all images in
+# current working directory to fit in a 300x300 square, and adds
+# catlogo.png to the lower-right corner.
 
 import os
 from PIL import Image
@@ -7,8 +8,8 @@ from PIL import Image
 SQUARE_FIT_SIZE = 300
 LOGO_FILENAME = 'catlogo.png'
 
-logoIm = Image.open(LOGO_FILENAME)
-logoWidth, logoHeight = logoIm.size
+logo_im = Image.open(LOGO_FILENAME)
+logo_width, logo_height = logo_im.size
 
 os.makedirs('withLogo', exist_ok=True)
 # Loop over all files in the working directory.
@@ -31,12 +32,12 @@ for filename in os.listdir('.'):
             height = SQUARE_FIT_SIZE
 
         # Resize the image
-        print('Resizing %s...' % (filename))
+        print(f'Resizing {filename}...')
         im = im.resize((width, height))
 
     # Add logo.
-    print('Adding logo to %s...' % (filename))
-    im.paste(logoIm, (width - logoWidth, height - logoHeight), logoIm)
+    print(f'Adding logo to {filename}...')
+    im.paste(logo_im, (width - logo_width, height - logo_height), logo_im)
 
     # Save changes.
     im.save(os.path.join('withLogo', filename))
